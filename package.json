@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "ag-grid-react": "^32.3.3",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.7.9",
     "dotenv": "^16.4.5",
     "formik": "^2.4.6",
     "plotly.js": "^2.34.0",

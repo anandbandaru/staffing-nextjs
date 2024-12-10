@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import IDTypes from "../staticdata/idtypes";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-import { Select, InputLabel, FormControl, FormHelperText } from '@mui/material';
 
 const validationSchema = yup.object({
     firstName: yup
@@ -45,7 +44,7 @@ const validationSchema = yup.object({
         .required('Address is required'),
 });
 
-const OwnerNew = () => {
+const OwnerNew1 = () => {
     return (
       <Formik
         initialValues={{ firstName: '' }}
@@ -70,7 +69,7 @@ const OwnerNew = () => {
     );
   };
 
-const OwnerNew1 = () => {
+const OwnerNew = () => {
 
     const [apiLoading, setApiLoading] = useState(false);
     const formik = useFormik({
