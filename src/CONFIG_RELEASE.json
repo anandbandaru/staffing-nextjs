@@ -1,10 +1,6 @@
 {
-  "info_text": "Inventory Management is a GenAI tool based on Azure OpenAI. Azure OpenAI Service is a cloud-based platform that provides access to advanced language models developed by OpenAI, such as GPT-3.5, Codex.",
-  "noprompts_text": "It is empty in here. There are no recent prompts sent to GenAI system.",
   "developers": [
-    {"name": "Abhinav Singh", "role": "Open AI"},
-    {"name": "Ananda Bandaru", "role": "UI & Architecture"},
-    {"name": "Nghia Nguyen", "role": "Support"}
+    {"name": "Ananda Bandaru", "role": "UI & Architecture"}
   ],
   "pageTitles": [
     {"title": "Staffing"}
