@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/d76dcd24-85fa-443e-b370-1b055875d619/resourceGroups/sqlgenai_group/providers/Microsoft.Web/sites/sqlgenaiweb",
+    "appService.deploySubpath": "./build"
+}

@@ -1,0 +1,9 @@
+.topBannerHolder{
+    background-color: rgba(3, 105, 161);
+}
+.companyLogo{  
+    color:#fff;
+    padding: 4px 4px;
+    display: inline-block;
+    /* inline-block text-white rounded-t-lg p-0.5 px-2 text-s font-medium text-center active */
+}
