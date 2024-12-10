@@ -6,7 +6,7 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { assets } from '../../assets/assets'
 import { Context } from "../../context/context";
 import { Tooltip } from 'react-tooltip';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { pink } from '@mui/material/colors';
 import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontalCircleOutlined';
 import Drawer from '@mui/material/Drawer';
@@ -17,9 +17,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Alert from '@mui/material/Alert';
 import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
@@ -139,7 +136,7 @@ const Top = () => {
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <Tabs selectedIndex={tabIndex}
                         onSelect={(index) => setTabIndex(index)}>
-                        <TabList className="myReactTabsHolder">
+                        <TabList className="topTabsListHolder">
                             <Tab>Dashboard</Tab>
                             <Tab>Owners</Tab>
                             <Tab>Companies</Tab>

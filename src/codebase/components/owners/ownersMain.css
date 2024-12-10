@@ -1,0 +1,14 @@
+.ownerMainHolder{
+    margin:4px;
+}
+
+/* FORM */
+form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .form {
+    background: #0e101c;
+    max-width: 400px;
+    margin: 0 auto;
+  } 
