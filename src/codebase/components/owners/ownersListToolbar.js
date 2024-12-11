@@ -21,6 +21,7 @@ const OwnersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, 
     });
     const handleClose = () => {
         setOpen(false);
+        manualLoadData();
     };
     const handleClickOpen = () => {
         setOpen(true);
@@ -104,7 +105,7 @@ const OwnersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, 
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <OwnerNew />
+                    <OwnerNew operation="New" />
                 </DialogContent>
             </BootstrapDialog>
         </>

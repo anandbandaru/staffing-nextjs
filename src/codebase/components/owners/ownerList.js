@@ -11,6 +11,8 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import OwnersListToolbar from './ownersListToolbar'
+import OwnerDetails from "./ownerDetails";
+import OwnerEdit from "./ownerEdit";
 
 const OwnersList = () => {
     const { APIPath } = useContext(Context);
@@ -95,35 +97,14 @@ const OwnersList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <Stack direction="row" spacing={2} >
-                    <IconButton aria-label="delete" color="primary"
-                        onClick={() => {
-                            window.alert(props.data.Id);
-                        }
-                        }>
-                        <ReadMoreIcon />
-                    </IconButton>
-                </Stack>
+                <OwnerDetails ownerID={props.data.Id} operation="View" />
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                <Stack direction="row" spacing={1} className='float-right'>
-                    <IconButton aria-label="delete" color="primary" onClick={() => {
-                            window.alert(props.data.Id);
-                        }
-                        }>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton title="delete" aria-label="delete" color="error" onClick={() => {
-                            window.alert(props.data.Id);
-                        }
-                        }>
-                        <DeleteIcon />
-                    </IconButton>
-                </Stack>
+                <OwnerEdit  ownerID={props.data.Id} operation="Edit" />
             </>
         );
     };
