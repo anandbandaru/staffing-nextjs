@@ -5,7 +5,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import OwnersList from './ownerList';
 import OwnerNew from './ownerNew';
-import Contact from './ownerNew2';
 
 const OwnersMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -18,21 +17,17 @@ const OwnersMain = () => {
                         onSelect={(index) => setTabIndex(index)}>
                         <TabList className="subTabsListHolder">
                             <Tab>List</Tab>
-                            <Tab>Add New</Tab>
                             <Tab>Documents</Tab>
                             <Tab>Reports</Tab>
                         </TabList>
 
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             <OwnersList />
                         </TabPanel>
-                        <TabPanel>
-                            <Contact />
-                        </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             Documents
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             Reports
                         </TabPanel>
                     </Tabs>

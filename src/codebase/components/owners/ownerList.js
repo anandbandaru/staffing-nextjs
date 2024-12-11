@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Context } from "../../context/context";
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
-import CachedIcon from '@mui/icons-material/Cached';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
+import OwnersListToolbar from './ownersListToolbar'
 
 const OwnersList = () => {
-
-    const [data, setData] = useState({ name: "test", value: [] });
-    const [data_Original, setData_Original] = useState({ name: "test", value: [] });
+    const { APIPath } = useContext(Context);
+    const [data, setData] = useState({ data: [] });
+    const [data_Original, setData_Original] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -21,8 +26,8 @@ const OwnersList = () => {
     }, []);
 
     function manualLoadData() {
-        //delaydMockLoading();
         setApiLoading(true);
+        delaydMockLoading();
     }
 
     function delaydMockLoading() {
@@ -35,7 +40,8 @@ const OwnersList = () => {
     }
 
     const getOwnersList = () => {
-        let apiUrl = "http://127.0.0.1:5000/getowners"
+        setData({ data: [] });
+        let apiUrl = APIPath + "/getowners"
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -51,8 +57,8 @@ const OwnersList = () => {
                     else {
                         setData(result);
                         setData_Original(result);
-                        setItemCount(result.data.length);
-                        setDataAPIError(result.data.length == 0 ? "No Owners information present." : "ok");
+                        setItemCount(result.total);
+                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -62,6 +68,7 @@ const OwnersList = () => {
                     console.log("RequestData:On JUST error: API call failed")
                     setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
+                    setApiLoadingError(true);
                 }
             )
     }
@@ -85,12 +92,53 @@ const OwnersList = () => {
         }
     }
 
-    const CustomButtonComponent = (props) => {
-        return <button onClick={() => window.alert('clicked')}>Push Me!</button>;
+    const CustomDetailsComponent = (props) => {
+        return (
+            <>
+                <Stack direction="row" spacing={2} >
+                    <IconButton aria-label="delete" color="primary"
+                        onClick={() => {
+                            window.alert(props.data.Id);
+                        }
+                        }>
+                        <ReadMoreIcon />
+                    </IconButton>
+                </Stack>
+            </>
+        );
     };
+    const CustomEditComponent = (props) => {
+        return (
+            <>
+                <Stack direction="row" spacing={1} className='float-right'>
+                    <IconButton aria-label="delete" color="primary" onClick={() => {
+                            window.alert(props.data.Id);
+                        }
+                        }>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton title="delete" aria-label="delete" color="error" onClick={() => {
+                            window.alert(props.data.Id);
+                        }
+                        }>
+                        <DeleteIcon />
+                    </IconButton>
+                </Stack>
+            </>
+        );
+    };
+    const CustomEmailRenderer = ({ value }) => (
+        <span>
+            <MarkunreadOutlinedIcon fontSize="small" className="mr-2" />
+            {value}
+        </span>
+    );
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs, setColDefs] = useState([
-        { field: "Id" },
+        {
+            field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
+        },
+        { field: "Id", maxWidth: 50 },
         { field: "firstName", filter: true },
         { field: "lastName", filter: true },
         {
@@ -98,80 +146,43 @@ const OwnersList = () => {
             cellClassRules: {
                 // apply green to electric cars
                 'rag-green': params => params.value === "sa.ke@aol.com",
-            }
+            },
+            cellRenderer: CustomEmailRenderer
         },
         { field: "phone1", filter: true },
-        { field: "button", cellRenderer: CustomButtonComponent }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
-        'rag-red': params => params.data.firstName === "anand",
+        //'rag-red': params => params.data.firstName === "anand",
     };
     const pagination = true;
-    const paginationPageSize = 5;
+    const paginationPageSize = 10;
     const paginationPageSizeSelector = [5, 10, 20, 50];
+    const autoSizeStrategy = {
+        type: 'fitGridWidth',
+        defaultMinWidth: 50
+    };
 
     return (
         <>
-
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
-                <div className="float-right flex flex-grow-0 bg-white text-black dark:bg-gray-500 dark:text-white text-sm py-1 px-3">
-                    <span className="hidden lg:inline-block">Total Owners:</span>
-                    <span className="font-bold text-sm ml-2">{itemCount}</span>
-                </div>
-
-
-
                 {/* TOOLS */}
-                <div className="float-right flex flex-grow">
-                    <div className="flex flex-grow items-center max-w-lg">
-                        <Stack direction="row" spacing={2}>
-                            <Button size="small" variant="contained" startIcon={<AddCircleOutlineOutlinedIcon />}>
-                                Add
-                            </Button>
-                        </Stack>
-                    </div>
-                </div>
+                <OwnersListToolbar
+                    operation="Add"
+                    itemCount={itemCount}
+                    apiLoading={apiLoading}
+                    apiLoadingError={apiLoadingError}
+                    dataAPIError={dataAPIError}
+                    manualLoadData={manualLoadData} />
                 {/* TOOLS */}
-
-                {/* API LOADER & MESSAGE */}
-                {apiLoading ?
-                    <>
-                        <span className="text-white">loading...</span>
-                    </> : <div className="text-s hidden lg:inline-block dark:text-white">
-                        API Call Status:
-                        <span className="bg-white px-2 rounded-sm mx-2 dark:bg-gray-400 dark:text-white">{dataAPIError}</span>
-                    </div>}
-                {/* API LOADER & MESSAGE */}
-
-                {/* REFRESH ICON */}
-                <div className="float-right ">
-                    {itemCount == 0 ? null :
-                        <>
-                            <Button size="small" variant="contained"
-                                onClick={manualLoadData}
-                                disabled={apiLoading}
-                            >
-                                {apiLoading ? <div className="spinner"></div> :
-                                    <>
-                                        <CachedIcon className="mr-1" />
-                                        Refresh now
-                                    </>}
-
-                            </Button>
-                        </>
-                    }
-                </div>
-                {/* REFRESH ICON */}
 
             </div>
 
-
-
             <div
                 className="ag-theme-quartz" // applying the Data Grid theme
-                style={{ height: 400 }} // the Data Grid will fill the size of the parent container
+                style={{ height: 500 }} // the Data Grid will fill the size of the parent container
             >
                 <AgGridReact
                     rowData={data.data}
@@ -180,6 +191,7 @@ const OwnersList = () => {
                     paginationPageSize={paginationPageSize}
                     paginationPageSizeSelector={paginationPageSizeSelector}
                     rowClassRules={rowClassRules}
+                    autoSizeStrategy={autoSizeStrategy}
                 />
             </div>
 

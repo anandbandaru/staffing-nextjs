@@ -4,18 +4,12 @@ export const Context = createContext();
 
 const ContextProvider = (props) => {
 
-    const flaskAPI_Availability = process.env.REACT_APP_SQLGenAI_API_SUFFIX;
-    const [showResult, setShowResult] = useState(false);
+    const flaskAPI_Availability = process.env.REACT_APP_API_SUFFIX;
     const [loading, setLoading] = useState(false);
-    const [results, setResults] = useState("");
-    const [isGENAPIError, setIsGENAPIError] = useState(false);
-    const [GENAPItext, setGENAPIText] = useState('');
-    const [selectedTemplate, setSelectedTemplate] = useState(false);
     const [showGreetings, setShowGreetings] = useState(false);
     
     const [selectedDBType, setSelectedDBType] = useState("SQL");
     const [APIPath, setAPIPath] = useState(flaskAPI_Availability);
-    const [APIExamplePromptsSuffix] = useState(process.env.REACT_APP_SQLGenAI_API_EXAMPLE_PROMPTS_SUFFIX);
     const [selectedDB, setSelectedDB] = useState(process.env.REACT_APP_DEFAULT_DBCODE);
     const [selectedDBID, setSelectedDBID] = useState(process.env.REACT_APP_DEFAULT_DBID);
     const [isAPILoading, setIsAPILoading] = useState(false);
@@ -26,10 +20,10 @@ const ContextProvider = (props) => {
     const [APIversion, setAPIversion] = useState('');  
 
     //FOR HISTORY LOCAL STORAGE
-    const [dataRecentsLS, setDataRecentsLS] = useState(() => {
-        const storedData = localStorage.getItem('recentPrompts');
-        return storedData ? JSON.parse(storedData) : [];
-    });
+    // const [dataRecentsLS, setDataRecentsLS] = useState(() => {
+    //     const storedData = localStorage.getItem('recentPrompts');
+    //     return storedData ? JSON.parse(storedData) : [];
+    // });
 
 
     //API CHECK
@@ -71,20 +65,12 @@ const ContextProvider = (props) => {
     }, [flaskAPI_Availability]);
 
     const contextValue = {
-        showResult,
         loading,
-        results,
-        dataRecentsLS,
-        setDataRecentsLS,
-        selectedTemplate,
-        setSelectedTemplate,
         showGreetings,
         setShowGreetings,
         isAPILoading,
         isAPIError,
         APItext,
-        isGENAPIError,
-        GENAPItext,
         APIversion,
         checkAPIAvailability,
         setSelectedDB,
@@ -95,7 +81,6 @@ const ContextProvider = (props) => {
         selectedDBID,
         APIAvailabilityResponse,
         APIPath,
-        APIExamplePromptsSuffix,
         isAPIReturnExecutionError
     }
 

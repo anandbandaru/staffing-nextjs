@@ -18,7 +18,7 @@ const Main = () => {
             handleClick_snack({ vertical: 'top', horizontal: 'center' })
         }
     }, [results]);
-    
+
     useEffect(() => {
         if (isAPIError) {
             handleClick_snackAPI({ vertical: 'top', horizontal: 'center' })
@@ -31,13 +31,13 @@ const Main = () => {
         openSnack: false,
         vertical: 'top',
         horizontal: 'center',
-      });
-      const [stateSnackAPI, setStateSnackAPI] = React.useState({
+    });
+    const [stateSnackAPI, setStateSnackAPI] = React.useState({
         openSnackAPI: false,
         vertical: 'top',
         horizontal: 'center',
-      });
-    
+    });
+
     const { vertical, horizontal, openSnack } = stateSnack;
     const { openSnackAPI } = stateSnackAPI;
     const handleClick_snack = (newState) => {
@@ -58,38 +58,40 @@ const Main = () => {
             <TopBanner />
             <Top />
 
-            
 
-            <Snackbar
-                open={openSnack}
-                autoHideDuration={4000}
-                onClose={handleClose_snack}
-                key={vertical + horizontal}
-                anchorOrigin={{ vertical, horizontal }}
-            >
-                {results.isError === 0 ? (
-                    <Alert
+            {results ?
+                <Snackbar
+                    open={openSnack}
+                    autoHideDuration={4000}
                     onClose={handleClose_snack}
-                    severity="success"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                    >
-                        Response in: {results.elapsedTime}
-                    </Alert>
-                ) : (
-                    <Alert
-                    onClose={handleClose_snack}
-                    severity="error"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                    >
-                        Response in: {results.elapsedTime}
-                    </Alert>
-                )
-                }
-            </Snackbar>
+                    key={vertical + horizontal}
+                    anchorOrigin={{ vertical, horizontal }}
+                >
+                    {results.isError === 0 ? (
+                        <Alert
+                            onClose={handleClose_snack}
+                            severity="success"
+                            variant="filled"
+                            sx={{ width: '100%' }}
+                        >
+                            Response in: {results.elapsedTime}
+                        </Alert>
+                    ) : (
+                        <Alert
+                            onClose={handleClose_snack}
+                            severity="error"
+                            variant="filled"
+                            sx={{ width: '100%' }}
+                        >
+                            Response in: {results.elapsedTime}
+                        </Alert>
+                    )
+                    }
+                </Snackbar>
+                : <></>}
 
-            
+
+
             <Snackbar
                 open={openSnackAPI}
                 autoHideDuration={8000}
@@ -102,12 +104,12 @@ const Main = () => {
                     severity="error"
                     variant="filled"
                     sx={{ width: '100%' }}
-                    >
-                        API is not available. Check after some time.
-                    </Alert>
+                >
+                    API is not available. Check after some time.
+                </Alert>
             </Snackbar>
-            
-            
+
+
         </div>
     )
 }

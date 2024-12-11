@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import configData from "../../../CONFIG_RELEASE.json";
+import React from "react";
 import './topBanner.css';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Clock from 'react-live-clock';
 
 const TopBanner = () => {

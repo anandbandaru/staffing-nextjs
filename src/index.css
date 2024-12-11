@@ -161,3 +161,38 @@ body{
     transform: rotate(360deg);
   }
 }
+
+
+/* FORM */
+form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+form P{
+  background-color: #ff0606 !important;
+  color:#fff !important;
+  padding: 1px 5px;
+  margin: 0px !important;
+}
+
+/* GRID */
+.ag-theme-quartz {
+  /* --ag-foreground-color: rgb(126, 46, 132) !important; */
+  /* --ag-background-color: rgb(249, 245, 227) !important; */
+  --ag-header-foreground-color: #fff !important;
+  --ag-header-background-color: rgb(107, 114, 128) !important;
+  /* --ag-odd-row-background-color: #fff !important; */
+  --ag-header-column-resize-handle-color: #fff !important;
+  --ag-font-size: 12px !important;
+  --ag-grid-size: 6px !important;
+  --ag-secondary-foreground-color:rgb(204, 30, 216) !important;
+}
+.ag-header-cell-filtered{
+  color: #ff068c !important;
+}
+.rag-green{
+  color: #84e417 !important;
+}
+.rag-red{
+  color: #be3737 !important;
+}

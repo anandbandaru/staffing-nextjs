@@ -1,221 +1,255 @@
-import React, { useState } from "react";
-import { useFormik, Formik, Field, Form } from 'formik';
-import * as yup from 'yup';
-import Stack from '@mui/material/Stack';
+import React, { useState, useContext, useRef } from 'react';
+import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import {
+    Formik
+} from 'formik';
+import * as Yup from 'yup';
+// import { DisplayFormikState } from './formikHelper';
+import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
 import IDTypes from "../staticdata/idtypes";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
 
-const validationSchema = yup.object({
-    firstName: yup
-        .string('Enter first name')
-        .min(2, 'Should be of minimum 2 characters length')
-        .required('First Name is required'),
-    lastName: yup
-        .string('Enter last Name')
-        .min(2, 'Should be of minimum 2 characters length')
-        .required('Last Name is required'),
-    email: yup
-        .string('Enter email')
-        .email('Enter a valid email')
-        .required('Email is required'),
-    phone1: yup
-        .string('Enter phone 1')
-        .min(10, 'Should be of minimum 10 characters length')
-        .required('Password is required'),
-    phone2: yup
-        .string('Enter phone 2'),
-    IDType: yup
-        .string('Select ID Type')
-        .required('ID Type is required'),
-    IDNumber: yup
-        .string('Enter ID Number')
-        .min(4, 'Should be of minimum 4 characters length')
-        .required('ID Number is required'),
-    SSN: yup
-        .string('Enter SSN')
-        .min(8, 'Should be of minimum 8 characters length')
-        .required('SSn is required'),
-    Address: yup
-        .string('Enter Address')
-        .min(8, 'Should be of minimum 8 characters length')
-        .required('Address is required'),
-});
-
-const OwnerNew1 = () => {
-    return (
-      <Formik
-        initialValues={{ firstName: '' }}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
-          setSubmitting(false);
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <Field name="firstName">
-              {({ field }) => (
-                <TextField {...field} label="firstName" variant="outlined" />
-              )}
-            </Field>
-            <Button type="submit" disabled={isSubmitting} variant="contained">
-              Submit
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    );
-  };
-
-const OwnerNew = () => {
-
-    const [apiLoading, setApiLoading] = useState(false);
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
-        },
-    });
+function OwnerNew(props) {
+    const { APIPath } = useContext(Context);
+    const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
+    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
+    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
+    const resetButtonRef = useRef(null);
 
     return (
-        <div>
-            <form onSubmit={formik.handleSubmit}>
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="firstName"
-                    name="firstName"
-                    label="First Name"
-                    value={formik.values.firstName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-                    helperText={formik.touched.firstName && formik.errors.firstName}
-                />
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="lastName"
-                    name="lastName"
-                    label="Last Name"
-                    value={formik.values.lastName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-                    helperText={formik.touched.lastName && formik.errors.lastName}
-                />
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="email"
-                    name="email"
-                    label="Email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                />
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="phone1"
-                    name="phone1"
-                    label="Phone 1"
-                    value={formik.values.phone1}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.phone1 && Boolean(formik.errors.phone1)}
-                    helperText={formik.touched.phone1 && formik.errors.phone1}
-                />
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="phone2"
-                    name="phone2"
-                    label="Phone 2"
-                    value={formik.values.phone2}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.phone2 && Boolean(formik.errors.phone2)}
-                    helperText={formik.touched.phone2 && formik.errors.phone2}
-                />
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="IDType"
-                    name="IDType"
-                    select
-                    label="ID Type"
-                    value={formik.values.IDType}
-                    defaultValue="SSN"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.IDType && Boolean(formik.errors.IDType)}
-                    helperText={formik.touched.IDType && formik.errors.IDType}
-                >
-                    {IDTypes.map((item, index) => (
-                        <MenuItem key={index} value={item.name}>
-                            {item.name}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="IDNumber"
-                    name="IDNumber"
-                    label="ID Number"
-                    value={formik.values.IDNumber}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.IDNumber && Boolean(formik.errors.IDNumber)}
-                    helperText={formik.touched.IDNumber && formik.errors.IDNumber}
-                />
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="Address"
-                    name="Address"
-                    label="Address"
-                    multiline
-                    rows={4}
-                    value={formik.values.Address}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.Address && Boolean(formik.errors.Address)}
-                    helperText={formik.touched.Address && formik.errors.Address}
-                />
-                <Stack direction="row" spacing={2}>
-                    <Button variant="contained" color="secondary" disabled={apiLoading}>Cancel</Button>
-                    <Button color="primary" variant="contained" fullWidth type="submit" disabled={apiLoading}>
-                        {apiLoading ? <div className="spinner"></div> :
-                            <>
-                                <SaveOutlinedIcon className="mr-1" />
-                                Save
-                            </>}
-                    </Button>
-                </Stack>
+        <>
+            <Formik
+                initialValues={{
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phone1: '',
+                    phone2: '',
+                    IDType: 12,
+                    IDNumber: '',
+                    SSN: '',
+                    Address: '',
+                }}
+                onSubmit={(values, { setSubmitting }) => {
+                    setSubmitionCompleted(false);
+                    setSubmitting(true);
+                    axios.post(APIPath + "/addOwner",
+                        values,
+                        {
+                            headers: {
+                                'Access-Control-Allow-Origin': '*',
+                                'Content-Type': 'application/json',
+                            }
+                        },
+                    ).then((resp) => {
+                        setSubmitionCompleted(true);
+                        setFormSubmitionAPIError(false);
+                        console.log("RESETTING NOW")
+                        if (resetButtonRef.current) {
+                            resetButtonRef.current.click();
+                            console.log("RESETTING DONE")
+                          }
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                            setSubmitionCompleted(true);
+                            setFormSubmitionAPIErrorMessage(error);
+                            setFormSubmitionAPIError(true);
+                        });
+                }}
 
-
-            </form>
-        </div>
+                validationSchema={Yup.object().shape({
+                    // firstName: Yup.string().required('Required').min(2, 'Should be of minimum 2 characters length'),
+                    // lastName: Yup.string().required('Required').min(2, 'Should be of minimum 2 characters length'),
+                    // email: Yup.string().email().required('Required'),
+                    // phone1: Yup.string().required('Required').min(10, 'Should be of minimum 10 characters length'),
+                    // IDNumber: Yup.string().required('Required').min(5, 'Should be of minimum 5 characters length'),
+                    // Address: Yup.string().required('Required').min(8, 'Should be of minimum 8 characters length'),
+                    firstName: Yup.string()
+                        .required('Required'),
+                    lastName: Yup.string()
+                        .required('Required'),
+                    email: Yup.string()
+                        .email()
+                        .required('Required'),
+                    phone1: Yup.string()
+                        .required('Required'),
+                    IDNumber: Yup.string()
+                        .required('Required'),
+                    SSN: Yup.string()
+                        .required('Required'),
+                    Address: Yup.string()
+                        .required('Required'),
+                })}
+            >
+                {(props) => {
+                    const {
+                        values,
+                        touched,
+                        errors,
+                        dirty,
+                        isSubmitting,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        handleReset,
+                    } = props;
+                    return (
+                        <form onSubmit={handleSubmit}>
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="firstName"
+                                name="firstName"
+                                label="First Name"
+                                value={values.firstName}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.firstName && touched.firstName) && errors.firstName}
+                            />
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="lastName"
+                                name="lastName"
+                                label="Last Name"
+                                value={values.lastName}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.lastName && touched.lastName) && errors.lastName}
+                            />
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="email"
+                                name="email"
+                                label="Email"
+                                value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.email && touched.email) && errors.email}
+                            />
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="phone1"
+                                name="phone1"
+                                label="Phone 1"
+                                value={values.phone1}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.phone1 && touched.phone1) && errors.phone1}
+                            />
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="phone2"
+                                name="phone2"
+                                label="Phone 2"
+                                value={values.phone2}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.phone2 && touched.phone2) && errors.phone2}
+                            />
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="IDType"
+                                name="IDType"
+                                select
+                                label="ID Type"
+                                defaultValue="12"
+                                value={values.IDType}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.IDType && touched.IDType) && errors.IDType}
+                            >
+                                {IDTypes.map((item, index) => (
+                                    <MenuItem key={index} value={item.value}>
+                                        {item.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="IDNumber"
+                                name="IDNumber"
+                                label="ID Number"
+                                value={values.IDNumber}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.IDNumber && touched.IDNumber) && errors.IDNumber}
+                            />
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="SSN"
+                                name="SSN"
+                                label="SSN"
+                                value={values.SSN}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.SSN && touched.SSN) && errors.SSN}
+                            />
+                            <TextField
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="Address"
+                                name="Address"
+                                label="Address"
+                                multiline
+                                rows={4}
+                                value={values.Address}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={(errors.Address && touched.Address) && errors.Address}
+                            />
+                            <Stack direction="row" spacing={2} className='float-right'>
+                                {/* <Button variant="contained" color="secondary" disabled={isSubmitting && !isSubmitionCompleted}>Cancel</Button> */}
+                                <Button
+                                    ref={resetButtonRef}
+                                    variant="outlined"
+                                    color="warning"
+                                    onClick={handleReset}
+                                    disabled={!dirty || isSubmitting && !isSubmitionCompleted}
+                                >
+                                    Reset
+                                </Button>
+                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                    <SaveOutlinedIcon className="mr-1" />
+                                    Save
+                                </Button>
+                                {isSubmitionCompleted && !formSubmitionAPIError ?
+                                    <Chip label="Data saved"  color="success" />
+                                    :
+                                    <>
+                                    {formSubmitionAPIError?
+                                    <Chip label={formSubmitionAPIErrorMessage} color="error" />
+                                    :<></>}
+                                    </>
+                                    }
+                            </Stack>
+                        </form>
+                    );
+                }}
+            </Formik>
+        </>
     );
-
 }
 
 export default OwnerNew;

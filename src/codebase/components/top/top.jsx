@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import configData from "../../../CONFIG_RELEASE.json";
 // import preval from 'preval.macro';
 import './top.css';
@@ -49,7 +49,6 @@ const Top = () => {
     const {
         isAPILoading,
         isAPIError,
-        APItext,
         APIversion,
         checkAPIAvailability,
         loading } = useContext(Context);
@@ -148,31 +147,31 @@ const Top = () => {
                             <Tab>Todo</Tab>
                         </TabList>
 
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             Dashboard
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             <OwnersMain />
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             sdg
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             ag
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             234
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             234
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             234
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             234
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel className="px-2">
                             234
                         </TabPanel>
                     </Tabs>
