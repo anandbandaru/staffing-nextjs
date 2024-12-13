@@ -5,7 +5,6 @@ import Login from "./codebase/components/login/login";
 
 const App = () => {
   const { userName } = useContext(Context);
-
   return (
     <>
       {userName ? <Main /> : <Login />}

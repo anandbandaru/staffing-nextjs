@@ -16,17 +16,10 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-import MenuItem from '@mui/material/MenuItem';
 import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
-import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Fade from '@mui/material/Fade';
-import LogoutIcon from '@mui/icons-material/Logout';
-
-import ListItemText from '@mui/material/ListItemText';
 
 import { Stack } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
@@ -55,7 +48,7 @@ const Top = () => {
         topTabName,
         setTopTabName,
         loading,
-    loginSuccess, userName, signOut } = useContext(Context);
+        loginSuccess, userName, signOut, userType } = useContext(Context);
 
     const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo'];
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -63,7 +56,7 @@ const Top = () => {
         setTabIndex(index);
         console.log('Selected Tab:', tabNames[index]);
         setTopTabName(tabNames[index]);
-      };
+    };
 
     //drawer
     const [state, setState] = React.useState({
@@ -102,34 +95,10 @@ const Top = () => {
     const handleClickOpen_NoDatasources = () => {
         setOpenNoDatasources(false);
     };
-
-    //this ensure to show the above dialog is no DS are given by API
-    // useEffect(() => {
-    //     setOpenNoDatasources(true);
-    //     setOpenLoadingDatasources(true)
-    //     //AFTER SOME TIME CLOSE THE DIALOG IF API FAILURE OCCURS
-    //     setTimeout(() => {
-    //         if(isAPIError)
-    //         {
-    //             setOpenLoadingDatasources(false);
-    //             setOpenNoDatasources(false);
-    //         }
-    //     }, 5000);
-
-    // }, [isAPIError]);
-
     const handleCheckDSAgain = () => {
         window.location.reload();
     };
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
     return (
         <div className="topHolder px-0">
@@ -194,36 +163,21 @@ const Top = () => {
             </div>
 
             <div className="userHolder">
+                <div className="px-2  rounded-sm text-white">
+                    <Stack spacing={1} direction="row" className="items-center justify-center">
+                        <Avatar
+                            sx={{ width: 16, height: 16, bgcolor: pink[500] }}
+                        >
+                        </Avatar>
+                        <div className="">
+                            {userName}
+                        </div>
+                        <div className="bg-pink-500 px-2 ml-2">
+                            {userType}
+                        </div>
+                    </Stack>
+                </div>
 
-                <Avatar
-                    id="fade-button"
-                    aria-controls={open ? 'fade-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
-                    sx={{ width: 24, height: 24, bgcolor: pink[500] }}
-                >
-                </Avatar>
-                <Menu 
-                    id="fade-menu"
-                    MenuListProps={{
-                        'aria-labelledby': 'fade-button',
-                    }}
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    TransitionComponent={Fade}
-                >
-                    <div className="m-2 p-2">
-                        {userName}
-                    </div>
-                    <MenuItem>
-                        <ListItemIcon>
-                            <LogoutIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText onClick={() => {handleClose(); signOut();}}>Logout</ListItemText>
-                    </MenuItem>
-                </Menu>
             </div>
 
             <Drawer

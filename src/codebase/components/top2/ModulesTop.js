@@ -71,9 +71,6 @@ const ModulesTop = ({ module }) => {
                             <TabPanel className="px-2">
                                 sdg
                             </TabPanel>
-                            <TabPanel className="px-2">
-                                sdg
-                            </TabPanel>
                         </Tabs>
                     </Box>
 

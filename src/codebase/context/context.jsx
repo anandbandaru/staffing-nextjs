@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { GRAPH_CONFIG, LOGIN_REQUEST, MSAL_CONFIG, PUBLIC_CLIENT_APPLICATION, TOKEN_REQUEST } from "../../msalConfig";
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 export const Context = createContext();
 
@@ -79,6 +81,19 @@ const ContextProvider = (props) => {
             setLoginSuccess(true);
             setToken(loginResponse.idToken);
             setUserName(loginResponse.account.username);
+            // Decode the token to get the "Employee type" property
+            // const decodedToken = jwtDecode(loginResponse.idToken);
+            // const employeeType = decodedToken['acct'];
+            // Fetch user data from Microsoft Graph API
+            const response = await axios.get('https://graph.microsoft.com/v1.0/me', {
+                headers: {
+                    Authorization: `Bearer ${loginResponse.accessToken}`
+                }
+            });
+
+            const jobTitle = response.data.jobTitle;
+            setUserType(jobTitle);
+
         } catch (error) {
             if (error.name === "InteractionRequiredAuthError") {
                 try {
@@ -88,11 +103,16 @@ const ContextProvider = (props) => {
                     setLoginSuccess(true);
                     setToken(loginResponse.idToken);
                     setUserName(loginResponse.account.username);
+                    // Decode the token to get the "Employee type" property
+                    const decodedToken = jwtDecode(loginResponse.idToken);
+                    const employeeType = decodedToken['acct'];
+                    setUserType(employeeType);
                 } catch (tokenError) {
                     console.log("Token acquisition failed:", tokenError);
                     setLoginSuccess(false);
                     setToken("");
                     setUserName("");
+                    setUserType("");
                     setLoginError("Token acquisition failed:", tokenError)
                 }
             }
@@ -105,6 +125,7 @@ const ContextProvider = (props) => {
                 setLoginSuccess(false);
                 setToken("");
                 setUserName("");
+                setUserType("");
                 setLoginError("Login failed:", error)
             }
         }
@@ -118,6 +139,7 @@ const ContextProvider = (props) => {
             console.log("Logout successful");
             setToken("");
             setUserName("");
+            setUserType("");
             setLoginSuccess(false);
         } catch (error) {
             if (error.name === "BrowserAuthError" && error.errorCode === "interaction_in_progress") {
@@ -128,6 +150,7 @@ const ContextProvider = (props) => {
             }
             setToken("");
             setUserName("");
+            setUserType("");
             setLoginSuccess(false);
         }
 
@@ -168,7 +191,8 @@ const ContextProvider = (props) => {
         setTop2TabName,
         signOut,
         loginSuccess,
-        userName
+        userName,
+        userType
     }
 
     return (

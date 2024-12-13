@@ -41,19 +41,20 @@
 }
 .userHolder{
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 0px;
+    top: -22px;
     cursor: pointer;
+    padding: 2px 0px 1px 0px;
 }
 .notificationsHolder{
     position: absolute;
-    right: 65px;
+    right: 35px;
     top: 5px;
     cursor: pointer;
 }
 .optionsHolder{
     position: absolute;
-    right: 35px;
+    right: 5px;
     top: 5px;
     font-size: 14px;
     align-items: center;
@@ -80,7 +81,7 @@
  }
 .APICheckHolder{
     position: absolute;
-    right: 95px;
+    right: 65px;
     top: 6px;
     background-color: #f3f3f3;
     border-radius: 5px;

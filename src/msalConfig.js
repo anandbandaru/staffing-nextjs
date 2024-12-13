@@ -13,11 +13,11 @@ const MSAL_CONFIG = {
 };
 
 const LOGIN_REQUEST = {
-    scopes: ["openid", "offline_access"]
+    scopes: ["openid", "offline_access", "User.Read.All", "profile"]
 };
 
 const TOKEN_REQUEST = {
-    scopes: ["User.Read.All"]
+    scopes: ["User.Read.All", "profile"]
 };
 
 const GRAPH_CONFIG = {
