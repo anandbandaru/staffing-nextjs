@@ -17,7 +17,9 @@ const ContextProvider = (props) => {
     const [isAPIReturnExecutionError, setIsAPIReturnExecutionError] = useState(false);
     const [APIAvailabilityResponse, setAPIAvailabilityResponse] = useState(null);
     const [APItext, setAPIText] = useState('');
-    const [APIversion, setAPIversion] = useState('');  
+    const [APIversion, setAPIversion] = useState('');
+    const [topTabName, setTopTabName] = useState('');
+    const [top2TabName, setTop2TabName] = useState('');
 
     //FOR HISTORY LOCAL STORAGE
     // const [dataRecentsLS, setDataRecentsLS] = useState(() => {
@@ -81,7 +83,11 @@ const ContextProvider = (props) => {
         selectedDBID,
         APIAvailabilityResponse,
         APIPath,
-        isAPIReturnExecutionError
+        isAPIReturnExecutionError,
+        topTabName, 
+        setTopTabName,
+        top2TabName, 
+        setTop2TabName
     }
 
     return (

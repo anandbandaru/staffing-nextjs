@@ -42,7 +42,8 @@ import Button from '@mui/material/Button';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import OwnersMain from "../owners/ownersMain";
+import ModulesTop from "../top2/ModulesTop";
+import TransactionsTop from "../top2/TransactionsTop";
 
 const Top = () => {
 
@@ -51,9 +52,18 @@ const Top = () => {
         isAPIError,
         APIversion,
         checkAPIAvailability,
+        topTabName,
+        setTopTabName,
         loading } = useContext(Context);
 
+    const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo'];
     const [tabIndex, setTabIndex] = React.useState(0);
+    const handleTabSelect = (index) => {
+        setTabIndex(index);
+        console.log('Selected Tab:', tabNames[index]);
+        setTopTabName(tabNames[index]);
+      };
+
     //drawer
     const [state, setState] = React.useState({
         top: false,
@@ -71,7 +81,6 @@ const Top = () => {
     //page title
     useEffect(() => {
         document.title = "Staffing";
-        console.log("tit")
     });
 
     //FOR NO data source scenario
@@ -134,36 +143,24 @@ const Top = () => {
             <div className="topTabsHolder">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <Tabs selectedIndex={tabIndex}
-                        onSelect={(index) => setTabIndex(index)}>
+                        onSelect={handleTabSelect}>
                         <TabList className="topTabsListHolder">
-                            <Tab>Dashboard</Tab>
-                            <Tab>Owners</Tab>
-                            <Tab>Companies</Tab>
-                            <Tab>Employees</Tab>
-                            <Tab>Projects</Tab>
-                            <Tab>Timeheets</Tab>
-                            <Tab>Invoices</Tab>
-                            <Tab>Files</Tab>
-                            <Tab>Todo</Tab>
+                            {tabNames.map((name, idx) => (
+                                <Tab key={idx}>{name}</Tab>
+                            ))}
                         </TabList>
 
                         <TabPanel className="px-2">
                             Dashboard
                         </TabPanel>
                         <TabPanel className="px-2">
-                            <OwnersMain />
+                            <ModulesTop />
                         </TabPanel>
                         <TabPanel className="px-2">
-                            sdg
+                            <TransactionsTop />
                         </TabPanel>
                         <TabPanel className="px-2">
                             ag
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            234
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            234
                         </TabPanel>
                         <TabPanel className="px-2">
                             234
