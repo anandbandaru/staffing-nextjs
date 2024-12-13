@@ -54,7 +54,8 @@ const Top = () => {
         checkAPIAvailability,
         topTabName,
         setTopTabName,
-        loading } = useContext(Context);
+        loading,
+    loginSuccess, userName, signOut } = useContext(Context);
 
     const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo'];
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -203,7 +204,7 @@ const Top = () => {
                     sx={{ width: 24, height: 24, bgcolor: pink[500] }}
                 >
                 </Avatar>
-                <Menu
+                <Menu 
                     id="fade-menu"
                     MenuListProps={{
                         'aria-labelledby': 'fade-button',
@@ -214,13 +215,13 @@ const Top = () => {
                     TransitionComponent={Fade}
                 >
                     <div className="m-2 p-2">
-                        User information here
+                        {userName}
                     </div>
                     <MenuItem>
                         <ListItemIcon>
                             <LogoutIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText onClick={handleClose}>Logout</ListItemText>
+                        <ListItemText onClick={() => {handleClose(); signOut();}}>Logout</ListItemText>
                     </MenuItem>
                 </Menu>
             </div>

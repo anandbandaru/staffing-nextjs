@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Main from "./codebase/components/main/main";
-// import '@fontsource/roboto/300.css';
-// import '@fontsource/roboto/400.css';
-// import '@fontsource/roboto/500.css';
-// import '@fontsource/roboto/700.css';
+import { Context } from "./codebase/context/context";
+import Login from "./codebase/components/login/login";
 
 const App = () => {
-  return(
+  const { userName } = useContext(Context);
+
+  return (
     <>
-      <Main/>
+      {userName ? <Main /> : <Login />}
     </>
   )
 }

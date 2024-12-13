@@ -1,13 +1,21 @@
 import { createContext, useState, useEffect } from "react";
+import { GRAPH_CONFIG, LOGIN_REQUEST, MSAL_CONFIG, PUBLIC_CLIENT_APPLICATION, TOKEN_REQUEST } from "../../msalConfig";
 
 export const Context = createContext();
 
 const ContextProvider = (props) => {
 
+    const [loginSuccess, setLoginSuccess] = useState(false);
+    const [loginError, setLoginError] = useState("");
+    const [loginInteractionInProgress, setLoginInteractionInProgress] = useState(false);
+    const [token, setToken] = useState("");
+    const [userName, setUserName] = useState("");
+    const [userType, setUserType] = useState("");
+
     const flaskAPI_Availability = process.env.REACT_APP_API_SUFFIX;
     const [loading, setLoading] = useState(false);
     const [showGreetings, setShowGreetings] = useState(false);
-    
+
     const [selectedDBType, setSelectedDBType] = useState("SQL");
     const [APIPath, setAPIPath] = useState(flaskAPI_Availability);
     const [selectedDB, setSelectedDB] = useState(process.env.REACT_APP_DEFAULT_DBCODE);
@@ -39,10 +47,10 @@ const ContextProvider = (props) => {
             const response = await fetch(flaskAPI_Availability);
             const data = await response.json();
             setAPIAvailabilityResponse(data);
-            setAPIText("<span class='APIAvailabilityCheckSuccess'>API working as expected.</span>" 
+            setAPIText("<span class='APIAvailabilityCheckSuccess'>API working as expected.</span>"
                 + "<br> <span class='APIAvailabilityCheckLabel'>API Endpoint: </span>" + flaskAPI_Availability
-                + "<br> <span class='APIAvailabilityCheckLabel'>API Version: </span>" + data.APIversion 
-                + "<br> <span class='APIAvailabilityCheckLabel'>API Deployment Time: </span>" + data.localDeployedTime 
+                + "<br> <span class='APIAvailabilityCheckLabel'>API Version: </span>" + data.APIversion
+                + "<br> <span class='APIAvailabilityCheckLabel'>API Deployment Time: </span>" + data.localDeployedTime
                 + "<br> <span class='APIAvailabilityCheckLabel'>Elapsed Time: </span>" + data.elapsedTime);
             setAPIversion(data.APIversion);
             setIsAPILoading(false);
@@ -56,13 +64,83 @@ const ContextProvider = (props) => {
             );
             setIsAPIError(true);
             setIsAPILoading(false);
-            if(error === "TypeError: Failed to fetch")
-                {}
-                // setListOfDatasources(null);
+            if (error === "TypeError: Failed to fetch") { }
+            // setListOfDatasources(null);
         }
     };
 
+    const signIn = async () => {
+
+        try {
+            await PUBLIC_CLIENT_APPLICATION.handleRedirectPromise();
+            const loginResponse = await PUBLIC_CLIENT_APPLICATION.loginPopup(LOGIN_REQUEST);
+            console.log("Login successful:", loginResponse);
+
+            setLoginSuccess(true);
+            setToken(loginResponse.idToken);
+            setUserName(loginResponse.account.username);
+        } catch (error) {
+            if (error.name === "InteractionRequiredAuthError") {
+                try {
+                    const loginResponse = await MSAL_CONFIG.acquireTokenPopup(LOGIN_REQUEST);
+                    console.log("Token acquired:", loginResponse);
+
+                    setLoginSuccess(true);
+                    setToken(loginResponse.idToken);
+                    setUserName(loginResponse.account.username);
+                } catch (tokenError) {
+                    console.log("Token acquisition failed:", tokenError);
+                    setLoginSuccess(false);
+                    setToken("");
+                    setUserName("");
+                    setLoginError("Token acquisition failed:", tokenError)
+                }
+            }
+            else if (error.name === "BrowserAuthError" && error.errorCode === "interaction_in_progress") {
+                console.log("Interaction already in progress. Please wait.");
+                setLoginError("Interaction already in progress. Please wait.")
+            }
+            else {
+                console.log("Login failed:", error);
+                setLoginSuccess(false);
+                setToken("");
+                setUserName("");
+                setLoginError("Login failed:", error)
+            }
+        }
+    };
+    const signOut = async () => {
+        try {
+            const logoutRequest = {
+                account: PUBLIC_CLIENT_APPLICATION.getAllAccounts()[0], // Get the currently signed-in account
+            };
+            await PUBLIC_CLIENT_APPLICATION.logoutPopup(logoutRequest);
+            console.log("Logout successful");
+            setToken("");
+            setUserName("");
+            setLoginSuccess(false);
+        } catch (error) {
+            if (error.name === "BrowserAuthError" && error.errorCode === "interaction_in_progress") {
+                console.warn("Interaction already in progress. Please wait.");
+                setLoginError("Interaction already in progress. Please wait.");
+            } else {
+                console.error("Logout failed:", error);
+            }
+            setToken("");
+            setUserName("");
+            setLoginSuccess(false);
+        }
+
+        // if (!loginInteractionInProgress) {
+        //     setLoginInteractionInProgress(true);
+        //     PUBLIC_CLIENT_APPLICATION.logout();
+        //     setToken(null);
+        //     setLoginInteractionInProgress(false);
+        // }
+    };
+
     useEffect(() => {
+        signIn();
         checkAPIAvailability();
     }, [flaskAPI_Availability]);
 
@@ -84,10 +162,13 @@ const ContextProvider = (props) => {
         APIAvailabilityResponse,
         APIPath,
         isAPIReturnExecutionError,
-        topTabName, 
+        topTabName,
         setTopTabName,
-        top2TabName, 
-        setTop2TabName
+        top2TabName,
+        setTop2TabName,
+        signOut,
+        loginSuccess,
+        userName
     }
 
     return (
