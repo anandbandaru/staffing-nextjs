@@ -116,7 +116,10 @@ const Top = () => {
                         onSelect={handleTabSelect}>
                         <TabList className="topTabsListHolder">
                             {tabNames.map((name, idx) => (
-                                <Tab key={idx}>{name}</Tab>
+                                // <Tab key={idx}>{name}</Tab>
+                                (name !== 'Timesheets' || userType === 'ADMIN') && (
+                                    <Tab key={idx}>{name}</Tab>
+                                )
                             ))}
                         </TabList>
 
@@ -129,17 +132,20 @@ const Top = () => {
                         <TabPanel className="px-2">
                             <TransactionsTop />
                         </TabPanel>
+                        {userType === 'ADMIN' ?
+                            <TabPanel className="px-2">
+                                Timesheets
+                            </TabPanel>
+                            :
+                            <></>}
                         <TabPanel className="px-2">
-                            ag
+                            Expenses
                         </TabPanel>
                         <TabPanel className="px-2">
-                            234
+                            Files
                         </TabPanel>
                         <TabPanel className="px-2">
-                            234
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            234
+                            Todo
                         </TabPanel>
                     </Tabs>
                 </Box>
