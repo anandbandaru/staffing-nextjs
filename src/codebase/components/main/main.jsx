@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import { assets } from '../../assets/assets'
 import './main.css';
 import './table.css';
 import 'react-tooltip/dist/react-tooltip.css';
@@ -8,10 +9,15 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import TopBanner from "../topBanner/topBanner";
 import ToDo from "../todo/todo";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 
 const Main = () => {
 
-    const { results, selectedTemplate, isAPIError } = useContext(Context);
+    const { results, isAPIError, refreshPage } = useContext(Context);
     useEffect(() => {
         if (results) {
             // setStateSnack(true);
@@ -55,13 +61,30 @@ const Main = () => {
 
     return (
         <div className="main flex">
-            <div className="flex-grow mr-80">
-                <TopBanner />
-                <Top />
-            </div>
-            <div className="w-80 h-full fixed right-0 p-2 bg-slate-100">
-                <ToDo />
-            </div>
+            {isAPIError ? 
+            <div className="flex items-center justify-center w-full h-screen bg-gray-400">
+                <Card className="bg-gray-200 p-4 w-1/4">
+                    <CardContent>
+                        <Stack spacing={2} direction="column" className="items-center justify-center">
+                            <Stack spacing={2} direction="row" className="items-center justify-center">
+                                <img className="icon" src={assets.logo_24} alt="" />
+                                <PriceChangeOutlinedIcon fontSize='large' />
+                            </Stack>
+                            <Button variant="contained" onClick={refreshPage}>Refresh</Button>
+                        </Stack>
+                    </CardContent>
+                </Card>
+            </div> :
+                <>
+                    <div className="flex-grow mr-80">
+                        <TopBanner />
+                        <Top />
+                    </div>
+                    <div className="w-80 h-full fixed right-0  bg-slate-100 border-l-4 border-pink-500">
+                        <ToDo />
+                    </div>
+                </>
+            }
 
 
             {results ?
@@ -99,7 +122,7 @@ const Main = () => {
 
             <Snackbar
                 open={openSnackAPI}
-                autoHideDuration={8000}
+                // autoHideDuration={8000}
                 onClose={handleClose_snackAPI}
                 key={vertical}
                 anchorOrigin={{ vertical, horizontal }}
@@ -113,8 +136,6 @@ const Main = () => {
                     API is not available. Check after some time.
                 </Alert>
             </Snackbar>
-
-
         </div>
     )
 }

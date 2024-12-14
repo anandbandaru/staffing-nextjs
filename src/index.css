@@ -167,6 +167,25 @@ body{
 }
 
 
+.todoTabsListHolder{
+  font-size: 12px;
+  color: #ff068c !important;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.todoTabsListHolder .react-tabs__tab-panel{
+  min-height: 100vh;
+}
+.todoTabsListHolder .react-tabs__tab{
+  padding: 6px 10px;
+}
+.todoTabsListHolder .react-tabs__tab--selected {
+  border-top: 4px solid #272526;
+  /* background-color: #ff068c;
+  color: #fff; */
+}
+
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

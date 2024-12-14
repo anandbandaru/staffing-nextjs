@@ -167,6 +167,10 @@ const ContextProvider = (props) => {
         checkAPIAvailability();
     }, [flaskAPI_Availability]);
 
+    const refreshPage = () => {
+        window.location.reload();
+    };
+
     const contextValue = {
         loading,
         showGreetings,
@@ -192,7 +196,8 @@ const ContextProvider = (props) => {
         signOut,
         loginSuccess,
         userName,
-        userType
+        userType,
+        refreshPage
     }
 
     return (
