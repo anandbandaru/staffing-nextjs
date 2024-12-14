@@ -37,6 +37,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import ModulesTop from "../top2/ModulesTop";
 import TransactionsTop from "../top2/TransactionsTop";
+import Dashboard from "../dashboard/dashboard";
 
 const Top = () => {
 
@@ -127,7 +128,7 @@ const Top = () => {
                         </TabList>
 
                         <TabPanel className="px-2">
-                            Dashboard
+                            <Dashboard />
                         </TabPanel>
                         <TabPanel className="px-2">
                             <ModulesTop />

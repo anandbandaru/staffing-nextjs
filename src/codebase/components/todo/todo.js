@@ -4,8 +4,8 @@ import './todo.css';
 import { Context } from "../../context/context";
 import axios from 'axios';
 import {
-    Container, TextField, Button, IconButton,
-    Card, CardContent, CardActions, Checkbox, Chip, Stack, Menu, MenuItem
+    Container, TextField, Button, IconButton, Alert,
+    Card, CardContent, CardActions, Checkbox, Chip, Stack, Menu, MenuItem, Snackbar
 } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -37,6 +37,21 @@ const ToDo = () => {
     const handleMenuClose = () => {
         setAnchorEl(null);
         setSelectedTodo(null);
+    };
+
+    const [openSnackError, setOpenSnackError] = React.useState(false);
+    const handleCloseSnackError = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackError(false);
+    };
+    const [openSnackSuccess, setOpenSnackSuccess] = React.useState(false);
+    const handleCloseSnackSuccess = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackSuccess(false);
     };
 
 
@@ -107,13 +122,17 @@ const ToDo = () => {
         ).then((resp) => {
             setApiLoading(false);
             setApiLoadingError(false);
-            
             fetchTodos("Active");
+            setOpenSnackError(false);
+            setDataAPIError("")
+            setOpenSnackSuccess(true);
         })
             .catch(function (error) {
                 console.log(error);
                 setApiLoadingError(true);
                 setApiLoading(false);
+                setOpenSnackError(true);
+                setDataAPIError(error)
             });
     };
 
@@ -171,6 +190,34 @@ const ToDo = () => {
 
     return (
         <div>
+            <Snackbar
+                open={openSnackError}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackError}
+            >
+                <Alert
+                    onClose={handleCloseSnackError}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {dataAPIError.message}
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={openSnackSuccess}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackSuccess}
+            >
+                <Alert
+                    onClose={handleCloseSnackSuccess}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    To Do item completed.
+                </Alert>
+            </Snackbar>
             <div >
                 <Stack spacing={0} direction="row" className="items-center justify-center">
                     <div className="bg-pink-500 text-white px-2 w-full mb-2">TO DOs & ACTIONS</div>
@@ -186,7 +233,7 @@ const ToDo = () => {
                     </>
                 }
             </div>
-            {todos ?
+            {todos.data ?
                 <>
                     <Tabs selectedIndex={tabIndex} className="mx-2"
                         onSelect={handleTabSelect}>
@@ -198,7 +245,7 @@ const ToDo = () => {
                         <TabPanel className="px-0">
                             <div className="h-screen overflow-y-auto pb-36">
                                 {todos.data.map((todo, key) => (
-                                    <div key={key} divider="true" className="mb-2" >
+                                    <div key={key}  className="mb-2" >
                                         <Card className="w-full mx-0">
                                             <CardContent>
                                                 <div className={todo.Important ? "text-red-600 " : ""}>
