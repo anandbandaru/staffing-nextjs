@@ -3,12 +3,6 @@ import { Context } from "../../context/context";
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import EditIcon from '@mui/icons-material/Edit';
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import OwnersListToolbar from './ownersListToolbar'
 import OwnerDetails from "./ownerDetails";
@@ -78,11 +72,11 @@ const OwnersList = () => {
     function searchBoxTextChange(event) {
         const textValue = event.target.value;
         console.log(textValue);
-        if (textValue == "") {
+        if (textValue === "") {
             setData(data_Original);
         }
         else {
-            if (itemCount == 0)
+            if (itemCount === 0)
                 return;
 
             const filteredData = data_Original.data.filter(ds => ds.firstName.toLowerCase().includes(textValue.toLowerCase()));

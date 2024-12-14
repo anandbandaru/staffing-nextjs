@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Context } from "../../context/context";
 import Stack from '@mui/material/Stack';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
@@ -10,9 +10,6 @@ import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import OwnerNew from "./ownerNew";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import CachedIcon from '@mui/icons-material/Cached';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
@@ -75,7 +72,7 @@ function OwnerDetails({ ownerID, operation }) {
             )
     }
     useEffect(() => {
-        if (operation == "View" || operation == "Edit") {
+        if (operation === "View" || operation === "Edit") {
             getOwnerDetails();
         }
     }, [firstName]);

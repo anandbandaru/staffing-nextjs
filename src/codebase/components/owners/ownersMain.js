@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import configData from "../../../CONFIG_RELEASE.json";
+import React from "react";
 import './ownersMain.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import OwnersList from './ownerList';
-import OwnerNew from './ownerNew';
 
 const OwnersMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);

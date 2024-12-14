@@ -1,4 +1,5 @@
 import React from "react";
+import { assets } from '../../assets/assets'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
@@ -14,7 +15,10 @@ export default function Login() {
             <Card className="bg-gray-200 p-4 w-1/4">
                 <CardContent>
                     <Stack spacing={2} direction="column" className="items-center justify-center">
-                        <PriceChangeOutlinedIcon fontSize='large' />
+                        <Stack spacing={2} direction="row" className="items-center justify-center">
+                            <img className="icon" src={assets.logo_24} alt="" />
+                            <PriceChangeOutlinedIcon fontSize='large' />
+                        </Stack>
                         <div>Please Login to continue...</div>
                         <Button variant="contained" onClick={refreshPage}>Login</Button>
                     </Stack>

@@ -7,7 +7,7 @@ import Top from "../top/top";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import TopBanner from "../topBanner/topBanner";
-
+import ToDo from "../todo/todo";
 
 const Main = () => {
 
@@ -54,9 +54,14 @@ const Main = () => {
     };
 
     return (
-        <div className="main ">
-            <TopBanner />
-            <Top />
+        <div className="main flex">
+            <div className="flex-grow mr-80">
+                <TopBanner />
+                <Top />
+            </div>
+            <div className="w-80 h-full fixed right-0 p-2 bg-slate-100">
+                <ToDo />
+            </div>
 
 
             {results ?

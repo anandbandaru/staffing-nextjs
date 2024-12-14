@@ -20,7 +20,7 @@ import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificat
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 import Avatar from '@mui/material/Avatar';
-
+import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { Stack } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -45,10 +45,9 @@ const Top = () => {
         isAPIError,
         APIversion,
         checkAPIAvailability,
-        topTabName,
         setTopTabName,
         loading,
-        loginSuccess, userName, signOut, userType } = useContext(Context);
+        userName, userType } = useContext(Context);
 
     const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo'];
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -103,15 +102,19 @@ const Top = () => {
     return (
         <div className="topHolder px-0">
 
-            <div className="topLeft px-1 mt-2">
-                <img className="icon" src={assets.logo_24} alt="" />
-                <span className="logo" >
-                    Staffing
-                </span>
-                <div className="release_version_Div">{configData.releases[0].version}</div>
-            </div>
-            <div className="topTabsHolder">
+
+            <div className="topTabsHolder  flex flex-grow">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
+                    <div className="topLeft px-1 mt-2">
+                        <Stack spacing={1} direction="row" className="items-center justify-center">
+                            <img className="icon" src={assets.logo_24} alt="" />
+                            <PriceChangeOutlinedIcon fontSize='large' />
+                            <span className="logo" >
+                                Staffing
+                            </span>
+                        </Stack>
+                        <div className="release_version_Div">{configData.releases[0].version}</div>
+                    </div>
                     <Tabs selectedIndex={tabIndex}
                         onSelect={handleTabSelect}>
                         <TabList className="topTabsListHolder">

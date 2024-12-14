@@ -1,7 +1,7 @@
 
 .topHolder
 {
-    align-items: center;
+    /* align-items: center;
     justify-content: start;
     gap: 5px;
     font-size: 20px;
@@ -9,9 +9,9 @@
     position: fixed;
     /* border-bottom: 3px solid #164a53 !important; */
     /* background: ; */
-    width: 100%;
-    z-index: 999;
-    background-color: #fff;
+    /* width: 100%; */
+    /* z-index: 999;
+    background-color: #fff; */
 }
 .topLeft span.logo
 {
@@ -37,25 +37,25 @@
 }
 .topTabsHolder{
     margin-left: 0px;
-    min-height: 100vh;
+    /* min-height: 100vh; */
 }
 .userHolder{
     position: absolute;
-    right: 0px;
-    top: -22px;
+    right: 240px;
+    top: -2px;
     cursor: pointer;
     padding: 2px 0px 1px 0px;
 }
 .notificationsHolder{
     position: absolute;
-    right: 35px;
-    top: 5px;
+    right: 245px;
+    top: 25px;
     cursor: pointer;
 }
 .optionsHolder{
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 275px;
+    top: 25px;
     font-size: 14px;
     align-items: center;
     justify-content: start;
@@ -81,8 +81,8 @@
  }
 .APICheckHolder{
     position: absolute;
-    right: 65px;
-    top: 6px;
+    right: 310px;
+    top: 27px;
     background-color: #f3f3f3;
     border-radius: 5px;
     padding: 1px 10px 1px 10px;

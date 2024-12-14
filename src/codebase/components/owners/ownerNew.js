@@ -13,7 +13,6 @@ import IDTypes from "../staticdata/idtypes";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
-import CachedIcon from '@mui/icons-material/Cached';
 
 function OwnerNew({ props, ownerID, operation }) {
     const { APIPath } = useContext(Context);
@@ -44,7 +43,7 @@ function OwnerNew({ props, ownerID, operation }) {
                         setData(result);
                         setFirstName(result.data[0].firstName);
                         //alert(firstName);
-                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
+                        setDataAPIError(result.total === 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -58,7 +57,7 @@ function OwnerNew({ props, ownerID, operation }) {
             )
     }
     useEffect(() => {
-        if (operation == "View" || operation == "Edit") {
+        if (operation === "View" || operation === "Edit") {
             getOwnerDetails();
         }
     }, [firstName]);
