@@ -7,11 +7,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import OwnerNew from "./ownerNew";
+import OwnerForm from "./ownerForm";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-function OwnerEdit({ ownerID, operation }) {
+function OwnerEdit({ ownerID, operation, manualLoadData }) {
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -19,6 +19,7 @@ function OwnerEdit({ ownerID, operation }) {
     });
     const handleClose = () => {
         setOpen(false);
+        manualLoadData();
     };
     const handleClickOpen = () => {
         setOpen(true);
@@ -72,7 +73,7 @@ function OwnerEdit({ ownerID, operation }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <OwnerNew ownerID={ownerID} operation="Edit" />
+                    <OwnerForm ownerID={ownerID} operation="Edit" />
                 </DialogContent>
             </BootstrapDialog>
         </>

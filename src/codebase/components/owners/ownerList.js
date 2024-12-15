@@ -91,14 +91,14 @@ const OwnersList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <OwnerDetails ownerID={props.data.Id} operation="View" />
+                <OwnerDetails ownerID={props.data.Id} operation="View" doLoading={false} />
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                <OwnerEdit ownerID={props.data.Id} operation="Edit" />
+                <OwnerEdit ownerID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} />
             </>
         );
     };
@@ -110,7 +110,7 @@ const OwnersList = () => {
     );
     const CustomDisabledRenderer = ({ value }) => (
         <span>
-            {value === null ? "NO" : "YES"}
+            {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
     // Column Definitions: Defines the columns to be displayed.
@@ -134,8 +134,8 @@ const OwnersList = () => {
             field: "Disabled", filter: false,
             cellClassRules: {
                 // apply green to electric cars
-                'rag-green': params => params.value === null,
-                'rag-red': params => params.value !== null,
+                'rag-green': params => params.value === null || params.value === false,
+                'rag-red': params => params.value === true,
             },
             cellRenderer: CustomDisabledRenderer
         },

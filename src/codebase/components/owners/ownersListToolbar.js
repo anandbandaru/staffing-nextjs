@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import OwnerNew from "./ownerNew";
+import OwnerForm from "./ownerForm";
 import Stack from '@mui/material/Stack';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
@@ -105,7 +105,7 @@ const OwnersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, 
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <OwnerNew operation="New" />
+                    <OwnerForm operation="New" />
                 </DialogContent>
             </BootstrapDialog>
         </>

@@ -14,7 +14,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-function OwnerDetails({ ownerID, operation }) {
+function OwnerDetails({ ownerID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -32,6 +32,9 @@ function OwnerDetails({ ownerID, operation }) {
     };
     const handleClickOpen = () => {
         setOpen(true);
+        if (operation === "View" || operation === "Edit") {
+            getOwnerDetails();
+        }
     };
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         '& .MuiDialogContent-root': {
@@ -42,6 +45,7 @@ function OwnerDetails({ ownerID, operation }) {
         },
     }));
     const getOwnerDetails = () => {
+        setApiLoading(true);
         let apiUrl = APIPath + "/getownerdetails/" + ownerID
         fetch(apiUrl)
             .then(response => response.json())
@@ -72,10 +76,12 @@ function OwnerDetails({ ownerID, operation }) {
             )
     }
     useEffect(() => {
-        if (operation === "View" || operation === "Edit") {
-            getOwnerDetails();
+        if (doLoading) {
+            if (operation === "View" || operation === "Edit") {
+                getOwnerDetails();
+            }
         }
-    }, [firstName]);
+    }, [ownerID]);
 
     return (
         <>
@@ -95,14 +101,14 @@ function OwnerDetails({ ownerID, operation }) {
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"
                 open={open}
-                // fullScreen
-                // keepMounted
-                // TransitionProps={{
-                //     onEntering: () => console.log('Entering'),
-                //     onExiting: () => console.log('Exiting'),
-                // }}
+            // fullScreen
+            // keepMounted
+            // TransitionProps={{
+            //     onEntering: () => console.log('Entering'),
+            //     onExiting: () => console.log('Exiting'),
+            // }}
             >
-                <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
                     {operation} owner: ID: {ownerID}
                 </DialogTitle>
                 <IconButton
@@ -118,48 +124,58 @@ function OwnerDetails({ ownerID, operation }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <Box sx={{ width: '100%', typography: 'body1' }}>
-                        <Tabs selectedIndex={tabIndex}
-                            onSelect={(index) => setTabIndex(index)}>
-                            <TabList className="thirdTabsListHolder">
-                                <Tab>Metadata</Tab>
-                                <Tab>Documents</Tab>
-                                <Tab>Relations</Tab>
-                            </TabList>
 
-                            <TabPanel className="px-2">
-                                {/* <OwnerNew ownerID={ownerID} operation="View" /> */}
-                                <TableContainer component={Paper}>
-                                    <Table size="small" aria-label="a dense table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Title</TableCell>
-                                                <TableCell>Value</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {data.data.map((item, index) => (
-                                                Object.entries(item).map(([key, value]) => (
-                                                    <TableRow key={`${index}-${key}`}>
-                                                        <TableCell component="th" scope="row">
-                                                            {key}
-                                                        </TableCell>
-                                                        <TableCell>{value === true ? "YES" : value}</TableCell>
+                    {apiLoading ?
+                        <>
+                            <div className="spinner"></div>
+                        </>
+                        :
+                        <>
+
+                            <Box sx={{ width: '100%', typography: 'body1' }}>
+                                <Tabs selectedIndex={tabIndex}
+                                    onSelect={(index) => setTabIndex(index)}>
+                                    <TabList className="thirdTabsListHolder">
+                                        <Tab>Metadata</Tab>
+                                        <Tab>Documents</Tab>
+                                        <Tab>Relations</Tab>
+                                    </TabList>
+
+                                    <TabPanel className="px-2">
+                                        {/* <OwnerNew ownerID={ownerID} operation="View" /> */}
+                                        <TableContainer component={Paper}>
+                                            <Table size="small" aria-label="a dense table">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell className='bg-gray-200'>Column</TableCell>
+                                                        <TableCell className='bg-gray-300'>Value</TableCell>
                                                     </TableRow>
-                                                ))
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                Documents
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                Reports
-                            </TabPanel>
-                        </Tabs>
-                    </Box>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {data.data.map((item, index) => (
+                                                        Object.entries(item).map(([key, value]) => (
+                                                            <TableRow key={`${index}-${key}`}>
+                                                                <TableCell component="th" scope="row">
+                                                                    {key}
+                                                                </TableCell>
+                                                                <TableCell className='bg-gray-100'>{value === true ? "YES" : value}</TableCell>
+                                                            </TableRow>
+                                                        ))
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        Documents
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        Reports
+                                    </TabPanel>
+                                </Tabs>
+                            </Box>
+                        </>
+                    }
                 </DialogContent>
             </BootstrapDialog>
         </>

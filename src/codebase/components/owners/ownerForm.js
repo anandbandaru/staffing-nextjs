@@ -16,7 +16,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 
-function OwnerNew({ props, ownerID, operation }) {
+function OwnerForm({ props, ownerID, operation }) {
     const { APIPath } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
@@ -29,7 +29,8 @@ function OwnerNew({ props, ownerID, operation }) {
     const [dataAPIError, setDataAPIError] = useState("");
 
     const getOwnerDetails = () => {
-        let apiUrl = APIPath + "/getownerdetails/" + ownerID
+        let apiUrl = APIPath + "/getownerdetails/" + ownerID;
+        console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -62,7 +63,7 @@ function OwnerNew({ props, ownerID, operation }) {
         if (operation === "View" || operation === "Edit") {
             getOwnerDetails();
         }
-    }, [firstName]);
+    }, []);
 
     return (
         <>
@@ -74,6 +75,7 @@ function OwnerNew({ props, ownerID, operation }) {
                 <Formik
                     enableReinitialize
                     initialValues={{
+                        Id: firstName ? ownerID : 'This will be auto-generated once you save',
                         firstName: firstName ? data.data[0].firstName : '',
                         lastName: firstName ? data.data[0].lastName : '',
                         email: firstName ? data.data[0].email : '',
@@ -83,7 +85,7 @@ function OwnerNew({ props, ownerID, operation }) {
                         IDNumber: firstName ? data.data[0].IDNumber : '',
                         SSN: firstName ? data.data[0].SSN : '',
                         Address: firstName ? data.data[0].Address : '',
-                        Disabled: firstName ? data.data[0].Disabled : '',
+                        Disabled: firstName ? data.data[0].Disabled : false,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         var finalAPI = APIPath + "/addOwner";
@@ -118,12 +120,6 @@ function OwnerNew({ props, ownerID, operation }) {
                     }}
 
                     validationSchema={Yup.object().shape({
-                        // firstName: Yup.string().required('Required').min(2, 'Should be of minimum 2 characters length'),
-                        // lastName: Yup.string().required('Required').min(2, 'Should be of minimum 2 characters length'),
-                        // email: Yup.string().email().required('Required'),
-                        // phone1: Yup.string().required('Required').min(10, 'Should be of minimum 10 characters length'),
-                        // IDNumber: Yup.string().required('Required').min(5, 'Should be of minimum 5 characters length'),
-                        // Address: Yup.string().required('Required').min(8, 'Should be of minimum 8 characters length'),
                         firstName: Yup.string()
                             .required('Required'),
                         lastName: Yup.string()
@@ -156,6 +152,18 @@ function OwnerNew({ props, ownerID, operation }) {
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="Id"
+                                    name="Id"
+                                    label="Id"
+                                    disabled
+                                    value={values.Id}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -280,11 +288,11 @@ function OwnerNew({ props, ownerID, operation }) {
                                             id="Disabled"
                                             name="Disabled"
                                             label="Disabled"
-                                            value={values.Disabled}
+                                            // value={values.Disabled}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
-                                            defaultChecked={values.Disabled} />
+                                            // helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
+                                            checked={values.Disabled} />
                                     }
                                     label="Disabled"
                                 />
@@ -335,4 +343,4 @@ function OwnerNew({ props, ownerID, operation }) {
     );
 }
 
-export default OwnerNew;
+export default OwnerForm;
