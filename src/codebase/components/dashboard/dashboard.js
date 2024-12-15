@@ -32,14 +32,14 @@ const Dashboard = () => {
                 '/counts/activetodos',
                 '/counts/importantactivetodos',
                 '/counts/completedtodos',
-                '/counts/companies',
-                '/counts/employees',
-                '/counts/clients',
-                '/counts/implementationPartners',
-                '/counts/jobs',
-                '/counts/invoices',
-                '/counts/payroll',
-                '/counts/timesheets'
+                // '/counts/companies',
+                // '/counts/employees',
+                // '/counts/clients',
+                // '/counts/implementationPartners',
+                // '/counts/jobs',
+                // '/counts/invoices',
+                // '/counts/payroll',
+                // '/counts/timesheets'
             ];
 
             try {

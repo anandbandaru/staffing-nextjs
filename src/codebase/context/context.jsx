@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { GRAPH_CONFIG, LOGIN_REQUEST, MSAL_CONFIG, PUBLIC_CLIENT_APPLICATION, TOKEN_REQUEST } from "../../msalConfig";
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import { Client } from '@microsoft/microsoft-graph-client';
 
 export const Context = createContext();
 
@@ -11,6 +12,7 @@ const ContextProvider = (props) => {
     const [loginError, setLoginError] = useState("");
     const [loginInteractionInProgress, setLoginInteractionInProgress] = useState(false);
     const [token, setToken] = useState("");
+    const [accessToken, setAccessToken] = useState("");
     const [userName, setUserName] = useState("");
     const [userType, setUserType] = useState("");
 
@@ -80,6 +82,7 @@ const ContextProvider = (props) => {
 
             setLoginSuccess(true);
             setToken(loginResponse.idToken);
+            setAccessToken(loginResponse.accessToken);
             setUserName(loginResponse.account.username);
             // Decode the token to get the "Employee type" property
             // const decodedToken = jwtDecode(loginResponse.idToken);
@@ -171,6 +174,42 @@ const ContextProvider = (props) => {
         window.location.reload();
     };
 
+    const createOneDriveFolder = async () => {
+        try {
+
+            const accounts = PUBLIC_CLIENT_APPLICATION.getAllAccounts();
+            if (accounts.length === 0) {
+                throw new Error('No accounts found');
+            }
+
+            const request = {
+                scopes: ['Files.ReadWrite.All'],
+                account: accounts[0],
+            };
+            const response = await PUBLIC_CLIENT_APPLICATION.acquireTokenSilent(request);
+            const accessTokenNew = response.accessToken;
+
+            const graphClient = Client.init({
+                authProvider: (done) => {
+                    done(null, accessToken);
+                },
+            });
+
+            const endpoint = 'https://graph.microsoft.com/v1.0/users/vsk.software_outlook.com#EXT#@vsksoftwareoutlook.onmicrosoft.com/drive/root:/owners:/children';
+            const user = '{\"name\': \'anand\",\"folder\': {},\'@microsoft.graph.conflictBehavior\': \"rename\"}';
+            console.log("ENDPOINTA: " + endpoint)
+            const body = {
+                name: "anand",
+                folder: {},
+                '@microsoft.graph.conflictBehavior': 'rename'
+            };
+            await graphClient.api(endpoint).post(body);
+            console.log("folder created")
+        } catch (error) {
+            console.log(`Error creating folder: ${error.message}`)
+        }
+    }
+
     const contextValue = {
         loading,
         showGreetings,
@@ -197,7 +236,8 @@ const ContextProvider = (props) => {
         loginSuccess,
         userName,
         userType,
-        refreshPage
+        refreshPage,
+        createOneDriveFolder
     }
 
     return (
