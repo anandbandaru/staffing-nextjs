@@ -247,8 +247,16 @@ form P{
   color: #ff068c !important;
 }
 .rag-green{
-  color: #84e417 !important;
+  color: #079b13 !important;
+}
+.rag-green-bg{
+  color: #fff !important;
+  background-color: #079b13 !important;
 }
 .rag-red{
   color: #be3737 !important;
+}
+.rag-red-bg{
+  color: #fff !important;
+  background-color: #be3737 !important;
 }

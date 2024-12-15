@@ -2,6 +2,8 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import {
     Formik
 } from 'formik';
@@ -81,6 +83,7 @@ function OwnerNew({ props, ownerID, operation }) {
                         IDNumber: firstName ? data.data[0].IDNumber : '',
                         SSN: firstName ? data.data[0].SSN : '',
                         Address: firstName ? data.data[0].Address : '',
+                        Disabled: firstName ? data.data[0].Disabled : '',
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         var finalAPI = APIPath + "/addOwner";
@@ -270,6 +273,20 @@ function OwnerNew({ props, ownerID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     helperText={(errors.Address && touched.Address) && errors.Address}
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            id="Disabled"
+                                            name="Disabled"
+                                            label="Disabled"
+                                            value={values.Disabled}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
+                                            defaultChecked={values.Disabled} />
+                                    }
+                                    label="Disabled"
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
                                     <div>

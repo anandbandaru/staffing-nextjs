@@ -4,11 +4,11 @@ import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
-import OwnersListToolbar from './ownersListToolbar'
-import OwnerDetails from "./ownerDetails";
-import OwnerEdit from "./ownerEdit";
+import CompaniesListToolbar from './companiesListToolbar'
+// import OwnerDetails from "./ownerDetails";
+// import OwnerEdit from "./ownerEdit";
 
-const OwnersList = () => {
+const CompaniesList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [data_Original, setData_Original] = useState({ data: [] });
@@ -31,13 +31,13 @@ const OwnersList = () => {
         setItemCount(0);
         setDataAPIError("");
         setTimeout(() => {
-            getOwnersList();
+            getCompaniesList();
         }, 1);
     }
 
-    const getOwnersList = () => {
+    const getCompaniesList = () => {
         setData({ data: [] });
-        let apiUrl = APIPath + "/getowners"
+        let apiUrl = APIPath + "/getcompanies"
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -54,7 +54,7 @@ const OwnersList = () => {
                         setData(result);
                         setData_Original(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
+                        setDataAPIError(result.total == 0 ? "No Companies information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -79,7 +79,7 @@ const OwnersList = () => {
             if (itemCount === 0)
                 return;
 
-            const filteredData = data_Original.data.filter(ds => ds.firstName.toLowerCase().includes(textValue.toLowerCase()));
+            const filteredData = data_Original.data.filter(ds => ds.Name.toLowerCase().includes(textValue.toLowerCase()));
             const newVal = {
                 filteredRows: filteredData.length,
                 data: filteredData
@@ -91,14 +91,14 @@ const OwnersList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <OwnerDetails ownerID={props.data.Id} operation="View" />
+                {/* <CompanyDetails ownerID={props.data.Id} operation="View" /> */}
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                <OwnerEdit ownerID={props.data.Id} operation="Edit" />
+                {/* <CompanyEdit ownerID={props.data.Id} operation="Edit" /> */}
             </>
         );
     };
@@ -119,8 +119,8 @@ const OwnersList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
-        { field: "firstName", filter: true },
-        { field: "lastName", filter: true },
+        { field: "Name", filter: true },
+        { field: "Phone", filter: true },
         {
             field: "email", filter: true, editable: true,
             cellClassRules: {
@@ -129,7 +129,7 @@ const OwnersList = () => {
             },
             cellRenderer: CustomEmailRenderer
         },
-        { field: "phone1", filter: true },
+        { field: "EstablishedDate", filter: true },
         {
             field: "Disabled", filter: false,
             cellClassRules: {
@@ -158,7 +158,7 @@ const OwnersList = () => {
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}
-                <OwnersListToolbar
+                <CompaniesListToolbar
                     operation="Add"
                     itemCount={itemCount}
                     apiLoading={apiLoading}
@@ -188,4 +188,4 @@ const OwnersList = () => {
     )
 }
 
-export default OwnersList;
+export default CompaniesList;

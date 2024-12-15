@@ -144,7 +144,7 @@ function OwnerDetails({ ownerID, operation }) {
                                                         <TableCell component="th" scope="row">
                                                             {key}
                                                         </TableCell>
-                                                        <TableCell>{value}</TableCell>
+                                                        <TableCell>{value === true ? "YES" : value}</TableCell>
                                                     </TableRow>
                                                 ))
                                             ))}

@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import OwnersMain from "../owners/ownersMain";
+import CompaniesMain from "../companies/companiesMain";
 
 const ModulesTop = ({ module }) => {
 
@@ -51,7 +52,7 @@ const ModulesTop = ({ module }) => {
                                 <OwnersMain />
                             </TabPanel>
                             <TabPanel className="px-2">
-                                sdg
+                                <CompaniesMain />
                             </TabPanel>
                             <TabPanel className="px-2">
                                 sdg
