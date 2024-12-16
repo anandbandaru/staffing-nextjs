@@ -91,14 +91,14 @@ const OwnersList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <OwnerDetails ownerID={props.data.Id} operation="View" doLoading={false} />
+                <OwnerDetails ID={props.data.Id} operation="View" doLoading={false} />
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                <OwnerEdit ownerID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} />
+                <OwnerEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} />
             </>
         );
     };

@@ -2,6 +2,8 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -9,7 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 
-function FileType({ props, ID, operation }) {
+function Client({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
@@ -21,8 +23,8 @@ function FileType({ props, ID, operation }) {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
-    const getFileTypeDetails = () => {
-        let apiUrl = APIPath + "/getfiletypedetails/" + ID;
+    const getClientDetails = () => {
+        let apiUrl = APIPath + "/getclientdetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -37,9 +39,9 @@ function FileType({ props, ID, operation }) {
                     }
                     else {
                         setData(result);
-                        setName(result.data[0].name);
+                        setName(result.data[0].Name);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Owners information present." : "ok");
+                        setDataAPIError(result.total === 0 ? "No Clients information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -54,7 +56,7 @@ function FileType({ props, ID, operation }) {
     }
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
-            getFileTypeDetails();
+            getClientDetails();
         }
     }, []);
 
@@ -69,13 +71,16 @@ function FileType({ props, ID, operation }) {
                     enableReinitialize
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
-                        name: name ? data.data[0].name : '',
-                        description: name ? data.data[0].description : ''
+                        Name: name ? data.data[0].Name : '',
+                        Address: name ? data.data[0].Address : '',
+                        Emails: name ? data.data[0].Emails : '',
+                        Notes: name ? data.data[0].Notes : '',
+                        Disabled: name ? data.data[0].Disabled : false,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        var finalAPI = APIPath + "/addfiletype";
+                        var finalAPI = APIPath + "/addclient";
                         if (operation === "Edit") {
-                            finalAPI = APIPath + "/updatefiletype";
+                            finalAPI = APIPath + "/updateclient";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -90,11 +95,6 @@ function FileType({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
-                            console.log("RESETTING NOW")
-                            if (resetButtonRef.current) {
-                                resetButtonRef.current.click();
-                                console.log("RESETTING DONE")
-                            }
                         })
                             .catch(function (error) {
                                 console.log(error);
@@ -105,9 +105,13 @@ function FileType({ props, ID, operation }) {
                     }}
 
                     validationSchema={Yup.object().shape({
-                        name: Yup.string()
+                        Name: Yup.string()
                             .required('Required'),
-                            description: Yup.string()
+                        Address: Yup.string()
+                            .required('Required'),
+                        Emails: Yup.string()
+                            .required('Required'),
+                        Notes: Yup.string()
                             .required('Required'),
                     })}
                 >
@@ -142,27 +146,69 @@ function FileType({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="name"
-                                    name="name"
+                                    id="Name"
+                                    name="Name"
                                     label="Name"
-                                    value={values.name}
+                                    value={values.Name}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.name && touched.name) && errors.name}
+                                    helperText={(errors.Name && touched.Name) && errors.Name}
                                 />
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="description"
-                                    name="description"
-                                    label="Description"
+                                    id="Address"
+                                    name="Address"
+                                    label="Address"
                                     multiline
                                     rows={4}
-                                    value={values.description}
+                                    value={values.Address}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.description && touched.description) && errors.description}
+                                    helperText={(errors.Address && touched.Address) && errors.Address}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="Emails"
+                                    name="Emails"
+                                    label="Emails"
+                                    multiline
+                                    rows={4}
+                                    value={values.Emails}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.Emails && touched.Emails) && errors.Emails}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="Notes"
+                                    name="Notes"
+                                    label="Notes"
+                                    multiline
+                                    rows={4}
+                                    value={values.Notes}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.Notes && touched.Notes) && errors.Notes}
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            id="Disabled"
+                                            name="Disabled"
+                                            label="Disabled"
+                                            // value={values.Disabled}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            // helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
+                                            checked={values.Disabled} />
+                                    }
+                                    label="Disabled"
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
                                     <div>
@@ -209,4 +255,4 @@ function FileType({ props, ID, operation }) {
     );
 }
 
-export default FileType;
+export default Client;

@@ -3,11 +3,11 @@ import { Context } from "../../context/context";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import FileTypesListToolbar from './fileTypesListToolbar'
-import FileTypeDetails from "./fileTypeDetails";
-import FileTypeEdit from "./fileTypeEdit";
+import ClientsListToolbar from './clientsListToolbar'
+import ClientDetails from "./clientDetails";
+import ClientEdit from "./clientEdit";
 
-const FileTypeList = () => {
+const ClientList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [data_Original, setData_Original] = useState({ data: [] });
@@ -30,13 +30,13 @@ const FileTypeList = () => {
         setItemCount(0);
         setDataAPIError("");
         setTimeout(() => {
-            getFileTypesList();
+            getClientsList();
         }, 1);
     }
 
-    const getFileTypesList = () => {
+    const getClientsList = () => {
         setData({ data: [] });
-        let apiUrl = APIPath + "/getfiletypes"
+        let apiUrl = APIPath + "/getclients"
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -53,7 +53,7 @@ const FileTypeList = () => {
                         setData(result);
                         setData_Original(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No File Types information present." : "ok");
+                        setDataAPIError(result.total == 0 ? "No Clients information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -71,26 +71,41 @@ const FileTypeList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <FileTypeDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <ClientDetails ID={props.data.Id} operation="View" doLoading={false} />
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                <FileTypeEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <ClientEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
             </>
         );
     };
+    const CustomDisabledRenderer = ({ value }) => (
+        <span>
+            {(value === null || !value) ? "NO" : "YES"}
+        </span>
+    );
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs, setColDefs] = useState([
         {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
-        { field: "name", filter: true },
-        { field: "description" },
+        { field: "Name", filter: true },
+        { field: "Address" },
+        { field: "Emails" },
         { field: "createdDate", filter: true },
+        {
+            field: "Disabled", filter: false,
+            cellClassRules: {
+                // apply green to electric cars
+                'rag-green': params => params.value === null || params.value === false,
+                'rag-red': params => params.value === true,
+            },
+            cellRenderer: CustomDisabledRenderer
+        },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
     ]);
     const rowClassRules = {
@@ -110,7 +125,7 @@ const FileTypeList = () => {
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}
-                <FileTypesListToolbar
+                <ClientsListToolbar
                     operation="Add"
                     itemCount={itemCount}
                     apiLoading={apiLoading}
@@ -140,4 +155,4 @@ const FileTypeList = () => {
     )
 }
 
-export default FileTypeList;
+export default ClientList;

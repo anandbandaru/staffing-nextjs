@@ -1,10 +1,10 @@
 import React from "react";
-import './fileTypes.css';
+import './clientsMain.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
-import FileTypeList from './fileTypeList';
+import ClientList from './clientList';
 
-const FileTypes = () => {
+const ClientsMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
 
     return (
@@ -19,7 +19,7 @@ const FileTypes = () => {
                         </TabList>
 
                         <TabPanel className="px-2">
-                            <FileTypeList />
+                            <ClientList />
                         </TabPanel>
                         <TabPanel className="px-2">
                             Reports
@@ -31,4 +31,4 @@ const FileTypes = () => {
     )
 }
 
-export default FileTypes;
+export default ClientsMain;

@@ -14,7 +14,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-function OwnerDetails({ ownerID, operation, doLoading }) {
+function OwnerDetails({ ID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -46,7 +46,7 @@ function OwnerDetails({ ownerID, operation, doLoading }) {
     }));
     const getOwnerDetails = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getownerdetails/" + ownerID
+        let apiUrl = APIPath + "/getownerdetails/" + ID
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -81,7 +81,7 @@ function OwnerDetails({ ownerID, operation, doLoading }) {
                 getOwnerDetails();
             }
         }
-    }, [ownerID]);
+    }, [ID]);
 
     return (
         <>
@@ -109,7 +109,7 @@ function OwnerDetails({ ownerID, operation, doLoading }) {
             // }}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} owner: ID: {ownerID}
+                    {operation} Owner: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"

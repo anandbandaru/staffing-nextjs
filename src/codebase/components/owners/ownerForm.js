@@ -4,11 +4,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import {
-    Formik
-} from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
-// import { DisplayFormikState } from './formikHelper';
 import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
 import IDTypes from "../staticdata/idtypes";
@@ -16,7 +13,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 
-function OwnerForm({ props, ownerID, operation }) {
+function OwnerForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
@@ -29,7 +26,7 @@ function OwnerForm({ props, ownerID, operation }) {
     const [dataAPIError, setDataAPIError] = useState("");
 
     const getOwnerDetails = () => {
-        let apiUrl = APIPath + "/getownerdetails/" + ownerID;
+        let apiUrl = APIPath + "/getownerdetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -75,7 +72,7 @@ function OwnerForm({ props, ownerID, operation }) {
                 <Formik
                     enableReinitialize
                     initialValues={{
-                        Id: firstName ? ownerID : 'This will be auto-generated once you save',
+                        Id: firstName ? ID : 'This will be auto-generated once you save',
                         firstName: firstName ? data.data[0].firstName : '',
                         lastName: firstName ? data.data[0].lastName : '',
                         email: firstName ? data.data[0].email : '',
@@ -88,9 +85,9 @@ function OwnerForm({ props, ownerID, operation }) {
                         Disabled: firstName ? data.data[0].Disabled : false,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        var finalAPI = APIPath + "/addOwner";
+                        var finalAPI = APIPath + "/addowner";
                         if (operation === "Edit") {
-                            finalAPI = APIPath + "/updateOwner";
+                            finalAPI = APIPath + "/updateowner";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -105,11 +102,6 @@ function OwnerForm({ props, ownerID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
-                            console.log("RESETTING NOW")
-                            if (resetButtonRef.current) {
-                                resetButtonRef.current.click();
-                                console.log("RESETTING DONE")
-                            }
                         })
                             .catch(function (error) {
                                 console.log(error);
@@ -298,7 +290,7 @@ function OwnerForm({ props, ownerID, operation }) {
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
                                     <div>
-                                        {ownerID}:{operation}
+                                        {ID}:{operation}
                                     </div>
                                     {/* <Button variant="contained" color="secondary" disabled={isSubmitting && !isSubmitionCompleted}>Cancel</Button> */}
 

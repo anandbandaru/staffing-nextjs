@@ -7,13 +7,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import FIleTypeForm from "./fileTypeForm";
+import ClientForm from "./clientForm";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Context } from "../../context/context";
 import axios from 'axios';
 
-function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
+function ClientEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [isDeletionError, setDeletionError] = useState(false);
@@ -36,9 +36,9 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
             padding: theme.spacing(1),
         },
     }));
-    const deleteFileTypeByID = () => {
+    const deleteClientByID = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/deletefiletype"
+        let apiUrl = APIPath + "/deleteclient"
         axios.post(apiUrl,
             {
                 Id: ID
@@ -71,7 +71,7 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
                     const userConfirmed = window.confirm("Are you sure you want to delete this item with ID? - " + ID);
                     if (userConfirmed) {
-                        deleteFileTypeByID();
+                        deleteClientByID();
                     } else {
                         console.log("Delete operation cancelled");
                     }
@@ -88,7 +88,7 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 open={open}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} File Type: ID: {ID}
+                    {operation} Client: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -103,7 +103,7 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <FIleTypeForm ID={ID} operation="Edit" />
+                    <ClientForm ID={ID} operation="Edit" />
                 </DialogContent>
             </BootstrapDialog>
         </>
@@ -111,4 +111,4 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
     )
 }
 
-export default FileTypeEdit;
+export default ClientEdit;

@@ -14,7 +14,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-function FileTypeDetails({ ID, operation, doLoading }) {
+function ClientDetails({ ID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -33,7 +33,7 @@ function FileTypeDetails({ ID, operation, doLoading }) {
     const handleClickOpen = () => {
         setOpen(true);
         if (operation === "View" || operation === "Edit") {
-            getFileTypeDetails();
+            getClientDetails();
         }
     };
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -44,9 +44,9 @@ function FileTypeDetails({ ID, operation, doLoading }) {
             padding: theme.spacing(1),
         },
     }));
-    const getFileTypeDetails = () => {
+    const getClientDetails = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getfiletypedetails/" + ID
+        let apiUrl = APIPath + "/getclientdetails/" + ID
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -61,7 +61,7 @@ function FileTypeDetails({ ID, operation, doLoading }) {
                     else {
                         setData(result);
                         setName(result.data[0].name);
-                        setDataAPIError(result.total == 0 ? "No File Type information present." : "ok");
+                        setDataAPIError(result.total == 0 ? "No Client information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -77,7 +77,7 @@ function FileTypeDetails({ ID, operation, doLoading }) {
     useEffect(() => {
         if (doLoading) {
             if (operation === "View" || operation === "Edit") {
-                getFileTypeDetails();
+                getClientDetails();
             }
         }
     }, [ID]);
@@ -101,7 +101,7 @@ function FileTypeDetails({ ID, operation, doLoading }) {
                 open={open}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} File Type: ID: {ID}
+                    {operation} Client: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -129,6 +129,8 @@ function FileTypeDetails({ ID, operation, doLoading }) {
                                     onSelect={(index) => setTabIndex(index)}>
                                     <TabList className="thirdTabsListHolder">
                                         <Tab>Metadata</Tab>
+                                        <Tab>Documents</Tab>
+                                        <Tab>Relations</Tab>
                                     </TabList>
 
                                     <TabPanel className="px-2">
@@ -156,6 +158,12 @@ function FileTypeDetails({ ID, operation, doLoading }) {
                                             </Table>
                                         </TableContainer>
                                     </TabPanel>
+                                    <TabPanel className="px-2">
+                                        Documents
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        Reports
+                                    </TabPanel>
                                 </Tabs>
                             </Box>
                         </>
@@ -167,4 +175,4 @@ function FileTypeDetails({ ID, operation, doLoading }) {
     )
 }
 
-export default FileTypeDetails;
+export default ClientDetails;

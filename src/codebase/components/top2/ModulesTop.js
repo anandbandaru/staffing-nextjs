@@ -8,7 +8,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import OwnersMain from "../owners/ownersMain";
 import CompaniesMain from "../companies/companiesMain";
-import FileTypes from "../filetypes/fileTypes";
+import FileTypesMain from "../filetypes/fileTypesMain";
+import ClientsMain from "../clients/clientsMain";
 
 const ModulesTop = ({ module }) => {
 
@@ -59,7 +60,7 @@ const ModulesTop = ({ module }) => {
                                 sdg
                             </TabPanel>
                             <TabPanel className="px-2">
-                                sdg
+                                <ClientsMain />
                             </TabPanel>
                             <TabPanel className="px-2">
                                 sdg
@@ -71,7 +72,7 @@ const ModulesTop = ({ module }) => {
                                 sdg
                             </TabPanel>
                             <TabPanel className="px-2">
-                                <FileTypes />
+                                <FileTypesMain />
                             </TabPanel>
                         </Tabs>
                     </Box>

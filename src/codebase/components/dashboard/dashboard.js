@@ -34,7 +34,7 @@ const Dashboard = () => {
                 '/counts/completedtodos',
                 '/counts/companies',
                 // '/counts/employees',
-                // '/counts/clients',
+                '/counts/clients',
                 // '/counts/implementationPartners',
                 // '/counts/jobs',
                 // '/counts/invoices',

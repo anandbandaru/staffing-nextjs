@@ -11,7 +11,7 @@ import OwnerForm from "./ownerForm";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-function OwnerEdit({ ownerID, operation, manualLoadData }) {
+function OwnerEdit({ ID, operation, manualLoadData }) {
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -44,7 +44,7 @@ function OwnerEdit({ ownerID, operation, manualLoadData }) {
                     <EditIcon />
                 </IconButton>
                 <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
-                    window.alert(ownerID);
+                    window.alert(ID);
                 }
                 }>
                     <DeleteIcon />
@@ -58,7 +58,7 @@ function OwnerEdit({ ownerID, operation, manualLoadData }) {
                 open={open}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Owner: ID: {ownerID}
+                    {operation} Owner: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -73,7 +73,7 @@ function OwnerEdit({ ownerID, operation, manualLoadData }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <OwnerForm ownerID={ownerID} operation="Edit" />
+                    <OwnerForm ID={ID} operation="Edit" />
                 </DialogContent>
             </BootstrapDialog>
         </>
