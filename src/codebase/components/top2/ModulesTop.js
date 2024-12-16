@@ -8,6 +8,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import OwnersMain from "../owners/ownersMain";
 import CompaniesMain from "../companies/companiesMain";
+import FileTypes from "../filetypes/fileTypes";
 
 const ModulesTop = ({ module }) => {
 
@@ -17,7 +18,7 @@ const ModulesTop = ({ module }) => {
 
     const [tab2Index, setTab2Index] = React.useState(0);
 
-    const tab2Names_Modules = ['Owners', 'Companies', 'Employees', 'Clients', 'Implementation Partners', 'Jobs Types', 'Expenses List', 'Files List'];
+    const tab2Names_Modules = ['Owners', 'Companies', 'Employees', 'Clients', 'Implementation Partners', 'Jobs Types', 'Expenses List', 'File Types List'];
     const handleTab2Select_Modules = (index) => {
         setTab2Index(index);
         console.log('Selected Tab2:', tab2Names_Modules[index]);
@@ -31,7 +32,7 @@ const ModulesTop = ({ module }) => {
     });
 
     return (
-        <div className="top2Holder px-0">
+        <div className="top2Holder px-0 py-0">
 
             <div className="top2Left px-1 mt-2">
                 <span className="logo" >
@@ -70,7 +71,7 @@ const ModulesTop = ({ module }) => {
                                 sdg
                             </TabPanel>
                             <TabPanel className="px-2">
-                                sdg
+                                <FileTypes />
                             </TabPanel>
                         </Tabs>
                     </Box>

@@ -8,12 +8,12 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import OwnerForm from "./ownerForm";
+import FileTypeForm from "./fileTypeForm";
 import Stack from '@mui/material/Stack';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
 
-const OwnersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, dataAPIError, manualLoadData }) => {
+const FileTypesListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, dataAPIError, manualLoadData }) => {
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -90,7 +90,7 @@ const OwnersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, 
                 open={open}
             >
                 <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Owner
+                    {operation} File Type
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -105,11 +105,11 @@ const OwnersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, 
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <OwnerForm operation="New" />
+                    <FileTypeForm operation="New" />
                 </DialogContent>
             </BootstrapDialog>
         </>
     )
 }
 
-export default OwnersListToolbar;
+export default FileTypesListToolbar;

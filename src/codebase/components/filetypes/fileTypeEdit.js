@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useState, useContext } from 'react';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -7,12 +7,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import OwnerForm from "./ownerForm";
+import FIleTypeForm from "./fileTypeForm";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { Context } from "../../context/context";
+import axios from 'axios';
 
-function OwnerEdit({ ownerID, operation, manualLoadData }) {
+function FileTypeEdit({ fileTypeID, operation, manualLoadData, setApiLoading }) {
+    const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
+    const [isDeletionError, setDeletionError] = useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -32,6 +36,27 @@ function OwnerEdit({ ownerID, operation, manualLoadData }) {
             padding: theme.spacing(1),
         },
     }));
+    const deleteFileTypeByID = () => {
+        setApiLoading(true);
+        let apiUrl = APIPath + "/deletefiletype"
+        axios.post(apiUrl,
+            {
+                Id: fileTypeID
+            },
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                }
+            },
+        ).then((resp) => {
+            setDeletionError(false);
+            manualLoadData();
+        }).catch(function (error) {
+            console.log(error);
+            setDeletionError(true);
+        });
+    }
 
     return (
         <>
@@ -44,7 +69,12 @@ function OwnerEdit({ ownerID, operation, manualLoadData }) {
                     <EditIcon />
                 </IconButton>
                 <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
-                    window.alert(ownerID);
+                    const userConfirmed = window.confirm("Are you sure you want to delete this item with ID? - " + fileTypeID);
+                    if (userConfirmed) {
+                        deleteFileTypeByID();
+                    } else {
+                        console.log("Delete operation cancelled");
+                    }
                 }
                 }>
                     <DeleteIcon />
@@ -58,7 +88,7 @@ function OwnerEdit({ ownerID, operation, manualLoadData }) {
                 open={open}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Owner: ID: {ownerID}
+                    {operation} File Type: ID: {fileTypeID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -73,7 +103,7 @@ function OwnerEdit({ ownerID, operation, manualLoadData }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <OwnerForm ownerID={ownerID} operation="Edit" />
+                    <FIleTypeForm fileTypeID={fileTypeID} operation="Edit" />
                 </DialogContent>
             </BootstrapDialog>
         </>
@@ -81,4 +111,4 @@ function OwnerEdit({ ownerID, operation, manualLoadData }) {
     )
 }
 
-export default OwnerEdit;
+export default FileTypeEdit;

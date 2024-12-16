@@ -40,6 +40,7 @@ const Dashboard = () => {
                 // '/counts/invoices',
                 // '/counts/payroll',
                 // '/counts/timesheets'
+                '/counts/filetypes'
             ];
 
             try {
@@ -130,6 +131,9 @@ const Dashboard = () => {
             </Grid>
             <Grid item md={1}>
                 {renderCard('Timesheets', counts.timesheets)}
+            </Grid>
+            <Grid item md={1}>
+                {renderCard('File Types', counts.filetypes)}
             </Grid>
         </Grid>
     );
