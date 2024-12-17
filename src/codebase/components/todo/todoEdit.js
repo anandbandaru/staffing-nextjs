@@ -41,7 +41,7 @@ function TodoEdit({ ID, operation, manualLoadData, setApiLoading }) {
         let apiUrl = APIPath + "/deletetodo"
         axios.post(apiUrl,
             {
-                id: ID
+                Id: ID
             },
             {
                 headers: {

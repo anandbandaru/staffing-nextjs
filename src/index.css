@@ -260,3 +260,16 @@ form P{
   color: #fff !important;
   background-color: #be3737 !important;
 }
+.badgeSpan{
+  padding: 0px 5px;
+  border-radius: 10px;
+}
+
+.rag-blue-bg{
+  color: #fff !important;
+  background-color: #3496ce !important;
+}
+.rag-gray-bg{
+  color: #fff !important;
+  background-color: #464343 !important;
+}

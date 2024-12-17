@@ -39,6 +39,7 @@ import ModulesTop from "../top2/ModulesTop";
 import TransactionsTop from "../top2/TransactionsTop";
 import Dashboard from "../dashboard/dashboard";
 import TodosMain from "../todo/todosMain";
+import UsersMain from "../users/usersMain";
 
 const Top = () => {
 
@@ -51,7 +52,7 @@ const Top = () => {
         loading,
         userName, userType } = useContext(Context);
 
-    const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo'];
+    const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo', 'Users'];
     const [tabIndex, setTabIndex] = React.useState(0);
     const handleTabSelect = (index) => {
         setTabIndex(index);
@@ -151,6 +152,9 @@ const Top = () => {
                         </TabPanel>
                         <TabPanel className="px-2">
                             <TodosMain />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <UsersMain />
                         </TabPanel>
                     </Tabs>
                 </Box>

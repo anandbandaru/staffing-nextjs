@@ -93,7 +93,7 @@ const ToDo = () => {
                     else {
                         setTodos(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No ToDo information present." : "ok");
+                        setDataAPIError(result.total == 0 ? "No To Do information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -245,11 +245,11 @@ const ToDo = () => {
                         <TabPanel className="px-0">
                             <div className="h-screen overflow-y-auto pb-36">
                                 {todos.data.map((todo, key) => (
-                                    <div key={key}  className="mb-2" >
+                                    <div key={key} className="mb-2" >
                                         <Card className="w-full mx-0">
                                             <CardContent>
-                                                <div className={todo.Important ? "text-red-600 " : ""}>
-                                                    {todo.Important ?
+                                                <div className={todo.important ? "text-red-600 " : ""}>
+                                                    {todo.important ?
                                                         <>
                                                             <ErrorOutlineOutlinedIcon className="text-red-600 mr-2" />{todo.title}
                                                         </>
@@ -287,8 +287,8 @@ const ToDo = () => {
                                     <div key={key} divider="true" className="mb-2" >
                                         <Card className="w-full mx-0">
                                             <CardContent>
-                                                <div className={todo.Important ? "text-red-600 " : ""}>
-                                                    {todo.Important ?
+                                                <div className={todo.important ? "text-red-600 " : ""}>
+                                                    {todo.important ?
                                                         <>
                                                             <ErrorOutlineOutlinedIcon className="text-red-600 mr-2" />{todo.title}
                                                         </>
@@ -344,7 +344,10 @@ const ToDo = () => {
                 </>
                 :
                 <>
-                    No ToDos present
+                    <div>
+                        No To Dos present
+                    </div>
+                    <Button label="Fetch" onClick={fetchTodos} ></Button>
                 </>}
 
         </div>

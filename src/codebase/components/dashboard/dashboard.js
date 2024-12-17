@@ -84,8 +84,8 @@ const Dashboard = () => {
             <Grid item md={1}>
                 {renderCard('Owners', counts.owners)}
             </Grid>
-            <Grid item md={1.2}>
-                <Card sx={{ minWidth: 125 }}>
+            <Grid item md={1.6}>
+                <Card sx={{ minWidth: 155 }}>
                     <CardContent>
                         <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
                             To Dos

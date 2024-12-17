@@ -78,94 +78,93 @@ const CompaniesList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <CompanyEdit ID={props.data.Id} operation="Edit"  manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <CompanyEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
             </>
         );
     };
     const CustomEmailRenderer = ({ value }) => (
-        <span>
+        <span >
             <MarkunreadOutlinedIcon fontSize="small" className="mr-2" />
             {value}
         </span>
     );
     const CustomDisabledRenderer = ({ value }) => (
-        <span>
+        <span className={(value === null || !value) ? 'rag-green-bg badgeSpan' : 'rag-red-bg badgeSpan'}>
             {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
-    // Column Definitions: Defines the columns to be displayed.
-    const [colDefs, setColDefs] = useState([
-        {
-            field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
+// Column Definitions: Defines the columns to be displayed.
+const [colDefs, setColDefs] = useState([
+    {
+        field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
+    },
+    { field: "Id", maxWidth: 50 },
+    { field: "Name", filter: true },
+    { field: "Phone", filter: true },
+    {
+        field: "Email", filter: true, editable: true,
+        cellClassRules: {
+            // apply green to electric cars
+            'rag-green': params => params.value === "sa.ke@aol.com",
         },
-        { field: "Id", maxWidth: 50 },
-        { field: "Name", filter: true },
-        { field: "Phone", filter: true },
-        {
-            field: "Email", filter: true, editable: true,
-            cellClassRules: {
-                // apply green to electric cars
-                'rag-green': params => params.value === "sa.ke@aol.com",
-            },
-            cellRenderer: CustomEmailRenderer
-        },
-        { field: "EstablishedDate", filter: true },
-        {
-            field: "Disabled", filter: false,
-            cellClassRules: {
-                // apply green to electric cars
-                'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
-                'rag-red-bg': params => params.value === 1 || params.value === true,
-            },
-            cellRenderer: CustomDisabledRenderer
-        },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
-    ]);
-    const rowClassRules = {
-        // apply red to Ford cars
-        //'rag-red': params => params.data.firstName === "anand",
-    };
-    const pagination = true;
-    const paginationPageSize = 10;
-    const paginationPageSizeSelector = [5, 10, 20, 50];
-    const autoSizeStrategy = {
-        type: 'fitGridWidth',
-        defaultMinWidth: 50
-    };
+        cellRenderer: CustomEmailRenderer
+    },
+    { field: "EstablishedDate", filter: true },
+    {
+        field: "Disabled", filter: false,
+        // cellClassRules: {
+        //     // apply green to electric cars
+        //     'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
+        //     'rag-red-bg': params => params.value === 1 || params.value === true,
+        // },
+        cellRenderer: CustomDisabledRenderer
+    },
+    { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
+]);
+const rowClassRules = {
+    //'rag-red': params => params.data.firstName === "anand",
+};
+const pagination = true;
+const paginationPageSize = 10;
+const paginationPageSizeSelector = [5, 10, 20, 50];
+const autoSizeStrategy = {
+    type: 'fitGridWidth',
+    defaultMinWidth: 50
+};
 
-    return (
-        <>
-            <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
+return (
+    <>
+        <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
-                {/* TOOLS */}
-                <CompaniesListToolbar
-                    operation="Add"
-                    itemCount={itemCount}
-                    apiLoading={apiLoading}
-                    apiLoadingError={apiLoadingError}
-                    dataAPIError={dataAPIError}
-                    manualLoadData={manualLoadData} />
-                {/* TOOLS */}
+            {/* TOOLS */}
+            <CompaniesListToolbar
+                operation="Add"
+                itemCount={itemCount}
+                apiLoading={apiLoading}
+                apiLoadingError={apiLoadingError}
+                dataAPIError={dataAPIError}
+                manualLoadData={manualLoadData} />
+            {/* TOOLS */}
 
-            </div>
+        </div>
 
-            <div
-                className="ag-theme-quartz" // applying the Data Grid theme
-                style={{ height: 500 }} // the Data Grid will fill the size of the parent container
-            >
-                <AgGridReact
-                    rowData={data.data}
-                    columnDefs={colDefs}
-                    pagination={pagination}
-                    paginationPageSize={paginationPageSize}
-                    paginationPageSizeSelector={paginationPageSizeSelector}
-                    rowClassRules={rowClassRules}
-                    autoSizeStrategy={autoSizeStrategy}
-                />
-            </div>
+        <div
+            className="ag-theme-quartz" // applying the Data Grid theme
+            style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+        >
+            <AgGridReact
+                rowData={data.data}
+                columnDefs={colDefs}
+                pagination={pagination}
+                paginationPageSize={paginationPageSize}
+                paginationPageSizeSelector={paginationPageSizeSelector}
+                rowClassRules={rowClassRules}
+                autoSizeStrategy={autoSizeStrategy}
+            />
+        </div>
 
-        </>
-    )
+    </>
+)
 }
 
 export default CompaniesList;

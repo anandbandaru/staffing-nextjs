@@ -69,25 +69,6 @@ const OwnersList = () => {
             )
     }
 
-    function searchBoxTextChange(event) {
-        const textValue = event.target.value;
-        console.log(textValue);
-        if (textValue === "") {
-            setData(data_Original);
-        }
-        else {
-            if (itemCount === 0)
-                return;
-
-            const filteredData = data_Original.data.filter(ds => ds.firstName.toLowerCase().includes(textValue.toLowerCase()));
-            const newVal = {
-                filteredRows: filteredData.length,
-                data: filteredData
-            };
-            setData(newVal);
-        }
-    }
-
     const CustomDetailsComponent = (props) => {
         return (
             <>
@@ -109,7 +90,7 @@ const OwnersList = () => {
         </span>
     );
     const CustomDisabledRenderer = ({ value }) => (
-        <span>
+        <span className={(value === null || !value) ? 'rag-green-bg badgeSpan' : 'rag-red-bg badgeSpan'}>
             {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
@@ -132,11 +113,11 @@ const OwnersList = () => {
         { field: "phone1", filter: true },
         {
             field: "Disabled", filter: false,
-            cellClassRules: {
-                // apply green to electric cars
-                'rag-green': params => params.value === null || params.value === false,
-                'rag-red': params => params.value === true,
-            },
+            // cellClassRules: {
+            //     // apply green to electric cars
+            //     'rag-green': params => params.value === null || params.value === false,
+            //     'rag-red': params => params.value === true,
+            // },
             cellRenderer: CustomDisabledRenderer
         },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }

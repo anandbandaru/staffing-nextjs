@@ -11,7 +11,6 @@ import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 const TodoList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
-    const [data_Original, setData_Original] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -52,7 +51,6 @@ const TodoList = () => {
                     }
                     else {
                         setData(result);
-                        setData_Original(result);
                         setItemCount(result.total);
                         setDataAPIError(result.total == 0 ? "No To Dos information present." : "ok");
                     }
@@ -72,19 +70,19 @@ const TodoList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <TodoDetails ID={props.data.id} operation="View" doLoading={false} />
+                <TodoDetails ID={props.data.Id} operation="View" doLoading={false} />
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                <TodoEdit ID={props.data.id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <TodoEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
             </>
         );
     };
     const CustomCompletedRenderer = ({ value }) => (
-        <span>
+        <span className={(value === null || !value) ? 'rag-red-bg badgeSpan' : 'rag-green-bg badgeSpan'}>
             {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
@@ -99,20 +97,20 @@ const TodoList = () => {
         {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
-        { field: "id", maxWidth: 50 },
+        { field: "Id", maxWidth: 50 },
         { field: "title", filter: true },
         { field: "createdDate", filter: true },
         {
             field: "completed", filter: false,
-            cellClassRules: {
-                // apply green to electric cars
-                'rag-red': params => params.value === null || params.value === false,
-                'rag-green': params => params.value === true,
-            },
+            // cellClassRules: {
+            //     // apply green to electric cars
+            //     'rag-red': params => params.value === null || params.value === false,
+            //     'rag-green': params => params.value === true,
+            // },
             cellRenderer: CustomCompletedRenderer
         },
         {
-            field: "Important", filter: false,
+            field: "important", filter: false,
             cellClassRules: {
                 // apply green to electric cars
                 'rag-green': params => params.value === null || params.value === false,

@@ -196,7 +196,6 @@ const ContextProvider = (props) => {
             });
 
             const endpoint = 'https://graph.microsoft.com/v1.0/users/vsk.software_outlook.com#EXT#@vsksoftwareoutlook.onmicrosoft.com/drive/root:/owners:/children';
-            const user = '{\"name\': \'anand\",\"folder\': {},\'@microsoft.graph.conflictBehavior\': \"rename\"}';
             console.log("ENDPOINTA: " + endpoint)
             const body = {
                 name: "anand",
@@ -237,7 +236,8 @@ const ContextProvider = (props) => {
         userName,
         userType,
         refreshPage,
-        createOneDriveFolder
+        createOneDriveFolder,
+        accessToken
     }
 
     return (

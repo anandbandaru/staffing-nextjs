@@ -30,11 +30,11 @@ const ClientList = () => {
         setItemCount(0);
         setDataAPIError("");
         setTimeout(() => {
-            getClientsList();
+            getList();
         }, 1);
     }
 
-    const getClientsList = () => {
+    const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getclients"
         fetch(apiUrl)
@@ -83,7 +83,7 @@ const ClientList = () => {
         );
     };
     const CustomDisabledRenderer = ({ value }) => (
-        <span>
+        <span className={(value === null || !value) ? 'rag-green-bg badgeSpan' : 'rag-red-bg badgeSpan'}>
             {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
@@ -99,11 +99,11 @@ const ClientList = () => {
         { field: "createdDate", filter: true },
         {
             field: "Disabled", filter: false,
-            cellClassRules: {
-                // apply green to electric cars
-                'rag-green': params => params.value === null || params.value === false,
-                'rag-red': params => params.value === true,
-            },
+            // cellClassRules: {
+            //     // apply green to electric cars
+            //     'rag-green': params => params.value === null || params.value === false,
+            //     'rag-red': params => params.value === true,
+            // },
             cellRenderer: CustomDisabledRenderer
         },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }

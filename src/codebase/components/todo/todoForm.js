@@ -39,7 +39,7 @@ function TodoForm({ props, ID, operation }) {
                     }
                     else {
                         setData(result);
-                        setItemToCheck(result.data[0].id);
+                        setItemToCheck(result.data[0].Id);
                         //alert(firstName);
                         setDataAPIError(result.total === 0 ? "No To Dos information present." : "ok");
                     }
@@ -70,10 +70,10 @@ function TodoForm({ props, ID, operation }) {
                 <Formik
                     enableReinitialize
                     initialValues={{
-                        id: itemToCheck ? ID : 'This will be auto-generated once you save',
+                        Id: itemToCheck ? ID : 'This will be auto-generated once you save',
                         title: itemToCheck ? data.data[0].title : '',
                         createdBy: userName,
-                        Important: itemToCheck ? (data.data[0].Important === null ? false : data.data[0].Important) : false,
+                        important: itemToCheck ? (data.data[0].important === null ? false : data.data[0].important) : false,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         var finalAPI = APIPath + "/addtodo";
@@ -125,11 +125,11 @@ function TodoForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="id"
-                                    name="id"
+                                    id="Id"
+                                    name="Id"
                                     label="Id"
                                     disabled
-                                    value={values.id}
+                                    value={values.Id}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -148,13 +148,13 @@ function TodoForm({ props, ID, operation }) {
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            id="Important"
-                                            name="Important"
+                                            id="important"
+                                            name="important"
                                             label="Important"
                                             // value={values.Disabled}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            checked={values.Important} />
+                                            checked={values.important} />
                                     }
                                     label="Important"
                                 />
