@@ -11,20 +11,20 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 
-function ImpPartnerForm({ props, ID, operation }) {
+function CompanyForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
     const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
-    const [name, setName] = useState('');
+    const [itemToCheck, setItemToCheck] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
     const getDetails = () => {
-        let apiUrl = APIPath + "/getimplementationpartnerdetails/" + ID;
+        let apiUrl = APIPath + "/getcompanydetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -39,7 +39,7 @@ function ImpPartnerForm({ props, ID, operation }) {
                     }
                     else {
                         setData(result);
-                        setName(result.data[0].Name);
+                        setItemToCheck(result.data[0].Name);
                         //alert(firstName);
                         setDataAPIError(result.total === 0 ? "No Implementation Partners information present." : "ok");
                     }
@@ -60,6 +60,14 @@ function ImpPartnerForm({ props, ID, operation }) {
         }
     }, []);
 
+    const formatDate = (dateString) => {
+        const apiDate = dateString;
+        const date = new Date(apiDate);
+        const formatted = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
+        console.log("FORMATTED DATE:" + formatted)
+        return formatted;
+    }
+
     return (
         <>
             {apiLoading && operation !== "New" ?
@@ -70,17 +78,21 @@ function ImpPartnerForm({ props, ID, operation }) {
                 <Formik
                     enableReinitialize
                     initialValues={{
-                        Id: name ? ID : 'This will be auto-generated once you save',
-                        Name: name ? data.data[0].Name : '',
-                        Address: name ? data.data[0].Address : '',
-                        Emails: name ? data.data[0].Emails : '',
-                        Notes: name ? data.data[0].Notes : '',
-                        Disabled: name ? data.data[0].Disabled : false,
+                        Id: itemToCheck ? ID : 'This will be auto-generated once you save',
+                        Name: itemToCheck ? data.data[0].Name : '',
+                        Description: itemToCheck ? data.data[0].Description : '',
+                        Address: itemToCheck ? data.data[0].Address : '',
+                        EIN: itemToCheck ? data.data[0].EIN : '',
+                        Phone: itemToCheck ? data.data[0].Phone : '',
+                        Email: itemToCheck ? data.data[0].Email : '',
+                        EstablishedDate: itemToCheck ? formatDate(data.data[0].EstablishedDate) : '',
+                        Notes: itemToCheck ? data.data[0].Notes : '',
+                        Disabled: itemToCheck ? data.data[0].Disabled : false,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        var finalAPI = APIPath + "/addimplementationpartner";
+                        var finalAPI = APIPath + "/addcompany";
                         if (operation === "Edit") {
-                            finalAPI = APIPath + "/updateimplementationpartner";
+                            finalAPI = APIPath + "/updatecompany";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -107,9 +119,18 @@ function ImpPartnerForm({ props, ID, operation }) {
                     validationSchema={Yup.object().shape({
                         Name: Yup.string()
                             .required('Required'),
+                        Description: Yup.string()
+                            .required('Required'),
                         Address: Yup.string()
                             .required('Required'),
-                        Emails: Yup.string()
+                        EIN: Yup.string()
+                            .required('Required'),
+                        Phone: Yup.string()
+                            .required('Required'),
+                        Email: Yup.string()
+                            .email()
+                            .required('Required'),
+                        EstablishedDate: Yup.string()
                             .required('Required'),
                         Notes: Yup.string()
                             .required('Required'),
@@ -125,8 +146,7 @@ function ImpPartnerForm({ props, ID, operation }) {
                             handleChange,
                             handleBlur,
                             handleSubmit,
-                            handleReset,
-                            setFieldValue
+                            handleReset
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>
@@ -158,6 +178,20 @@ function ImpPartnerForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
+                                    id="Description"
+                                    name="Description"
+                                    label="Description"
+                                    multiline
+                                    rows={4}
+                                    value={values.Description}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.Description && touched.Description) && errors.Description}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
                                     id="Address"
                                     name="Address"
                                     label="Address"
@@ -172,16 +206,56 @@ function ImpPartnerForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Emails"
-                                    name="Emails"
-                                    label="Emails"
-                                    multiline
-                                    rows={4}
-                                    value={values.Emails}
+                                    id="EIN"
+                                    name="EIN"
+                                    label="EIN"
+                                    value={values.EIN}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Emails && touched.Emails) && errors.Emails}
+                                    helperText={(errors.EIN && touched.EIN) && errors.EIN}
                                 />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="Phone"
+                                    name="Phone"
+                                    label="Phone"
+                                    value={values.Phone}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.Phone && touched.Phone) && errors.Phone}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="Email"
+                                    name="Email"
+                                    label="Email"
+                                    value={values.Email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.Email && touched.Email) && errors.Email}
+                                />
+                                <Stack direction="row" spacing={2} className='flex items-center pl-2'>
+                                    <div className='flex-1'>Established Date:
+                                        <span className='px-2 bg-gray-500 mx-2 text-white'>{values.EstablishedDate}</span>
+                                    </div>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        className='flex-1'
+                                        id="EstablishedDate"
+                                        name="EstablishedDate"
+                                        type="date"
+                                        value={values.EstablishedDate}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.EstablishedDate && touched.EstablishedDate) && errors.EstablishedDate}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -255,4 +329,4 @@ function ImpPartnerForm({ props, ID, operation }) {
     );
 }
 
-export default ImpPartnerForm;
+export default CompanyForm;

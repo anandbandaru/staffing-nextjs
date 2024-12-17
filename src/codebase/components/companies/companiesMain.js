@@ -16,12 +16,16 @@ const CompaniesMain = () => {
                         onSelect={(index) => setTabIndex(index)}>
                         <TabList className="subTabsListHolder">
                             <Tab>List</Tab>
+                            <Tab>Ownership</Tab>
                             <Tab>Documents</Tab>
                             <Tab>Reports</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">
                             <CompaniesList />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                        Ownership
                         </TabPanel>
                         <TabPanel className="px-2">
                             {/* <OwnerDocumentsNew /> */}

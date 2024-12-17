@@ -7,19 +7,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-function FileTypeDetails({ ID, operation, doLoading }) {
+function CompanyDetails({ ID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [tabIndex, setTabIndex] = React.useState(0);
     const [data, setData] = useState({ data: [] });
-    const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -46,7 +44,7 @@ function FileTypeDetails({ ID, operation, doLoading }) {
     }));
     const getDetails = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getfiletypedetails/" + ID
+        let apiUrl = APIPath + "/getcompanydetails/" + ID
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -60,8 +58,7 @@ function FileTypeDetails({ ID, operation, doLoading }) {
                     }
                     else {
                         setData(result);
-                        setName(result.data[0].name);
-                        setDataAPIError(result.total == 0 ? "No File Type information present." : "ok");
+                        setDataAPIError(result.total == 0 ? "No Company information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -100,8 +97,8 @@ function FileTypeDetails({ ID, operation, doLoading }) {
                 aria-labelledby="customized-dialog-title"
                 open={open}
             >
-                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} File Type: ID: {ID}
+                <DialogTitle className="text-pink-600 w-80" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    {operation} Company: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -129,6 +126,9 @@ function FileTypeDetails({ ID, operation, doLoading }) {
                                     onSelect={(index) => setTabIndex(index)}>
                                     <TabList className="thirdTabsListHolder">
                                         <Tab>Metadata</Tab>
+                                        <Tab>Ownership</Tab>
+                                        <Tab>Documents</Tab>
+                                        <Tab>Relations</Tab>
                                     </TabList>
 
                                     <TabPanel className="px-2">
@@ -156,6 +156,15 @@ function FileTypeDetails({ ID, operation, doLoading }) {
                                             </Table>
                                         </TableContainer>
                                     </TabPanel>
+                                    <TabPanel className="px-2">
+                                        Ownership
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        Documents
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        Reports
+                                    </TabPanel>
                                 </Tabs>
                             </Box>
                         </>
@@ -167,4 +176,4 @@ function FileTypeDetails({ ID, operation, doLoading }) {
     )
 }
 
-export default FileTypeDetails;
+export default CompanyDetails;

@@ -5,8 +5,8 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import CompaniesListToolbar from './companiesListToolbar'
-// import OwnerDetails from "./ownerDetails";
-// import OwnerEdit from "./ownerEdit";
+import CompanyDetails from "./companyDetails";
+import CompanyEdit from "./companyEdit";
 
 const CompaniesList = () => {
     const { APIPath } = useContext(Context);
@@ -31,11 +31,11 @@ const CompaniesList = () => {
         setItemCount(0);
         setDataAPIError("");
         setTimeout(() => {
-            getCompaniesList();
+            getList();
         }, 1);
     }
 
-    const getCompaniesList = () => {
+    const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getcompanies"
         fetch(apiUrl)
@@ -68,37 +68,17 @@ const CompaniesList = () => {
                 }
             )
     }
-
-    function searchBoxTextChange(event) {
-        const textValue = event.target.value;
-        console.log(textValue);
-        if (textValue === "") {
-            setData(data_Original);
-        }
-        else {
-            if (itemCount === 0)
-                return;
-
-            const filteredData = data_Original.data.filter(ds => ds.Name.toLowerCase().includes(textValue.toLowerCase()));
-            const newVal = {
-                filteredRows: filteredData.length,
-                data: filteredData
-            };
-            setData(newVal);
-        }
-    }
-
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                {/* <CompanyDetails ownerID={props.data.Id} operation="View" /> */}
+                <CompanyDetails ID={props.data.Id} operation="View" />
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                {/* <CompanyEdit ownerID={props.data.Id} operation="Edit" /> */}
+                <CompanyEdit ID={props.data.Id} operation="Edit"  manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
             </>
         );
     };
@@ -110,7 +90,7 @@ const CompaniesList = () => {
     );
     const CustomDisabledRenderer = ({ value }) => (
         <span>
-            {value === null ? "NO" : "YES"}
+            {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
     // Column Definitions: Defines the columns to be displayed.
@@ -122,7 +102,7 @@ const CompaniesList = () => {
         { field: "Name", filter: true },
         { field: "Phone", filter: true },
         {
-            field: "email", filter: true, editable: true,
+            field: "Email", filter: true, editable: true,
             cellClassRules: {
                 // apply green to electric cars
                 'rag-green': params => params.value === "sa.ke@aol.com",
@@ -134,8 +114,8 @@ const CompaniesList = () => {
             field: "Disabled", filter: false,
             cellClassRules: {
                 // apply green to electric cars
-                'rag-green': params => params.value === null,
-                'rag-red': params => params.value !== null,
+                'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
+                'rag-red-bg': params => params.value === 1 || params.value === true,
             },
             cellRenderer: CustomDisabledRenderer
         },

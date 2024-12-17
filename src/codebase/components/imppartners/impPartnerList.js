@@ -30,11 +30,11 @@ const ImpPartnerList = () => {
         setItemCount(0);
         setDataAPIError("");
         setTimeout(() => {
-            getImpPartnersList();
+            getList();
         }, 1);
     }
 
-    const getImpPartnersList = () => {
+    const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getimplementationpartners"
         fetch(apiUrl)
