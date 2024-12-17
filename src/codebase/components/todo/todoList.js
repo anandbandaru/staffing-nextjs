@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import TodosListToolbar from './todosListToolbar'
 import TodoDetails from "./todoDetails";
 import TodoEdit from "./todoEdit";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const TodoList = () => {
     const { APIPath } = useContext(Context);
@@ -87,6 +88,12 @@ const TodoList = () => {
             {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
+    const CustomImportantRenderer = ({ value }) => (
+        <span>
+            {(value === null || !value) ? "" : <ErrorOutlineOutlinedIcon />}
+        </span>
+    );
+    //ErrorOutlineOutlinedIcon
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs, setColDefs] = useState([
         {
@@ -99,8 +106,8 @@ const TodoList = () => {
             field: "completed", filter: false,
             cellClassRules: {
                 // apply green to electric cars
-                'rag-green': params => params.value === null || params.value === false,
-                'rag-red': params => params.value === true,
+                'rag-red': params => params.value === null || params.value === false,
+                'rag-green': params => params.value === true,
             },
             cellRenderer: CustomCompletedRenderer
         },
@@ -111,7 +118,7 @@ const TodoList = () => {
                 'rag-green': params => params.value === null || params.value === false,
                 'rag-red': params => params.value === true,
             },
-            cellRenderer: CustomCompletedRenderer
+            cellRenderer: CustomImportantRenderer
         },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
     ]);
