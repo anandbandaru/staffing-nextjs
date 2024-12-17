@@ -10,6 +10,7 @@ import OwnersMain from "../owners/ownersMain";
 import CompaniesMain from "../companies/companiesMain";
 import FileTypesMain from "../filetypes/fileTypesMain";
 import ClientsMain from "../clients/clientsMain";
+import ImpPartnersMain from "../imppartners/impPartnersMain";
 
 const ModulesTop = ({ module }) => {
 
@@ -63,7 +64,7 @@ const ModulesTop = ({ module }) => {
                                 <ClientsMain />
                             </TabPanel>
                             <TabPanel className="px-2">
-                                sdg
+                                <ImpPartnersMain />
                             </TabPanel>
                             <TabPanel className="px-2">
                                 sdg

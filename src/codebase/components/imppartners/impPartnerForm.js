@@ -11,7 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 
-function ClientForm({ props, ID, operation }) {
+function ImpPartnerForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
@@ -23,8 +23,8 @@ function ClientForm({ props, ID, operation }) {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
-    const getClientDetails = () => {
-        let apiUrl = APIPath + "/getclientdetails/" + ID;
+    const getImpPartnerDetails = () => {
+        let apiUrl = APIPath + "/getimplementationpartnerdetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -41,7 +41,7 @@ function ClientForm({ props, ID, operation }) {
                         setData(result);
                         setName(result.data[0].Name);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Clients information present." : "ok");
+                        setDataAPIError(result.total === 0 ? "No Implementation Partners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -56,7 +56,7 @@ function ClientForm({ props, ID, operation }) {
     }
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
-            getClientDetails();
+            getImpPartnerDetails();
         }
     }, []);
 
@@ -78,9 +78,9 @@ function ClientForm({ props, ID, operation }) {
                         Disabled: name ? data.data[0].Disabled : false,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        var finalAPI = APIPath + "/addclient";
+                        var finalAPI = APIPath + "/addimplementationpartner";
                         if (operation === "Edit") {
-                            finalAPI = APIPath + "/updateclient";
+                            finalAPI = APIPath + "/updateimplementationpartner";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -255,4 +255,4 @@ function ClientForm({ props, ID, operation }) {
     );
 }
 
-export default ClientForm;
+export default ImpPartnerForm;

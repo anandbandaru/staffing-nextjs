@@ -11,20 +11,20 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 
-function ClientForm({ props, ID, operation }) {
-    const { APIPath } = useContext(Context);
+function TodoForm({ props, ID, operation }) {
+    const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
     const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
-    const [name, setName] = useState('');
+    const [itemToCheck, setItemToCheck] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
-    const getClientDetails = () => {
-        let apiUrl = APIPath + "/getclientdetails/" + ID;
+    const getDetails = () => {
+        let apiUrl = APIPath + "/gettododetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -39,9 +39,9 @@ function ClientForm({ props, ID, operation }) {
                     }
                     else {
                         setData(result);
-                        setName(result.data[0].Name);
+                        setItemToCheck(result.data[0].id);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Clients information present." : "ok");
+                        setDataAPIError(result.total === 0 ? "No To Dos information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -56,7 +56,7 @@ function ClientForm({ props, ID, operation }) {
     }
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
-            getClientDetails();
+            getDetails();
         }
     }, []);
 
@@ -70,17 +70,15 @@ function ClientForm({ props, ID, operation }) {
                 <Formik
                     enableReinitialize
                     initialValues={{
-                        Id: name ? ID : 'This will be auto-generated once you save',
-                        Name: name ? data.data[0].Name : '',
-                        Address: name ? data.data[0].Address : '',
-                        Emails: name ? data.data[0].Emails : '',
-                        Notes: name ? data.data[0].Notes : '',
-                        Disabled: name ? data.data[0].Disabled : false,
+                        id: itemToCheck ? ID : 'This will be auto-generated once you save',
+                        title: itemToCheck ? data.data[0].title : '',
+                        createdBy: userName,
+                        Important: itemToCheck ? (data.data[0].Important === null ? false : data.data[0].Important) : false,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        var finalAPI = APIPath + "/addclient";
+                        var finalAPI = APIPath + "/addtodo";
                         if (operation === "Edit") {
-                            finalAPI = APIPath + "/updateclient";
+                            finalAPI = APIPath + "/updatetodo";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -105,14 +103,8 @@ function ClientForm({ props, ID, operation }) {
                     }}
 
                     validationSchema={Yup.object().shape({
-                        Name: Yup.string()
-                            .required('Required'),
-                        Address: Yup.string()
-                            .required('Required'),
-                        Emails: Yup.string()
-                            .required('Required'),
-                        Notes: Yup.string()
-                            .required('Required'),
+                        title: Yup.string()
+                            .required('Required')
                     })}
                 >
                     {(props) => {
@@ -126,7 +118,6 @@ function ClientForm({ props, ID, operation }) {
                             handleBlur,
                             handleSubmit,
                             handleReset,
-                            setFieldValue
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>
@@ -134,11 +125,11 @@ function ClientForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Id"
-                                    name="Id"
+                                    id="id"
+                                    name="id"
                                     label="Id"
                                     disabled
-                                    value={values.Id}
+                                    value={values.id}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -146,69 +137,26 @@ function ClientForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Name"
-                                    name="Name"
-                                    label="Name"
-                                    value={values.Name}
+                                    id="title"
+                                    name="title"
+                                    label="Title"
+                                    value={values.title}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Name && touched.Name) && errors.Name}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="Address"
-                                    name="Address"
-                                    label="Address"
-                                    multiline
-                                    rows={4}
-                                    value={values.Address}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.Address && touched.Address) && errors.Address}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="Emails"
-                                    name="Emails"
-                                    label="Emails"
-                                    multiline
-                                    rows={4}
-                                    value={values.Emails}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.Emails && touched.Emails) && errors.Emails}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="Notes"
-                                    name="Notes"
-                                    label="Notes"
-                                    multiline
-                                    rows={4}
-                                    value={values.Notes}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.Notes && touched.Notes) && errors.Notes}
+                                    helperText={(errors.title && touched.title) && errors.title}
                                 />
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            id="Disabled"
-                                            name="Disabled"
-                                            label="Disabled"
+                                            id="Important"
+                                            name="Important"
+                                            label="Important"
                                             // value={values.Disabled}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            // helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
-                                            checked={values.Disabled} />
+                                            checked={values.Important} />
                                     }
-                                    label="Disabled"
+                                    label="Important"
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
                                     <div>
@@ -255,4 +203,4 @@ function ClientForm({ props, ID, operation }) {
     );
 }
 
-export default ClientForm;
+export default TodoForm;

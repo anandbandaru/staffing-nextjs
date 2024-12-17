@@ -38,6 +38,7 @@ import 'react-tabs/style/react-tabs.css';
 import ModulesTop from "../top2/ModulesTop";
 import TransactionsTop from "../top2/TransactionsTop";
 import Dashboard from "../dashboard/dashboard";
+import TodosMain from "../todo/todosMain";
 
 const Top = () => {
 
@@ -149,7 +150,7 @@ const Top = () => {
                             Files
                         </TabPanel>
                         <TabPanel className="px-2">
-                            Todo
+                            <TodosMain />
                         </TabPanel>
                     </Tabs>
                 </Box>

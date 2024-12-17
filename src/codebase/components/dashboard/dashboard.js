@@ -16,7 +16,7 @@ const Dashboard = () => {
         companies: 0,
         employees: 0,
         clients: 0,
-        implementationPartners: 0,
+        implementationpartners: 0,
         jobs: 0,
         invoices: 0,
         payroll: 0,
@@ -35,7 +35,7 @@ const Dashboard = () => {
                 '/counts/companies',
                 // '/counts/employees',
                 '/counts/clients',
-                // '/counts/implementationPartners',
+                '/counts/implementationpartners',
                 // '/counts/jobs',
                 // '/counts/invoices',
                 // '/counts/payroll',
@@ -118,7 +118,7 @@ const Dashboard = () => {
                 {renderCard('Clients', counts.clients)}
             </Grid>
             <Grid item md={1}>
-                {renderCard('Impl. Partners', counts.implementationPartners)}
+                {renderCard('Impl. Partners', counts.implementationpartners)}
             </Grid>
             <Grid item md={1}>
                 {renderCard('Jobs', counts.jobs)}
