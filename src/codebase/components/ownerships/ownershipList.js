@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/context";
-import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
-import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
-import OwnersListToolbar from './ownersListToolbar'
-import OwnerDetails from "./ownerDetails";
-import OwnerEdit from "./ownerEdit";
+import { AgGridReact } from 'ag-grid-react';
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import OwnershipsListToolbar from './ownershipsListToolbar'
+import OwnershipDetails from "./ownershipDetails";
+import OwnershipEdit from "./ownershipEdit";
 
-const OwnersList = () => {
+const OwnershipList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
+    const [data_Original, setData_Original] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -36,7 +36,7 @@ const OwnersList = () => {
 
     const getList = () => {
         setData({ data: [] });
-        let apiUrl = APIPath + "/getowners"
+        let apiUrl = APIPath + "/getownerships"
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -51,8 +51,9 @@ const OwnersList = () => {
                     }
                     else {
                         setData(result);
+                        setData_Original(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
+                        setDataAPIError(result.total == 0 ? "No Ownership information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -70,26 +71,20 @@ const OwnersList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <OwnerDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <OwnershipDetails ID={props.data.Id} operation="View" doLoading={false} />
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                <OwnerEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} />
+                <OwnershipEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
             </>
         );
     };
-    const CustomEmailRenderer = ({ value }) => (
+    const CustomPercentageRenderer = ({ value }) => (
         <span>
-            <MarkunreadOutlinedIcon fontSize="small" className="mr-2" />
             {value}
-        </span>
-    );
-    const CustomDisabledRenderer = ({ value }) => (
-        <span className={(value === null || !value) ? 'rag-green-bg badgeSpan' : 'rag-red-bg badgeSpan'}>
-            {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
     // Column Definitions: Defines the columns to be displayed.
@@ -98,25 +93,23 @@ const OwnersList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
-        { field: "firstName", filter: true },
-        { field: "lastName", filter: true },
         {
-            field: "email", filter: true, editable: true,
-            cellClassRules: {
-                // apply green to electric cars
-                'rag-green': params => params.value === "sa.ke@aol.com",
-            },
-            cellRenderer: CustomEmailRenderer
+            field: "companyId",
+            valueGetter: (params) => `${params.data.companyId} - ${params.data.companyName}`,
         },
-        { field: "phone1", filter: true },
         {
-            field: "Disabled", filter: false,
+            field: "ownerId",
+            valueGetter: (params) => `${params.data.ownerId} - ${params.data.ownerFirstName} ${params.data.ownerLastName}`,
+        },
+        { field: "createdDate", filter: true },
+        {
+            field: "owingPercentage", filter: false,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green': params => params.value === null || params.value === false,
             //     'rag-red': params => params.value === true,
             // },
-            cellRenderer: CustomDisabledRenderer
+            cellRenderer: CustomPercentageRenderer
         },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
     ]);
@@ -137,7 +130,7 @@ const OwnersList = () => {
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}
-                <OwnersListToolbar
+                <OwnershipsListToolbar
                     operation="Add"
                     itemCount={itemCount}
                     apiLoading={apiLoading}
@@ -167,4 +160,4 @@ const OwnersList = () => {
     )
 }
 
-export default OwnersList;
+export default OwnershipList;

@@ -12,7 +12,7 @@ import AttributionOutlinedIcon from '@mui/icons-material/AttributionOutlined';
 import Stack from '@mui/material/Stack';
 
 const UserList = () => {
-    const { APIPath, accessToken } = useContext(Context);
+    const { accessToken } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);

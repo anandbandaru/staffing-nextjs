@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import 'reactjs-popup/dist/index.css';
 import Button from '@mui/material/Button';
 import { Link } from "@mui/material";
@@ -26,7 +26,7 @@ const UsersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                            {itemCount == 0 ? null :
+                            {itemCount === 0 ? null :
                                 <>
                                     <Button size="small" variant="contained"
                                         onClick={manualLoadData}

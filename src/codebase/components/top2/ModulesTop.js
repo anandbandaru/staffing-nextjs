@@ -11,6 +11,7 @@ import CompaniesMain from "../companies/companiesMain";
 import FileTypesMain from "../filetypes/fileTypesMain";
 import ClientsMain from "../clients/clientsMain";
 import ImpPartnersMain from "../imppartners/impPartnersMain";
+import OwnershipsMain from "../ownerships/ownershipsMain";
 
 const ModulesTop = ({ module }) => {
 
@@ -20,7 +21,7 @@ const ModulesTop = ({ module }) => {
 
     const [tab2Index, setTab2Index] = React.useState(0);
 
-    const tab2Names_Modules = ['Owners', 'Companies', 'Employees', 'Clients', 'Implementation Partners', 'Jobs Types', 'Expenses List', 'File Types List'];
+    const tab2Names_Modules = ['Owners', 'Companies', 'Ownerships', 'Employees', 'Clients', 'Implementation Partners', 'Jobs Types', 'Expenses List', 'File Types List'];
     const handleTab2Select_Modules = (index) => {
         setTab2Index(index);
         console.log('Selected Tab2:', tab2Names_Modules[index]);
@@ -56,6 +57,9 @@ const ModulesTop = ({ module }) => {
                             </TabPanel>
                             <TabPanel className="px-2">
                                 <CompaniesMain />
+                            </TabPanel>
+                            <TabPanel className="px-2">
+                                <OwnershipsMain />
                             </TabPanel>
                             <TabPanel className="px-2">
                                 sdg

@@ -1,30 +1,25 @@
 import React from "react";
-import './companiesMain.css';
+import './ownershipsMain.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
-import CompaniesList from './companiesList';
-// import OwnerDocumentsNew from "./ownerDocumentsNew";
+import OwnershipList from './ownershipList';
 
-const CompaniesMain = () => {
+const OwnershipsMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
 
     return (
-        <div className="companyMainHolder">
+        <div className="ownerMainHolder">
             <div className="subTabsHolder">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <Tabs selectedIndex={tabIndex}
                         onSelect={(index) => setTabIndex(index)}>
                         <TabList className="subTabsListHolder">
                             <Tab>List</Tab>
-                            <Tab>Documents</Tab>
                             <Tab>Reports</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">
-                            <CompaniesList />
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            {/* <OwnerDocumentsNew /> */}
+                            <OwnershipList />
                         </TabPanel>
                         <TabPanel className="px-2">
                             Reports
@@ -36,4 +31,4 @@ const CompaniesMain = () => {
     )
 }
 
-export default CompaniesMain;
+export default OwnershipsMain;

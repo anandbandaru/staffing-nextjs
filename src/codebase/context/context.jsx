@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { GRAPH_CONFIG, LOGIN_REQUEST, MSAL_CONFIG, PUBLIC_CLIENT_APPLICATION, TOKEN_REQUEST } from "../../msalConfig";
+import { LOGIN_REQUEST, MSAL_CONFIG, PUBLIC_CLIENT_APPLICATION } from "../../msalConfig";
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { Client } from '@microsoft/microsoft-graph-client';
@@ -10,7 +10,7 @@ const ContextProvider = (props) => {
 
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [loginError, setLoginError] = useState("");
-    const [loginInteractionInProgress, setLoginInteractionInProgress] = useState(false);
+    // const [loginInteractionInProgress, setLoginInteractionInProgress] = useState(false);
     const [token, setToken] = useState("");
     const [accessToken, setAccessToken] = useState("");
     const [userName, setUserName] = useState("");
@@ -186,8 +186,6 @@ const ContextProvider = (props) => {
                 scopes: ['Files.ReadWrite.All'],
                 account: accounts[0],
             };
-            const response = await PUBLIC_CLIENT_APPLICATION.acquireTokenSilent(request);
-            const accessTokenNew = response.accessToken;
 
             const graphClient = Client.init({
                 authProvider: (done) => {
