@@ -1,13 +1,24 @@
 {
   "developers": [
-    {"name": "Ananda Bandaru", "role": "UI & Architecture"}
+    {
+      "name": "Ananda Bandaru",
+      "role": "UI & Architecture"
+    }
   ],
   "pageTitles": [
-    {"title": "Staffing"}
+    {
+      "title": "Staffing"
+    }
   ],
   "greetings": [
-    {"message": "Generate SQL queries for different tables.", "icon": "code"},
-    {"message": "Show table data.", "icon": "storage"}
+    {
+      "message": "Generate SQL queries for different tables.",
+      "icon": "code"
+    },
+    {
+      "message": "Show table data.",
+      "icon": "storage"
+    }
   ],
   "releases": [
     {
@@ -17,6 +28,52 @@
         "Added ability to show greetings in landing page too",
         "UI changes for cards & prompts in landing page"
       ]
+    }
+  ],
+  "GOOGLEDRIVE_FOLDERS": [
+    {
+      "folderid": "1BrpGboRKKDUX_IEfXV-qYO8mZPim1vba",
+      "foldername": "APPLICATION"
+    },
+    {
+      "folderid": "1TRyOJ_3umzYfUsOMzxukC8SzQrRklSzZ",
+      "foldername": "JOBS"
+    },
+    {
+      "folderid": "1RgjVJJZ9fXAPN_L6XAQu885biMcmodoG",
+      "foldername": "TIMESHEETS"
+    },
+    {
+      "folderid": "1-sVzZ8GkP1zWHZrnS9iUT5fX5SfxnC43",
+      "foldername": "INVOICES"
+    },
+    {
+      "folderid": "1eSt7iWbupb4zekmBACm6dPC3BvIWyqAF",
+      "foldername": "EXPENSES"
+    },
+    {
+      "folderid": "1iaZxxNJl2aRn2ScL0Xwd4OrOrMy5VzlF",
+      "foldername": "IMPLEMENTATIONPARTNERS"
+    },
+    {
+      "folderid": "11E1vzOMTqG-58Q84ite-YskxCqHKWCse",
+      "foldername": "CLIENTS"
+    },
+    {
+      "folderid": "1DfnPgCopDZnDCVn-yXOhK5pQsIKj47MY",
+      "foldername": "EMPLOYEES"
+    },
+    {
+      "folderid": "11BLA_cBHSQhY7O4cG8AY1c4N2ucG9Gjo",
+      "foldername": "OWNERSHIPS"
+    },
+    {
+      "folderid": "1hOmG2Tvun4QIjh4wX1f2jxgVxtI_dbj0",
+      "foldername": "COMPANIES"
+    },
+    {
+      "folderid": "1aF_clEdno2N8IPGJ8B7ZA0HrrYN3aG0M",
+      "foldername": "OWNERS"
     }
   ]
 }

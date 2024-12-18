@@ -12,6 +12,7 @@ import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import CustomSnackbar from "../snackbar/snackbar";
 
 const ToDo = () => {
     const {
@@ -37,21 +38,19 @@ const ToDo = () => {
         setSelectedTodo(null);
     };
 
-    const [openSnackError, setOpenSnackError] = React.useState(false);
-    const handleCloseSnackError = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenSnackError(false);
-    };
-    const [openSnackSuccess, setOpenSnackSuccess] = React.useState(false);
-    const handleCloseSnackSuccess = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenSnackSuccess(false);
+    
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
     };
 
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         console.log("TODO SCREEN INTI HERE")
@@ -128,15 +127,14 @@ const ToDo = () => {
             setApiLoading(false);
             setApiLoadingError(false);
             fetchTodos("Active");
-            setOpenSnackError(false);
+            showSnackbar('success', "To Do is completed");
             setDataAPIError("")
-            setOpenSnackSuccess(true);
         })
             .catch(function (error) {
                 console.log(error);
                 setApiLoadingError(true);
                 setApiLoading(false);
-                setOpenSnackError(true);
+                showSnackbar('error', 'Error completing To do' + error);
                 setDataAPIError(error)
             });
     };
@@ -144,34 +142,12 @@ const ToDo = () => {
 
     return (
         <div>
-            <Snackbar
-                open={openSnackError}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackError}
-            >
-                <Alert
-                    onClose={handleCloseSnackError}
-                    severity="error"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    {dataAPIError.message}
-                </Alert>
-            </Snackbar>
-            <Snackbar
-                open={openSnackSuccess}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackSuccess}
-            >
-                <Alert
-                    onClose={handleCloseSnackSuccess}
-                    severity="success"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    To Do item completed.
-                </Alert>
-            </Snackbar>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <div >
                 <Stack spacing={0} direction="row" className="items-center justify-center">
                     <div className="bg-pink-500 text-white px-2 w-full mb-2">TO DOs & ACTIONS</div>

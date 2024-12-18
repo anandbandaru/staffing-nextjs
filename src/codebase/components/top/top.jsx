@@ -15,10 +15,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-
-import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-
 import Avatar from '@mui/material/Avatar';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { Stack } from "@mui/material";
@@ -168,15 +165,6 @@ const Top = () => {
                 <SettingsOutlinedIcon sx={{ width: 24, height: 24 }} onClick={toggleDrawer("right", true)} />
             </div>
 
-            <div className="notificationsHolder">
-                {!loading ?
-                    <></>
-                    :
-                    <></>
-                }
-                <CircleNotificationsOutlinedIcon sx={{ width: 24, height: 24 }} onClick={toggleDrawer("right", true)} />
-            </div>
-
             <div className="userHolder">
                 <div className="px-2  rounded-sm text-white">
                     <Stack spacing={1} direction="row" className="items-center justify-center">
@@ -216,7 +204,6 @@ const Top = () => {
                             </div>
                         </CardActions>
                     </Card>
-
                     <Card className="SettingsPart" variant="outlined">
                         <CardContent>
                             <Typography className="ToggleTitle" component="div">
@@ -232,8 +219,6 @@ const Top = () => {
                             </div>
                         </CardActions>
                     </Card>
-
-
                 </Box>
             </Drawer>
 

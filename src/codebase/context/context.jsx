@@ -193,7 +193,8 @@ const ContextProvider = (props) => {
                 },
             });
 
-            const endpoint = 'https://graph.microsoft.com/v1.0/users/vsk.software_outlook.com#EXT#@vsksoftwareoutlook.onmicrosoft.com/drive/root:/owners:/children';
+            let endpoint = 'https://graph.microsoft.com/v1.0/users/vsk.software_outlook.com#EXT#@vsksoftwareoutlook.onmicrosoft.com/drive/root:/owners:/children';
+            endpoint = "https://graph.microsoft.com/v1.0/me/drive/root/owners/children";
             console.log("ENDPOINTA: " + endpoint)
             const body = {
                 name: "anand",
@@ -206,6 +207,19 @@ const ContextProvider = (props) => {
             console.log(`Error creating folder: ${error.message}`)
         }
     }
+
+    const createGDriveFolder = async (parentId, folderName) => {
+        try {
+            const response = await axios.post(APIPath + '/createfolder', {
+                parentfolderid: parentId,
+                folderName: folderName,
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error creating folder:', error);
+            return error;
+        }
+    };
 
     const contextValue = {
         loading,
@@ -235,7 +249,8 @@ const ContextProvider = (props) => {
         userType,
         refreshPage,
         createOneDriveFolder,
-        accessToken
+        accessToken,
+        createGDriveFolder
     }
 
     return (

@@ -54,7 +54,7 @@
 }
 .optionsHolder{
     position: absolute;
-    right: 275px;
+    right: 255px;
     top: 25px;
     font-size: 14px;
     align-items: center;
@@ -81,7 +81,7 @@
  }
 .APICheckHolder{
     position: absolute;
-    right: 310px;
+    right: 290px;
     top: 27px;
     background-color: #f3f3f3;
     border-radius: 5px;
