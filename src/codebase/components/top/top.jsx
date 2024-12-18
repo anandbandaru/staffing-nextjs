@@ -37,6 +37,7 @@ import TransactionsTop from "../top2/TransactionsTop";
 import Dashboard from "../dashboard/dashboard";
 import TodosMain from "../todo/todosMain";
 import UsersMain from "../users/usersMain";
+import FilesMain from "../files/filesMain";
 
 const Top = () => {
 
@@ -145,7 +146,7 @@ const Top = () => {
                             Expenses
                         </TabPanel>
                         <TabPanel className="px-2">
-                            Files
+                            <FilesMain />
                         </TabPanel>
                         <TabPanel className="px-2">
                             <TodosMain />
