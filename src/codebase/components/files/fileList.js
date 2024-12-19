@@ -4,6 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import FilesListToolbar from './filesListToolbar'
+import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 
 const FileList = () => {
     const { APIPath } = useContext(Context);
@@ -65,14 +66,24 @@ const FileList = () => {
                 }
             )
     }
+    const CustomLinkRenderer = ({ value }) => (
+        <span>
+            <InsertLinkOutlinedIcon fontSize="small" className="mr-2" />
+            <a href={value} target="_blank">Click here</a>
+        </span>
+    );
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs, setColDefs] = useState([
         { field: "Id", maxWidth: 50 },
         { field: "module", filter: true },
-        { field: "moduleId" },
+        { field: "moduleId", },
         { field: "title", filter: true },
-        { field: "gDriveLink" },
         { field: "createdDate", filter: true },
+        { field: "notes", },
+        {
+            field: "gDriveLink",
+            cellRenderer: CustomLinkRenderer
+        },
     ]);
     const rowClassRules = {
         // apply red to Ford cars

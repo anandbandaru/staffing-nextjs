@@ -10,6 +10,9 @@ import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CustomSnackbar from "../snackbar/snackbar";
+import { styled } from '@mui/material/styles';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 function FileForm({ props, ID, operation }) {
     const [componentName, setComponentName] = useState('APPLICATION');
@@ -23,8 +26,11 @@ function FileForm({ props, ID, operation }) {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
+    //FILE RELATED
     const [parentId, setParentId] = useState('');
     const [file, setFile] = useState(null);
+    //FILE RELATED
+
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -38,6 +44,23 @@ function FileForm({ props, ID, operation }) {
         setSnackbarOpen(true);
     };
 
+    //FILE RELATED
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
+    const VisuallyHiddenInput = styled('input')({
+        clip: 'rect(0 0 0 0)',
+        clipPath: 'inset(50%)',
+        height: 1,
+        overflow: 'hidden',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        whiteSpace: 'nowrap',
+        width: 1,
+    });
+    //FILE RELATED
+
     //page title
     useEffect(() => {
         setParentId(configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid);
@@ -45,6 +68,12 @@ function FileForm({ props, ID, operation }) {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <Stack direction="row" spacing={2} className='justify-center items-center'>
                 <InfoOutlinedIcon />
                 <Chip label={`In this screen, file would be uploaded into ${componentName} folder of Google Drive by default`} />
@@ -66,6 +95,11 @@ function FileForm({ props, ID, operation }) {
                     formData.append('file', file);
                     const parentFolderId = configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid;
                     formData.append('parentfolderid', parentFolderId);
+                    formData.append('title', values.title);
+                    formData.append('createdBy', userName);
+                    formData.append('notes', values.notes);
+                    formData.append('module', componentName);
+                    formData.append('moduleId', '');
 
                     axios.post(APIPath + '/uploadfile', formData, {
                         headers: {
@@ -73,8 +107,16 @@ function FileForm({ props, ID, operation }) {
                         },
                     }).then((resp) => {
                         setSubmitionCompleted(true);
-                        setFormSubmitionAPIError(false);
-                        showSnackbar('success', `File uploaded successfully: ${resp.data.FILE_PATH}`);
+
+                        if (resp.data.STATUS !== "SUCCESS") {
+                            setFormSubmitionAPIError(true);
+                            setFormSubmitionAPIErrorMessage("ERROR: " + resp.data.ERROR.MESSAGE);
+                            showSnackbar('error', 'File upload failed');
+                        }
+                        else {
+                            setFormSubmitionAPIError(false);
+                            showSnackbar('success', 'File uploaded successfully');
+                        }
                         setApiLoading(false)
                     }).catch(function (error) {
                         setSubmitionCompleted(true);
@@ -89,8 +131,6 @@ function FileForm({ props, ID, operation }) {
 
                 validationSchema={Yup.object().shape({
                     title: Yup.string()
-                        .required('Required'),
-                    module: Yup.string()
                         .required('Required'),
                     notes: Yup.string()
                         .required('Required'),
@@ -150,19 +190,49 @@ function FileForm({ props, ID, operation }) {
                                 onBlur={handleBlur}
                                 helperText={(errors.notes && touched.notes) && errors.notes}
                             />
+                            {/* <>
+                                <Button
+                                    component="label"
+                                    role={undefined}
+                                    variant="contained"
+                                    tabIndex={-1}
+                                    startIcon={<CloudUploadIcon />}
+                                >
+                                    Upload files
+                                    <VisuallyHiddenInput
+                                        type="file"
+                                        size="small"
+                                        id="file"
+                                        name="file"
+                                        margin="normal"
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleFileChange(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.file && touched.file) && errors.file}
+                                    />
+                                </Button>
+                            </> */}
+                            {/* <label for="file" className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                                Select a File
+                            </label> */}
                             <TextField
+                                className='bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-200'
                                 type="file"
                                 size="small"
                                 margin="normal"
                                 fullWidth
                                 id="file"
                                 name="file"
-                                value={values.file}
-                                onChange={handleChange}
+                                onChange={(event) => {
+                                    handleChange(event);
+                                    handleFileChange(event);
+                                }}
                                 onBlur={handleBlur}
                                 helperText={(errors.file && touched.file) && errors.file}
                             />
-                            <Stack direction="row" spacing={2} className='float-right'>
+                            <Stack direction="row" spacing={2} className='float-right mt-10'>
                                 <div>
                                     {ID}:{operation}
                                 </div>
