@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CustomSnackbar from "../snackbar/snackbar";
 
 function OwnershipForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -160,8 +161,27 @@ function OwnershipForm({ props, ID, operation }) {
         }
     }, [companyId]);
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading && operation !== "New" ?
                 <>
                     <div className="spinner"></div>
@@ -195,12 +215,14 @@ function OwnershipForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
+                            showSnackbar('success', "Ownership data saved");
                         })
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
                                 setFormSubmitionAPIErrorMessage(error);
                                 setFormSubmitionAPIError(true);
+                                showSnackbar('error', "Error saving Ownership data");
                             });
                     }}
 
