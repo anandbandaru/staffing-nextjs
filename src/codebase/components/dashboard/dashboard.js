@@ -21,6 +21,8 @@ const Dashboard = () => {
         invoices: 0,
         payroll: 0,
         timesheets: 0,
+        filetypes: 0,
+        files: 0,
     });
 
     useEffect(() => {
@@ -33,14 +35,15 @@ const Dashboard = () => {
                 '/counts/importantactivetodos',
                 '/counts/completedtodos',
                 '/counts/companies',
-                // '/counts/employees',
+                '/counts/employees',
                 '/counts/clients',
                 '/counts/implementationpartners',
-                // '/counts/jobs',
-                // '/counts/invoices',
-                // '/counts/payroll',
-                // '/counts/timesheets'
-                '/counts/filetypes'
+                '/counts/jobs',
+                '/counts/invoices',
+                '/counts/payroll',
+                '/counts/timesheets',
+                '/counts/filetypes',
+                '/counts/files'
             ];
 
             try {
@@ -73,9 +76,9 @@ const Dashboard = () => {
                 </Typography>
                 {apiLoading ? <div className="spinner"></div> : <div className='dashCardsCounts'>{count}</div>}
             </CardContent>
-            <CardActions>
+            {/* <CardActions>
                 Something here
-            </CardActions>
+            </CardActions> */}
         </Card>
     );
 
@@ -103,9 +106,9 @@ const Dashboard = () => {
                             )}
                         </Stack>
                     </CardContent>
-                    <CardActions>
+                    {/* <CardActions>
                         Something here
-                    </CardActions>
+                    </CardActions> */}
                 </Card>
             </Grid>
             <Grid item md={1}>
@@ -134,6 +137,9 @@ const Dashboard = () => {
             </Grid>
             <Grid item md={1}>
                 {renderCard('File Types', counts.filetypes)}
+            </Grid>
+            <Grid item md={1}>
+                {renderCard('Files', counts.files)}
             </Grid>
         </Grid>
     );

@@ -39,7 +39,7 @@ const UserList = () => {
 
     const fetchUsers = async () => {
         setApiLoading(true);
-        const response = await axios.get("https://graph.microsoft.com/v1.0/users", {
+        await axios.get("https://graph.microsoft.com/v1.0/users", {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

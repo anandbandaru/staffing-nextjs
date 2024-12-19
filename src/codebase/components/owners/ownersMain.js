@@ -4,6 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import OwnersList from './ownerList';
 import OwnerDocumentsNew from "./ownerDocumentsNew";
+import OwnersReport from "./ownersReports";
 
 const OwnersMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -24,10 +25,10 @@ const OwnersMain = () => {
                             <OwnersList />
                         </TabPanel>
                         <TabPanel className="px-2">
-                            <OwnerDocumentsNew />
+                            {/* <OwnerDocumentsNew /> */}
                         </TabPanel>
                         <TabPanel className="px-2">
-                            Reports
+                            <OwnersReport />
                         </TabPanel>
                     </Tabs>
                 </Box>
