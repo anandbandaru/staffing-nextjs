@@ -8,10 +8,10 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
-import IDTypes from "../staticdata/idtypes";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
+import CustomSnackbar from "../snackbar/snackbar";
 
 function OwnerForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -20,12 +20,26 @@ function OwnerForm({ props, ID, operation }) {
     const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
+    const [fileTypesData, setFileTypesData] = useState({ data: [] });
     const [firstName, setFirstName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
-    const getOwnerDetails = () => {
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
+    const getDetails = () => {
         let apiUrl = APIPath + "/getownerdetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
@@ -56,14 +70,52 @@ function OwnerForm({ props, ID, operation }) {
                 }
             )
     }
+    const getFileTypesList = () => {
+        setFileTypesData({ data: [] });
+        let apiUrl = APIPath + "/masterdata/filetypes"
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    //console.log(result);
+                    if (result.error) {
+                        console.log("RequestData:On error return: setting empty")
+                        setDataAPIError(result.error.code + " - " + result.error.message);
+                        setFileTypesData({});
+                        setApiLoadingError(true);
+                    }
+                    else {
+                        setFileTypesData(result);
+                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setData({});
+                    console.log("RequestData:On JUST error: API call failed")
+                    setDataAPIError("RequestData:On JUST error: API call failed");
+                    setApiLoading(false);
+                    setApiLoadingError(true);
+                }
+            )
+    }
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
-            getOwnerDetails();
+            getDetails();
+        }
+        if (operation === "New" || operation === "Edit") {
+            getFileTypesList();
         }
     }, []);
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading && operation !== "New" ?
                 <>
                     <div className="spinner"></div>
@@ -102,12 +154,14 @@ function OwnerForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
+                            showSnackbar('success', "Owner data saved");
                         })
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
                                 setFormSubmitionAPIErrorMessage(error);
                                 setFormSubmitionAPIError(true);
+                                showSnackbar('error', "Error saving Owner data");
                             });
                     }}
 
@@ -230,8 +284,8 @@ function OwnerForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.IDType && touched.IDType) && errors.IDType}
                                 >
-                                    {IDTypes.map((item, index) => (
-                                        <MenuItem key={index} value={item.value}>
+                                    {fileTypesData.data.map((item, index) => (
+                                        <MenuItem key={index} value={item.Id}>
                                             {item.name}
                                         </MenuItem>
                                     ))}

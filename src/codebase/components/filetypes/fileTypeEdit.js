@@ -68,7 +68,7 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }>
                     <EditIcon />
                 </IconButton>
-                <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
+                {/* <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
                     const userConfirmed = window.confirm("Are you sure you want to delete this item with ID? - " + ID);
                     if (userConfirmed) {
                         deleteFileTypeByID();
@@ -78,7 +78,7 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }
                 }>
                     <DeleteIcon />
-                </IconButton>
+                </IconButton> */}
             </Stack>
             <BootstrapDialog
                 className=""

@@ -113,6 +113,7 @@ function OwnershipForm({ props, ID, operation }) {
                 }
             )
     }
+    
     useEffect(() => {
         console.log("OWNERSHIP: " + operation);
         if (operation === "View" || operation === "Edit") {
