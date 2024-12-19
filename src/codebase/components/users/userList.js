@@ -45,7 +45,7 @@ const UserList = () => {
             },
         }).then((resp) => {
             setItemCount(resp.data.value.length);
-            setDataAPIError(resp.data.value.length == 0 ? "No Users information present." : "ok");
+            setDataAPIError(resp.data.value.length === 0 ? "No Users information present." : "ok");
             setApiLoading(false);
             setData(resp.data);
         }).catch(function (error) {
