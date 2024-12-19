@@ -9,6 +9,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 function OwnershipForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -19,12 +20,15 @@ function OwnershipForm({ props, ID, operation }) {
     const [data, setData] = useState({ data: [] });
     const [ownersData, setOwnersData] = useState({ data: [] });
     const [companiesData, setCompaniesData] = useState({ data: [] });
+    const [companyId, setCompanyId] = useState('');
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
+    const [maxOwingPercentage, setMaxOwingPercentage] = useState(100);
 
     const getDetails = () => {
+        setApiLoading(true);
         let apiUrl = APIPath + "/getownershipdetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
@@ -52,10 +56,12 @@ function OwnershipForm({ props, ID, operation }) {
                     setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
                     setApiLoadingError(true);
+                    setApiLoading(false);
                 }
             )
     }
     const getCompaniesList = () => {
+        setApiLoading(true);
         setOwnersData({ data: [] });
         let apiUrl = APIPath + "/getcompanies"
         fetch(apiUrl)
@@ -81,10 +87,12 @@ function OwnershipForm({ props, ID, operation }) {
                     setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
                     setApiLoadingError(true);
+                    setApiLoading(false);
                 }
             )
     }
     const getOwnersList = () => {
+        setApiLoading(true);
         setOwnersData({ data: [] });
         let apiUrl = APIPath + "/getowners"
         fetch(apiUrl)
@@ -110,10 +118,32 @@ function OwnershipForm({ props, ID, operation }) {
                     setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
                     setApiLoadingError(true);
+                    setApiLoading(false);
                 }
             )
     }
-    
+    const getRemainingPercentage = (companyId) => {
+        setApiLoading(true);
+        let apiUrl = APIPath + "/getremainingpercentage/" + companyId;
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    if (!result.error) {
+                        setMaxOwingPercentage(result.data[0].remainingPercentage);
+                        setApiLoading(false);
+                    }
+                },
+                (error) => {
+                    console.error("Error fetching remaining percentage:", error);
+                    setApiLoading(false);
+                }
+            )
+    }
+    const handleCompanyIdChange = (event) => {
+        setCompanyId(event.target.value);
+    };
+
     useEffect(() => {
         console.log("OWNERSHIP: " + operation);
         if (operation === "View" || operation === "Edit") {
@@ -124,6 +154,11 @@ function OwnershipForm({ props, ID, operation }) {
             getOwnersList();
         }
     }, []);
+    useEffect(() => {
+        if (companyId) {
+            getRemainingPercentage(companyId);
+        }
+    }, [companyId]);
 
     return (
         <>
@@ -176,7 +211,7 @@ function OwnershipForm({ props, ID, operation }) {
                             .required('Required'),
                         owingPercentage: Yup.number()
                             .typeError('Must be a number')
-                            .max(100, 'Value must be less than or equal to 100')
+                            .max(maxOwingPercentage, `Value must be less than or equal to ${maxOwingPercentage}`)
                             .min(1, 'Value must be greater than or equal to 1')
                             .required('Required').test('is-decimal', 'Must be a decimal number', (value) =>
                                 (value + "").match(/^\d+(\.\d+)?$/)
@@ -221,7 +256,11 @@ function OwnershipForm({ props, ID, operation }) {
                                     label="Company Id"
                                     defaultValue="12"
                                     value={values.companyId}
-                                    onChange={handleChange}
+                                    // onChange={handleChange}
+                                    onChange={(event) => {
+                                        handleChange(event);
+                                        handleCompanyIdChange(event);
+                                    }}
                                     onBlur={handleBlur}
                                     helperText={(errors.companyId && touched.companyId) && errors.companyId}
                                 >
@@ -231,6 +270,12 @@ function OwnershipForm({ props, ID, operation }) {
                                         </MenuItem>
                                     ))}
                                 </TextField>
+                                <Stack direction="row" spacing={2} className='items-center'>
+                                    {companyId ? <>
+                                        <InfoOutlinedIcon />
+                                        <Chip color='warning' label={`Remaining % allocation is ${maxOwingPercentage}`} />
+                                    </> : <></>}
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -296,10 +341,15 @@ function OwnershipForm({ props, ID, operation }) {
                                             >
                                                 Reset
                                             </Button>
-                                            <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                <SaveOutlinedIcon className="mr-1" />
-                                                Save
-                                            </Button>
+                                            {apiLoading ?
+                                                <>
+                                                    <div className="spinner"></div>
+                                                </> :
+                                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                    <SaveOutlinedIcon className="mr-1" />
+                                                    Save
+                                                </Button>
+                                            }
                                         </>
                                     }
                                     {isSubmitionCompleted && !formSubmitionAPIError ?
