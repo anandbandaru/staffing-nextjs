@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
-import { Stack, Grid, Card, CardContent, CardActions, Typography } from '@mui/material';
+import { Stack, Grid, Card, CardContent, CardActions, Typography, Box, LinearProgress, Paper } from '@mui/material';
 
 const Dashboard = () => {
     const { APIPath } = useContext(Context);
@@ -23,6 +23,8 @@ const Dashboard = () => {
         timesheets: 0,
         filetypes: 0,
         files: 0,
+        storageusage: 475000,
+        storagelimit: 1000000,
     });
 
     useEffect(() => {
@@ -43,7 +45,9 @@ const Dashboard = () => {
                 '/counts/payroll',
                 '/counts/timesheets',
                 '/counts/filetypes',
-                '/counts/files'
+                '/counts/files',
+                '/counts/storagelimit',
+                '/counts/storageusage'
             ];
 
             try {
@@ -83,65 +87,84 @@ const Dashboard = () => {
     );
 
     return (
-        <Grid container spacing={1}>
-            <Grid item md={1}>
-                {renderCard('Owners', counts.owners)}
-            </Grid>
-            <Grid item md={1.6}>
-                <Card sx={{ minWidth: 155 }}>
-                    <CardContent>
-                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
-                            To Dos
-                        </Typography>
-                        <Stack spacing={1} direction="row">
-                            {apiLoading ? (
-                                <div className="spinner"></div>
-                            ) : (
-                                <>
-                                    <div className='dashCardsCounts'>{counts.todos}</div>
-                                    <div title='Active' className='dashCardsCounts bg-green-500 px-2'>{counts.activetodos}</div>
-                                    <div title='Completed' className='dashCardsCounts bg-yellow-400 px-2'>{counts.completedtodos}</div>
-                                    <div title='Active & Important' className='bg-red-500 px-2 text-white dashCardsCounts'>{counts.importantactivetodos}</div>
-                                </>
-                            )}
-                        </Stack>
-                    </CardContent>
-                    {/* <CardActions>
+        <>
+            <Grid container spacing={1}>
+                <Grid item md={1}>
+                    {renderCard('Owners', counts.owners)}
+                </Grid>
+                <Grid item md={1.6}>
+                    <Card sx={{ minWidth: 155 }}>
+                        <CardContent>
+                            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
+                                To Dos
+                            </Typography>
+                            <Stack spacing={1} direction="row">
+                                {apiLoading ? (
+                                    <div className="spinner"></div>
+                                ) : (
+                                    <>
+                                        <div className='dashCardsCounts'>{counts.todos}</div>
+                                        <div title='Active' className='dashCardsCounts bg-green-500 px-2'>{counts.activetodos}</div>
+                                        <div title='Completed' className='dashCardsCounts bg-yellow-400 px-2'>{counts.completedtodos}</div>
+                                        <div title='Active & Important' className='bg-red-500 px-2 text-white dashCardsCounts'>{counts.importantactivetodos}</div>
+                                    </>
+                                )}
+                            </Stack>
+                        </CardContent>
+                        {/* <CardActions>
                         Something here
                     </CardActions> */}
+                    </Card>
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Companies', counts.companies)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('employees', counts.employees)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Clients', counts.clients)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Impl. Partners', counts.implementationpartners)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Jobs', counts.jobs)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Invoices', counts.invoices)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Payroll', counts.payroll)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Timesheets', counts.timesheets)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('File Types', counts.filetypes)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Files', counts.files)}
+                </Grid>
+                <Grid item md={2}>
+                </Grid>
+            </Grid>
+
+            <div className='mt-4 flex-0'>
+                <Card sx={{ maxWidth: 345 }} >
+                    <CardContent className='mt-4'>
+                        <Typography component="div">
+                            Google Drive Storage Utilization
+                        </Typography>
+                        <Box mt={1} spacing="2">
+                            <Typography variant="body2">Total Storage: {counts.storagelimit} GB</Typography>
+                            <LinearProgress variant="determinate" value={(counts.storageusage / counts.storagelimit) * 100} />
+                            <Typography variant="body2">Used Storage: {counts.storageusage} GB</Typography>
+                        </Box>
+                    </CardContent>
                 </Card>
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('Companies', counts.companies)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('employees', counts.employees)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('Clients', counts.clients)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('Impl. Partners', counts.implementationpartners)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('Jobs', counts.jobs)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('Invoices', counts.invoices)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('Payroll', counts.payroll)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('Timesheets', counts.timesheets)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('File Types', counts.filetypes)}
-            </Grid>
-            <Grid item md={1}>
-                {renderCard('Files', counts.files)}
-            </Grid>
-        </Grid>
+            </div>
+        </>
     );
 };
 
