@@ -2,3 +2,6 @@
     font-size: 22px;
     color:rgb(3, 105, 161);
 }
+.gDriveProgress .MuiLinearProgress-bar{
+    background-color: #e51ba7 !important;
+}

@@ -2,7 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
-import { Stack, Grid, Card, CardContent, CardActions, Typography, Box, LinearProgress, Paper } from '@mui/material';
+import { Stack, Grid, Card, CardContent, CardActions, Typography, Box, Chip } from '@mui/material';
+import LinearProgress from '@mui/material/LinearProgress';
+import AddToDriveOutlinedIcon from '@mui/icons-material/AddToDriveOutlined';
 
 const Dashboard = () => {
     const { APIPath } = useContext(Context);
@@ -37,15 +39,15 @@ const Dashboard = () => {
                 '/counts/importantactivetodos',
                 '/counts/completedtodos',
                 '/counts/companies',
-                '/counts/employees',
+                // '/counts/employees',
                 '/counts/clients',
                 '/counts/implementationpartners',
-                '/counts/jobs',
-                '/counts/invoices',
-                '/counts/payroll',
-                '/counts/timesheets',
+                // '/counts/jobs',
+                // '/counts/invoices',
+                // '/counts/payroll',
+                // '/counts/timesheets',
                 '/counts/filetypes',
-                '/counts/files',
+                // '/counts/files',
                 '/counts/storagelimit',
                 '/counts/storageusage'
             ];
@@ -151,16 +153,25 @@ const Dashboard = () => {
             </Grid>
 
             <div className='mt-4 flex-0'>
-                <Card sx={{ maxWidth: 345 }} >
+                <Card sx={{ maxWidth: 270 }} >
                     <CardContent className='mt-4'>
-                        <Typography component="div">
-                            Google Drive Storage Utilization
-                        </Typography>
-                        <Box mt={1} spacing="2">
-                            <Typography variant="body2">Total Storage: {counts.storagelimit} GB</Typography>
-                            <LinearProgress variant="determinate" value={(counts.storageusage / counts.storagelimit) * 100} />
-                            <Typography variant="body2">Used Storage: {counts.storageusage} GB</Typography>
-                        </Box>
+                        <Stack className='mt-3' spacing={2} direction={"row"}>
+                            <div className='flex justify-center items-center'>
+                                <AddToDriveOutlinedIcon fontSize='large' className="h-36" />
+                            </div>
+                            <div>
+                                <Typography component="div">
+                                    Google Drive Storage Utilization
+                                </Typography>
+                                <Stack className='mt-3' spacing={2} direction={"row"}>
+                                    <Chip label={`LIMIT: ${counts.storagelimit} GB`} color="primary" variant="outlined" size="small"></Chip>
+                                    <Chip label={`USAGE: ${counts.storageusage.toFixed(2)} GB`} color="error" variant="outlined" size="small"></Chip>
+                                </Stack>
+                                <Box mt={1} spacing="2">
+                                    <LinearProgress className='gDriveProgress' variant="determinate" value={(counts.storageusage / counts.storagelimit) * 100} />
+                                </Box>
+                            </div>
+                        </Stack>
                     </CardContent>
                 </Card>
             </div>
