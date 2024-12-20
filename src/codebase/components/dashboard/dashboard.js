@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
-import { Stack, Grid, Card, CardContent, CardActions, Typography, Box, Chip, Paper } from '@mui/material';
+import { Stack, Grid, Card, CardContent, Typography, Box, Chip } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import AddToDriveOutlinedIcon from '@mui/icons-material/AddToDriveOutlined';
 
@@ -90,92 +90,102 @@ const Dashboard = () => {
 
     return (
         <>
-                <Grid container spacing={1} className='p-5 bg-slate-200'>
-                    <Grid item md={1}>
-                        {renderCard('Owners', counts.owners)}
-                    </Grid>
-                    <Grid item md={1.6}>
-                        <Card sx={{ minWidth: 155 }}>
-                            <CardContent>
-                                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
-                                    To Dos
-                                </Typography>
-                                <Stack spacing={1} direction="row">
-                                    {apiLoading ? (
-                                        <div className="spinner"></div>
-                                    ) : (
-                                        <>
-                                            <div className='dashCardsCounts'>{counts.todos}</div>
-                                            <div title='Active' className='dashCardsCounts bg-green-500 px-2'>{counts.activetodos}</div>
-                                            <div title='Completed' className='dashCardsCounts bg-yellow-400 px-2'>{counts.completedtodos}</div>
-                                            <div title='Active & Important' className='bg-red-500 px-2 text-white dashCardsCounts'>{counts.importantactivetodos}</div>
-                                        </>
-                                    )}
-                                </Stack>
-                            </CardContent>
-                            {/* <CardActions>
-                        Something here
-                    </CardActions> */}
-                        </Card>
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Companies', counts.companies)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('employees', counts.employees)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Clients', counts.clients)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Impl. Partners', counts.implementationpartners)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Jobs', counts.jobs)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Invoices', counts.invoices)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Payroll', counts.payroll)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Timesheets', counts.timesheets)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('File Types', counts.filetypes)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Files', counts.files)}
-                    </Grid>
-                    <Grid item md={2}>
-                    </Grid>
+            <div className="my-10">
+
+            </div>
+            <Grid container spacing={1} className='p-5 mt-10 bg-slate-200'>
+                <Grid item md={1}>
+                    {renderCard('Owners', counts.owners)}
                 </Grid>
-                <div className='mt-4 flex-0 p-10 mt-5 bg-slate-200' >
-                    <Card sx={{ maxWidth: 270 }} >
-                        <CardContent className='mt-4'>
-                            <Stack className='mt-3' spacing={2} direction={"row"}>
-                                <div className='flex justify-center items-center'>
-                                    <AddToDriveOutlinedIcon fontSize='large' className="h-36" />
-                                </div>
-                                <div>
-                                    <Typography component="div">
-                                        Google Drive Storage Utilization
-                                    </Typography>
-                                    <Stack className='mt-3' spacing={2} direction={"row"}>
-                                        <Chip label={`LIMIT: ${counts.storagelimit} GB`} color="primary" variant="outlined" size="small"></Chip>
-                                        <Chip label={`USAGE: ${counts.storageusage.toFixed(2)} GB`} color="error" variant="outlined" size="small"></Chip>
-                                    </Stack>
-                                    <Box mt={1} spacing="2">
-                                        <LinearProgress className='gDriveProgress' variant="determinate" value={(counts.storageusage / counts.storagelimit) * 100} />
-                                    </Box>
-                                </div>
+                <Grid item md={1.6}>
+                    <Card sx={{ minWidth: 155 }}>
+                        <CardContent>
+                            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
+                                To Dos
+                            </Typography>
+                            <Stack spacing={1} direction="row">
+                                {apiLoading ? (
+                                    <div className="spinner"></div>
+                                ) : (
+                                    <>
+                                        <div className='dashCardsCounts'>{counts.todos}</div>
+                                        <div title='Active' className='dashCardsCounts bg-green-500 px-2'>{counts.activetodos}</div>
+                                        <div title='Completed' className='dashCardsCounts bg-yellow-400 px-2'>{counts.completedtodos}</div>
+                                        <div title='Active & Important' className='bg-red-500 px-2 text-white dashCardsCounts'>{counts.importantactivetodos}</div>
+                                    </>
+                                )}
                             </Stack>
                         </CardContent>
+                        {/* <CardActions>
+                        Something here
+                    </CardActions> */}
                     </Card>
-                </div>
-            </>
-            );
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Companies', counts.companies)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('employees', counts.employees)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Clients', counts.clients)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Impl. Partners', counts.implementationpartners)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Jobs', counts.jobs)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Invoices', counts.invoices)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Payroll', counts.payroll)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Timesheets', counts.timesheets)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('File Types', counts.filetypes)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Files', counts.files)}
+                </Grid>
+                <Grid item md={2}>
+                </Grid>
+            </Grid>
+            <div className='mt-4 flex-0 p-5 bg-slate-200' >
+                <Card sx={{ maxWidth: 280 }} >
+                    <CardContent className='mt-0'>
+                        <Stack className='mt-0' spacing={2} direction={"row"}>
+                            <div className='flex justify-center items-center border-r-2 border-red-500 pr-2'>
+                                <AddToDriveOutlinedIcon fontSize='large' className="h-36" />
+                            </div>
+                            <div className='pr-2'>
+                                <Typography component="div">
+                                    Google Drive Storage Utilization
+                                </Typography>
+                                {apiLoading
+                                    ?
+                                    <div className="spinner"></div>
+                                    :
+                                    <>
+                                        <Stack className='mt-3' spacing={2} direction={"row"}>
+                                            <Chip label={`LIMIT: ${counts.storagelimit} GB`} color="primary" variant="outlined" size="small"></Chip>
+                                            <Chip label={`USAGE: ${counts.storageusage.toFixed(2)} GB`} color="error" variant="outlined" size="small"></Chip>
+                                        </Stack>
+                                        <Box mt={1} spacing="2">
+                                            <LinearProgress className='gDriveProgress' variant="determinate" value={(counts.storageusage / counts.storagelimit) * 100} />
+                                        </Box>
+                                    </>
+                                }
+                            </div>
+                        </Stack>
+                    </CardContent>
+                </Card>
+            </div>
+        </>
+    );
 };
 
-            export default Dashboard;
+export default Dashboard;

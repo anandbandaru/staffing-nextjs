@@ -50,6 +50,7 @@ const UserList = () => {
             setData(resp.data);
         }).catch(function (error) {
             console.log(error);
+            setApiLoadingError(true);
             setDataAPIError(error);
             setItemCount(0);
             setApiLoading(false);

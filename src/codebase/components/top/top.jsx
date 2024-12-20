@@ -184,7 +184,7 @@ const Top = () => {
                             Expenses
                         </TabPanel>
                         <TabPanel className="px-2">
-                            {/* <FilesMain /> */}
+                            <FilesMain />
                             FILES
                         </TabPanel>
                         <TabPanel className="px-2">

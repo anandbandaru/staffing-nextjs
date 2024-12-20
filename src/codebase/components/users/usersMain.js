@@ -3,6 +3,7 @@ import './usersMain.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import UserList from './userList';
+import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
 
 const UsersMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -14,7 +15,7 @@ const UsersMain = () => {
                     <Tabs selectedIndex={tabIndex}
                         onSelect={(index) => setTabIndex(index)}>
                         <TabList className="subTabsListHolder">
-                            <Tab>List</Tab>
+                            <Tab><ListOutlinedIcon className="mr-1" />List</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">

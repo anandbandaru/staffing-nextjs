@@ -17,11 +17,12 @@ function FileType({ props, ID, operation }) {
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
     const [name, setName] = useState('');
-    const [apiLoading, setApiLoading] = useState(true);
+    const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
-    const getFileTypeDetails = () => {
+    const getDetails = () => {
+        setApiLoading(true);
         let apiUrl = APIPath + "/getfiletypedetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
@@ -54,7 +55,7 @@ function FileType({ props, ID, operation }) {
     }
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
-            getFileTypeDetails();
+            getDetails();
         }
     }, []);
 
@@ -88,6 +89,7 @@ function FileType({ props, ID, operation }) {
                                 }
                             },
                         ).then((resp) => {
+                            setSubmitting(false);
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
                             console.log("RESETTING NOW")
@@ -95,19 +97,19 @@ function FileType({ props, ID, operation }) {
                                 resetButtonRef.current.click();
                                 console.log("RESETTING DONE")
                             }
-                        })
-                            .catch(function (error) {
-                                console.log(error);
-                                setSubmitionCompleted(true);
-                                setFormSubmitionAPIErrorMessage(error);
-                                setFormSubmitionAPIError(true);
-                            });
+                        }).catch(function (error) {
+                            setSubmitting(false);
+                            console.log(error);
+                            setSubmitionCompleted(true);
+                            setFormSubmitionAPIErrorMessage(error);
+                            setFormSubmitionAPIError(true);
+                        });
                     }}
 
                     validationSchema={Yup.object().shape({
                         name: Yup.string()
                             .required('Required'),
-                            description: Yup.string()
+                        description: Yup.string()
                             .required('Required'),
                     })}
                 >
@@ -165,39 +167,41 @@ function FileType({ props, ID, operation }) {
                                     helperText={(errors.description && touched.description) && errors.description}
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
-                                    <div>
-                                        {ID}:{operation}
-                                    </div>
-                                    {operation === "Edit" ?
-                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                            <SaveOutlinedIcon className="mr-1" />
-                                            Update
-                                        </Button>
-                                        : <>
+                                    {operation === "Edit" ? (
+                                        isSubmitting ? (
+                                            <div className="spinner"></div>
+                                        ) : (
+                                            <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                <SaveOutlinedIcon className="mr-1" />
+                                                Update
+                                            </Button>
+                                        )
+                                    ) : (
+                                        <>
                                             <Button
                                                 ref={resetButtonRef}
                                                 variant="outlined"
                                                 color="warning"
                                                 onClick={handleReset}
-                                                disabled={!dirty || isSubmitting && !isSubmitionCompleted}
+                                                disabled={!dirty || (isSubmitting && !isSubmitionCompleted)}
                                             >
                                                 Reset
                                             </Button>
-                                            <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                <SaveOutlinedIcon className="mr-1" />
-                                                Save
-                                            </Button>
+                                            {isSubmitting ? (
+                                                <div className="spinner"></div>
+                                            ) : (
+                                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                    <SaveOutlinedIcon className="mr-1" />
+                                                    Save
+                                                </Button>
+                                            )}
                                         </>
-                                    }
-                                    {isSubmitionCompleted && !formSubmitionAPIError ?
+                                    )}
+                                    {isSubmitionCompleted && !formSubmitionAPIError ? (
                                         <Chip label="Data saved" color="success" />
-                                        :
-                                        <>
-                                            {formSubmitionAPIError ?
-                                                <Chip label={formSubmitionAPIErrorMessage} color="error" />
-                                                : <></>}
-                                        </>
-                                    }
+                                    ) : (
+                                        formSubmitionAPIError && <Chip label={formSubmitionAPIErrorMessage} color="error" />
+                                    )}
                                 </Stack>
                             </form>
                         );

@@ -238,9 +238,13 @@ function CompanyForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.Email && touched.Email) && errors.Email}
                                 />
-                                <Stack direction="row" spacing={2} className='flex items-center pl-2'>
+                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+
                                     <div className='flex-1'>Established Date:
-                                        <span className='px-2 bg-gray-500 mx-2 text-white'>{values.EstablishedDate}</span>
+                                        {ID ?
+                                            <span className='px-2 bg-gray-500 mx-2 text-white'>{values.EstablishedDate}</span>
+                                            : <></>
+                                        }
                                     </div>
                                     <TextField
                                         size="small"
@@ -285,9 +289,9 @@ function CompanyForm({ props, ID, operation }) {
                                     label="Disabled"
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
-                                    <div>
+                                    {/* <div>
                                         {ID}:{operation}
-                                    </div>
+                                    </div> */}
                                     {operation === "Edit" ?
                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                             <SaveOutlinedIcon className="mr-1" />
