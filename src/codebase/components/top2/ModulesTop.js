@@ -12,6 +12,7 @@ import FileTypesMain from "../filetypes/fileTypesMain";
 import ClientsMain from "../clients/clientsMain";
 import ImpPartnersMain from "../imppartners/impPartnersMain";
 import OwnershipsMain from "../ownerships/ownershipsMain";
+import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
 
 const ModulesTop = ({ module }) => {
 
@@ -49,7 +50,7 @@ const ModulesTop = ({ module }) => {
                             onSelect={handleTab2Select_Modules}>
                             <TabList className="top2TabsListHolder">
                                 {tab2Names_Modules.map((name, idx) => (
-                                    <Tab key={idx}>{name}</Tab>
+                                    <Tab key={idx}><AdjustOutlinedIcon className="mr-1" />{name}</Tab>
                                 ))}
                             </TabList>
                             <TabPanel className="px-2">

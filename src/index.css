@@ -97,7 +97,7 @@ body{
   font-size: 12px;
   color: #ff068c !important;
   margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ff068c;
 }
 .topTabsListHolder .react-tabs__tab-panel{
   min-height: 100vh;
@@ -115,7 +115,7 @@ body{
   font-size: 12px;
   color: #3496ce !important;
   margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #3496ce;
 }
 .top2TabsListHolder .react-tabs__tab-panel{
   min-height: 100vh;
@@ -132,7 +132,7 @@ body{
   font-size: 12px;
   color: rgb(11, 155, 30) !important;
   margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgb(11, 155, 30);
 }
 .subTabsListHolder .react-tabs__tab-panel{
   min-height: 100vh;
@@ -151,7 +151,7 @@ body{
   font-size: 12px;
   color: rgb(6, 87, 207) !important;
   margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgb(6, 87, 207);
 }
 .thirdTabsListHolder .react-tabs__tab-panel{
   min-height: 100vh;
@@ -171,7 +171,7 @@ body{
   font-size: 12px;
   color: #ff068c !important;
   margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ff068c;
 }
 .todoTabsListHolder .react-tabs__tab-panel{
   min-height: 100vh;

@@ -6,6 +6,7 @@ import { Context } from "../../context/context";
 import Box from '@mui/material/Box';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
 
 const TransactionsTop = ({ module }) => {
 
@@ -42,7 +43,7 @@ const TransactionsTop = ({ module }) => {
                             onSelect={handleTab2Select_Transactions}>
                             <TabList className="top2TabsListHolder">
                                 {tab2Names_Transactions.map((name, idx) => (
-                                    <Tab key={idx}>{name}</Tab>
+                                    <Tab key={idx}><AdjustOutlinedIcon className="mr-1" />{name}</Tab>
                                 ))}
                             </TabList>
                             <TabPanel className="px-2">

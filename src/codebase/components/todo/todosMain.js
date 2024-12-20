@@ -3,6 +3,8 @@ import './todosMain.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import TodoList from './todoList';
+import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 
 const TodosMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -14,8 +16,8 @@ const TodosMain = () => {
                     <Tabs selectedIndex={tabIndex}
                         onSelect={(index) => setTabIndex(index)}>
                         <TabList className="subTabsListHolder">
-                            <Tab>List</Tab>
-                            <Tab>Reports</Tab>
+                            <Tab><ListOutlinedIcon className="mr-1" />List</Tab>
+                            <Tab><BarChartOutlinedIcon className="mr-1" />Reports</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">

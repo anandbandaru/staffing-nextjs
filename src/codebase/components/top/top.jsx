@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import configData from "../../../CONFIG_RELEASE.json";
 // import preval from 'preval.macro';
 import './top.css';
@@ -38,6 +38,16 @@ import Dashboard from "../dashboard/dashboard";
 import TodosMain from "../todo/todosMain";
 import UsersMain from "../users/usersMain";
 import FilesMain from "../files/filesMain";
+import CenterFocusWeakOutlinedIcon from '@mui/icons-material/CenterFocusWeakOutlined';
+import AppsIcon from '@mui/icons-material/Apps';
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import AttachmentIcon from '@mui/icons-material/Attachment';
+import AttributionIcon from '@mui/icons-material/Attribution';
+import CustomSnackbar from "../snackbar/snackbar";
 
 const Top = () => {
 
@@ -99,10 +109,28 @@ const Top = () => {
         window.location.reload();
     };
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
 
     return (
         <div className="topHolder px-0">
-
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
 
             <div className="topTabsHolder  flex flex-grow">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -119,12 +147,22 @@ const Top = () => {
                     <Tabs selectedIndex={tabIndex}
                         onSelect={handleTabSelect}>
                         <TabList className="topTabsListHolder">
-                            {tabNames.map((name, idx) => (
+                            {/* {tabNames.map((name, idx) => (
                                 // <Tab key={idx}>{name}</Tab>
                                 (name !== 'Timesheets' || userType === 'ADMIN') && (
-                                    <Tab key={idx}>{name}</Tab>
+                                    <Tab key={idx} ><CenterFocusWeakOutlinedIcon className="mr-1" />{name}</Tab>
                                 )
-                            ))}
+                            ))} */}
+                            <Tab ><AppsIcon className="mr-1" />Dashboard</Tab>
+                            <Tab ><WorkspacesIcon className="mr-1" />Modules</Tab>
+                            <Tab ><CurrencyExchangeIcon className="mr-1" />Transactions</Tab>
+                            {userType === 'ADMIN' && (
+                                <Tab ><MoreTimeIcon className="mr-1" />Timesheets</Tab>
+                            )}
+                            <Tab ><AddShoppingCartIcon className="mr-1" />Expenses</Tab>
+                            <Tab ><AttachmentIcon className="mr-1" />Files</Tab>
+                            <Tab ><CheckCircleOutlineIcon className="mr-1" />Todo</Tab>
+                            <Tab ><AttributionIcon className="mr-1" />Users</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">
@@ -237,14 +275,29 @@ const Top = () => {
                     :
                     isAPIError ?
                         <>
-                            <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="error" onClick={checkAPIAvailability} />
-                            <span className="APICheckHolder_text">service issue</span>
-
+                            <Button size="small" variant="contained" color="error" startIcon={<SwapHorizontalCircleOutlinedIcon />}
+                                onClick={() => {
+                                    checkAPIAvailability();
+                                    showSnackbar('info', "Checked API availability");
+                                }}
+                            >
+                                ERROR: service issue
+                            </Button>
+                            {/* <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="error" onClick={checkAPIAvailability} />
+                            <span className="APICheckHolder_text">service issue</span> */}
                         </>
                         :
                         <>
-                            <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="success" onClick={checkAPIAvailability} />
-                            <span className="APICheckHolder_text">OK: {APIversion === "LOCAL VERSION" ? "Local API" : "Online API: " + APIversion}</span>
+                            <Button size="small" variant="contained" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />} 
+                                onClick={() => {
+                                    checkAPIAvailability();
+                                    showSnackbar('info', "Checked API availability");
+                                }}
+                            >
+                                OK: {APIversion === "LOCAL VERSION" ? "Local API" : "Online API: " + APIversion}
+                            </Button>
+                            {/* <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="success" onClick={checkAPIAvailability} />
+                            <span className="APICheckHolder_text"></span> */}
                         </>
                 }
 

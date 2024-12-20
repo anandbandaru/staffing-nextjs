@@ -63,8 +63,14 @@ const OwnersReport = () => {
             {
                 type: 'bar',
                 xKey: 'status',
-                yKey: 'count'
+                yKey: 'count',
+                // fills: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],
+                // strokes: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],
             },
+        ],
+        axes: [
+            { type: 'status', position: 'bottom' },
+            { type: 'count', position: 'left' }
         ],
         title: {
             text: 'Disabled vs Active'
@@ -74,12 +80,12 @@ const OwnersReport = () => {
         // },
         overlays: {
             loading: {
-              renderer: () => 'LOADING...',
+                renderer: () => 'LOADING...',
             },
             noData: {
                 renderer: () => 'NO DATA'
             },
-          },
+        },
     };
     const options_2 = {
         theme: myTheme,
@@ -88,7 +94,9 @@ const OwnersReport = () => {
             {
                 type: 'pie',
                 angleKey: 'count',
-                legendItemKey: 'status'
+                legendItemKey: 'status',
+                // fills: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],
+                // strokes: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],
             },
         ],
         title: {
@@ -99,12 +107,12 @@ const OwnersReport = () => {
         // },
         overlays: {
             loading: {
-              renderer: () => 'LOADING...',
+                renderer: () => 'LOADING...',
             },
             noData: {
                 renderer: () => 'NO DATA'
             },
-          },
+        },
     };
 
     return (

@@ -20,6 +20,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
     const [tabIndex, setTabIndex] = React.useState(0);
     const [data, setData] = useState({ data: [] });
     const [firstName, setFirstName] = useState('');
+    const [idTypeName, setIDTypeName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -33,7 +34,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
     const handleClickOpen = () => {
         setOpen(true);
         if (operation === "View" || operation === "Edit") {
-            getOwnerDetails();
+            getDetails();
         }
     };
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -44,7 +45,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
             padding: theme.spacing(1),
         },
     }));
-    const getOwnerDetails = () => {
+    const getDetails = () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getownerdetails/" + ID
         fetch(apiUrl)
@@ -61,7 +62,6 @@ function OwnerDetails({ ID, operation, doLoading }) {
                     else {
                         setData(result);
                         setFirstName(result.data[0].firstName);
-                        //alert(firstName);
                         setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
@@ -78,7 +78,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
     useEffect(() => {
         if (doLoading) {
             if (operation === "View" || operation === "Edit") {
-                getOwnerDetails();
+                getDetails();
             }
         }
     }, [ID]);
@@ -158,7 +158,9 @@ function OwnerDetails({ ID, operation, doLoading }) {
                                                                 <TableCell component="th" scope="row">
                                                                     {key}
                                                                 </TableCell>
-                                                                <TableCell className='bg-gray-100'>{value === true ? "YES" : value}</TableCell>
+                                                                <TableCell className='bg-gray-100'>
+                                                                    {value === true ? "YES" : value}
+                                                                </TableCell>
                                                             </TableRow>
                                                         ))
                                                     ))}

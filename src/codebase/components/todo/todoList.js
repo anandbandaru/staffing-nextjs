@@ -109,6 +109,8 @@ const TodoList = () => {
             // },
             cellRenderer: CustomCompletedRenderer
         },
+        { field: "completedBy", filter: true },
+        { field: "completedDate", filter: true },
         {
             field: "important", filter: false,
             cellClassRules: {

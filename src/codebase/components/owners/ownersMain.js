@@ -5,6 +5,9 @@ import Box from '@mui/material/Box';
 import OwnersList from './ownerList';
 import OwnerDocumentsNew from "./ownerDocumentsNew";
 import OwnersReport from "./ownersReports";
+import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
+import AttachmentSharpIcon from '@mui/icons-material/AttachmentSharp';
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 
 const OwnersMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -16,9 +19,9 @@ const OwnersMain = () => {
                     <Tabs selectedIndex={tabIndex}
                         onSelect={(index) => setTabIndex(index)}>
                         <TabList className="subTabsListHolder">
-                            <Tab>List</Tab>
-                            <Tab>Documents</Tab>
-                            <Tab>Reports</Tab>
+                            <Tab><ListOutlinedIcon className="mr-1" />List</Tab>
+                            <Tab><AttachmentSharpIcon className="mr-1" />Documents</Tab>
+                            <Tab><BarChartOutlinedIcon className="mr-1" />Reports</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">

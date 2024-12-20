@@ -82,15 +82,15 @@
 .APICheckHolder{
     position: absolute;
     right: 290px;
-    top: 27px;
-    background-color: #f3f3f3;
+    top: 25px;
+    /* background-color: #f3f3f3;
     border-radius: 5px;
     padding: 1px 10px 1px 10px;
     border: 1px solid #ccc;
     display: flex;
     align-content: center;
     align-items: center;
-    gap: 4px;
+    gap: 4px; */
 }
 .APICheckHolder span{
     font-size: 12px;
