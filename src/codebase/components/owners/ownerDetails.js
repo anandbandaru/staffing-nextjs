@@ -13,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import GenericFilesList from '../forms/GenericFilesList';
 
 function OwnerDetails({ ID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
@@ -169,7 +170,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
                                         </TableContainer>
                                     </TabPanel>
                                     <TabPanel className="px-2">
-                                        Documents
+                                        {/* <GenericFilesList moduleId={ID} componentName="OWNERS" /> */}
                                     </TabPanel>
                                     <TabPanel className="px-2">
                                         Reports
