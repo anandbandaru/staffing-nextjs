@@ -77,7 +77,7 @@ const OwnersList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <OwnerEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} />
+                <OwnerEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
             </>
         );
     };
