@@ -3,7 +3,7 @@ import { Context } from "../../context/context";
 import { Box, Card, CardContent, CardActions, Typography, Button, Link } from '@mui/material';
 import AddToDriveSharpIcon from '@mui/icons-material/AddToDriveSharp';
 
-function OwnerDetails({ ID, moduleId, componentName }) {
+function GenericFilesList({ ID, moduleId, componentName }) {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
@@ -101,4 +101,4 @@ function OwnerDetails({ ID, moduleId, componentName }) {
     );
 }
 
-export default OwnerDetails;
+export default GenericFilesList;

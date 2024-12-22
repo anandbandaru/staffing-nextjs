@@ -1,4 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
+import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -13,14 +14,16 @@ import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import CustomSnackbar from "../snackbar/snackbar";
 
-function OwnerForm({ props, ID, operation }) {
-    const { APIPath } = useContext(Context);
+
+function EmployeeForm({ props, ID, operation }) {
+    const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
     const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
     const [fileTypesData, setFileTypesData] = useState({ data: [] });
+    const [managersData, setManagersData] = useState({ data: [] });
     const [firstName, setFirstName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
@@ -41,7 +44,7 @@ function OwnerForm({ props, ID, operation }) {
 
     const getDetails = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getownerdetails/" + ID;
+        let apiUrl = APIPath + "/getemployeedetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -58,7 +61,7 @@ function OwnerForm({ props, ID, operation }) {
                         setData(result);
                         setFirstName(result.data[0].firstName);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Owners information present." : "ok");
+                        setDataAPIError(result.total === 0 ? "No Employees information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -101,12 +104,43 @@ function OwnerForm({ props, ID, operation }) {
                 }
             )
     }
+    const getManagersList = () => {
+        setApiLoading(true);
+        setFileTypesData({ data: [] });
+        let apiUrl = APIPath + "/getemployees"
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    //console.log(result);
+                    if (result.error) {
+                        console.log("RequestData:On error return: setting empty")
+                        setDataAPIError(result.error.code + " - " + result.error.message);
+                        setManagersData({});
+                        setApiLoadingError(true);
+                    }
+                    else {
+                        setManagersData(result);
+                        setDataAPIError(result.total == 0 ? "No Employees information present." : "ok");
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setManagersData({});
+                    console.log("RequestData:On JUST error: API call failed")
+                    setDataAPIError("RequestData:On JUST error: API call failed");
+                    setApiLoading(false);
+                    setApiLoadingError(true);
+                }
+            )
+    }
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
             getDetails();
         }
         if (operation === "New" || operation === "Edit") {
             getFileTypesList();
+            getManagersList();
         }
     }, []);
 
@@ -129,19 +163,28 @@ function OwnerForm({ props, ID, operation }) {
                         Id: firstName ? ID : 'This will be auto-generated once you save',
                         firstName: firstName ? data.data[0].firstName : '',
                         lastName: firstName ? data.data[0].lastName : '',
-                        email: firstName ? data.data[0].email : '',
-                        phone1: firstName ? data.data[0].phone1 : '',
-                        phone2: firstName ? data.data[0].phone2 : '',
+                        personalEmail: firstName ? data.data[0].personalEmail : '',
+                        personalPhone: firstName ? data.data[0].personalPhone : '',
+                        personalUSPhone: firstName ? data.data[0].personalUSPhone : '',
+                        address: firstName ? data.data[0].address : '',
+                        employeeType: firstName ? data.data[0].employeeType : '',
+                        OFF_PAN: firstName ? data.data[0].OFF_PAN : '',
+                        OFF_Designation: firstName ? data.data[0].OFF_Designation : '',
+                        OFF_Aadhaar: firstName ? data.data[0].OFF_Aadhaar : '',
+                        OFF_SonOf: firstName ? data.data[0].OFF_SonOf : '',
+                        OFF_WifeOf: firstName ? data.data[0].OFF_WifeOf : '',
+                        OFF_ManagerID: firstName ? data.data[0].OFF_ManagerID : '',
                         IDType: firstName ? data.data[0].IDType : '',
                         IDNumber: firstName ? data.data[0].IDNumber : '',
                         SSN: firstName ? data.data[0].SSN : '',
-                        Address: firstName ? data.data[0].Address : '',
+                        notes: firstName ? data.data[0].notes : '',
                         Disabled: firstName ? data.data[0].Disabled : false,
+                        createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        var finalAPI = APIPath + "/addowner";
+                        var finalAPI = APIPath + "/addemployee";
                         if (operation === "Edit") {
-                            finalAPI = APIPath + "/updateowner";
+                            finalAPI = APIPath + "/updateemployee";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -173,16 +216,13 @@ function OwnerForm({ props, ID, operation }) {
                             .required('Required'),
                         lastName: Yup.string()
                             .required('Required'),
-                        email: Yup.string()
-                            .email()
-                            .required('Required'),
-                        phone1: Yup.string()
-                            .required('Required'),
                         IDNumber: Yup.string()
                             .required('Required'),
+                            OFF_ManagerID: Yup.string()
+                                .required('Required'),
                         SSN: Yup.string()
                             .required('Required'),
-                        Address: Yup.string()
+                        address: Yup.string()
                             .required('Required'),
                     })}
                 >
@@ -240,38 +280,21 @@ function OwnerForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="email"
-                                    name="email"
-                                    label="Email"
-                                    value={values.email}
+                                    id="OFF_ManagerID"
+                                    name="OFF_ManagerID"
+                                    select
+                                    label="Offshore Manager ID"
+                                    value={values.OFF_ManagerID}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.email && touched.email) && errors.email}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="phone1"
-                                    name="phone1"
-                                    label="Phone 1"
-                                    value={values.phone1}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.phone1 && touched.phone1) && errors.phone1}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="phone2"
-                                    name="phone2"
-                                    label="Phone 2"
-                                    value={values.phone2}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.phone2 && touched.phone2) && errors.phone2}
-                                />
+                                    helperText={(errors.OFF_ManagerID && touched.OFF_ManagerID) && errors.OFF_ManagerID}
+                                >
+                                    {managersData ? managersData.data.map((item, index) => (
+                                        <MenuItem key={index} value={item.Id}>
+                                            {item.fistName} {item.lastName}
+                                        </MenuItem>
+                                    )): []}
+                                </TextField>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -320,27 +343,27 @@ function OwnerForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Address"
-                                    name="Address"
+                                    id="address"
+                                    name="address"
                                     label="Address"
                                     multiline
                                     rows={4}
-                                    value={values.Address}
+                                    value={values.address}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Address && touched.Address) && errors.Address}
+                                    helperText={(errors.address && touched.address) && errors.address}
                                 />
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            id="Disabled"
-                                            name="Disabled"
+                                            id="disabled"
+                                            name="disabled"
                                             label="Disabled"
                                             // value={values.Disabled}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             // helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
-                                            checked={values.Disabled} />
+                                            checked={values.disabled} />
                                     }
                                     label="Disabled"
                                 />
@@ -391,4 +414,4 @@ function OwnerForm({ props, ID, operation }) {
     );
 }
 
-export default OwnerForm;
+export default EmployeeForm;

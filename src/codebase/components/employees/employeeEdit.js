@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import OwnerForm from "./ownerForm";
+import EmployeeForm from "./employeeForm";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import BackupIcon from '@mui/icons-material/Backup';
@@ -15,7 +15,7 @@ import { Context } from "../../context/context";
 import axios from 'axios';
 import GenericFileForm from '../forms/GenericFileForm';
 
-function OwnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
+function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [openDocuments, setOpenDocuments] = React.useState(false);
@@ -48,7 +48,7 @@ function OwnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
     
     const deleteByID = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/deleteowner"
+        let apiUrl = APIPath + "/deleteemployee"
         axios.post(apiUrl,
             {
                 Id: ID
@@ -106,7 +106,7 @@ function OwnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 open={open}
             >
                 <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Owner: ID: {ID}
+                    {operation} Employee: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -121,7 +121,7 @@ function OwnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <OwnerForm ID={ID} operation="Edit" />
+                    <EmployeeForm ID={ID} operation="Edit" />
                 </DialogContent>
             </BootstrapDialog>
 
@@ -134,7 +134,7 @@ function OwnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 open={openDocuments}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    Documents: Owner: ID: {ID}
+                    Documents: Employee: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -149,7 +149,7 @@ function OwnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <GenericFileForm moduleId={ID} componentName="OWNERS" />
+                    <GenericFileForm moduleId={ID} componentName="EMPLOYEES" />
                 </DialogContent>
             </BootstrapDialog>
         </>
@@ -157,4 +157,4 @@ function OwnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
     )
 }
 
-export default OwnerEdit;
+export default EmployeeEdit;

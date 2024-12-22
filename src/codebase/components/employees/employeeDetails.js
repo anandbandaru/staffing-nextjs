@@ -7,22 +7,18 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import GenericFilesList from '../forms/GenericFilesList';
 import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 
-function OwnerDetails({ ID, operation, doLoading }) {
+function EmployeeDetails({ ID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [tabIndex, setTabIndex] = React.useState(0);
     const [data, setData] = useState({ data: [] });
-    const [firstName, setFirstName] = useState('');
-    const [idTypeName, setIDTypeName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -49,7 +45,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
     }));
     const getDetails = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getownerdetails/" + ID
+        let apiUrl = APIPath + "/getemployeedetails/" + ID
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -63,8 +59,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
                     }
                     else {
                         setData(result);
-                        setFirstName(result.data[0].firstName);
-                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
+                        setDataAPIError(result.total == 0 ? "No Employees information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -90,7 +85,6 @@ function OwnerDetails({ ID, operation, doLoading }) {
             <Stack direction="row" spacing={1} >
                 <IconButton aria-label="Metadata" title="Metadata" color="primary"
                     onClick={() => {
-                        // window.alert(ownerID);
                         handleClickOpen();
                     }
                     }>
@@ -111,7 +105,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
             // }}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Owner: ID: {ID}
+                    {operation} Employee: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -172,7 +166,7 @@ function OwnerDetails({ ID, operation, doLoading }) {
                                     </TabPanel>
                                     <TabPanel className="px-2">
                                         {/* <GenericFilesList moduleId={ID} componentName="OWNERS" /> */}
-                                        <GenericFilesListSimple moduleId={ID} componentName="OWNERS" />
+                                        <GenericFilesListSimple moduleId={ID} componentName="EMPLOYEES" />
                                     </TabPanel>
                                     <TabPanel className="px-2">
                                         Reports
@@ -188,4 +182,4 @@ function OwnerDetails({ ID, operation, doLoading }) {
     )
 }
 
-export default OwnerDetails;
+export default EmployeeDetails;

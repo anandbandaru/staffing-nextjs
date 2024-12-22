@@ -39,7 +39,7 @@ const Dashboard = () => {
                 '/counts/importantactivetodos',
                 '/counts/completedtodos',
                 '/counts/companies',
-                // '/counts/employees',
+                '/counts/employees',
                 '/counts/clients',
                 '/counts/implementationpartners',
                 // '/counts/jobs',

@@ -10,14 +10,38 @@
       "title": "Staffing"
     }
   ],
-  "greetings": [
+  "employeeTypes": [
     {
-      "message": "Generate SQL queries for different tables.",
-      "icon": "code"
+      "name": "ONSHORE"
     },
     {
-      "message": "Show table data.",
-      "icon": "storage"
+      "name": "OFFSHORE"
+    }
+  ],
+  "visaTypes": [
+    {
+      "name": "H1"
+    },
+    {
+      "name": "OPT"
+    },
+    {
+      "name": "H4-EAD"
+    },
+    {
+      "name": "L1"
+    },
+    {
+      "name": "L2"
+    },
+    {
+      "name": "GC-EAD"
+    },
+    {
+      "name": "GC"
+    },
+    {
+      "name": "CITIZEN"
     }
   ],
   "releases": [

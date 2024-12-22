@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/context";
-import { AgGridReact } from 'ag-grid-react';
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
-import FilesListToolbar from './filesListToolbar'
-import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
-import { Button, Link } from '@mui/material';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
+import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
+import EmployeesListToolbar from './employeesListToolbar'
+import EmployeeDetails from "./employeeDetails";
+import EmployeeEdit from "./employeeEdit";
 
-const FileList = () => {
+const EmployeesList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
-    const [data_Original, setData_Original] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -36,7 +36,7 @@ const FileList = () => {
 
     const getList = () => {
         setData({ data: [] });
-        let apiUrl = APIPath + "/getfiles"
+        let apiUrl = APIPath + "/getemployees"
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -51,9 +51,8 @@ const FileList = () => {
                     }
                     else {
                         setData(result);
-                        setData_Original(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No Files information present." : "ok");
+                        setDataAPIError(result.total == 0 ? "No Employees information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -67,37 +66,60 @@ const FileList = () => {
                 }
             )
     }
-    const CustomLinkRenderer = ({ value }) => (
+
+    const CustomDetailsComponent = (props) => {
+        return (
+            <>
+                <EmployeeDetails ID={props.data.Id} operation="View" doLoading={false} />
+            </>
+        );
+    };
+    const CustomEditComponent = (props) => {
+        return (
+            <>
+                <EmployeeEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+            </>
+        );
+    };
+    const CustomEmailRenderer = ({ value }) => (
         <span>
-            <Link className='float-right'
-                href={value}
-                target="_blank"
-                rel="noopener noreferrer"
-                underline="none"
-            >
-                <Button
-                    size='small'
-                    variant="contained"
-                    color="info"
-                    startIcon={<InsertLinkOutlinedIcon />}
-                >
-                    Open
-                </Button>
-            </Link>
+            <MarkunreadOutlinedIcon fontSize="small" className="mr-2" />
+            {value}
+        </span>
+    );
+    const CustomDisabledRenderer = ({ value }) => (
+        <span className={(value === null || !value) ? 'rag-green-bg badgeSpan' : 'rag-red-bg badgeSpan'}>
+            {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs, setColDefs] = useState([
-        { field: "Id", maxWidth: 50 },
-        { field: "module", filter: true },
-        { field: "moduleId", },
-        { field: "title", filter: true },
-        { field: "createdDate", filter: true },
-        { field: "notes", },
         {
-            field: "gDriveLink",
-            cellRenderer: CustomLinkRenderer
+            field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
+        { field: "Id", maxWidth: 50 },
+        { field: "firstName", filter: true },
+        { field: "lastName", filter: true },
+        {
+            field: "personalEmail", filter: true, editable: true,
+            cellClassRules: {
+                // apply green to electric cars
+                'rag-green': params => params.value === "sa.ke@aol.com",
+            },
+            cellRenderer: CustomEmailRenderer
+        },
+        { field: "personalPhone", filter: true },
+        { field: "personalUSPhone", filter: true },
+        {
+            field: "Disabled", filter: false,
+            // cellClassRules: {
+            //     // apply green to electric cars
+            //     'rag-green': params => params.value === null || params.value === false,
+            //     'rag-red': params => params.value === true,
+            // },
+            cellRenderer: CustomDisabledRenderer
+        },
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 150, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
@@ -116,7 +138,7 @@ const FileList = () => {
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}
-                <FilesListToolbar
+                <EmployeesListToolbar
                     operation="Add"
                     itemCount={itemCount}
                     apiLoading={apiLoading}
@@ -146,4 +168,4 @@ const FileList = () => {
     )
 }
 
-export default FileList;
+export default EmployeesList;
