@@ -184,15 +184,13 @@ const Top = () => {
                             Expenses
                         </TabPanel>
                         <TabPanel className="px-2">
-                            {/* <FilesMain /> */}
-                            FILES
+                            <FilesMain />
                         </TabPanel>
                         <TabPanel className="px-2">
                             <TodosMain />
                         </TabPanel>
                         <TabPanel className="px-2">
-                            {/* <UsersMain /> */}
-                            USERS
+                            <UsersMain />
                         </TabPanel>
                     </Tabs>
                 </Box>
