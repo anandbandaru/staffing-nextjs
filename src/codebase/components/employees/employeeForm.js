@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Formik } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
@@ -163,7 +163,6 @@ function EmployeeForm({ props, ID, operation }) {
                 </>
                 :
                 <Formik
-                    enableReinitialize
                     initialValues={{
                         Id: firstName ? ID : 'This will be auto-generated once you save',
                         firstName: firstName ? data.data[0].firstName : '',
@@ -173,12 +172,12 @@ function EmployeeForm({ props, ID, operation }) {
                         personalUSPhone: firstName ? data.data[0].personalUSPhone : '',
                         address: firstName ? data.data[0].address : '',
                         employeeType: firstName ? data.data[0].employeeType : '',
-                        OFF_PAN: firstName ? data.data[0].OFF_PAN : '-',
-                        OFF_Designation: firstName ? data.data[0].OFF_Designation : '-',
-                        OFF_Aadhaar: firstName ? data.data[0].OFF_Aadhaar : '-',
-                        OFF_SonOf: firstName ? data.data[0].OFF_SonOf : '-',
-                        OFF_DaughterOf: firstName ? data.data[0].OFF_DaughterOf : '-',
-                        OFF_WifeOf: firstName ? data.data[0].OFF_WifeOf : '-',
+                        OFF_PAN: firstName ? data.data[0].OFF_PAN : '',
+                        OFF_Designation: firstName ? data.data[0].OFF_Designation : '',
+                        OFF_Aadhaar: firstName ? data.data[0].OFF_Aadhaar : '',
+                        OFF_SonOf: firstName ? data.data[0].OFF_SonOf : '',
+                        OFF_DaughterOf: firstName ? data.data[0].OFF_DaughterOf : '',
+                        OFF_WifeOf: firstName ? data.data[0].OFF_WifeOf : '',
                         OFF_ManagerID: firstName ? data.data[0].OFF_ManagerID : '',
                         IDType: firstName ? data.data[0].IDType : '',
                         IDNumber: firstName ? data.data[0].IDNumber : '',
@@ -219,7 +218,6 @@ function EmployeeForm({ props, ID, operation }) {
                             showSnackbar('error', "Error saving Owner data");
                         });
                     }}
-
                     validationSchema={Yup.object().shape({
                         firstName: Yup.string()
                             .required('firstName Required'),
@@ -234,28 +232,50 @@ function EmployeeForm({ props, ID, operation }) {
                             .required('personalUSPhone Required'),
                         employeeType: Yup.string()
                             .required('employeeType Required'),
-                        // OFF_PAN: Yup.string().when('employeeType', {
-                        //     is: 'OFFSHORE',
-                        //     then: Yup.string().required('This field is required when OFF is selected'),
-                        // }),
-                        OFF_PAN: Yup.string()
-                            .required('OFF_PAN is required'),
-                        OFF_Designation: Yup.string()
-                            .required('OFF_Designation is required'),
-                        OFF_Aadhaar: Yup.string()
-                            .required('OFF_Aadhaar is required'),
-                        OFF_SonOf: Yup.string()
-                            .required('OFF_SonOf is required'),
-                        OFF_DaughterOf: Yup.string()
-                            .required('OFF_DaughterOf is required'),
-                        OFF_WifeOf: Yup.string()
-                            .required('OFF_WifeOf is required'),
-                        // OFF_ManagerID: Yup.string()
-                        //     .required('OFF_ManagerID Required'),
+                        OFF_PAN: Yup.string().when("employeeType", {
+                            is: 'OFFSHORE',
+                            then: () => Yup.string()
+                                .required("OFF_PAN Required")
+                        }),
+                        OFF_Designation: Yup.string().when("employeeType", {
+                            is: 'OFFSHORE',
+                            then: () => Yup.string()
+                                .required("OFF_Designation Required")
+                        }),
+                        OFF_Aadhaar: Yup.string().when("employeeType", {
+                            is: 'OFFSHORE',
+                            then: () => Yup.string()
+                                .required("OFF_Aadhaar Required")
+                        }),
+                        OFF_SonOf: Yup.string().when("employeeType", {
+                            is: 'OFFSHORE',
+                            then: () => Yup.string()
+                                .required("OFF_SonOf Required")
+                        }),
+                        OFF_DaughterOf: Yup.string().when("employeeType", {
+                            is: 'OFFSHORE',
+                            then: () => Yup.string()
+                                .required("OFF_DaughterOf Required")
+                        }),
+                        OFF_WifeOf: Yup.string().when("employeeType", {
+                            is: 'OFFSHORE',
+                            then: () => Yup.string()
+                                .required("OFF_WifeOf Required")
+                        }),
+                        OFF_ManagerID: Yup.string().when("employeeType", {
+                            is: 'OFFSHORE',
+                            then: () => Yup.string()
+                                .required("OFF_ManagerID Required")
+                        }),
                         IDType: Yup.string()
                             .required('IDType Required'),
                         IDNumber: Yup.string()
                             .required('IDNumber Required'),
+                        SSN: Yup.string().when("employeeType", {
+                            is: 'ONSHORE',
+                            then: () => Yup.string()
+                                .required("SSN Required")
+                        }),
                         address: Yup.string()
                             .required('address Required'),
                     })}
@@ -496,6 +516,7 @@ function EmployeeForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.IDNumber && touched.IDNumber) && errors.IDNumber}
                                 />
+                                {values.employeeType === 'ONSHORE' && (
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -508,6 +529,7 @@ function EmployeeForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.SSN && touched.SSN) && errors.SSN}
                                 />
+                                )}
                                 <TextField
                                     size="small"
                                     margin="normal"
