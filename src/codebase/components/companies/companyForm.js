@@ -10,6 +10,7 @@ import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
+import CustomSnackbar from "../snackbar/snackbar";
 
 function CompanyForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -22,6 +23,19 @@ function CompanyForm({ props, ID, operation }) {
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     const getDetails = () => {
         let apiUrl = APIPath + "/getcompanydetails/" + ID;
@@ -70,6 +84,12 @@ function CompanyForm({ props, ID, operation }) {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading && operation !== "New" ?
                 <>
                     <div className="spinner"></div>
@@ -107,12 +127,17 @@ function CompanyForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
+                            if (resp.data.STATUS === "FAIL")
+                                showSnackbar('error', "Error saving data");
+                            else
+                                showSnackbar('success', "Data saved");
                         })
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
                                 setFormSubmitionAPIErrorMessage(error);
                                 setFormSubmitionAPIError(true);
+                                showSnackbar('error', "Error saving data");
                             });
                     }}
 

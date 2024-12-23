@@ -18,6 +18,23 @@
       "name": "OFFSHORE"
     }
   ],
+  "dependentTypes": [
+    {
+      "name": "SON"
+    },
+    {
+      "name": "WIFE"
+    },
+    {
+      "name": "DAUGHTER"
+    },
+    {
+      "name": "PARENT"
+    },
+    {
+      "name": "OTHER"
+    }
+  ],
   "visaTypes": [
     {
       "name": "H1"

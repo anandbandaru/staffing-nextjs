@@ -47,7 +47,7 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
                 <>
                     {data ? (
                         <div>
-                            <table className="min-w-full bg-white border border-gray-200">
+                            <table className="min-w-full bg-white border border-gray-200 text-left">
                                 <thead>
                                     <tr>
                                         <th className="py-2 px-4 border-b">File Id</th>
@@ -61,12 +61,12 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
                                 <tbody>
                                     {data.data.map(filteredFiles => (
                                         <tr key={filteredFiles.Id}>
-                                            <td className="py-2 px-4 border-b">{filteredFiles.Id}</td>
-                                            <td className="py-2 px-4 border-b">{filteredFiles.title}</td>
-                                            <td className="py-2 px-4 border-b">{filteredFiles.createdBy}</td>
-                                            <td className="py-2 px-4 border-b">{filteredFiles.createdDate}</td>
-                                            <td className="py-2 px-4 border-b">{filteredFiles.notes}</td>
-                                            <td className="py-2 px-4 border-b">
+                                            <td className="py-2 px-4 border-b border-r">{filteredFiles.Id}</td>
+                                            <td className="py-2 px-4 border-b border-r">{filteredFiles.title}</td>
+                                            <td className="py-2 px-4 border-b border-r">{filteredFiles.createdBy}</td>
+                                            <td className="py-2 px-4 border-b border-r">{filteredFiles.createdDate}</td>
+                                            <td className="py-2 px-4 border-b border-r">{filteredFiles.notes}</td>
+                                            <td className="py-2 px-4 border-b border-r">
                                                 <Link className='float-right'
                                                     href={filteredFiles.gDriveLink}
                                                     target="_blank"

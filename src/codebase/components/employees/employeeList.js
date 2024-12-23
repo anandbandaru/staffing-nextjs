@@ -98,8 +98,8 @@ const EmployeesList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
-        { field: "firstName", filter: true },
-        { field: "lastName", filter: true },
+        { field: "firstName", filter: true, maxWidth: 200 },
+        { field: "lastName", filter: true, maxWidth: 200 },
         {
             field: "personalEmail", filter: true, editable: true,
             cellClassRules: {
@@ -108,10 +108,10 @@ const EmployeesList = () => {
             },
             cellRenderer: CustomEmailRenderer
         },
-        { field: "personalPhone", filter: true },
-        { field: "personalUSPhone", filter: true },
+        { field: "personalPhone", filter: true, maxWidth: 150 },
+        { field: "personalUSPhone", filter: true, maxWidth: 150 },
         {
-            field: "Disabled", filter: false,
+            field: "Disabled", filter: false, maxWidth: 100,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green': params => params.value === null || params.value === false,
@@ -119,7 +119,7 @@ const EmployeesList = () => {
             // },
             cellRenderer: CustomDisabledRenderer
         },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 150, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 290, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

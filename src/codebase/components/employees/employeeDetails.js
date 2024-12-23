@@ -13,6 +13,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import GenericFilesListSimple from '../forms/GenericFilesListSimple';
+import EmployeeGenericList from './employeeGList';
 
 function EmployeeDetails({ ID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
@@ -97,7 +98,7 @@ function EmployeeDetails({ ID, operation, doLoading }) {
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"
                 open={open}
-            // fullScreen
+            fullScreen
             // keepMounted
             // TransitionProps={{
             //     onEntering: () => console.log('Entering'),
@@ -134,7 +135,10 @@ function EmployeeDetails({ ID, operation, doLoading }) {
                                     <TabList className="thirdTabsListHolder">
                                         <Tab>Metadata</Tab>
                                         <Tab>Documents</Tab>
-                                        <Tab>Relations</Tab>
+                                        <Tab>Dependents</Tab>
+                                        <Tab>Passports</Tab>
+                                        <Tab>Visas</Tab>
+                                        <Tab>I94s</Tab>
                                     </TabList>
 
                                     <TabPanel className="px-2">
@@ -165,11 +169,19 @@ function EmployeeDetails({ ID, operation, doLoading }) {
                                         </TableContainer>
                                     </TabPanel>
                                     <TabPanel className="px-2">
-                                        {/* <GenericFilesList moduleId={ID} componentName="OWNERS" /> */}
                                         <GenericFilesListSimple moduleId={ID} componentName="EMPLOYEES" />
                                     </TabPanel>
                                     <TabPanel className="px-2">
-                                        Reports
+                                        <EmployeeGenericList formType={'Dependent'} employeeID={ID} />
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        <EmployeeGenericList formType={'Passport'} employeeID={ID} />
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        <EmployeeGenericList formType={'Visa'} employeeID={ID} />
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        <EmployeeGenericList formType={'I94'} employeeID={ID} />
                                     </TabPanel>
                                 </Tabs>
                             </Box>

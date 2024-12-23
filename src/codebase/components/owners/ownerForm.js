@@ -157,7 +157,10 @@ function OwnerForm({ props, ID, operation }) {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
-                            showSnackbar('success', "Owner data saved");
+                            if (resp.data.STATUS === "FAIL")
+                                showSnackbar('error', "Error saving Owner data");
+                            else
+                                showSnackbar('success', "Owner data saved");
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);
