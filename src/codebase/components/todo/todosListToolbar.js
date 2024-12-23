@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Context } from "../../context/context";
 import 'reactjs-popup/dist/index.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -15,6 +16,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 
 const TodosListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, dataAPIError, manualLoadData }) => {
     const [open, setOpen] = React.useState(false);
+    const { fetchTodos } = useContext(Context);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -22,6 +24,7 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
     const handleClose = () => {
         setOpen(false);
         manualLoadData();
+        fetchTodos("Active");
     };
     const handleClickOpen = () => {
         setOpen(true);
@@ -53,7 +56,7 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
                             {itemCount == 0 ? null :
                                 <>
                                     <Button size="small" variant="contained"
-                                        onClick={manualLoadData}
+                                        onClick={() => {manualLoadData(); fetchTodos("Active");  }}
                                         disabled={apiLoading}
                                     >
                                         {apiLoading ? <div className="spinner"></div> :

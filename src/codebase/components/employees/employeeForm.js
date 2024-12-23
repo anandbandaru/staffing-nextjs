@@ -28,6 +28,7 @@ function EmployeeForm({ props, ID, operation }) {
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
+    const [showOffPan, setShowOffPan] = useState(false);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -35,6 +36,10 @@ function EmployeeForm({ props, ID, operation }) {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
     };
+
+    const handleEmployeeTypeChange = (values) => {
+        setShowOffPan(values.employeeType === 'OFFSHORE');
+    }
 
     const showSnackbar = (severity, message) => {
         setSnackbarSeverity(severity);
@@ -168,17 +173,18 @@ function EmployeeForm({ props, ID, operation }) {
                         personalUSPhone: firstName ? data.data[0].personalUSPhone : '',
                         address: firstName ? data.data[0].address : '',
                         employeeType: firstName ? data.data[0].employeeType : '',
-                        OFF_PAN: firstName ? data.data[0].OFF_PAN : '',
-                        OFF_Designation: firstName ? data.data[0].OFF_Designation : '',
-                        OFF_Aadhaar: firstName ? data.data[0].OFF_Aadhaar : '',
-                        OFF_SonOf: firstName ? data.data[0].OFF_SonOf : '',
-                        OFF_WifeOf: firstName ? data.data[0].OFF_WifeOf : '',
+                        OFF_PAN: firstName ? data.data[0].OFF_PAN : '-',
+                        OFF_Designation: firstName ? data.data[0].OFF_Designation : '-',
+                        OFF_Aadhaar: firstName ? data.data[0].OFF_Aadhaar : '-',
+                        OFF_SonOf: firstName ? data.data[0].OFF_SonOf : '-',
+                        OFF_DaughterOf: firstName ? data.data[0].OFF_DaughterOf : '-',
+                        OFF_WifeOf: firstName ? data.data[0].OFF_WifeOf : '-',
                         OFF_ManagerID: firstName ? data.data[0].OFF_ManagerID : '',
                         IDType: firstName ? data.data[0].IDType : '',
                         IDNumber: firstName ? data.data[0].IDNumber : '',
                         SSN: firstName ? data.data[0].SSN : '',
                         notes: firstName ? data.data[0].notes : '',
-                        Disabled: firstName ? data.data[0].Disabled : false,
+                        disabled: firstName ? data.data[0].disabled : false,
                         createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
@@ -200,7 +206,10 @@ function EmployeeForm({ props, ID, operation }) {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
-                            showSnackbar('success', "Owner data saved");
+                            if (resp.data.STATUS === "FAIL")
+                                showSnackbar('error', "Error saving Owner data");
+                            else
+                                showSnackbar('success', "Owner data saved");
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);
@@ -213,17 +222,42 @@ function EmployeeForm({ props, ID, operation }) {
 
                     validationSchema={Yup.object().shape({
                         firstName: Yup.string()
-                            .required('Required'),
+                            .required('firstName Required'),
                         lastName: Yup.string()
-                            .required('Required'),
+                            .required('lastName Required'),
+                        personalEmail: Yup.string()
+                            .email()
+                            .required('personalEmail Required'),
+                        personalPhone: Yup.string()
+                            .required('personalPhone Required'),
+                        personalUSPhone: Yup.string()
+                            .required('personalUSPhone Required'),
+                        employeeType: Yup.string()
+                            .required('employeeType Required'),
+                        // OFF_PAN: Yup.string().when('employeeType', {
+                        //     is: 'OFFSHORE',
+                        //     then: Yup.string().required('This field is required when OFF is selected'),
+                        // }),
+                        OFF_PAN: Yup.string()
+                            .required('OFF_PAN is required'),
+                        OFF_Designation: Yup.string()
+                            .required('OFF_Designation is required'),
+                        OFF_Aadhaar: Yup.string()
+                            .required('OFF_Aadhaar is required'),
+                        OFF_SonOf: Yup.string()
+                            .required('OFF_SonOf is required'),
+                        OFF_DaughterOf: Yup.string()
+                            .required('OFF_DaughterOf is required'),
+                        OFF_WifeOf: Yup.string()
+                            .required('OFF_WifeOf is required'),
+                        // OFF_ManagerID: Yup.string()
+                        //     .required('OFF_ManagerID Required'),
+                        IDType: Yup.string()
+                            .required('IDType Required'),
                         IDNumber: Yup.string()
-                            .required('Required'),
-                            OFF_ManagerID: Yup.string()
-                                .required('Required'),
-                        SSN: Yup.string()
-                            .required('Required'),
+                            .required('IDNumber Required'),
                         address: Yup.string()
-                            .required('Required'),
+                            .required('address Required'),
                     })}
                 >
                     {(props) => {
@@ -238,6 +272,7 @@ function EmployeeForm({ props, ID, operation }) {
                             handleSubmit,
                             handleReset
                         } = props;
+
                         return (
                             <form onSubmit={handleSubmit}>
                                 <TextField
@@ -280,21 +315,155 @@ function EmployeeForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="OFF_ManagerID"
-                                    name="OFF_ManagerID"
-                                    select
-                                    label="Offshore Manager ID"
-                                    value={values.OFF_ManagerID}
+                                    id="personalEmail"
+                                    name="personalEmail"
+                                    label="Personal Email"
+                                    value={values.personalEmail}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.OFF_ManagerID && touched.OFF_ManagerID) && errors.OFF_ManagerID}
+                                    helperText={(errors.personalEmail && touched.personalEmail) && errors.personalEmail}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="personalPhone"
+                                    name="personalPhone"
+                                    label="Personal Phone"
+                                    value={values.personalPhone}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.personalPhone && touched.personalPhone) && errors.personalPhone}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="personalUSPhone"
+                                    name="personalUSPhone"
+                                    label="Personal US Phone"
+                                    value={values.personalUSPhone}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.personalUSPhone && touched.personalUSPhone) && errors.personalUSPhone}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="employeeType"
+                                    name="employeeType"
+                                    select
+                                    label="Employee Type"
+                                    value={values.employeeType}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.employeeType && touched.employeeType) && errors.employeeType}
                                 >
-                                    {managersData ? managersData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.fistName} {item.lastName}
+                                    {configData.employeeTypes.map((item, index) => (
+                                        <MenuItem key={index} value={item.name}>
+                                            {item.name}
                                         </MenuItem>
-                                    )): []}
+                                    ))}
                                 </TextField>
+                                {values.employeeType === 'OFFSHORE' && (
+                                    <div className="error-summary bg-blue-200 my-4 p-2 text-white rounded-md">
+                                        <div className='text-black my-1'>
+                                            OFFSHORE employee Specific details:
+                                        </div>
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="OFF_PAN"
+                                            name="OFF_PAN"
+                                            label="OFFSHORE PAN"
+                                            value={values.OFF_PAN}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.OFF_PAN && touched.OFF_PAN) && errors.OFF_PAN}
+                                        />
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="OFF_Designation"
+                                            name="OFF_Designation"
+                                            label="OFFSHORE Designation"
+                                            value={values.OFF_Designation}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.OFF_Designation && touched.OFF_Designation) && errors.OFF_Designation}
+                                        />
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="OFF_Aadhaar"
+                                            name="OFF_Aadhaar"
+                                            label="OFFSHORE Aadhaar"
+                                            value={values.OFF_Aadhaar}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.OFF_Aadhaar && touched.OFF_Aadhaar) && errors.OFF_Aadhaar}
+                                        />
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="OFF_SonOf"
+                                            name="OFF_SonOf"
+                                            label="OFFSHORE Son Of"
+                                            value={values.OFF_SonOf}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.OFF_SonOf && touched.OFF_SonOf) && errors.OFF_SonOf}
+                                        />
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="OFF_DaughterOf"
+                                            name="OFF_DaughterOf"
+                                            label="OFFSHORE Daughter Of"
+                                            value={values.OFF_DaughterOf}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.OFF_DaughterOf && touched.OFF_DaughterOf) && errors.OFF_DaughterOf}
+                                        />
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="OFF_WifeOf"
+                                            name="OFF_WifeOf"
+                                            label="OFFSHORE Wife Of"
+                                            value={values.OFF_WifeOf}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.OFF_WifeOf && touched.OFF_WifeOf) && errors.OFF_WifeOf}
+                                        />
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="OFF_ManagerID"
+                                            name="OFF_ManagerID"
+                                            select
+                                            label="Offshore Manager ID"
+                                            value={values.OFF_ManagerID}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.OFF_ManagerID && touched.OFF_ManagerID) && errors.OFF_ManagerID}
+                                        >
+                                            {managersData ? managersData.data.map((item, index) => (
+                                                <MenuItem key={index} value={item.Id}>
+                                                    {item.fistName} {item.lastName}
+                                                </MenuItem>
+                                            )) : []}
+                                        </TextField>
+                                    </div>
+                                )}
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -367,6 +536,17 @@ function EmployeeForm({ props, ID, operation }) {
                                     }
                                     label="Disabled"
                                 />
+
+                                {Object.keys(errors).length > 0 && (
+                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                        <h3>Validation Errors:</h3>
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key}>{errors[key]}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                                 <Stack direction="row" spacing={2} className='float-right'>
                                     {operation === "Edit" ? (
                                         isSubmitting ? (

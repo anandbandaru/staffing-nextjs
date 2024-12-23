@@ -15,6 +15,7 @@ import axios from 'axios';
 
 function TodoEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const { APIPath } = useContext(Context);
+    const { fetchTodos } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [isDeletionError, setDeletionError] = useState(false);
     //For dialog MUI
@@ -24,6 +25,7 @@ function TodoEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const handleClose = () => {
         setOpen(false);
         manualLoadData();
+        fetchTodos("Active");
     };
     const handleClickOpen = () => {
         setOpen(true);

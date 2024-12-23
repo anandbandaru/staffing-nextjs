@@ -21,7 +21,7 @@ const TodosMain = () => {
                         </TabList>
 
                         <TabPanel className="px-2">
-                            <TodoList />
+                            <TodoList  />
                         </TabPanel>
                         <TabPanel className="px-2">
                             Reports

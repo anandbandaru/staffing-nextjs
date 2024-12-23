@@ -32,6 +32,11 @@ const ContextProvider = (props) => {
     const [APIversion, setAPIversion] = useState('');
     const [topTabName, setTopTabName] = useState('');
     const [top2TabName, setTop2TabName] = useState('');
+    
+    const [apiTodoLoading, setApiTodoLoading] = useState(false);
+    const [todos, setTodos] = useState({ data: [] });
+    const [itemCountActive, setItemCountActive] = useState(0);
+    const [itemCountCompleted, setItemCountCompleted] = useState(0);
 
     //FOR HISTORY LOCAL STORAGE
     // const [dataRecentsLS, setDataRecentsLS] = useState(() => {
@@ -221,7 +226,46 @@ const ContextProvider = (props) => {
         }
     };
 
+    // Add the function to be called in the ToDo component
+    const fetchTodos = (todoType) => {
+        setApiTodoLoading(true);
+        console.log("TODO fetching in content")
+        setTodos({ data: [] });
+        let apiUrl = APIPath + "/todos/active";
+        if (todoType === "Completed")
+            apiUrl = APIPath + "/todos/completed";
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    if (result.error) {
+                        setTodos({});
+                        setItemCountCompleted(0);
+                        setItemCountActive(0);
+                    } else {
+                        setTodos(result);
+                        if (todoType === "Completed")
+                            setItemCountCompleted(result.total);
+                        else
+                            setItemCountActive(result.total);
+                    }
+                    setApiTodoLoading(false);
+                },
+                (error) => {
+                    setApiTodoLoading(false);
+                    setTodos({});
+                    setItemCountCompleted(0);
+                    setItemCountActive(0);
+                }
+            );
+    };
+
     const contextValue = {
+        fetchTodos,
+        apiTodoLoading,
+        todos,
+        itemCountActive,
+        itemCountCompleted,
         loading,
         showGreetings,
         setShowGreetings,

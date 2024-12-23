@@ -16,16 +16,16 @@ import CustomSnackbar from "../snackbar/snackbar";
 
 const ToDo = () => {
     const {
-        APIPath,
-        userName } = useContext(Context);
+        APIPath, 
+        userName, fetchTodos, todos, itemCountActive, itemCountCompleted, apiTodoLoading  } = useContext(Context);
 
     const [todoType, setTodotype] = useState("");
-    const [todos, setTodos] = useState({ data: [] });
+    // const [todos, setTodos] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
-    const [itemCountActive, setItemCountActive] = useState(0);
-    const [itemCountCompleted, setItemCountCompleted] = useState(0);
+    // const [itemCountActive, setItemCountActive] = useState(0);
+    // const [itemCountCompleted, setItemCountCompleted] = useState(0);
     const [tabIndex, setTabIndex] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedTodo, setSelectedTodo] = useState(null);
@@ -54,8 +54,8 @@ const ToDo = () => {
 
     useEffect(() => {
         console.log("TODO SCREEN INTI HERE")
-        setTimeout(() => {
-            fetchTodos("Active");
+        setTimeout(async() => {
+            await fetchTodos("Active");
         }, 1);
     }, []);
 
@@ -71,47 +71,47 @@ const ToDo = () => {
         }
     };
 
-    const fetchTodos = (todoType) => {
-        setTodos({ data: [] });
-        setApiLoading(true);
-        let apiUrl = APIPath + "/todos/active"
-        if (todoType === "Completed")
-            apiUrl = APIPath + "/todos/completed"
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(
-                (result) => {
-                    //console.log(result);
-                    if (result.error) {
-                        console.log(todoType + ":fetchTodos:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
-                        setTodos({});
-                        setApiLoadingError(true);
-                        setItemCountCompleted(0);
-                        setItemCountActive(0);
-                    }
-                    else {
-                        setTodos(result);
-                        if (todoType === "Completed")
-                            setItemCountCompleted(result.total);
-                        else
-                            setItemCountActive(result.total);
-                        setDataAPIError(result.total == 0 ? "No To Do information present." : "ok");
-                    }
-                    setApiLoading(false);
-                },
-                (error) => {
-                    setTodos({});
-                    setItemCountCompleted(0);
-                    setItemCountActive(0);
-                    console.log(todoType + ":fetchTodos:On JUST error: API call failed")
-                    setDataAPIError(todoType + ":fetchTodos:On JUST error: API call failed");
-                    setApiLoading(false);
-                    setApiLoadingError(true);
-                    setApiLoading(false);
-                }
-            )
-    }
+    // const fetchTodos1 = (todoType) => {
+    //     setTodos({ data: [] });
+    //     setApiLoading(true);
+    //     let apiUrl = APIPath + "/todos/active"
+    //     if (todoType === "Completed")
+    //         apiUrl = APIPath + "/todos/completed"
+    //     fetch(apiUrl)
+    //         .then(response => response.json())
+    //         .then(
+    //             (result) => {
+    //                 //console.log(result);
+    //                 if (result.error) {
+    //                     console.log(todoType + ":fetchTodos:On error return: setting empty")
+    //                     setDataAPIError(result.error.code + " - " + result.error.message);
+    //                     setTodos({});
+    //                     setApiLoadingError(true);
+    //                     setItemCountCompleted(0);
+    //                     setItemCountActive(0);
+    //                 }
+    //                 else {
+    //                     setTodos(result);
+    //                     if (todoType === "Completed")
+    //                         setItemCountCompleted(result.total);
+    //                     else
+    //                         setItemCountActive(result.total);
+    //                     setDataAPIError(result.total == 0 ? "No To Do information present." : "ok");
+    //                 }
+    //                 setApiLoading(false);
+    //             },
+    //             (error) => {
+    //                 setTodos({});
+    //                 setItemCountCompleted(0);
+    //                 setItemCountActive(0);
+    //                 console.log(todoType + ":fetchTodos:On JUST error: API call failed")
+    //                 setDataAPIError(todoType + ":fetchTodos:On JUST error: API call failed");
+    //                 setApiLoading(false);
+    //                 setApiLoadingError(true);
+    //                 setApiLoading(false);
+    //             }
+    //         )
+    // }
 
     const completeTodo = async (id) => {
         setApiLoading(true);
@@ -154,7 +154,7 @@ const ToDo = () => {
                 </Stack>
             </div>
             <div className="todoAPILoadingHolder">
-                {apiLoading ?
+                {apiTodoLoading ?
                     <>
                         <div className="spinner"></div>
                     </>
@@ -163,7 +163,7 @@ const ToDo = () => {
                     </>
                 }
             </div>
-            {todos.data ?
+            {todos && todos.data ?
                 <>
                     <Tabs selectedIndex={tabIndex} className="mx-2"
                         onSelect={handleTabSelect}>

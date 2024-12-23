@@ -187,7 +187,7 @@ const Top = () => {
                             <FilesMain />
                         </TabPanel>
                         <TabPanel className="px-2">
-                            <TodosMain />
+                            <TodosMain  />
                         </TabPanel>
                         <TabPanel className="px-2">
                             <UsersMain />
@@ -195,6 +195,11 @@ const Top = () => {
                     </Tabs>
                 </Box>
             </div>
+
+            <div className="balanceHolder">
+                $ 102.45
+            </div>
+
             <div className="optionsHolder">
                 {!loading ?
                     <></>
@@ -279,7 +284,7 @@ const Top = () => {
                                     showSnackbar('info', "Checked API availability");
                                 }}
                             >
-                                ERROR: service issue
+                                ERROR
                             </Button>
                             {/* <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="error" onClick={checkAPIAvailability} />
                             <span className="APICheckHolder_text">service issue</span> */}
@@ -292,7 +297,7 @@ const Top = () => {
                                     showSnackbar('info', "Checked API availability");
                                 }}
                             >
-                                OK: {APIversion === "LOCAL VERSION" ? "Local API" : "Online API: " + APIversion}
+                                {APIversion === "LOCAL VERSION" ? "L" : "O:" + APIversion}
                             </Button>
                             {/* <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="success" onClick={checkAPIAvailability} />
                             <span className="APICheckHolder_text"></span> */}
