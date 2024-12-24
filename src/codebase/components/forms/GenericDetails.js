@@ -3,9 +3,9 @@ import { Context } from "../../context/context";
 import Stack from '@mui/material/Stack';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import IconButton from '@mui/material/IconButton';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+// import Dialog from '@mui/material/Dialog';
+// import DialogContent from '@mui/material/DialogContent';
+// import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 import EmployeeGenericList from '../employees/employeeGList';
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
 
 function GenericDetails({ ID, operation, doLoading, moduleName }) {
@@ -87,7 +88,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                 (result) => {
                     if (result.error) {
                         setDataAPIError(`${result.error.code} - ${result.error.message}`);
-                        setData({data:[]});
+                        setData({ data: [] });
                         setApiLoadingError(true);
                     } else {
                         setData(result);
@@ -96,7 +97,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                     setApiLoading(false);
                 },
                 (error) => {
-                    setData({data:[]});
+                    setData({ data: [] });
                     setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
                     setApiLoadingError(true);
@@ -119,7 +120,104 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                     <ReadMoreIcon />
                 </IconButton>
             </Stack>
-            <BootstrapDialog
+
+            <Dialog open={open} onClose={() => handleClose(false)} className="relative z-50 flex w-full">
+                <div className="fixed inset-1 w-full items-center justify-center p-1 bg-gray-700 bg-opacity-50">
+                    <DialogPanel className="space-y-4 bg-white p-3 px-5 border-gray-600 border-opacity-80 border-8 rounded-lg">
+                        <DialogTitle className="font-bold">{operation} {moduleName}: ID: {ID}</DialogTitle>
+                        <IconButton
+                            aria-label="close"
+                            onClick={handleClose}
+                            sx={{
+                                position: 'absolute',
+                                right: 12,
+                                top: 4,
+                                color: (theme) => theme.palette.grey[500],
+                            }}
+                        >
+                            <CloseIcon className='text-red-600' />
+                        </IconButton>
+
+                        {apiLoading ? (
+                            <div className="spinner"></div>
+                        ) : (
+                            <Box sx={{ width: '100%', typography: 'body1' }}>
+                                <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
+                                    <TabList className="thirdTabsListHolder">
+                                        <Tab>Metadata</Tab>
+                                        {(moduleName !== "FILETYPES" && <>
+                                            <Tab>Documents</Tab>
+                                            <Tab>Relations</Tab>
+                                        </>
+                                        )}
+                                        {(moduleName === "EMPLOYEES" && <>
+                                            <Tab>Dependents</Tab>
+                                            <Tab>Passports</Tab>
+                                            <Tab>Visas</Tab>
+                                            <Tab>I94s</Tab>
+                                        </>
+                                        )}
+                                    </TabList>
+
+                                    <TabPanel className="px-2">
+                                        <TableContainer component={Paper}>
+                                            <Table size="small" aria-label="a dense table">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell className='bg-gray-200'>Column</TableCell>
+                                                        <TableCell className='bg-gray-300'>Value</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {data.data.map((item, index) => (
+                                                        Object.entries(item).map(([key, value]) => (
+                                                            <TableRow key={`${index}-${key}`}>
+                                                                <TableCell component="th" scope="row">
+                                                                    {key}
+                                                                </TableCell>
+                                                                <TableCell className='bg-gray-100'>
+                                                                    {value === true ? "YES" : value}
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+
+                                    {(moduleName !== "FILETYPES" && <>
+                                        <TabPanel className="px-2">
+                                            <GenericFilesListSimple moduleId={ID} componentName={moduleName} />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            Relations
+                                        </TabPanel>
+                                    </>
+                                    )}
+                                    {(moduleName === "EMPLOYEES" && <>
+                                        <TabPanel className="px-2">
+                                            <EmployeeGenericList formType={'Dependent'} employeeID={ID} />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <EmployeeGenericList formType={'Passport'} employeeID={ID} />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <EmployeeGenericList formType={'Visa'} employeeID={ID} />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <EmployeeGenericList formType={'I94'} employeeID={ID} />
+                                        </TabPanel>
+                                    </>
+                                    )}
+                                </Tabs>
+                            </Box>
+                        )}
+                    </DialogPanel>
+                </div>
+            </Dialog>
+
+            {/* <BootstrapDialog
                 className=""
                 onClose={handleClose}
                 TransitionComponent={Transition}
@@ -220,7 +318,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                         </Box>
                     )}
                 </DialogContent>
-            </BootstrapDialog>
+            </BootstrapDialog> */}
         </>
     );
 }
