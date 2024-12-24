@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import TodosListToolbar from './todosListToolbar'
-import TodoDetails from "./todoDetails";
+import GenericDetails from "../forms/GenericDetails";
 import TodoEdit from "./todoEdit";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
@@ -33,7 +33,6 @@ const TodoList = () => {
             getList();
         }, 1);
     }
-
     const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/gettodos"
@@ -70,7 +69,7 @@ const TodoList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <TodoDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="TODOS" />
             </>
         );
     };

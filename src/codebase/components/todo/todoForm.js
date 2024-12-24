@@ -10,6 +10,7 @@ import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
+import CustomSnackbar from "../snackbar/snackbar";
 
 function TodoForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -23,6 +24,18 @@ function TodoForm({ props, ID, operation }) {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
     const getDetails = () => {
         let apiUrl = APIPath + "/gettododetails/" + ID;
         console.log(apiUrl)
@@ -62,6 +75,12 @@ function TodoForm({ props, ID, operation }) {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading && operation !== "New" ?
                 <>
                     <div className="spinner"></div>
@@ -93,12 +112,17 @@ function TodoForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
+                            if (resp.data.STATUS === "FAIL")
+                                showSnackbar('error', "Error saving To Do data");
+                            else
+                                showSnackbar('success', "To Do data saved");
                         })
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
                                 setFormSubmitionAPIErrorMessage(error);
                                 setFormSubmitionAPIError(true);
+                                showSnackbar('error', "Error saving To Do data");
                             });
                     }}
 
@@ -159,9 +183,6 @@ function TodoForm({ props, ID, operation }) {
                                     label="Important"
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
-                                    <div>
-                                        {ID}:{operation}
-                                    </div>
                                     {operation === "Edit" ?
                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                             <SaveOutlinedIcon className="mr-1" />
@@ -181,15 +202,6 @@ function TodoForm({ props, ID, operation }) {
                                                 <SaveOutlinedIcon className="mr-1" />
                                                 Save
                                             </Button>
-                                        </>
-                                    }
-                                    {isSubmitionCompleted && !formSubmitionAPIError ?
-                                        <Chip label="Data saved" color="success" />
-                                        :
-                                        <>
-                                            {formSubmitionAPIError ?
-                                                <Chip label={formSubmitionAPIErrorMessage} color="error" />
-                                                : <></>}
                                         </>
                                     }
                                 </Stack>

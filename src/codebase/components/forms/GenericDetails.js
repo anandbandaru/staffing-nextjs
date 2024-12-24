@@ -73,6 +73,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                 return APIPath + "/getexpenselistdetails";
             case 'FILETYPES':
                 return APIPath + "/getfiletypedetails";
+            case 'TODOS':
+                return APIPath + "/gettododetails";
             default:
                 return '';
         }
@@ -113,6 +115,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
         }
     }, [ID]);
 
+    const highlightKeys = ['ID', 'DISABLED', 'IMPORTANT', 'COMPLETED', 'SSN'];
+
     return (
         <>
             <Stack direction="row" spacing={1}>
@@ -124,7 +128,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
             <Dialog open={open} onClose={() => handleClose(false)} className="relative z-50 flex w-full">
                 <div className="fixed inset-1 w-full items-center justify-center p-1 bg-gray-700 bg-opacity-50">
                     <DialogPanel className="space-y-4 bg-white p-3 px-5 border-gray-600 border-opacity-80 border-8 rounded-lg">
-                        <DialogTitle className="font-bold">{operation} {moduleName}: ID: {ID}</DialogTitle>
+                        <DialogTitle className="font-bold text-lg">{operation} {moduleName}: ID: {ID}</DialogTitle>
                         <IconButton
                             aria-label="close"
                             onClick={handleClose}
@@ -161,22 +165,30 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
 
                                     <TabPanel className="px-2">
                                         <TableContainer component={Paper}>
-                                            <Table size="small" aria-label="a dense table">
+                                            <Table size="small" aria-label="Details table">
                                                 <TableHead>
                                                     <TableRow>
-                                                        <TableCell className='bg-gray-200'>Column</TableCell>
-                                                        <TableCell className='bg-gray-300'>Value</TableCell>
+                                                        <TableCell className='bg-gray-200 max-w-[200px]'>Column</TableCell>
+                                                        <TableCell className='bg-gray-400'>Value</TableCell>
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
                                                     {data.data.map((item, index) => (
                                                         Object.entries(item).map(([key, value]) => (
                                                             <TableRow key={`${index}-${key}`}>
-                                                                <TableCell component="th" scope="row">
-                                                                    {key}
+                                                                <TableCell component="th" scope="row" className="max-w-[200px]">
+                                                                    <span className={`${highlightKeys.includes(key.toUpperCase()) ? 'rag-gray-bg px-2' : ''}`}>
+                                                                        {key}
+                                                                    </span>
                                                                 </TableCell>
                                                                 <TableCell className='bg-gray-100'>
-                                                                    {value === true ? "YES" : value}
+                                                                    {value === true ? (
+                                                                        <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
+                                                                    ) : value === false ? (
+                                                                        <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
+                                                                    ) : (
+                                                                        value
+                                                                    )}
                                                                 </TableCell>
                                                             </TableRow>
                                                         ))

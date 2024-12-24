@@ -273,6 +273,9 @@ form P{
   color: #fff !important;
   background-color: #464343 !important;
 }
+.rag-gray{
+  color: #464343 !important;
+}
 #customized-dialog-title{
 width: 300px !important;
 }

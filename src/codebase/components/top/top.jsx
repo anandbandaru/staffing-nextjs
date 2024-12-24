@@ -48,6 +48,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import AttributionIcon from '@mui/icons-material/Attribution';
 import CustomSnackbar from "../snackbar/snackbar";
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import GenericList from "../forms/GenericList";
 
 const Top = () => {
 
@@ -60,7 +62,7 @@ const Top = () => {
         loading,
         userName, userType } = useContext(Context);
 
-    const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo', 'Users'];
+    const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo', 'Users', 'Configuration'];
     const [tabIndex, setTabIndex] = React.useState(0);
     const handleTabSelect = (index) => {
         setTabIndex(index);
@@ -163,6 +165,7 @@ const Top = () => {
                             <Tab ><AttachmentIcon className="mr-1" />Files</Tab>
                             <Tab ><CheckCircleOutlineIcon className="mr-1" />Todo</Tab>
                             <Tab ><AttributionIcon className="mr-1" />Users</Tab>
+                            <Tab ><SettingsEthernetIcon  className="mr-1" />Configuration</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">
@@ -191,6 +194,12 @@ const Top = () => {
                         </TabPanel>
                         <TabPanel className="px-2">
                             <UsersMain />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <GenericList formType={'jobTypes'} />
+                            {/* <GenericList formType={"employeeTypes"} />
+                            <GenericList formType={"dependentTypes"} />
+                            <GenericList formType={"visaTypes"} /> */}
                         </TabPanel>
                     </Tabs>
                 </Box>

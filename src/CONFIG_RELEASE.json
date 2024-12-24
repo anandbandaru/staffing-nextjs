@@ -10,6 +10,17 @@
       "title": "Staffing"
     }
   ],
+  "jobTypes": [
+    {
+      "name": "C2C"
+    },
+    {
+      "name": "W2"
+    },
+    {
+      "name": "FULLTIME"
+    }
+  ],
   "employeeTypes": [
     {
       "name": "ONSHORE"
