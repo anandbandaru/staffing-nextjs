@@ -10,7 +10,6 @@ import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
 import CustomSnackbar from "../snackbar/snackbar";
 
 function OwnerForm({ props, ID, operation }) {
@@ -377,11 +376,6 @@ function OwnerForm({ props, ID, operation }) {
                                                 </Button>
                                             )}
                                         </>
-                                    )}
-                                    {isSubmitionCompleted && !formSubmitionAPIError ? (
-                                        <Chip label="Data saved" color="success" />
-                                    ) : (
-                                        formSubmitionAPIError && <Chip label={formSubmitionAPIErrorMessage} color="error" />
                                     )}
                                 </Stack>
                             </form>

@@ -80,13 +80,14 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
     const getDetails = () => {
         setApiLoading(true);
         let apiUrl = getAPIEndpoint() + "/" + ID;
+        console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
                 (result) => {
                     if (result.error) {
                         setDataAPIError(`${result.error.code} - ${result.error.message}`);
-                        setData({});
+                        setData({data:[]});
                         setApiLoadingError(true);
                     } else {
                         setData(result);
@@ -95,7 +96,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                     setApiLoading(false);
                 },
                 (error) => {
-                    setData({});
+                    setData({data:[]});
                     setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
                     setApiLoadingError(true);

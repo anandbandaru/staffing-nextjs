@@ -9,20 +9,15 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
 import CustomSnackbar from "../snackbar/snackbar";
 
-function CompanyForm({ props, ID, operation }) {
-    const { APIPath } = useContext(Context);
+function VendorForm({ props, ID, operation }) {
+    const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
-    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
-    const [itemToCheck, setItemToCheck] = useState('');
+    const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -36,9 +31,8 @@ function CompanyForm({ props, ID, operation }) {
         setSnackbarMessage(message);
         setSnackbarOpen(true);
     };
-
     const getDetails = () => {
-        let apiUrl = APIPath + "/getcompanydetails/" + ID;
+        let apiUrl = APIPath + "/getvendordetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -47,24 +41,18 @@ function CompanyForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setData(result);
-                        setItemToCheck(result.data[0].Name);
-                        //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Implementation Partners information present." : "ok");
+                        setName(result.data[0].name);
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -73,14 +61,6 @@ function CompanyForm({ props, ID, operation }) {
             getDetails();
         }
     }, []);
-
-    const formatDate = (dateString) => {
-        const apiDate = dateString;
-        const date = new Date(apiDate);
-        const formatted = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
-        console.log("FORMATTED DATE:" + formatted)
-        return formatted;
-    }
 
     return (
         <>
@@ -98,21 +78,29 @@ function CompanyForm({ props, ID, operation }) {
                 <Formik
                     enableReinitialize
                     initialValues={{
-                        Id: itemToCheck ? ID : 'This will be auto-generated once you save',
-                        Name: itemToCheck ? data.data[0].Name : '',
-                        Description: itemToCheck ? data.data[0].Description : '',
-                        Address: itemToCheck ? data.data[0].Address : '',
-                        EIN: itemToCheck ? data.data[0].EIN : '',
-                        Phone: itemToCheck ? data.data[0].Phone : '',
-                        Email: itemToCheck ? data.data[0].Email : '',
-                        EstablishedDate: itemToCheck ? formatDate(data.data[0].EstablishedDate) : '',
-                        Notes: itemToCheck ? data.data[0].Notes : '',
-                        Disabled: itemToCheck ? data.data[0].Disabled : false,
+                        Id: name ? ID : 'This will be auto-generated once you save',
+                        name: name ? data.data[0].name : '',
+                        address: name ? data.data[0].address : '',
+                        city: name ? data.data[0].city : '',
+                        state: name ? data.data[0].state : '',
+                        zip: name ? data.data[0].zip : '',
+                        country: name ? data.data[0].country : '',
+                        email: name ? data.data[0].email : '',
+                        EIN: name ? data.data[0].EIN : '',
+                        phone: name ? data.data[0].phone : '',
+                        accountsEmail: name ? data.data[0].accountsEmail : '',
+                        accountsManagerEmail: name ? data.data[0].accountsManagerEmail : '',
+                        salesEmail: name ? data.data[0].salesEmail : '',
+                        salesManagerEmail: name ? data.data[0].salesManagerEmail : '',
+                        notes: name ? data.data[0].notes : '',
+                        disabled: name ? data.data[0].disabled : false,
+                        createdBy: userName,
+                        modifiedBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        var finalAPI = APIPath + "/addcompany";
+                        var finalAPI = APIPath + "/addvendor";
                         if (operation === "Edit") {
-                            finalAPI = APIPath + "/updatecompany";
+                            finalAPI = APIPath + "/updatevendor";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -126,39 +114,46 @@ function CompanyForm({ props, ID, operation }) {
                             },
                         ).then((resp) => {
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIError(false);
                             if (resp.data.STATUS === "FAIL")
-                                showSnackbar('error', "Error saving data");
+                                showSnackbar('error', "Error saving Vendor data");
                             else
-                                showSnackbar('success', "Data saved");
+                                showSnackbar('success', "Vendor data saved");
                         })
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
-                                setFormSubmitionAPIErrorMessage(error);
-                                setFormSubmitionAPIError(true);
-                                showSnackbar('error', "Error saving data");
+                                showSnackbar('error', "Error saving Vendor data");
                             });
                     }}
 
                     validationSchema={Yup.object().shape({
-                        Name: Yup.string()
-                            .required('Required'),
-                        Description: Yup.string()
-                            .required('Required'),
-                        Address: Yup.string()
-                            .required('Required'),
-                        EIN: Yup.string()
-                            .required('Required'),
-                        Phone: Yup.string()
-                            .required('Required'),
-                        Email: Yup.string()
+                        name: Yup.string()
+                            .required('name Required'),
+                        address: Yup.string()
+                            .required('address Required'),
+                        city: Yup.string()
+                            .required('city Required'),
+                        state: Yup.string()
+                            .required('state Required'),
+                        zip: Yup.string()
+                            .required('zip Required'),
+                        country: Yup.string()
+                            .required('country Required'),
+                        email: Yup.string()
                             .email()
-                            .required('Required'),
-                        EstablishedDate: Yup.string()
-                            .required('Required'),
-                        Notes: Yup.string()
-                            .required('Required'),
+                            .required('email Required'),
+                        EIN: Yup.string()
+                            .required('EIN Required'),
+                        phone: Yup.string()
+                            .required('phone Required'),
+                        accountsEmail: Yup.string()
+                            .email(),
+                        accountsManagerEmail: Yup.string()
+                            .email(),
+                        salesEmail: Yup.string()
+                            .email(),
+                        salesManagerEmail: Yup.string()
+                            .email(),
                     })}
                 >
                     {(props) => {
@@ -171,7 +166,7 @@ function CompanyForm({ props, ID, operation }) {
                             handleChange,
                             handleBlur,
                             handleSubmit,
-                            handleReset
+                            handleReset,
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>
@@ -191,41 +186,87 @@ function CompanyForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Name"
-                                    name="Name"
+                                    id="name"
+                                    name="name"
                                     label="Name"
-                                    value={values.Name}
+                                    value={values.name}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Name && touched.Name) && errors.Name}
+                                    helperText={(errors.name && touched.name) && errors.name}
                                 />
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Description"
-                                    name="Description"
-                                    label="Description"
-                                    multiline
-                                    rows={4}
-                                    value={values.Description}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.Description && touched.Description) && errors.Description}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="Address"
-                                    name="Address"
+                                    id="address"
+                                    name="address"
                                     label="Address"
                                     multiline
                                     rows={4}
-                                    value={values.Address}
+                                    value={values.address}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Address && touched.Address) && errors.Address}
+                                    helperText={(errors.address && touched.address) && errors.address}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="city"
+                                    name="city"
+                                    label="City"
+                                    value={values.city}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.city && touched.city) && errors.city}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="state"
+                                    name="state"
+                                    label="State"
+                                    value={values.state}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.state && touched.state) && errors.state}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="zip"
+                                    name="zip"
+                                    label="Zip"
+                                    value={values.zip}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.zip && touched.zip) && errors.zip}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="country"
+                                    name="country"
+                                    label="Country"
+                                    value={values.country}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.country && touched.country) && errors.country}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="email"
+                                    name="email"
+                                    label="Email"
+                                    value={values.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.email && touched.email) && errors.email}
                                 />
                                 <TextField
                                     size="small"
@@ -243,80 +284,91 @@ function CompanyForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Phone"
-                                    name="Phone"
-                                    label="Phone"
-                                    value={values.Phone}
+                                    id="phone"
+                                    name="phone"
+                                    label="phone"
+                                    value={values.phone}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Phone && touched.Phone) && errors.Phone}
+                                    helperText={(errors.phone && touched.phone) && errors.phone}
                                 />
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Email"
-                                    name="Email"
-                                    label="Email"
-                                    value={values.Email}
+                                    id="accountsEmail"
+                                    name="accountsEmail"
+                                    label="Accounts Email"
+                                    value={values.accountsEmail}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Email && touched.Email) && errors.Email}
+                                    helperText={(errors.accountsEmail && touched.accountsEmail) && errors.accountsEmail}
                                 />
-                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-
-                                    <div className='flex-1'>Established Date:
-                                        {ID ?
-                                            <span className='px-2 bg-gray-500 mx-2 text-white'>{values.EstablishedDate}</span>
-                                            : <></>
-                                        }
-                                    </div>
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        className='flex-1'
-                                        id="EstablishedDate"
-                                        name="EstablishedDate"
-                                        type="date"
-                                        value={values.EstablishedDate}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        helperText={(errors.EstablishedDate && touched.EstablishedDate) && errors.EstablishedDate}
-                                    />
-                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Notes"
-                                    name="Notes"
+                                    id="accountsManagerEmail"
+                                    name="accountsManagerEmail"
+                                    label="Accounts Manager Email"
+                                    value={values.accountsManagerEmail}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.accountsManagerEmail && touched.accountsManagerEmail) && errors.accountsManagerEmail}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="salesEmail"
+                                    name="salesEmail"
+                                    label="Sales Email"
+                                    value={values.salesEmail}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.salesEmail && touched.salesEmail) && errors.salesEmail}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="salesManagerEmail"
+                                    name="salesManagerEmail"
+                                    label="Sales Manager Email"
+                                    value={values.salesManagerEmail}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.salesManagerEmail && touched.salesManagerEmail) && errors.salesManagerEmail}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="notes"
+                                    name="notes"
                                     label="Notes"
                                     multiline
                                     rows={4}
-                                    value={values.Notes}
+                                    value={values.notes}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Notes && touched.Notes) && errors.Notes}
+                                    helperText={(errors.notes && touched.notes) && errors.notes}
                                 />
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            id="Disabled"
-                                            name="Disabled"
+                                            id="disabled"
+                                            name="disabled"
                                             label="Disabled"
                                             // value={values.Disabled}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             // helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
-                                            checked={values.Disabled} />
+                                            checked={values.disabled} />
                                     }
                                     label="Disabled"
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
-                                    {/* <div>
-                                        {ID}:{operation}
-                                    </div> */}
                                     {operation === "Edit" ?
                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                             <SaveOutlinedIcon className="mr-1" />
@@ -328,7 +380,7 @@ function CompanyForm({ props, ID, operation }) {
                                                 variant="outlined"
                                                 color="warning"
                                                 onClick={handleReset}
-                                                disabled={!dirty || isSubmitting && !isSubmitionCompleted}
+                                                disabled={!dirty || (isSubmitting && !isSubmitionCompleted)}
                                             >
                                                 Reset
                                             </Button>
@@ -349,4 +401,4 @@ function CompanyForm({ props, ID, operation }) {
     );
 }
 
-export default CompanyForm;
+export default VendorForm;

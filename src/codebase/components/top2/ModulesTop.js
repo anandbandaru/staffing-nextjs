@@ -13,6 +13,7 @@ import ClientsMain from "../clients/clientsMain";
 import ImpPartnersMain from "../imppartners/impPartnersMain";
 import OwnershipsMain from "../ownerships/ownershipsMain";
 import EmployeesMain from "../employees/employeesMain";
+import VendorsMain from "../vendors/vendorsMain";
 import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
 
 const ModulesTop = ({ module }) => {
@@ -67,7 +68,7 @@ const ModulesTop = ({ module }) => {
                                 <EmployeesMain />
                             </TabPanel>
                             <TabPanel className="px-2">
-                                Vendors
+                                <VendorsMain />
                             </TabPanel>
                             <TabPanel className="px-2">
                                 <ClientsMain />

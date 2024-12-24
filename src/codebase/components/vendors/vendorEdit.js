@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import ImpPartnerForm from "./impPartnerForm";
+import VendorForm from "./vendorForm";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import BackupIcon from '@mui/icons-material/Backup';
@@ -15,7 +15,7 @@ import { Context } from "../../context/context";
 import axios from 'axios';
 import GenericFileForm from '../forms/GenericFileForm';
 
-function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
+function VendorEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [openDocuments, setOpenDocuments] = React.useState(false);
@@ -47,7 +47,7 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
     }));
     const deleteByID = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/deleteimplementationpartner"
+        let apiUrl = APIPath + "/deletevendor"
         axios.post(apiUrl,
             {
                 Id: ID
@@ -103,7 +103,7 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 open={open}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Client: ID: {ID}
+                    {operation} Vendor: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -118,7 +118,7 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <ImpPartnerForm ID={ID} operation="Edit" />
+                    <VendorForm ID={ID} operation="Edit" />
                 </DialogContent>
             </BootstrapDialog>
 
@@ -131,7 +131,7 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 open={openDocuments}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    Documents: Implementation Partner: ID: {ID}
+                    Documents: Vendor: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -146,7 +146,7 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <GenericFileForm moduleId={ID} componentName="IMPLEMENTATIONPARTNERS" />
+                    <GenericFileForm moduleId={ID} componentName="VENDORS" />
                 </DialogContent>
             </BootstrapDialog>
         </>
@@ -154,4 +154,4 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
     )
 }
 
-export default ImpPartnerEdit;
+export default VendorEdit;

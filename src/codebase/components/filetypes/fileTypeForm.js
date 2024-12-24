@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
+import CustomSnackbar from "../snackbar/snackbar";
 
 function FileType({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -21,6 +21,18 @@ function FileType({ props, ID, operation }) {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
     const getDetails = () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getfiletypedetails/" + ID;
@@ -61,6 +73,12 @@ function FileType({ props, ID, operation }) {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading && operation !== "New" ?
                 <>
                     <div className="spinner"></div>
@@ -92,17 +110,17 @@ function FileType({ props, ID, operation }) {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
-                            console.log("RESETTING NOW")
-                            if (resetButtonRef.current) {
-                                resetButtonRef.current.click();
-                                console.log("RESETTING DONE")
-                            }
+                            if (resp.data.STATUS === "FAIL")
+                                showSnackbar('error', "Error saving File Types data");
+                            else
+                                showSnackbar('success', "File Types data saved");
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIErrorMessage(error);
                             setFormSubmitionAPIError(true);
+                            showSnackbar('error', "Error saving File Types data");
                         });
                     }}
 
@@ -196,11 +214,6 @@ function FileType({ props, ID, operation }) {
                                                 </Button>
                                             )}
                                         </>
-                                    )}
-                                    {isSubmitionCompleted && !formSubmitionAPIError ? (
-                                        <Chip label="Data saved" color="success" />
-                                    ) : (
-                                        formSubmitionAPIError && <Chip label={formSubmitionAPIErrorMessage} color="error" />
                                     )}
                                 </Stack>
                             </form>

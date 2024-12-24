@@ -13,6 +13,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Alert from '@mui/material/Alert';
 
 function GenericFileForm({ props, componentName, moduleId }) {
 
@@ -24,6 +25,7 @@ function GenericFileForm({ props, componentName, moduleId }) {
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
+    const [gDriveFolderNotPresent, setGDriveFolderNotPresent] = useState(false);
 
     //FILE RELATED
     const [parentId, setParentId] = useState('');
@@ -62,7 +64,12 @@ function GenericFileForm({ props, componentName, moduleId }) {
 
     //page title
     useEffect(() => {
-        setParentId(configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid);
+        try {
+            setParentId(configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid);
+        } catch (error) {
+            setGDriveFolderNotPresent(true);
+            showSnackbar('error', 'There is no Google Drive configured for this module');
+        }
     });
 
     return (
@@ -73,134 +80,140 @@ function GenericFileForm({ props, componentName, moduleId }) {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            <Stack direction="row" spacing={2} className='justify-center items-center'>
-                <InfoOutlinedIcon />
-                <Chip label={`In this screen, file would be uploaded into ${componentName} folder of Google Drive by default`} />
-            </Stack>
-            <Formik
-                enableReinitialize
-                initialValues={{
-                    title: '',
-                    module: componentName,
-                    moduleId: moduleId,
-                    createdBy: userName,
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                    setApiLoading(true)
-                    setSubmitionCompleted(false);
-                    setSubmitting(true);
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    const parentFolderId = configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid;
-                    formData.append('parentfolderid', parentFolderId);
-                    formData.append('title', values.title);
-                    formData.append('createdBy', userName);
-                    formData.append('notes', values.notes);
-                    formData.append('module', componentName);
-                    formData.append('moduleId', moduleId);
+            {gDriveFolderNotPresent ?
+                <>
+                    <Alert severity="error">There is no Google Drive configured for this module</Alert>
+                </>
+                :
+                <>
+                    <Stack direction="row" spacing={2} className='justify-center items-center'>
+                        <InfoOutlinedIcon />
+                        <Chip label={`In this screen, file would be uploaded into ${componentName} folder of Google Drive by default`} />
+                    </Stack>
+                    <Formik
+                        enableReinitialize
+                        initialValues={{
+                            title: '',
+                            module: componentName,
+                            moduleId: moduleId,
+                            createdBy: userName,
+                        }}
+                        onSubmit={(values, { setSubmitting }) => {
+                            setApiLoading(true)
+                            setSubmitionCompleted(false);
+                            setSubmitting(true);
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            const parentFolderId = configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid;
+                            formData.append('parentfolderid', parentFolderId);
+                            formData.append('title', values.title);
+                            formData.append('createdBy', userName);
+                            formData.append('notes', values.notes);
+                            formData.append('module', componentName);
+                            formData.append('moduleId', moduleId);
 
-                    axios.post(APIPath + '/uploadfile', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    }).then((resp) => {
-                        setSubmitionCompleted(true);
+                            axios.post(APIPath + '/uploadfile', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data',
+                                },
+                            }).then((resp) => {
+                                setSubmitionCompleted(true);
 
-                        if (resp.data.STATUS !== "SUCCESS") {
-                            setFormSubmitionAPIError(true);
-                            setFormSubmitionAPIErrorMessage("ERROR: " + resp.data.ERROR.MESSAGE);
-                            showSnackbar('error', 'File upload failed');
-                        }
-                        else {
-                            setFormSubmitionAPIError(false);
-                            showSnackbar('success', 'File uploaded successfully');
-                        }
-                        setApiLoading(false)
-                    }).catch(function (error) {
-                        setSubmitionCompleted(true);
-                        setFormSubmitionAPIErrorMessage(error);
-                        setFormSubmitionAPIError(true);
-                        console.log(error);
-                        showSnackbar('error', 'Error while uploading: ' + error);
-                        setApiLoading(false)
-                    });
+                                if (resp.data.STATUS !== "SUCCESS") {
+                                    setFormSubmitionAPIError(true);
+                                    setFormSubmitionAPIErrorMessage("ERROR: " + resp.data.ERROR.MESSAGE);
+                                    showSnackbar('error', 'File upload failed');
+                                }
+                                else {
+                                    setFormSubmitionAPIError(false);
+                                    showSnackbar('success', 'File uploaded successfully');
+                                }
+                                setApiLoading(false)
+                            }).catch(function (error) {
+                                setSubmitionCompleted(true);
+                                setFormSubmitionAPIErrorMessage(error);
+                                setFormSubmitionAPIError(true);
+                                console.log(error);
+                                showSnackbar('error', 'Error while uploading: ' + error);
+                                setApiLoading(false)
+                            });
 
-                }}
+                        }}
 
-                validationSchema={Yup.object().shape({
-                    title: Yup.string()
-                        .required('Required'),
-                    notes: Yup.string()
-                        .required('Required'),
-                    file: Yup.string()
-                        .required('Required'),
-                })}
-            >
-                {(props) => {
-                    const {
-                        values,
-                        touched,
-                        errors,
-                        dirty,
-                        isSubmitting,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        handleReset
-                    } = props;
-                    return (
-                        <form onSubmit={handleSubmit}>
-                        <TextField
-                            size="small"
-                            margin="normal"
-                            fullWidth
-                            id="module"
-                            name="module"
-                            label="Module"
-                            disabled
-                            value={values.module}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                            <TextField
-                                size="small"
-                                margin="normal"
-                                fullWidth
-                                id="moduleId"
-                                name="moduleId"
-                                label="Module Id"
-                                disabled
-                                value={values.moduleId}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <TextField
-                                size="small"
-                                margin="normal"
-                                fullWidth
-                                id="title"
-                                name="title"
-                                label="Title"
-                                value={values.title}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                helperText={(errors.title && touched.title) && errors.title}
-                            />
-                            <TextField
-                                size="small"
-                                margin="normal"
-                                fullWidth
-                                id="notes"
-                                name="notes"
-                                label="Notes"
-                                multiline
-                                rows={4}
-                                value={values.notes}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                helperText={(errors.notes && touched.notes) && errors.notes}
-                            />
-                            {/* <>
+                        validationSchema={Yup.object().shape({
+                            title: Yup.string()
+                                .required('Required'),
+                            notes: Yup.string()
+                                .required('Required'),
+                            file: Yup.string()
+                                .required('Required'),
+                        })}
+                    >
+                        {(props) => {
+                            const {
+                                values,
+                                touched,
+                                errors,
+                                dirty,
+                                isSubmitting,
+                                handleChange,
+                                handleBlur,
+                                handleSubmit,
+                                handleReset
+                            } = props;
+                            return (
+                                <form onSubmit={handleSubmit}>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="module"
+                                        name="module"
+                                        label="Module"
+                                        disabled
+                                        value={values.module}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="moduleId"
+                                        name="moduleId"
+                                        label="Module Id"
+                                        disabled
+                                        value={values.moduleId}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="title"
+                                        name="title"
+                                        label="Title"
+                                        value={values.title}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.title && touched.title) && errors.title}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="notes"
+                                        name="notes"
+                                        label="Notes"
+                                        multiline
+                                        rows={4}
+                                        value={values.notes}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.notes && touched.notes) && errors.notes}
+                                    />
+                                    {/* <>
                                 <Button
                                     component="label"
                                     role={undefined}
@@ -224,44 +237,47 @@ function GenericFileForm({ props, componentName, moduleId }) {
                                     />
                                 </Button>
                             </> */}
-                            {/* <label for="file" className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                                    {/* <label for="file" className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
                                 Select a File
                             </label> */}
-                            <TextField
-                                className='bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-200'
-                                type="file"
-                                size="small"
-                                margin="normal"
-                                fullWidth
-                                id="file"
-                                name="file"
-                                onChange={(event) => {
-                                    handleChange(event);
-                                    handleFileChange(event);
-                                }}
-                                onBlur={handleBlur}
-                                helperText={(errors.file && touched.file) && errors.file}
-                            />
-                            <Stack direction="row" spacing={2} className='float-right mt-10'>
+                                    <TextField
+                                        className='bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-200'
+                                        type="file"
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="file"
+                                        name="file"
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleFileChange(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.file && touched.file) && errors.file}
+                                    />
+                                    <Stack direction="row" spacing={2} className='float-right mt-10'>
 
-                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                    <SaveOutlinedIcon className="mr-1" />
-                                    Save
-                                </Button>
-                                {isSubmitionCompleted && !formSubmitionAPIError ?
-                                    <Chip label="Data saved" color="success" />
-                                    :
-                                    <>
-                                        {formSubmitionAPIError ?
-                                            <Chip label={formSubmitionAPIErrorMessage} color="error" />
-                                            : <></>}
-                                    </>
-                                }
-                            </Stack>
-                        </form>
-                    );
-                }}
-            </Formik>
+                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                            <SaveOutlinedIcon className="mr-1" />
+                                            Save
+                                        </Button>
+                                        {isSubmitionCompleted && !formSubmitionAPIError ?
+                                            <Chip label="Data saved" color="success" />
+                                            :
+                                            <>
+                                                {formSubmitionAPIError ?
+                                                    <Chip label={formSubmitionAPIErrorMessage} color="error" />
+                                                    : <></>}
+                                            </>
+                                        }
+                                    </Stack>
+                                </form>
+                            );
+                        }}
+                    </Formik>
+                </>
+            }
+
         </>
     );
 }

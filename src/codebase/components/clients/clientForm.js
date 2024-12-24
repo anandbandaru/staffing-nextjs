@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
+import CustomSnackbar from "../snackbar/snackbar";
 
 function ClientForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -23,7 +23,19 @@ function ClientForm({ props, ID, operation }) {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
 
-    const getClientDetails = () => {
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+    const getDetails = () => {
         let apiUrl = APIPath + "/getclientdetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
@@ -56,12 +68,18 @@ function ClientForm({ props, ID, operation }) {
     }
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
-            getClientDetails();
+            getDetails();
         }
     }, []);
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading && operation !== "New" ?
                 <>
                     <div className="spinner"></div>
@@ -95,12 +113,17 @@ function ClientForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             setFormSubmitionAPIError(false);
+                            if (resp.data.STATUS === "FAIL")
+                                showSnackbar('error', "Error saving Client data");
+                            else
+                                showSnackbar('success', "Client data saved");
                         })
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
                                 setFormSubmitionAPIErrorMessage(error);
                                 setFormSubmitionAPIError(true);
+                                showSnackbar('error', "Error saving Client data");
                             });
                     }}
 
@@ -233,15 +256,6 @@ function ClientForm({ props, ID, operation }) {
                                                 <SaveOutlinedIcon className="mr-1" />
                                                 Save
                                             </Button>
-                                        </>
-                                    }
-                                    {isSubmitionCompleted && !formSubmitionAPIError ?
-                                        <Chip label="Data saved" color="success" />
-                                        :
-                                        <>
-                                            {formSubmitionAPIError ?
-                                                <Chip label={formSubmitionAPIErrorMessage} color="error" />
-                                                : <></>}
                                         </>
                                     }
                                 </Stack>

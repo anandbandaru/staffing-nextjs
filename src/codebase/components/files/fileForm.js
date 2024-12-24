@@ -257,15 +257,6 @@ function FileForm({ props, ID, operation }) {
                                         </Button>
                                     </>
                                 }
-                                {isSubmitionCompleted && !formSubmitionAPIError ?
-                                    <Chip label="Data saved" color="success" />
-                                    :
-                                    <>
-                                        {formSubmitionAPIError ?
-                                            <Chip label={formSubmitionAPIErrorMessage} color="error" />
-                                            : <></>}
-                                    </>
-                                }
                             </Stack>
                         </form>
                     );
