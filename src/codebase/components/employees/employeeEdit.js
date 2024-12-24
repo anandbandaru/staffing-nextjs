@@ -13,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import BackupIcon from '@mui/icons-material/Backup';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
-import { FaPassport } from "react-icons/fa";
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import AirplanemodeActiveOutlinedIcon from '@mui/icons-material/AirplanemodeActiveOutlined';
 import { Context } from "../../context/context";
 import axios from 'axios';
@@ -97,7 +97,7 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                     <BadgeOutlinedIcon />
                 </IconButton>
                 <IconButton aria-label="Visas" title="Visas" color="primary" onClick={() => handleClickOpenGenericForm('Visa')}>
-                    <FaPassport />
+                    <PublicOutlinedIcon />
                 </IconButton>
                 <IconButton aria-label="Dependents" title="Dependents" color="primary" onClick={() => handleClickOpenGenericForm('Dependent')}>
                     <SupervisorAccountOutlinedIcon />

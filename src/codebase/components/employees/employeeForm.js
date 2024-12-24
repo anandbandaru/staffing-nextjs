@@ -67,6 +67,8 @@ function EmployeeForm({ props, ID, operation }) {
                         setFirstName(result.data[0].firstName);
                         //alert(firstName);
                         setDataAPIError(result.total === 0 ? "No Employees information present." : "ok");
+                        getFileTypesList();
+                        getManagersList();
                     }
                     setApiLoading(false);
                 },
@@ -83,6 +85,7 @@ function EmployeeForm({ props, ID, operation }) {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/masterdata/filetypes"
+        console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -113,6 +116,7 @@ function EmployeeForm({ props, ID, operation }) {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
+        console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -140,12 +144,12 @@ function EmployeeForm({ props, ID, operation }) {
             )
     }
     useEffect(() => {
-        if (operation === "View" || operation === "Edit") {
+        if (operation === "Edit") {
             getDetails();
         }
         if (operation === "New" || operation === "Edit") {
-            getFileTypesList();
-            getManagersList();
+            //getFileTypesList();
+            //getManagersList();
         }
     }, []);
 
@@ -517,18 +521,18 @@ function EmployeeForm({ props, ID, operation }) {
                                     helperText={(errors.IDNumber && touched.IDNumber) && errors.IDNumber}
                                 />
                                 {values.employeeType === 'ONSHORE' && (
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="SSN"
-                                    name="SSN"
-                                    label="SSN"
-                                    value={values.SSN}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.SSN && touched.SSN) && errors.SSN}
-                                />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="SSN"
+                                        name="SSN"
+                                        label="SSN"
+                                        value={values.SSN}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.SSN && touched.SSN) && errors.SSN}
+                                    />
                                 )}
                                 <TextField
                                     size="small"

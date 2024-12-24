@@ -111,7 +111,7 @@ const OwnershipList = () => {
             // },
             cellRenderer: CustomPercentageRenderer
         },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

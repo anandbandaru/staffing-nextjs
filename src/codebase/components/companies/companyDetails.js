@@ -12,6 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 
 function CompanyDetails({ ID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
@@ -126,8 +127,8 @@ function CompanyDetails({ ID, operation, doLoading }) {
                                     onSelect={(index) => setTabIndex(index)}>
                                     <TabList className="thirdTabsListHolder">
                                         <Tab>Metadata</Tab>
-                                        <Tab>Ownership</Tab>
                                         <Tab>Documents</Tab>
+                                        <Tab>Ownership</Tab>
                                         <Tab>Relations</Tab>
                                     </TabList>
 
@@ -157,10 +158,10 @@ function CompanyDetails({ ID, operation, doLoading }) {
                                         </TableContainer>
                                     </TabPanel>
                                     <TabPanel className="px-2">
-                                        Ownership
+                                        <GenericFilesListSimple moduleId={ID} componentName="COMPANIES" />
                                     </TabPanel>
                                     <TabPanel className="px-2">
-                                        Documents
+                                        Ownership
                                     </TabPanel>
                                     <TabPanel className="px-2">
                                         Reports

@@ -71,7 +71,7 @@ function OwnerEdit({ ID, operation, manualLoadData, setApiLoading }) {
     return (
         <>
             <Stack direction="row" spacing={1} className='float-right'>
-                <IconButton aria-label="Documents" title="Documents" color="primary" onClick={() => {
+                <IconButton aria-label="Upload Documents" title="Upload Documents" color="primary" onClick={() => {
                     handleClickOpenDocuments();
                 }
                 }>

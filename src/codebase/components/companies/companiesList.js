@@ -7,6 +7,7 @@ import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import CompaniesListToolbar from './companiesListToolbar'
 import CompanyDetails from "./companyDetails";
 import CompanyEdit from "./companyEdit";
+import GenericDetails from "../forms/GenericDetails";
 
 const CompaniesList = () => {
     const { APIPath } = useContext(Context);
@@ -71,7 +72,7 @@ const CompaniesList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <CompanyDetails ID={props.data.Id} operation="View" />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="COMPANIES" />
             </>
         );
     };
@@ -111,7 +112,7 @@ const [colDefs, setColDefs] = useState([
     },
     { field: "EstablishedDate", filter: true },
     {
-        field: "Disabled", filter: false,
+        field: "Disabled", filter: false, maxWidth: 100,
         // cellClassRules: {
         //     // apply green to electric cars
         //     'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
@@ -119,7 +120,7 @@ const [colDefs, setColDefs] = useState([
         // },
         cellRenderer: CustomDisabledRenderer
     },
-    { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
+    { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
 ]);
 const rowClassRules = {
     //'rag-red': params => params.data.firstName === "anand",

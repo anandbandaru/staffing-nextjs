@@ -12,6 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 
 function OwnershipDetails({ ID, operation, doLoading }) {
     const { APIPath } = useContext(Context);
@@ -122,7 +123,6 @@ function OwnershipDetails({ ID, operation, doLoading }) {
                         </>
                         :
                         <>
-
                             <Box sx={{ width: '100%', typography: 'body1' }}>
                                 <Tabs selectedIndex={tabIndex}
                                     onSelect={(index) => setTabIndex(index)}>
@@ -158,7 +158,7 @@ function OwnershipDetails({ ID, operation, doLoading }) {
                                         </TableContainer>
                                     </TabPanel>
                                     <TabPanel className="px-2">
-                                        Documents
+                                        <GenericFilesListSimple moduleId={ID} componentName="OWNERSHIPS" />
                                     </TabPanel>
                                     <TabPanel className="px-2">
                                         Reports

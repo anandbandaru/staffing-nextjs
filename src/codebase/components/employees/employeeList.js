@@ -92,8 +92,13 @@ const EmployeesList = () => {
             {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
+    const CustomEmployeeTypeRenderer = ({ value }) => (
+        <span className={(value === 'OFFSHORE') ? 'rag-gray-bg badgeSpan' : 'rag-blue-bg badgeSpan'}>
+            {value}
+        </span>
+    );
     // Column Definitions: Defines the columns to be displayed.
-    const [colDefs, setColDefs] = useState([
+    const [colDefs] = useState([
         {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
@@ -111,7 +116,11 @@ const EmployeesList = () => {
         { field: "personalPhone", filter: true, maxWidth: 150 },
         { field: "personalUSPhone", filter: true, maxWidth: 150 },
         {
-            field: "Disabled", filter: false, maxWidth: 100,
+            field: "employeeType", filter: true, maxWidth: 150,
+            cellRenderer: CustomEmployeeTypeRenderer
+        },
+        {
+            field: "disabled", filter: false, maxWidth: 100,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green': params => params.value === null || params.value === false,

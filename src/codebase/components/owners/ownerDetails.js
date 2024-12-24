@@ -105,10 +105,6 @@ function OwnerDetails({ ID, operation, doLoading }) {
                 open={open}
             // fullScreen
             // keepMounted
-            // TransitionProps={{
-            //     onEntering: () => console.log('Entering'),
-            //     onExiting: () => console.log('Exiting'),
-            // }}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
                     {operation} Owner: ID: {ID}

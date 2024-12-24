@@ -93,12 +93,14 @@ function EmployeeDetails({ ID, operation, doLoading }) {
                 </IconButton>
             </Stack>
             <BootstrapDialog
-                className=""
+                className="w-full"
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"
                 open={open}
-            fullScreen
+                fullWidth
+                maxWidth={false}
+            // fullScreen
             // keepMounted
             // TransitionProps={{
             //     onEntering: () => console.log('Entering'),

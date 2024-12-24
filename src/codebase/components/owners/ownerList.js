@@ -7,6 +7,8 @@ import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import OwnersListToolbar from './ownersListToolbar'
 import OwnerDetails from "./ownerDetails";
 import OwnerEdit from "./ownerEdit";
+import GenericDetails from "../forms/GenericDetails";
+
 
 const OwnersList = () => {
     const { APIPath } = useContext(Context);
@@ -70,7 +72,7 @@ const OwnersList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <OwnerDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="OWNERS" />
             </>
         );
     };

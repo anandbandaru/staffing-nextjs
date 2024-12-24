@@ -1,0 +1,196 @@
+import React, { useState, useContext, useEffect } from 'react';
+import { Context } from "../../context/context";
+import Stack from '@mui/material/Stack';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import IconButton from '@mui/material/IconButton';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Box from '@mui/material/Box';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import GenericFilesListSimple from '../forms/GenericFilesListSimple';
+
+function GenericDetails({ ID, operation, doLoading, moduleName }) {
+    const { APIPath } = useContext(Context);
+    const [open, setOpen] = React.useState(false);
+    const [tabIndex, setTabIndex] = React.useState(0);
+    const [data, setData] = useState({ data: [] });
+    const [apiLoading, setApiLoading] = useState(true);
+    const [apiLoadingError, setApiLoadingError] = useState(false);
+    const [dataAPIError, setDataAPIError] = useState("");
+
+    // For dialog MUI
+    const Transition = React.forwardRef(function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+    });
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+        if (operation === "View" || operation === "Edit") {
+            getDetails();
+        }
+    };
+
+    const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+        '& .MuiDialogContent-root': {
+            padding: theme.spacing(2),
+        },
+        '& .MuiDialogActions-root': {
+            padding: theme.spacing(1),
+        },
+    }));
+
+    const getAPIEndpoint = () => {
+        switch (moduleName) {
+            case 'OWNERS':
+                return APIPath + "/getownerdetails";
+            case 'COMPANIES':
+                return APIPath + "/getcompanydetails";
+            case 'OWNERSHIPS':
+                return APIPath + "/addvisa";
+            case 'EMPLOYEES':
+                return APIPath + "/addpassport";
+            case 'VENDORS':
+                return APIPath + "/addpassport";
+            case 'CLIENTS':
+                return APIPath + "/addpassport";
+            case 'IMPLEMENTATIONPARTNERS':
+                return APIPath + "/addpassport";
+            case 'JOBTYPES':
+                return APIPath + "/addpassport";
+            case 'EXPENSESLIST':
+                return APIPath + "/addpassport";
+            case 'FILETYPES':
+                return APIPath + "/addpassport";
+            default:
+                return '';
+        }
+    };
+
+    const getDetails = () => {
+        setApiLoading(true);
+        let apiUrl = getAPIEndpoint() + "/" + ID;
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    if (result.error) {
+                        setDataAPIError(`${result.error.code} - ${result.error.message}`);
+                        setData({});
+                        setApiLoadingError(true);
+                    } else {
+                        setData(result);
+                        setDataAPIError(result.total === 0 ? `No ${moduleName} information present.` : "ok");
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setData({});
+                    setDataAPIError("RequestData:On JUST error: API call failed");
+                    setApiLoading(false);
+                    setApiLoadingError(true);
+                }
+            );
+    };
+
+    useEffect(() => {
+        if (doLoading) {
+            if (operation === "View" || operation === "Edit") {
+                getDetails();
+            }
+        }
+    }, [ID]);
+
+    return (
+        <>
+            <Stack direction="row" spacing={1}>
+                <IconButton aria-label="Metadata" title="Metadata" color="primary" onClick={handleClickOpen}>
+                    <ReadMoreIcon />
+                </IconButton>
+            </Stack>
+            <BootstrapDialog
+                className=""
+                onClose={handleClose}
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                fullWidth
+                maxWidth={false}
+            >
+                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    {operation} {moduleName}: ID:: {ID}
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
+                    {apiLoading ? (
+                        <div className="spinner"></div>
+                    ) : (
+                        <Box sx={{ width: '100%', typography: 'body1' }}>
+                            <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
+                                <TabList className="thirdTabsListHolder">
+                                    <Tab>Metadata</Tab>
+                                    <Tab>Documents</Tab>
+                                    <Tab>Relations</Tab>
+                                </TabList>
+
+                                <TabPanel className="px-2">
+                                    <TableContainer component={Paper}>
+                                        <Table size="small" aria-label="a dense table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell className='bg-gray-200'>Column</TableCell>
+                                                    <TableCell className='bg-gray-300'>Value</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {data.data.map((item, index) => (
+                                                    Object.entries(item).map(([key, value]) => (
+                                                        <TableRow key={`${index}-${key}`}>
+                                                            <TableCell component="th" scope="row">
+                                                                {key}
+                                                            </TableCell>
+                                                            <TableCell className='bg-gray-100'>
+                                                                {value === true ? "YES" : value}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </TabPanel>
+                                <TabPanel className="px-2">
+                                    <GenericFilesListSimple moduleId={ID} componentName={moduleName} />
+                                </TabPanel>
+                                <TabPanel className="px-2">
+                                    Reports
+                                </TabPanel>
+                            </Tabs>
+                        </Box>
+                    )}
+                </DialogContent>
+            </BootstrapDialog>
+        </>
+    );
+}
+
+export default GenericDetails;
