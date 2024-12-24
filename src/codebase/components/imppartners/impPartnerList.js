@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import ImpPartnersListToolbar from './impPartnersListToolbar'
-import ImpPartnerDetails from "./impPartnerDetails";
+import GenericDetails from "../forms/GenericDetails";
 import ImpPartnerEdit from "./impPartnerEdit";
 
 const ImpPartnerList = () => {
@@ -71,7 +71,7 @@ const ImpPartnerList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <ImpPartnerDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="IMPLEMENTATIONPARTNERS" />
             </>
         );
     };
@@ -106,7 +106,7 @@ const ImpPartnerList = () => {
             // },
             cellRenderer: CustomDisabledRenderer
         },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

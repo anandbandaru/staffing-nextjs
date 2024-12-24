@@ -13,6 +13,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import GenericFilesListSimple from '../forms/GenericFilesListSimple';
+import EmployeeGenericList from '../employees/employeeGList';
+
 
 function GenericDetails({ ID, operation, doLoading, moduleName }) {
     const { APIPath } = useContext(Context);
@@ -55,21 +57,21 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
             case 'COMPANIES':
                 return APIPath + "/getcompanydetails";
             case 'OWNERSHIPS':
-                return APIPath + "/addvisa";
+                return APIPath + "/getownershipdetails";
             case 'EMPLOYEES':
-                return APIPath + "/addpassport";
+                return APIPath + "/getemployeedetails";
             case 'VENDORS':
-                return APIPath + "/addpassport";
+                return APIPath + "/getvendordetails";
             case 'CLIENTS':
-                return APIPath + "/addpassport";
+                return APIPath + "/getclientdetails";
             case 'IMPLEMENTATIONPARTNERS':
-                return APIPath + "/addpassport";
+                return APIPath + "/getimplementationpartnerdetails";
             case 'JOBTYPES':
-                return APIPath + "/addpassport";
+                return APIPath + "/getjobtypedetails";
             case 'EXPENSESLIST':
-                return APIPath + "/addpassport";
+                return APIPath + "/getexpenselistdetails";
             case 'FILETYPES':
-                return APIPath + "/addpassport";
+                return APIPath + "/getfiletypedetails";
             default:
                 return '';
         }
@@ -126,7 +128,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                 maxWidth={false}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} {moduleName}: ID:: {ID}
+                    {operation} {moduleName}: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -148,8 +150,18 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                             <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
                                 <TabList className="thirdTabsListHolder">
                                     <Tab>Metadata</Tab>
-                                    <Tab>Documents</Tab>
-                                    <Tab>Relations</Tab>
+                                    {(moduleName !== "FILETYPES" && <>
+                                        <Tab>Documents</Tab>
+                                        <Tab>Relations</Tab>
+                                    </>
+                                    )}
+                                    {(moduleName === "EMPLOYEES" && <>
+                                        <Tab>Dependents</Tab>
+                                        <Tab>Passports</Tab>
+                                        <Tab>Visas</Tab>
+                                        <Tab>I94s</Tab>
+                                    </>
+                                    )}
                                 </TabList>
 
                                 <TabPanel className="px-2">
@@ -178,12 +190,31 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                         </Table>
                                     </TableContainer>
                                 </TabPanel>
-                                <TabPanel className="px-2">
-                                    <GenericFilesListSimple moduleId={ID} componentName={moduleName} />
-                                </TabPanel>
-                                <TabPanel className="px-2">
-                                    Reports
-                                </TabPanel>
+
+                                {(moduleName !== "FILETYPES" && <>
+                                    <TabPanel className="px-2">
+                                        <GenericFilesListSimple moduleId={ID} componentName={moduleName} />
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        Relations
+                                    </TabPanel>
+                                </>
+                                )}
+                                {(moduleName === "EMPLOYEES" && <>
+                                    <TabPanel className="px-2">
+                                        <EmployeeGenericList formType={'Dependent'} employeeID={ID} />
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        <EmployeeGenericList formType={'Passport'} employeeID={ID} />
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        <EmployeeGenericList formType={'Visa'} employeeID={ID} />
+                                    </TabPanel>
+                                    <TabPanel className="px-2">
+                                        <EmployeeGenericList formType={'I94'} employeeID={ID} />
+                                    </TabPanel>
+                                </>
+                                )}
                             </Tabs>
                         </Box>
                     )}

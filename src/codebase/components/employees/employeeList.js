@@ -5,7 +5,7 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import EmployeesListToolbar from './employeesListToolbar'
-import EmployeeDetails from "./employeeDetails";
+import GenericDetails from "../forms/GenericDetails";
 import EmployeeEdit from "./employeeEdit";
 
 const EmployeesList = () => {
@@ -66,11 +66,10 @@ const EmployeesList = () => {
                 }
             )
     }
-
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <EmployeeDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="EMPLOYEES" />
             </>
         );
     };

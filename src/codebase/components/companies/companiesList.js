@@ -5,7 +5,6 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import CompaniesListToolbar from './companiesListToolbar'
-import CompanyDetails from "./companyDetails";
 import CompanyEdit from "./companyEdit";
 import GenericDetails from "../forms/GenericDetails";
 

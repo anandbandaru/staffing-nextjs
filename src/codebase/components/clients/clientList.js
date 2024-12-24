@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import ClientsListToolbar from './clientsListToolbar'
-import ClientDetails from "./clientDetails";
+import GenericDetails from "../forms/GenericDetails";
 import ClientEdit from "./clientEdit";
 
 const ClientList = () => {
@@ -71,7 +71,7 @@ const ClientList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <ClientDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="CLIENTS" />
             </>
         );
     };
@@ -106,7 +106,7 @@ const ClientList = () => {
             // },
             cellRenderer: CustomDisabledRenderer
         },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

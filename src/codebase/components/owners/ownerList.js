@@ -5,7 +5,6 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import OwnersListToolbar from './ownersListToolbar'
-import OwnerDetails from "./ownerDetails";
 import OwnerEdit from "./ownerEdit";
 import GenericDetails from "../forms/GenericDetails";
 

@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import FileTypesListToolbar from './fileTypesListToolbar'
-import FileTypeDetails from "./fileTypeDetails";
+import GenericDetails from "../forms/GenericDetails";
 import FileTypeEdit from "./fileTypeEdit";
 
 const FileTypeList = () => {
@@ -71,7 +71,7 @@ const FileTypeList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <FileTypeDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="FILETYPES" />
             </>
         );
     };

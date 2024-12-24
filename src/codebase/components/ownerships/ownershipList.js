@@ -4,7 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import OwnershipsListToolbar from './ownershipsListToolbar'
-import OwnershipDetails from "./ownershipDetails";
+import GenericDetails from "../forms/GenericDetails";
 import OwnershipEdit from "./ownershipEdit";
 
 const OwnershipList = () => {
@@ -71,7 +71,7 @@ const OwnershipList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <OwnershipDetails ID={props.data.Id} operation="View" doLoading={false} />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="OWNERSHIPS" />
             </>
         );
     };
