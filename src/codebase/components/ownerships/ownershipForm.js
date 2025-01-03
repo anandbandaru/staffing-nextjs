@@ -15,8 +15,6 @@ import CustomSnackbar from "../snackbar/snackbar";
 function OwnershipForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
-    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
     const [ownersData, setOwnersData] = useState({ data: [] });
@@ -24,8 +22,6 @@ function OwnershipForm({ props, ID, operation }) {
     const [companyId, setCompanyId] = useState('');
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
     const [maxOwingPercentage, setMaxOwingPercentage] = useState(100);
 
     const getDetails = () => {
@@ -39,24 +35,18 @@ function OwnershipForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setData(result);
                         setName(result.data[0].companyId);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Ownership information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
-                    setApiLoading(false);
-                    setApiLoadingError(true);
                     setApiLoading(false);
                 }
             )
@@ -72,22 +62,16 @@ function OwnershipForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setCompaniesData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setCompaniesData(result);
-                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
-                    setApiLoading(false);
-                    setApiLoadingError(true);
                     setApiLoading(false);
                 }
             )
@@ -103,22 +87,16 @@ function OwnershipForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setOwnersData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setOwnersData(result);
-                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
-                    setApiLoading(false);
-                    setApiLoadingError(true);
                     setApiLoading(false);
                 }
             )
@@ -214,14 +192,11 @@ function OwnershipForm({ props, ID, operation }) {
                             },
                         ).then((resp) => {
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIError(false);
                             showSnackbar('success', "Ownership data saved");
                         })
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
-                                setFormSubmitionAPIErrorMessage(error);
-                                setFormSubmitionAPIError(true);
                                 showSnackbar('error', "Error saving Ownership data");
                             });
                     }}

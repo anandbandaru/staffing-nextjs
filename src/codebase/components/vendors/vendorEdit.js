@@ -19,7 +19,6 @@ function VendorEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [openDocuments, setOpenDocuments] = React.useState(false);
-    const [isDeletionError, setDeletionError] = useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -59,11 +58,9 @@ function VendorEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }
             },
         ).then((resp) => {
-            setDeletionError(false);
             manualLoadData();
         }).catch(function (error) {
             console.log(error);
-            setDeletionError(true);
         });
     }
 

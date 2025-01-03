@@ -18,7 +18,6 @@ import GenericFileForm from '../forms/GenericFileForm';
 function OwnershipEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
-    const [isDeletionError, setDeletionError] = useState(false);
     const [openDocuments, setOpenDocuments] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -59,11 +58,9 @@ function OwnershipEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }
             },
         ).then((resp) => {
-            setDeletionError(false);
             manualLoadData();
         }).catch(function (error) {
             console.log(error);
-            setDeletionError(true);
         });
     }
 

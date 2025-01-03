@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Context } from "../../context/context";
 import 'reactjs-popup/dist/index.css';
 import Dialog from '@mui/material/Dialog';
@@ -53,7 +53,7 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                            {itemCount == 0 ? null :
+                            {itemCount === 0 ? null :
                                 <>
                                     <Button size="small" variant="contained"
                                         onClick={() => {manualLoadData(); fetchTodos("Active");  }}

@@ -81,7 +81,7 @@ const UserList = () => {
         </Stack>
     );
 // Column Definitions: Defines the columns to be displayed.
-const [colDefs, setColDefs] = useState([
+const [colDefs] = useState([
     { field: "givenName", filter: true },
     { field: "surname", filter: true },
     {

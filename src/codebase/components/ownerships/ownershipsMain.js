@@ -4,7 +4,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import OwnershipList from './ownershipList';
 import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
-import AttachmentSharpIcon from '@mui/icons-material/AttachmentSharp';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 
 const OwnershipsMain = () => {

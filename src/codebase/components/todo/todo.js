@@ -3,8 +3,8 @@ import './todo.css';
 import { Context } from "../../context/context";
 import axios from 'axios';
 import {
-    Button, IconButton, Alert,
-    Card, CardContent, CardActions, Checkbox, Stack, Menu, MenuItem, Snackbar
+    Button, IconButton, 
+    Card, CardContent, CardActions, Checkbox, Stack, Menu, MenuItem
 } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -19,13 +19,6 @@ const ToDo = () => {
         APIPath, 
         userName, fetchTodos, todos, itemCountActive, itemCountCompleted, apiTodoLoading  } = useContext(Context);
 
-    const [todoType, setTodotype] = useState("");
-    // const [todos, setTodos] = useState({ data: [] });
-    const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
-    // const [itemCountActive, setItemCountActive] = useState(0);
-    // const [itemCountCompleted, setItemCountCompleted] = useState(0);
     const [tabIndex, setTabIndex] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedTodo, setSelectedTodo] = useState(null);
@@ -62,11 +55,9 @@ const ToDo = () => {
     const handleTabSelect = (index) => {
         setTabIndex(index);
         if (index === 0) {
-            setTodotype("Active")
             fetchTodos("Active")
         }
         else {
-            setTodotype("Completed")
             fetchTodos("Completed")
         }
     };
@@ -114,7 +105,6 @@ const ToDo = () => {
     // }
 
     const completeTodo = async (id) => {
-        setApiLoading(true);
 
         axios.post(APIPath + `/todos/complete/${id}/${userName}`,
             {
@@ -124,18 +114,12 @@ const ToDo = () => {
                 }
             },
         ).then((resp) => {
-            setApiLoading(false);
-            setApiLoadingError(false);
             fetchTodos("Active");
             showSnackbar('success', "To Do is completed");
-            setDataAPIError("")
         })
             .catch(function (error) {
                 console.log(error);
-                setApiLoadingError(true);
-                setApiLoading(false);
                 showSnackbar('error', 'Error completing To do' + error);
-                setDataAPIError(error)
             });
     };
 

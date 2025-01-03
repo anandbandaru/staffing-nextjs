@@ -38,7 +38,6 @@ import Dashboard from "../dashboard/dashboard";
 import TodosMain from "../todo/todosMain";
 import UsersMain from "../users/usersMain";
 import FilesMain from "../files/filesMain";
-import CenterFocusWeakOutlinedIcon from '@mui/icons-material/CenterFocusWeakOutlined';
 import AppsIcon from '@mui/icons-material/Apps';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
@@ -88,28 +87,6 @@ const Top = () => {
     useEffect(() => {
         document.title = "Staffing";
     });
-
-    //FOR NO data source scenario
-    const Transition = React.forwardRef(function Transition(props, ref) {
-        return <Slide direction="up" ref={ref} {...props} />;
-    });
-
-    const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-        '& .MuiDialogContent-root': {
-            padding: theme.spacing(2),
-        },
-        '& .MuiDialogActions-root': {
-            padding: theme.spacing(1),
-        },
-    }));
-    const [openNoDatasources, setOpenNoDatasources] = React.useState(false);
-    const [openLoadingDatasources, setOpenLoadingDatasources] = React.useState(false);
-    const handleClickOpen_NoDatasources = () => {
-        setOpenNoDatasources(false);
-    };
-    const handleCheckDSAgain = () => {
-        window.location.reload();
-    };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -315,72 +292,6 @@ const Top = () => {
 
             </div>
 
-            <BootstrapDialog
-                TransitionComponent={Transition}
-                aria-labelledby="customized-dialog-title"
-                open={openNoDatasources}
-            >
-                <DialogTitle color="error" className="dialogTitle" sx={{ m: 0, p: 1 }} id="customized-dialog-title" >
-                    <Stack direction="row" spacing={2}>
-                        <div>No Data Sources configured</div>
-                        <Button variant="outlined" color="primary" size="small"
-                            startIcon={<RefreshRoundedIcon />}
-                            onClick={handleCheckDSAgain}
-                        >
-                            Check again.
-                        </Button>
-                    </Stack>
-                </DialogTitle>
-                <IconButton
-                    onClick={handleClickOpen_NoDatasources}
-                    aria-label="close"
-                    sx={{
-                        position: 'absolute',
-                        right: 3,
-                        top: 3,
-                        color: (theme) => theme.palette.grey[900],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <DialogContent dividers>
-                    <Stack direction="row" spacing={1}>
-                        <ReportGmailerrorredRoundedIcon color="error" />
-                        <span className="devTitleHolder">Looks like there are no data sources configured in the application. Check the configuration.</span>
-
-                    </Stack>
-                </DialogContent>
-            </BootstrapDialog>
-            <BootstrapDialog
-                TransitionComponent={Transition}
-                aria-labelledby="customized-dialog-title"
-                open={openLoadingDatasources}
-            >
-                <DialogTitle className="dialogTitle" sx={{ m: 0, p: 1 }} id="customized-dialog-title" >
-                    <Stack className="stackLoadingTitle" direction="row" spacing={2}>
-                        <div>Please wait</div>
-                    </Stack>
-                </DialogTitle>
-                <DialogContent dividers size="small">
-                    <Stack direction="column" spacing={2}>
-                        <Stack className="stackLoadingMessages" direction="column" spacing={2}>
-                            <LinearProgress color="secondary" />
-                        </Stack>
-                        <Stack className="stackLoadingMessages" direction="row" spacing={2}>
-                            <div>Checking API availability</div>
-                        </Stack>
-                        <Stack className="stackLoadingMessages" direction="row" spacing={2}>
-                            <div>Checking Key Vault access</div>
-                        </Stack>
-                        <Stack className="stackLoadingMessages" direction="row" spacing={2}>
-                            <div>Checking Application DB access</div>
-                        </Stack>
-                        <Stack className="stackLoadingMessages" direction="row" spacing={2}>
-                            <div>Fetching configured list of data sources</div>
-                        </Stack>
-                    </Stack>
-                </DialogContent>
-            </BootstrapDialog>
 
         </div>
     )

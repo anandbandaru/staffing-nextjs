@@ -51,7 +51,7 @@ const TodoList = () => {
                     else {
                         setData(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No To Dos information present." : "ok");
+                        setDataAPIError(result.total === 0 ? "No To Dos information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -92,7 +92,7 @@ const TodoList = () => {
     );
     //ErrorOutlineOutlinedIcon
     // Column Definitions: Defines the columns to be displayed.
-    const [colDefs, setColDefs] = useState([
+    const [colDefs] = useState([
         {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },

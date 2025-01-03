@@ -10,7 +10,6 @@ import OwnershipEdit from "./ownershipEdit";
 const OwnershipList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
-    const [data_Original, setData_Original] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -51,9 +50,8 @@ const OwnershipList = () => {
                     }
                     else {
                         setData(result);
-                        setData_Original(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No Ownership information present." : "ok");
+                        setDataAPIError(result.total === 0 ? "No Ownership information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -88,7 +86,7 @@ const OwnershipList = () => {
         </span>
     );
     // Column Definitions: Defines the columns to be displayed.
-    const [colDefs, setColDefs] = useState([
+    const [colDefs] = useState([
         {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
