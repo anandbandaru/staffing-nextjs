@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import configData from "../../../CONFIG_RELEASE.json";
 import Alert from '@mui/material/Alert';
 
@@ -11,18 +11,23 @@ function GenericList({ formType }) {
             case "jobTypes":
                 setData(configData.jobTypes);
                 console.log("setting jobTypes")
+                break
             case "employeeTypes":
                 setData(configData.employeeTypes);
                 console.log("setting employeeTypes")
+                break
             case "dependentTypes":
                 setData(configData.dependentTypes);
                 console.log("setting dependentTypes")
+                break
             case "visaTypes":
                 setData(configData.visaTypes);
                 console.log("setting visaTypes")
+                break
             default:
                 setData([]);
                 console.log("setting empty")
+                break
         }
     };
     useEffect(() => {

@@ -8,7 +8,6 @@ import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import FIleTypeForm from "./fileTypeForm";
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Context } from "../../context/context";
 import axios from 'axios';
@@ -16,7 +15,6 @@ import axios from 'axios';
 function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
-    const [isDeletionError, setDeletionError] = useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -50,11 +48,9 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }
             },
         ).then((resp) => {
-            setDeletionError(false);
             manualLoadData();
         }).catch(function (error) {
             console.log(error);
-            setDeletionError(true);
         });
     }
 

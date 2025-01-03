@@ -9,20 +9,15 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
 import CustomSnackbar from "../snackbar/snackbar";
 
 function CompanyForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
-    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
     const [itemToCheck, setItemToCheck] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -47,24 +42,19 @@ function CompanyForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setData(result);
                         setItemToCheck(result.data[0].Name);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Implementation Partners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -126,7 +116,6 @@ function CompanyForm({ props, ID, operation }) {
                             },
                         ).then((resp) => {
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIError(false);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving data");
                             else
@@ -135,8 +124,6 @@ function CompanyForm({ props, ID, operation }) {
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
-                                setFormSubmitionAPIErrorMessage(error);
-                                setFormSubmitionAPIError(true);
                                 showSnackbar('error', "Error saving data");
                             });
                     }}
@@ -328,7 +315,7 @@ function CompanyForm({ props, ID, operation }) {
                                                 variant="outlined"
                                                 color="warning"
                                                 onClick={handleReset}
-                                                disabled={!dirty || isSubmitting && !isSubmitionCompleted}
+                                                disabled={!dirty || (isSubmitting && !isSubmitionCompleted)}
                                             >
                                                 Reset
                                             </Button>

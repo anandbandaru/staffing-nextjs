@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
@@ -9,18 +9,13 @@ import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
-import Chip from '@mui/material/Chip';
 import CustomSnackbar from "../snackbar/snackbar";
 
 function EmployeeGAddForm({ formType, employeeID }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
-    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -160,7 +155,6 @@ function EmployeeGAddForm({ formType, employeeID }) {
                             },
                         ).then((resp) => {
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIError(false);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving data");
                             else
@@ -169,8 +163,6 @@ function EmployeeGAddForm({ formType, employeeID }) {
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
-                                setFormSubmitionAPIErrorMessage(error);
-                                setFormSubmitionAPIError(true);
                                 showSnackbar('error', "Error saving data");
                             });
                     }}
@@ -442,7 +434,7 @@ function EmployeeGAddForm({ formType, employeeID }) {
                                         variant="outlined"
                                         color="warning"
                                         onClick={handleReset}
-                                        disabled={!dirty || isSubmitting && !isSubmitionCompleted}
+                                        disabled={!dirty || (isSubmitting && !isSubmitionCompleted)}
                                     >
                                         Reset
                                     </Button>
@@ -450,15 +442,6 @@ function EmployeeGAddForm({ formType, employeeID }) {
                                         <SaveOutlinedIcon className="mr-1" />
                                         Save
                                     </Button>
-                                    {isSubmitionCompleted && !formSubmitionAPIError ?
-                                        <Chip label="Data saved" color="success" />
-                                        :
-                                        <>
-                                            {formSubmitionAPIError ?
-                                                <Chip label={formSubmitionAPIErrorMessage} color="error" />
-                                                : <></>}
-                                        </>
-                                    }
                                 </Stack>
                             </form>
                         );

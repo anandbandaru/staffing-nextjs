@@ -26,7 +26,6 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading }) {
     const [openDocuments, setOpenDocuments] = React.useState(false);
     const [openGenericForm, setOpenGenericForm] = React.useState(false);
     const [formType, setFormType] = React.useState('');
-    const [isDeletionError, setDeletionError] = useState(false);
 
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -82,11 +81,9 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }
             },
         ).then((resp) => {
-            setDeletionError(false);
             manualLoadData();
         }).catch(function (error) {
             console.log(error);
-            setDeletionError(true);
         });
     }
 

@@ -334,7 +334,7 @@ function OwnershipForm({ props, ID, operation }) {
                                                 variant="outlined"
                                                 color="warning"
                                                 onClick={handleReset}
-                                                disabled={!dirty || isSubmitting && !isSubmitionCompleted}
+                                                disabled={!dirty || (isSubmitting && !isSubmitionCompleted)}
                                             >
                                                 Reset
                                             </Button>

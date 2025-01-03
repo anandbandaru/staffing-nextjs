@@ -44,15 +44,12 @@ const EmployeesList = () => {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                         setItemCount(0);
                     }
                     else {
                         setData(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No Employees information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -60,9 +57,7 @@ const EmployeesList = () => {
                     setData({});
                     setItemCount(0);
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }

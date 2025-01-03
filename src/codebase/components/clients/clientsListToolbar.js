@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import 'reactjs-popup/dist/index.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -50,7 +50,7 @@ const ClientsListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError,
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                            {itemCount == 0 ? null :
+                            {itemCount === 0 ? null :
                                 <>
                                     <Button size="small" variant="contained"
                                         onClick={manualLoadData}

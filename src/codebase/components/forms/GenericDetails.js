@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 import EmployeeGenericList from '../employees/employeeGList';
-import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
 
 function GenericDetails({ ID, operation, doLoading, moduleName }) {
@@ -23,8 +23,6 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
     const [tabIndex, setTabIndex] = React.useState(0);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     // For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -89,20 +87,15 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
             .then(
                 (result) => {
                     if (result.error) {
-                        setDataAPIError(`${result.error.code} - ${result.error.message}`);
                         setData({ data: [] });
-                        setApiLoadingError(true);
                     } else {
                         setData(result);
-                        setDataAPIError(result.total === 0 ? `No ${moduleName} information present.` : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({ data: [] });
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             );
     };

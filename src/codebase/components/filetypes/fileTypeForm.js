@@ -12,8 +12,6 @@ import CustomSnackbar from "../snackbar/snackbar";
 function FileType({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
-    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
     const [name, setName] = useState('');
@@ -44,7 +42,6 @@ function FileType({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
                         setApiLoadingError(true);
                     }
@@ -52,16 +49,13 @@ function FileType({ props, ID, operation }) {
                         setData(result);
                         setName(result.data[0].name);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -109,7 +103,6 @@ function FileType({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIError(false);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving File Types data");
                             else
@@ -118,8 +111,6 @@ function FileType({ props, ID, operation }) {
                             setSubmitting(false);
                             console.log(error);
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIErrorMessage(error);
-                            setFormSubmitionAPIError(true);
                             showSnackbar('error', "Error saving File Types data");
                         });
                     }}
@@ -141,8 +132,7 @@ function FileType({ props, ID, operation }) {
                             handleChange,
                             handleBlur,
                             handleSubmit,
-                            handleReset,
-                            setFieldValue
+                            handleReset
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>

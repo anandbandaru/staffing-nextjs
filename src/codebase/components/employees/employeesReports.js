@@ -1,17 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import { AgCharts } from 'ag-charts-react';
 import axios from 'axios';
-import { Stack, Grid } from '@mui/material';
 
 const EmployeesReport = () => {
     const {
         APIPath } = useContext(Context);
     const [data, setData] = useState([]);
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     const fetchData = async () => {
         setApiLoading(true);
@@ -27,8 +23,6 @@ const EmployeesReport = () => {
             ]);
         }).catch(function (error) {
             console.log(error);
-            setDataAPIError(error);
-            setApiLoadingError(true);
             setApiLoading(false);
             setData([]);
         });

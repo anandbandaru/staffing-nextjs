@@ -8,7 +8,7 @@ import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { Context } from "../../context/context";
 
 export default function Login() {
-    const { results, isAPIError, refreshPage } = useContext(Context);
+    const { refreshPage } = useContext(Context);
     return (
         <div className="flex items-center justify-center w-full h-screen bg-gray-400">
             <Card className="bg-gray-200 p-4 w-1/4">

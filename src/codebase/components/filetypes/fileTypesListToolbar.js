@@ -50,7 +50,7 @@ const FileTypesListToolbar = ({ operation, itemCount, apiLoading, apiLoadingErro
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                            {itemCount == 0 ? null :
+                            {itemCount === 0 ? null :
                                 <>
                                     <Button size="small" variant="contained"
                                         onClick={manualLoadData}

@@ -10,7 +10,6 @@ import ImpPartnerEdit from "./impPartnerEdit";
 const ImpPartnerList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
-    const [data_Original, setData_Original] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -28,7 +27,6 @@ const ImpPartnerList = () => {
     function delaydMockLoading() {
         setApiLoading(true);
         setItemCount(0);
-        setDataAPIError("");
         setTimeout(() => {
             getList();
         }, 1);
@@ -44,16 +42,12 @@ const ImpPartnerList = () => {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                         setItemCount(0);
                     }
                     else {
                         setData(result);
-                        setData_Original(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No Implementation Partners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -61,9 +55,7 @@ const ImpPartnerList = () => {
                     setData({});
                     setItemCount(0);
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -88,7 +80,7 @@ const ImpPartnerList = () => {
         </span>
     );
     // Column Definitions: Defines the columns to be displayed.
-    const [colDefs, setColDefs] = useState([
+    const [colDefs] = useState([
         {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },

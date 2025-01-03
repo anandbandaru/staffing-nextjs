@@ -15,15 +15,11 @@ import CustomSnackbar from "../snackbar/snackbar";
 function OwnerForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
-    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
     const [fileTypesData, setFileTypesData] = useState({ data: [] });
     const [firstName, setFirstName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -49,24 +45,19 @@ function OwnerForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setData(result);
                         setFirstName(result.data[0].firstName);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -81,22 +72,17 @@ function OwnerForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setFileTypesData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setFileTypesData(result);
-                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setFileTypesData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -155,7 +141,6 @@ function OwnerForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIError(false);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving Owner data");
                             else
@@ -164,8 +149,6 @@ function OwnerForm({ props, ID, operation }) {
                             setSubmitting(false);
                             console.log(error);
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIErrorMessage(error);
-                            setFormSubmitionAPIError(true);
                             showSnackbar('error', "Error saving Owner data");
                         });
                     }}

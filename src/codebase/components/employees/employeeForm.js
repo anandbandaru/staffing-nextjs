@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,17 +18,12 @@ import CustomSnackbar from "../snackbar/snackbar";
 function EmployeeForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
-    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
     const [fileTypesData, setFileTypesData] = useState({ data: [] });
     const [managersData, setManagersData] = useState({ data: [] });
     const [firstName, setFirstName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
-    const [showOffPan, setShowOffPan] = useState(false);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -37,9 +32,6 @@ function EmployeeForm({ props, ID, operation }) {
         setSnackbarOpen(false);
     };
 
-    const handleEmployeeTypeChange = (values) => {
-        setShowOffPan(values.employeeType === 'OFFSHORE');
-    }
 
     const showSnackbar = (severity, message) => {
         setSnackbarSeverity(severity);
@@ -58,15 +50,12 @@ function EmployeeForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setData(result);
                         setFirstName(result.data[0].firstName);
                         //alert(firstName);
-                        setDataAPIError(result.total === 0 ? "No Employees information present." : "ok");
                         getFileTypesList();
                         getManagersList();
                     }
@@ -75,9 +64,7 @@ function EmployeeForm({ props, ID, operation }) {
                 (error) => {
                     setData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -93,22 +80,17 @@ function EmployeeForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setFileTypesData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setFileTypesData(result);
-                        setDataAPIError(result.total == 0 ? "No Owners information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setFileTypesData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -124,22 +106,17 @@ function EmployeeForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setManagersData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setManagersData(result);
-                        setDataAPIError(result.total == 0 ? "No Employees information present." : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setManagersData({});
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -208,7 +185,6 @@ function EmployeeForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIError(false);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving Owner data");
                             else
@@ -217,8 +193,6 @@ function EmployeeForm({ props, ID, operation }) {
                             setSubmitting(false);
                             console.log(error);
                             setSubmitionCompleted(true);
-                            setFormSubmitionAPIErrorMessage(error);
-                            setFormSubmitionAPIError(true);
                             showSnackbar('error', "Error saving Owner data");
                         });
                     }}
@@ -603,11 +577,6 @@ function EmployeeForm({ props, ID, operation }) {
                                                 </Button>
                                             )}
                                         </>
-                                    )}
-                                    {isSubmitionCompleted && !formSubmitionAPIError ? (
-                                        <Chip label="Data saved" color="success" />
-                                    ) : (
-                                        formSubmitionAPIError && <Chip label={formSubmitionAPIErrorMessage} color="error" />
                                     )}
                                 </Stack>
                             </form>

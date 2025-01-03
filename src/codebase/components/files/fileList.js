@@ -10,7 +10,6 @@ import { Button, Link } from '@mui/material';
 const FileList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
-    const [data_Original, setData_Original] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -28,7 +27,6 @@ const FileList = () => {
     function delaydMockLoading() {
         setApiLoading(true);
         setItemCount(0);
-        setDataAPIError("");
         setTimeout(() => {
             getList();
         }, 1);
@@ -44,16 +42,12 @@ const FileList = () => {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                         setItemCount(0);
                     }
                     else {
                         setData(result);
-                        setData_Original(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total == 0 ? "No Files information present." : "ok");
                     }
                     setApiLoading(false);
                 },
@@ -61,9 +55,7 @@ const FileList = () => {
                     setData({});
                     setItemCount(0);
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -87,7 +79,7 @@ const FileList = () => {
         </span>
     );
     // Column Definitions: Defines the columns to be displayed.
-    const [colDefs, setColDefs] = useState([
+    const [colDefs] = useState([
         { field: "Id", maxWidth: 50 },
         { field: "module", filter: true },
         { field: "moduleId", },

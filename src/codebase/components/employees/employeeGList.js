@@ -1,14 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Context } from "../../context/context";
-import { Button, Link } from '@mui/material';
-import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 
 function EmployeeGenericList({ employeeID, formType }) {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     const getApiUrl = () => {
         switch (formType) {
@@ -33,20 +29,15 @@ function EmployeeGenericList({ employeeID, formType }) {
             .then(
                 (result) => {
                     if (result.ERROR && result.ERROR.CODE !== "0") {
-                        setDataAPIError(`${result.ERROR.CODE} - ${result.ERROR.MESSAGE}`);
                         setData({ data: [] });
-                        setApiLoadingError(true);
                     } else {
                         setData(result);
-                        setDataAPIError(result.total === 0 ? `No ${formType} information present.` : "ok");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({ data: [] });
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             );
     };
@@ -143,7 +134,7 @@ function EmployeeGenericList({ employeeID, formType }) {
                             </table>
                         </div>
                     ) : (
-                        <>{dataAPIError}</>
+                        <>API ISSUES</>
                     )}
                 </>
             )}

@@ -12,19 +12,14 @@ import Stack from '@mui/material/Stack';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
 import { styled } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 function FileForm({ props, ID, operation }) {
-    const [componentName, setComponentName] = useState('APPLICATION');
+    const [componentName] = useState('APPLICATION');
 
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
-    const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const resetButtonRef = useRef(null);
     const [apiLoading, setApiLoading] = useState(true);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     //FILE RELATED
     const [parentId, setParentId] = useState('');
@@ -109,19 +104,14 @@ function FileForm({ props, ID, operation }) {
                         setSubmitionCompleted(true);
 
                         if (resp.data.STATUS !== "SUCCESS") {
-                            setFormSubmitionAPIError(true);
-                            setFormSubmitionAPIErrorMessage("ERROR: " + resp.data.ERROR.MESSAGE);
                             showSnackbar('error', 'File upload failed');
                         }
                         else {
-                            setFormSubmitionAPIError(false);
                             showSnackbar('success', 'File uploaded successfully');
                         }
                         setApiLoading(false)
                     }).catch(function (error) {
                         setSubmitionCompleted(true);
-                        setFormSubmitionAPIErrorMessage(error);
-                        setFormSubmitionAPIError(true);
                         console.log(error);
                         showSnackbar('error', 'Error while uploading: ' + error);
                         setApiLoading(false)
@@ -247,7 +237,7 @@ function FileForm({ props, ID, operation }) {
                                             variant="outlined"
                                             color="warning"
                                             onClick={handleReset}
-                                            disabled={!dirty || isSubmitting && !isSubmitionCompleted}
+                                            disabled={!dirty || (isSubmitting && !isSubmitionCompleted)}
                                         >
                                             Reset
                                         </Button>
