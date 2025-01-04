@@ -95,14 +95,16 @@
     position: absolute;
     left: 0px;
     bottom: 0px;
+    z-index: 999;
+    width: 20rem;
 }
 .APICheckHolder span{
-    font-size: 12px;
+    font-size: 10px;
     color: #000;
     font-weight: normal;
 }
 .APICheckHolder img {
-    width: 24px;
+    width: 16px;
     cursor: pointer;
 }
 .APICheckClicker{

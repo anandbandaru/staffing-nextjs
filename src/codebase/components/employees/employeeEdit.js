@@ -20,7 +20,7 @@ import axios from 'axios';
 import GenericFileForm from '../forms/GenericFileForm';
 import EmployeeGAddForm from './employeeGAddForm';
 
-function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading }) {
+function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [openDocuments, setOpenDocuments] = React.useState(false);
@@ -67,7 +67,7 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading }) {
         },
     }));
 
-    const deleteByID = () => {
+    const deleteItem = () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/deleteemployee"
         axios.post(apiUrl,
@@ -81,8 +81,12 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }
             },
         ).then((resp) => {
+            setApiLoading(false);
             manualLoadData();
+            showSnackbar('success', "Item deleted.");
         }).catch(function (error) {
+            setApiLoading(false);
+            showSnackbar('error', "Error occured while deletion");
             console.log(error);
         });
     }
@@ -109,13 +113,15 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                     <EditIcon />
                 </IconButton>
                 <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
-                    const userConfirmed = window.confirm("Are you sure you want to delete this item with ID? - " + ID);
-                    if (userConfirmed) {
-                        deleteByID();
+                    const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
+                    if (userInput.toUpperCase() === "DELETE") {
+                        deleteItem();
                     } else {
                         console.log("Delete operation cancelled");
+                        showSnackbar('warning', "Delete operation cancelled");
                     }
-                }}>
+                }
+                }>
                     <DeleteIcon />
                 </IconButton>
             </Stack>

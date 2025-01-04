@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import configData from "../../../CONFIG_RELEASE.json";
-// import preval from 'preval.macro';
 import './top.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { assets } from '../../assets/assets'
 import { Context } from "../../context/context";
 import { Tooltip } from 'react-tooltip';
-import { styled } from '@mui/material/styles';
 import { pink } from '@mui/material/colors';
 import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontalCircleOutlined';
 import Drawer from '@mui/material/Drawer';
@@ -19,17 +17,8 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Avatar from '@mui/material/Avatar';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { Stack } from "@mui/material";
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import ReportGmailerrorredRoundedIcon from '@mui/icons-material/ReportGmailerrorredRounded';
-import LinearProgress from '@mui/material/LinearProgress';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
-import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import ModulesTop from "../top2/ModulesTop";
@@ -142,7 +131,7 @@ const Top = () => {
                             <Tab ><AttachmentIcon className="mr-1" />Files</Tab>
                             <Tab ><CheckCircleOutlineIcon className="mr-1" />Todo</Tab>
                             <Tab ><AttributionIcon className="mr-1" />Users</Tab>
-                            <Tab ><SettingsEthernetIcon  className="mr-1" />Configuration</Tab>
+                            <Tab ><SettingsEthernetIcon className="mr-1" />Configuration</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">
@@ -167,7 +156,7 @@ const Top = () => {
                             <FilesMain />
                         </TabPanel>
                         <TabPanel className="px-2">
-                            <TodosMain  />
+                            <TodosMain />
                         </TabPanel>
                         <TabPanel className="px-2">
                             <UsersMain />
@@ -272,12 +261,10 @@ const Top = () => {
                             >
                                 ERROR
                             </Button>
-                            {/* <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="error" onClick={checkAPIAvailability} />
-                            <span className="APICheckHolder_text">service issue</span> */}
                         </>
                         :
                         <>
-                            <Button size="small" variant="contained" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />} 
+                            <Button size="small" variant="outlined" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />}
                                 onClick={() => {
                                     checkAPIAvailability();
                                     showSnackbar('info', "Checked API availability");
@@ -285,8 +272,6 @@ const Top = () => {
                             >
                                 {APIversion === "LOCAL VERSION" ? "LOCAL" : "ONLINE:" + APIversion}
                             </Button>
-                            {/* <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="success" onClick={checkAPIAvailability} />
-                            <span className="APICheckHolder_text"></span> */}
                         </>
                 }
 

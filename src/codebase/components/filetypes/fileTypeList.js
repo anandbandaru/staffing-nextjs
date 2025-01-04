@@ -6,14 +6,28 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import FileTypesListToolbar from './fileTypesListToolbar'
 import GenericDetails from "../forms/GenericDetails";
 import FileTypeEdit from "./fileTypeEdit";
+import CustomSnackbar from "../snackbar/snackbar";
 
 const FileTypeList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
+    const [apiLoadingError] = useState(false);
+    const [dataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         delaydMockLoading();
@@ -70,7 +84,7 @@ const FileTypeList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <FileTypeEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <FileTypeEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
@@ -99,6 +113,12 @@ const FileTypeList = () => {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}

@@ -7,6 +7,7 @@ import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import CompaniesListToolbar from './companiesListToolbar'
 import CompanyEdit from "./companyEdit";
 import GenericDetails from "../forms/GenericDetails";
+import CustomSnackbar from "../snackbar/snackbar";
 
 const CompaniesList = () => {
     const { APIPath } = useContext(Context);
@@ -15,6 +16,19 @@ const CompaniesList = () => {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         delaydMockLoading();
@@ -70,7 +84,7 @@ const CompaniesList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <CompanyEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <CompanyEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
@@ -85,78 +99,84 @@ const CompaniesList = () => {
             {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
-// Column Definitions: Defines the columns to be displayed.
-const [colDefs] = useState([
-    {
-        field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
-    },
-    { field: "Id", maxWidth: 50 },
-    { field: "Name", filter: true },
-    { field: "Phone", filter: true },
-    {
-        field: "Email", filter: true, editable: true,
-        cellClassRules: {
-            // apply green to electric cars
-            'rag-green': params => params.value === "sa.ke@aol.com",
+    // Column Definitions: Defines the columns to be displayed.
+    const [colDefs] = useState([
+        {
+            field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
-        cellRenderer: CustomEmailRenderer
-    },
-    { field: "EstablishedDate", filter: true },
-    {
-        field: "Disabled", filter: false, maxWidth: 100,
-        // cellClassRules: {
-        //     // apply green to electric cars
-        //     'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
-        //     'rag-red-bg': params => params.value === 1 || params.value === true,
-        // },
-        cellRenderer: CustomDisabledRenderer
-    },
-    { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
-]);
-const rowClassRules = {
-    //'rag-red': params => params.data.firstName === "anand",
-};
-const pagination = true;
-const paginationPageSize = 10;
-const paginationPageSizeSelector = [5, 10, 20, 50];
-const autoSizeStrategy = {
-    type: 'fitGridWidth',
-    defaultMinWidth: 50
-};
+        { field: "Id", maxWidth: 50 },
+        { field: "Name", filter: true },
+        { field: "Phone", filter: true },
+        {
+            field: "Email", filter: true, editable: true,
+            cellClassRules: {
+                // apply green to electric cars
+                'rag-green': params => params.value === "sa.ke@aol.com",
+            },
+            cellRenderer: CustomEmailRenderer
+        },
+        { field: "EstablishedDate", filter: true },
+        {
+            field: "Disabled", filter: false, maxWidth: 100,
+            // cellClassRules: {
+            //     // apply green to electric cars
+            //     'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
+            //     'rag-red-bg': params => params.value === 1 || params.value === true,
+            // },
+            cellRenderer: CustomDisabledRenderer
+        },
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
+    ]);
+    const rowClassRules = {
+        //'rag-red': params => params.data.firstName === "anand",
+    };
+    const pagination = true;
+    const paginationPageSize = 10;
+    const paginationPageSizeSelector = [5, 10, 20, 50];
+    const autoSizeStrategy = {
+        type: 'fitGridWidth',
+        defaultMinWidth: 50
+    };
 
-return (
-    <>
-        <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
-
-            {/* TOOLS */}
-            <CompaniesListToolbar
-                operation="Add"
-                itemCount={itemCount}
-                apiLoading={apiLoading}
-                apiLoadingError={apiLoadingError}
-                dataAPIError={dataAPIError}
-                manualLoadData={manualLoadData} />
-            {/* TOOLS */}
-
-        </div>
-
-        <div
-            className="ag-theme-quartz" // applying the Data Grid theme
-            style={{ height: 500 }} // the Data Grid will fill the size of the parent container
-        >
-            <AgGridReact
-                rowData={data.data}
-                columnDefs={colDefs}
-                pagination={pagination}
-                paginationPageSize={paginationPageSize}
-                paginationPageSizeSelector={paginationPageSizeSelector}
-                rowClassRules={rowClassRules}
-                autoSizeStrategy={autoSizeStrategy}
+    return (
+        <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
             />
-        </div>
+            <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
-    </>
-)
+                {/* TOOLS */}
+                <CompaniesListToolbar
+                    operation="Add"
+                    itemCount={itemCount}
+                    apiLoading={apiLoading}
+                    apiLoadingError={apiLoadingError}
+                    dataAPIError={dataAPIError}
+                    manualLoadData={manualLoadData} />
+                {/* TOOLS */}
+
+            </div>
+
+            <div
+                className="ag-theme-quartz" // applying the Data Grid theme
+                style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+            >
+                <AgGridReact
+                    rowData={data.data}
+                    columnDefs={colDefs}
+                    pagination={pagination}
+                    paginationPageSize={paginationPageSize}
+                    paginationPageSizeSelector={paginationPageSizeSelector}
+                    rowClassRules={rowClassRules}
+                    autoSizeStrategy={autoSizeStrategy}
+                />
+            </div>
+
+        </>
+    )
 }
 
 export default CompaniesList;

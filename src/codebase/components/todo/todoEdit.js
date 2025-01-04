@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -13,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Context } from "../../context/context";
 import axios from 'axios';
 
-function TodoEdit({ ID, operation, manualLoadData, setApiLoading }) {
+function TodoEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath } = useContext(Context);
     const { fetchTodos } = useContext(Context);
     const [open, setOpen] = React.useState(false);
@@ -51,8 +51,12 @@ function TodoEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }
             },
         ).then((resp) => {
+            setApiLoading(false);
             manualLoadData();
+            showSnackbar('success', "Item deleted.");
         }).catch(function (error) {
+            setApiLoading(false);
+            showSnackbar('error', "Error occured while deletion");
             console.log(error);
         });
     }
@@ -68,11 +72,12 @@ function TodoEdit({ ID, operation, manualLoadData, setApiLoading }) {
                     <EditIcon />
                 </IconButton>
                 <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
-                    const userConfirmed = window.confirm("Are you sure you want to delete this item with ID? - " + ID);
-                    if (userConfirmed) {
+                    const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
+                    if (userInput.toUpperCase() === "DELETE") {
                         deleteItem();
                     } else {
                         console.log("Delete operation cancelled");
+                        showSnackbar('warning', "Delete operation cancelled");
                     }
                 }
                 }>

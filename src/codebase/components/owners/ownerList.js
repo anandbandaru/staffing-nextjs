@@ -7,7 +7,7 @@ import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
 import OwnersListToolbar from './ownersListToolbar'
 import OwnerEdit from "./ownerEdit";
 import GenericDetails from "../forms/GenericDetails";
-
+import CustomSnackbar from "../snackbar/snackbar";
 
 const OwnersList = () => {
     const { APIPath } = useContext(Context);
@@ -16,6 +16,19 @@ const OwnersList = () => {
     const [apiLoadingError] = useState(false);
     const [dataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         delaydMockLoading();
@@ -72,7 +85,7 @@ const OwnersList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <OwnerEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <OwnerEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
@@ -129,6 +142,12 @@ const OwnersList = () => {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}

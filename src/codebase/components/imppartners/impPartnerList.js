@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import ImpPartnersListToolbar from './impPartnersListToolbar'
 import GenericDetails from "../forms/GenericDetails";
 import ImpPartnerEdit from "./impPartnerEdit";
+import CustomSnackbar from "../snackbar/snackbar";
 
 const ImpPartnerList = () => {
     const { APIPath } = useContext(Context);
@@ -14,6 +15,19 @@ const ImpPartnerList = () => {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         delaydMockLoading();
@@ -70,7 +84,7 @@ const ImpPartnerList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <ImpPartnerEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <ImpPartnerEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
@@ -114,6 +128,12 @@ const ImpPartnerList = () => {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}

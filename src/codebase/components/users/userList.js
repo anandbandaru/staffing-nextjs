@@ -9,7 +9,6 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import AttributionOutlinedIcon from '@mui/icons-material/AttributionOutlined';
-import Stack from '@mui/material/Stack';
 
 const UserList = () => {
     const { accessToken } = useContext(Context);
@@ -71,73 +70,72 @@ const UserList = () => {
         TIMESHEET: 'rag-blue-bg badgeSpan',
         DEFAULT: 'rag-gray-bg badgeSpan',
     };
-
     const CustomJobTitleRenderer = ({ value }) => (
-        <Stack direction="row" spacing={1} className="place-items-center">
+        <div>
             {iconMap[value] || iconMap.DEFAULT}
             <span className={classMap[value] || classMap.DEFAULT}>
                 {value}
             </span>
-        </Stack>
+        </div>
     );
-// Column Definitions: Defines the columns to be displayed.
-const [colDefs] = useState([
-    { field: "givenName", filter: true },
-    { field: "surname", filter: true },
-    {
-        field: "jobTitle",
-        cellRenderer: CustomJobTitleRenderer
-    },
-    { field: "userPrincipalName" },
-    { field: "mail", filter: true },
-    { field: "mobilePhone", filter: true },
-]);
-const rowClassRules = {
-    // apply red to Ford cars
-    //'rag-red': params => params.data.firstName === "anand",
-};
-const pagination = true;
-const paginationPageSize = 10;
-const paginationPageSizeSelector = [5, 10, 20, 50];
-const autoSizeStrategy = {
-    type: 'fitGridWidth',
-    defaultMinWidth: 50
-};
+    // Column Definitions: Defines the columns to be displayed.
+    const [colDefs] = useState([
+        { field: "givenName", filter: true },
+        { field: "surname", filter: true },
+        {
+            field: "jobTitle",
+            cellRenderer: CustomJobTitleRenderer
+        },
+        { field: "userPrincipalName" },
+        { field: "mail", filter: true },
+        { field: "mobilePhone", filter: true },
+    ]);
+    const rowClassRules = {
+        // apply red to Ford cars
+        //'rag-red': params => params.data.firstName === "anand",
+    };
+    const pagination = true;
+    const paginationPageSize = 10;
+    const paginationPageSizeSelector = [5, 10, 20, 50];
+    const autoSizeStrategy = {
+        type: 'fitGridWidth',
+        defaultMinWidth: 50
+    };
 
-return (
-    <>
-        <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
+    return (
+        <>
+            <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
-            {/* TOOLS */}
-            <UsersListToolbar
-                operation="Add"
-                itemCount={itemCount}
-                apiLoading={apiLoading}
-                apiLoadingError={apiLoadingError}
-                dataAPIError={dataAPIError}
-                manualLoadData={manualLoadData} />
-            {/* TOOLS */}
+                {/* TOOLS */}
+                <UsersListToolbar
+                    operation="Add"
+                    itemCount={itemCount}
+                    apiLoading={apiLoading}
+                    apiLoadingError={apiLoadingError}
+                    dataAPIError={dataAPIError}
+                    manualLoadData={manualLoadData} />
+                {/* TOOLS */}
 
-        </div>
+            </div>
 
-        <div
-            className="ag-theme-quartz" // applying the Data Grid theme
-            style={{ height: 500 }} // the Data Grid will fill the size of the parent container
-        >
-            <AgGridReact
-                rowData={data.value}
-                columnDefs={colDefs}
-                pagination={pagination}
-                paginationPageSize={paginationPageSize}
-                paginationPageSizeSelector={paginationPageSizeSelector}
-                rowClassRules={rowClassRules}
-                autoSizeStrategy={autoSizeStrategy}
-                enableCellTextSelection={true}
-            />
-        </div>
+            <div
+                className="ag-theme-quartz" // applying the Data Grid theme
+                style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+            >
+                <AgGridReact
+                    rowData={data.value}
+                    columnDefs={colDefs}
+                    pagination={pagination}
+                    paginationPageSize={paginationPageSize}
+                    paginationPageSizeSelector={paginationPageSizeSelector}
+                    rowClassRules={rowClassRules}
+                    autoSizeStrategy={autoSizeStrategy}
+                    enableCellTextSelection={true}
+                />
+            </div>
 
-    </>
-)
+        </>
+    )
 }
 
 export default UserList;

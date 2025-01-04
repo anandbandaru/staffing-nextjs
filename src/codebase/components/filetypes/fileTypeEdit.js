@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -9,10 +9,11 @@ import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import FIleTypeForm from "./fileTypeForm";
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Context } from "../../context/context";
 import axios from 'axios';
 
-function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
+function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
@@ -34,7 +35,7 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
             padding: theme.spacing(1),
         },
     }));
-    const deleteFileTypeByID = () => {
+    const deleteItem = () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/deletefiletype"
         axios.post(apiUrl,
@@ -48,8 +49,12 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }
             },
         ).then((resp) => {
+            setApiLoading(false);
             manualLoadData();
+            showSnackbar('success', "Item deleted.");
         }).catch(function (error) {
+            setApiLoading(false);
+            showSnackbar('error', "Error occured while deletion");
             console.log(error);
         });
     }
@@ -64,17 +69,18 @@ function FileTypeEdit({ ID, operation, manualLoadData, setApiLoading }) {
                 }>
                     <EditIcon />
                 </IconButton>
-                {/* <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
-                    const userConfirmed = window.confirm("Are you sure you want to delete this item with ID? - " + ID);
-                    if (userConfirmed) {
-                        deleteFileTypeByID();
+                <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
+                    const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
+                    if (userInput.toUpperCase() === "DELETE") {
+                        deleteItem();
                     } else {
                         console.log("Delete operation cancelled");
+                        showSnackbar('warning', "Delete operation cancelled");
                     }
                 }
                 }>
                     <DeleteIcon />
-                </IconButton> */}
+                </IconButton>
             </Stack>
             <BootstrapDialog
                 className=""

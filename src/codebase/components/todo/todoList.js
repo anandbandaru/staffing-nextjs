@@ -7,6 +7,7 @@ import TodosListToolbar from './todosListToolbar'
 import GenericDetails from "../forms/GenericDetails";
 import TodoEdit from "./todoEdit";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import CustomSnackbar from "../snackbar/snackbar";
 
 const TodoList = () => {
     const { APIPath } = useContext(Context);
@@ -15,6 +16,19 @@ const TodoList = () => {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         delaydMockLoading();
@@ -76,7 +90,7 @@ const TodoList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <TodoEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <TodoEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
@@ -135,6 +149,12 @@ const TodoList = () => {
 
     return (
         <>
+        <CustomSnackbar
+            open={snackbarOpen}
+            handleClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+            message={snackbarMessage}
+        />
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}

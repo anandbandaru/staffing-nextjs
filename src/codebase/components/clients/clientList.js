@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import ClientsListToolbar from './clientsListToolbar'
 import GenericDetails from "../forms/GenericDetails";
 import ClientEdit from "./clientEdit";
+import CustomSnackbar from "../snackbar/snackbar";
 
 const ClientList = () => {
     const { APIPath } = useContext(Context);
@@ -14,6 +15,19 @@ const ClientList = () => {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         delaydMockLoading();
@@ -71,7 +85,7 @@ const ClientList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <ClientEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <ClientEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
@@ -115,6 +129,12 @@ const ClientList = () => {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}

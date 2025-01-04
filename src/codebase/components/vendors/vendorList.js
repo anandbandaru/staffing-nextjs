@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import VendorsListToolbar from './vendorsListToolbar'
 import GenericDetails from "../forms/GenericDetails";
 import VendorEdit from "./vendorEdit";
+import CustomSnackbar from "../snackbar/snackbar";
 
 const VendorList = () => {
     const { APIPath } = useContext(Context);
@@ -14,6 +15,19 @@ const VendorList = () => {
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         delaydMockLoading();
@@ -76,7 +90,7 @@ const VendorList = () => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <VendorEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} />
+                <VendorEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
@@ -124,6 +138,12 @@ const VendorList = () => {
 
     return (
         <>
+        <CustomSnackbar
+            open={snackbarOpen}
+            handleClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+            message={snackbarMessage}
+        />
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}
