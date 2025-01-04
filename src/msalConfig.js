@@ -4,7 +4,7 @@ const MSAL_CONFIG = {
     auth: {
         clientId: "f125865a-dfc0-4e3f-953a-c9171458979e",
         authority: "https://login.microsoftonline.com/vsksoftwareoutlook.onmicrosoft.com",
-        redirectUri: "http://localhost:3000",
+        redirectUri: process.env.REACT_APP_REDIRECT_URI,
     },
     cache: {
         cacheLocation: "localStorage",
