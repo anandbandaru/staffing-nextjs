@@ -290,6 +290,7 @@ const ContextProvider = (props) => {
         signOut,
         loginSuccess,
         userName,
+        setUserName,
         userType,
         refreshPage,
         createOneDriveFolder,

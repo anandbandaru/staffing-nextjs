@@ -3,6 +3,6 @@
         "node_modules{,/**}",
         ".vscode{,/**}"
     ],
-    "appService.defaultWebAppToDeploy": "/subscriptions/d76dcd24-85fa-443e-b370-1b055875d619/resourceGroups/sqlgenai_group/providers/Microsoft.Web/sites/sqlgenaiweb",
+    "appService.defaultWebAppToDeploy": "/subscriptions/119d1685-2aa1-4c42-bd1a-b64b5964f15b/resourceGroups/Staffing/providers/Microsoft.Web/sites/staffingdataui",
     "appService.deploySubpath": "./build"
 }
