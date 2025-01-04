@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
-import { Stack, Grid, Card, CardContent, Typography, Box, Chip } from '@mui/material';
+import { Stack, Grid, Card, CardContent, Typography, Box, Chip, Skeleton } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import AddToDriveOutlinedIcon from '@mui/icons-material/AddToDriveOutlined';
 
@@ -80,7 +80,11 @@ const Dashboard = () => {
                 <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
                     {title}
                 </Typography>
-                {apiLoading ? <div className="spinner"></div> : <div className='dashCardsCounts'>{count}</div>}
+                {apiLoading ?
+                    <Skeleton variant="circular" width={20} height={20} />
+                    :
+                    <div className='dashCardsCounts'>{count}</div>
+                }
             </CardContent>
             {/* <CardActions>
                 Something here
@@ -105,7 +109,7 @@ const Dashboard = () => {
                             </Typography>
                             <Stack spacing={1} direction="row">
                                 {apiLoading ? (
-                                    <div className="spinner"></div>
+                                    <Skeleton variant="rectangular" width={210} height={20} />
                                 ) : (
                                     <>
                                         <div className='dashCardsCounts'>{counts.todos}</div>
@@ -167,7 +171,7 @@ const Dashboard = () => {
                                 </Typography>
                                 {apiLoading
                                     ?
-                                    <div className="spinner"></div>
+                                    <Skeleton variant="circular" width={20} height={20} />
                                     :
                                     <>
                                         <Stack className='mt-3' spacing={2} direction={"row"}>
