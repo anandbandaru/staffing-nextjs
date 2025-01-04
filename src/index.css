@@ -185,6 +185,24 @@ body{
   color: #fff; */
 }
 
+.settingsTabsListHolder{
+  font-size: 12px;
+  color: #201219 !important;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #201219;
+}
+.settingsTabsListHolder .react-tabs__tab-panel{
+  min-height: 100vh;
+}
+.settingsTabsListHolder .react-tabs__tab{
+  padding: 6px 10px 6px 10px;
+}
+.settingsTabsListHolder .react-tabs__tab--selected {
+  border-top: 4px solid #272526;
+  /* background-color: #ff068c;
+  color: #fff; */
+}
+
 
 @keyframes spin {
   to {
