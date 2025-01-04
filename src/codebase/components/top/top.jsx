@@ -283,7 +283,7 @@ const Top = () => {
                                     showSnackbar('info', "Checked API availability");
                                 }}
                             >
-                                {APIversion === "LOCAL VERSION" ? "L" : "O:" + APIversion}
+                                {APIversion === "LOCAL VERSION" ? "LOCAL" : "ONLINE:" + APIversion}
                             </Button>
                             {/* <SwapHorizontalCircleOutlinedIcon className="APICheckClicker" color="success" onClick={checkAPIAvailability} />
                             <span className="APICheckHolder_text"></span> */}
