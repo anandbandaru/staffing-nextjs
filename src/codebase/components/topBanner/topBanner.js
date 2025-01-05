@@ -10,17 +10,17 @@ const TopBanner = () => {
                     <li className="mr-2">
                         <span className="companyLogo ">VIZION TECHNOLOGIES</span>
                     </li>
-                    <li className="px-2 pt-0.5 rounded-sm leading-5 border-l border-gray-300">
+                    <li className="px-2 pt-0.5 rounded-sm leading-5 border-l border-gray-300 md:hidden lg:block sm:hidden">
                         {/* <AccessTimeIcon fontSize="small" style={{ fontSize: '16px', height: '16px' }} /> */}
                         TIME:
                     </li>
-                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300">
+                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 md:hidden lg:block sm:hidden">
                         PST: <Clock format={"dd, MMM Do YYYY, h:mm a"} ticking={true} timezone={'US/Pacific'} />
                     </li>
-                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300">
+                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 md:hidden lg:block sm:hidden">
                         CST: <Clock format={"dd, MMM Do YYYY, h:mm a"} ticking={true} timezone={'US/Central'} />
                     </li>
-                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300">
+                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 md:hidden lg:block sm:hidden">
                         IST: <Clock format={"dd, MMM Do YYYY, h:mm a"} ticking={true} timezone={'Asia/Calcutta'} />
                     </li>
                 </ul>
