@@ -49,7 +49,7 @@ const Dashboard = () => {
                 // '/counts/timesheets',
                 '/counts/filetypes',
                 '/counts/expensetypes',
-                // '/counts/files',
+                '/counts/files',
                 '/counts/storagelimit',
                 '/counts/storageusage'
             ];

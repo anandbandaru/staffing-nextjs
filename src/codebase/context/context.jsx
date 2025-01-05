@@ -29,7 +29,8 @@ const ContextProvider = (props) => {
     const [isAPIReturnExecutionError, setIsAPIReturnExecutionError] = useState(false);
     const [APIAvailabilityResponse, setAPIAvailabilityResponse] = useState(null);
     const [APItext, setAPIText] = useState('');
-    const [APIversion, setAPIversion] = useState('');
+    const [APIVersion, setAPIVersion] = useState('');
+    const [APIType, setAPIType] = useState('');
     const [topTabName, setTopTabName] = useState('');
     const [top2TabName, setTop2TabName] = useState('');
     
@@ -58,10 +59,12 @@ const ContextProvider = (props) => {
             setAPIAvailabilityResponse(data);
             setAPIText("<span class='APIAvailabilityCheckSuccess'>API working as expected.</span>"
                 + "<br> <span class='APIAvailabilityCheckLabel'>API Endpoint: </span>" + flaskAPI_Availability
-                + "<br> <span class='APIAvailabilityCheckLabel'>API Version: </span>" + data.APIversion
+                + "<br> <span class='APIAvailabilityCheckLabel'>API Version: </span>" + data.APIVersion
+                + "<br> <span class='APIAvailabilityCheckLabel'>API Type: </span>" + data.APIType
                 + "<br> <span class='APIAvailabilityCheckLabel'>API Deployment Time: </span>" + data.localDeployedTime
                 + "<br> <span class='APIAvailabilityCheckLabel'>Elapsed Time: </span>" + data.elapsedTime);
-            setAPIversion(data.APIversion);
+            setAPIVersion(data.APIVersion);
+            setAPIType(data.APIType);
             setIsAPILoading(false);
             setIsAPIError(false);
             console.log("API availability call made.");
@@ -272,7 +275,8 @@ const ContextProvider = (props) => {
         isAPILoading,
         isAPIError,
         APItext,
-        APIversion,
+        APIVersion,
+        APIType,
         checkAPIAvailability,
         setSelectedDB,
         selectedDB,

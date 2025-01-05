@@ -67,7 +67,8 @@ const Top = () => {
         APIAvailabilityResponse,
         isAPILoading,
         isAPIError,
-        APIversion,
+        APIVersion,
+        APIType,
         checkAPIAvailability,
         setTopTabName,
         loading,
@@ -331,9 +332,6 @@ const Top = () => {
 
                     <Card className="SettingsPart" variant="outlined">
                         <CardContent>
-                            <Typography className="ToggleTitle" component="div">
-                                Info
-                            </Typography>
                             <Tabs>
                                 <TabList className="settingsTabsListHolder">
                                     <Tab>API details</Tab>
@@ -349,9 +347,9 @@ const Top = () => {
                                             <LinearProgress color="secondary" />
                                             :
                                             <>
-                                                <Chip className="info_release_API_type_Div"
-                                                    label={APIversion === "LOCAL VERSION" ? "Local API Consumption" : "Online Azure API Consumption"}
-                                                    size="small" color={APIversion === "LOCAL VERSION" ? 'primary' : 'success'} />
+                                                <Chip className="info_release_API_type_Div mb-4"
+                                                    label={APIType === "LOCAL" ? "Local API Consumption" : "Online Azure API Consumption"}
+                                                    size="small" color={APIType === "LOCAL" ? 'primary' : 'success'} />
                                                 {/* <div className="info_release_API_Div" dangerouslySetInnerHTML={{ __html: APItext }}> */}
                                                 <div className="info_release_API_Div">
                                                     <TableContainer component={Paper}>
@@ -360,6 +358,10 @@ const Top = () => {
                                                                 <TableRow>
                                                                     <TableCell component="th" scope="row">API URL</TableCell>
                                                                     <TableCell align="right">{APIPath}</TableCell>
+                                                                </TableRow>
+                                                                <TableRow>
+                                                                    <TableCell component="th" scope="row">API TYPE</TableCell>
+                                                                    <TableCell align="right">{APIType}</TableCell>
                                                                 </TableRow>
                                                                 <TableRow>
                                                                     <TableCell component="th" scope="row">API Availability</TableCell>
@@ -375,7 +377,7 @@ const Top = () => {
                                                                 </TableRow>
                                                                 <TableRow>
                                                                     <TableCell component="th" scope="row">API Version</TableCell>
-                                                                    <TableCell align="right">{APIAvailabilityResponse ? APIAvailabilityResponse.APIversion : ""}</TableCell>
+                                                                    <TableCell align="right">{APIAvailabilityResponse ? APIAvailabilityResponse.APIVersion : ""}</TableCell>
                                                                 </TableRow>
                                                             </TableBody>
                                                         </Table>
@@ -467,7 +469,7 @@ const Top = () => {
                                     showSnackbar('info', "Checked API availability");
                                 }}
                             >
-                                {APIversion === "LOCAL VERSION" ? "LOCAL" : "ONLINE:" + APIversion}
+                                {APIType === "LOCAL" ? "LOCAL" : "ONLINE:" + APIVersion}
                             </Button>
                         </>
                 }

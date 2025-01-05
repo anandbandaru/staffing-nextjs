@@ -102,7 +102,7 @@ function FileForm({ props, ID, operation }) {
                         },
                     }).then((resp) => {
                         setSubmitionCompleted(true);
-
+                        setSubmitting(false);
                         if (resp.data.STATUS !== "SUCCESS") {
                             showSnackbar('error', 'File upload failed');
                         }
@@ -112,6 +112,7 @@ function FileForm({ props, ID, operation }) {
                         setApiLoading(false)
                     }).catch(function (error) {
                         setSubmitionCompleted(true);
+                        setSubmitting(false);
                         console.log(error);
                         showSnackbar('error', 'Error while uploading: ' + error);
                         setApiLoading(false)
@@ -223,9 +224,6 @@ function FileForm({ props, ID, operation }) {
                                 helperText={(errors.file && touched.file) && errors.file}
                             />
                             <Stack direction="row" spacing={2} className='float-right mt-10'>
-                                <div>
-                                    {ID}:{operation}
-                                </div>
                                 {operation === "Edit" ?
                                     <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                         <SaveOutlinedIcon className="mr-1" />
@@ -241,10 +239,14 @@ function FileForm({ props, ID, operation }) {
                                         >
                                             Reset
                                         </Button>
-                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                            <SaveOutlinedIcon className="mr-1" />
-                                            Save
-                                        </Button>
+                                        {isSubmitting ? (
+                                            <div className="spinner"></div>
+                                        ) : (
+                                            <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                <SaveOutlinedIcon className="mr-1" />
+                                                Save
+                                            </Button>
+                                        )}
                                     </>
                                 }
                             </Stack>
