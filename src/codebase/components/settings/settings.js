@@ -35,6 +35,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import preval from 'preval.macro';
 import axios from 'axios';
 import AddToDriveOutlinedIcon from '@mui/icons-material/AddToDriveOutlined';
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 const Settings = () => {
 
@@ -265,7 +266,7 @@ const Settings = () => {
                                                         <Typography variant="caption">
                                                             <ul className="ChangeLogUL">
                                                                 {item.notes.map((noteitem, noteindex) => (
-                                                                    <li key={noteindex}>{noteitem}</li>
+                                                                    <li key={noteindex}><KeyboardArrowRightOutlinedIcon fontSize="small" />{noteitem}</li>
                                                                 ))}
                                                             </ul>
                                                         </Typography>
