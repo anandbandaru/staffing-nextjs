@@ -320,9 +320,6 @@ function OwnershipForm({ props, ID, operation }) {
                                     helperText={(errors.notes && touched.notes) && errors.notes}
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
-                                    <div>
-                                        {ID}:{operation}
-                                    </div>
                                     {operation === "Edit" ?
                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                             <SaveOutlinedIcon className="mr-1" />

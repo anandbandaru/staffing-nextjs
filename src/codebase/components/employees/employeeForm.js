@@ -124,8 +124,8 @@ function EmployeeForm({ props, ID, operation }) {
             getDetails();
         }
         if (operation === "New" || operation === "Edit") {
-            //getFileTypesList();
-            //getManagersList();
+            getFileTypesList();
+            getManagersList();
         }
     }, []);
 

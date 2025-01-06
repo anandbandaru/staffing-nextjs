@@ -90,7 +90,7 @@ const EmployeesListToolbar = ({ operation, itemCount, apiLoading, apiLoadingErro
                 open={open}
             >
                 <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Owner
+                    {operation} Employee
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
