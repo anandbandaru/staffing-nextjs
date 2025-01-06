@@ -77,7 +77,8 @@
       "version": "1.1",
       "date": "JAN 05 2024",
       "notes": [
-        "Deletion confirm dialog will now asks for DELETE text to be typed"
+        "Deletion confirm dialog will now asks for DELETE text to be typed",
+        "Settings drawer as separate component"
       ]
     },
     {
