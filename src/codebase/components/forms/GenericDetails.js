@@ -69,6 +69,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                 return APIPath + "/getjobtypedetails";
             case 'EXPENSETYPES':
                 return APIPath + "/getexpensetypedetails";
+                case 'JOBTYPES':
+                    return APIPath + "/getjobtypedetails";
             case 'FILETYPES':
                 return APIPath + "/getfiletypedetails";
             case 'TODOS':
@@ -142,7 +144,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                 <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
                                     <TabList className="thirdTabsListHolder">
                                         <Tab>Metadata</Tab>
-                                        {((moduleName !== "FILETYPES" && moduleName !== "EXPENSETYPES") && <>
+                                        {((moduleName !== "FILETYPES" && moduleName !== "EXPENSETYPES" && moduleName !== "JOBTYPES") && <>
                                             <Tab>Documents</Tab>
                                             <Tab>Relations</Tab>
                                         </>

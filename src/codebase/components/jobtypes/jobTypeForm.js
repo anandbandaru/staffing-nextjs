@@ -11,13 +11,13 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 
-function ClientForm({ props, ID, operation }) {
-    const { APIPath } = useContext(Context);
+function JobType({ props, ID, operation }) {
+    const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
     const [name, setName] = useState('');
-    const [apiLoading, setApiLoading] = useState(true);
+    const [apiLoading, setApiLoading] = useState(false);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -32,7 +32,8 @@ function ClientForm({ props, ID, operation }) {
         setSnackbarOpen(true);
     };
     const getDetails = () => {
-        let apiUrl = APIPath + "/getclientdetails/" + ID;
+        setApiLoading(true);
+        let apiUrl = APIPath + "/getjobtypedetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -45,7 +46,7 @@ function ClientForm({ props, ID, operation }) {
                     }
                     else {
                         setData(result);
-                        setName(result.data[0].Name);
+                        setName(result.data[0].name);
                         //alert(firstName);
                     }
                     setApiLoading(false);
@@ -80,16 +81,15 @@ function ClientForm({ props, ID, operation }) {
                     enableReinitialize
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
-                        Name: name ? data.data[0].Name : '',
-                        Address: name ? data.data[0].Address : '',
-                        Emails: name ? data.data[0].Emails : '',
-                        Notes: name ? data.data[0].Notes : '',
-                        Disabled: name ? data.data[0].Disabled : false,
+                        name: name ? data.data[0].name : '',
+                        description: name ? data.data[0].description : '',
+                        disabled: name ? data.data[0].disabled : false,
+                        createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        var finalAPI = APIPath + "/addclient";
+                        var finalAPI = APIPath + "/addjobtype";
                         if (operation === "Edit") {
-                            finalAPI = APIPath + "/updateclient";
+                            finalAPI = APIPath + "/updatejobtype";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -102,27 +102,24 @@ function ClientForm({ props, ID, operation }) {
                                 }
                             },
                         ).then((resp) => {
+                            setSubmitting(false);
                             setSubmitionCompleted(true);
                             if (resp.data.STATUS === "FAIL")
-                                showSnackbar('error', "Error saving Client data");
+                                showSnackbar('error', "Error saving Job Types data");
                             else
-                                showSnackbar('success', "Client data saved");
-                        })
-                            .catch(function (error) {
-                                console.log(error);
-                                setSubmitionCompleted(true);
-                                showSnackbar('error', "Error saving Client data");
-                            });
+                                showSnackbar('success', "Job Types data saved");
+                        }).catch(function (error) {
+                            setSubmitting(false);
+                            console.log(error);
+                            setSubmitionCompleted(true);
+                            showSnackbar('error', "Error saving Job Types data");
+                        });
                     }}
 
                     validationSchema={Yup.object().shape({
-                        Name: Yup.string()
+                        name: Yup.string()
                             .required('Required'),
-                        Address: Yup.string()
-                            .required('Required'),
-                        Emails: Yup.string()
-                            .required('Required'),
-                        Notes: Yup.string()
+                        description: Yup.string()
                             .required('Required'),
                     })}
                 >
@@ -156,95 +153,73 @@ function ClientForm({ props, ID, operation }) {
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Name"
-                                    name="Name"
+                                    id="name"
+                                    name="name"
                                     label="Name"
-                                    value={values.Name}
+                                    value={values.name}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Name && touched.Name) && errors.Name}
+                                    helperText={(errors.name && touched.name) && errors.name}
                                 />
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Address"
-                                    name="Address"
-                                    label="Address"
+                                    id="description"
+                                    name="description"
+                                    label="Description"
                                     multiline
                                     rows={4}
-                                    value={values.Address}
+                                    value={values.description}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Address && touched.Address) && errors.Address}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="Emails"
-                                    name="Emails"
-                                    label="Emails"
-                                    multiline
-                                    rows={4}
-                                    value={values.Emails}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.Emails && touched.Emails) && errors.Emails}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="Notes"
-                                    name="Notes"
-                                    label="Notes"
-                                    multiline
-                                    rows={4}
-                                    value={values.Notes}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.Notes && touched.Notes) && errors.Notes}
+                                    helperText={(errors.description && touched.description) && errors.description}
                                 />
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            id="Disabled"
-                                            name="Disabled"
+                                            id="disabled"
+                                            name="disabled"
                                             label="Disabled"
                                             // value={values.Disabled}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             // helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
-                                            checked={values.Disabled} />
+                                            checked={values.disabled} />
                                     }
                                     label="Disabled"
                                 />
                                 <Stack direction="row" spacing={2} className='float-right'>
-                                    <div>
-                                        {ID}:{operation}
-                                    </div>
-                                    {operation === "Edit" ?
-                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                            <SaveOutlinedIcon className="mr-1" />
-                                            Update
-                                        </Button>
-                                        : <>
+                                    {operation === "Edit" ? (
+                                        isSubmitting ? (
+                                            <div className="spinner"></div>
+                                        ) : (
+                                            <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                <SaveOutlinedIcon className="mr-1" />
+                                                Update
+                                            </Button>
+                                        )
+                                    ) : (
+                                        <>
                                             <Button
                                                 ref={resetButtonRef}
                                                 variant="outlined"
                                                 color="warning"
                                                 onClick={handleReset}
-                                                disabled={!dirty ||(isSubmitting && !isSubmitionCompleted)}
+                                                disabled={!dirty || (isSubmitting && !isSubmitionCompleted)}
                                             >
                                                 Reset
                                             </Button>
-                                            <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                <SaveOutlinedIcon className="mr-1" />
-                                                Save
-                                            </Button>
+                                            {isSubmitting ? (
+                                                <div className="spinner"></div>
+                                            ) : (
+                                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                    <SaveOutlinedIcon className="mr-1" />
+                                                    Save
+                                                </Button>
+                                            )}
                                         </>
-                                    }
+                                    )}
                                 </Stack>
                             </form>
                         );
@@ -256,4 +231,4 @@ function ClientForm({ props, ID, operation }) {
     );
 }
 
-export default ClientForm;
+export default JobType;

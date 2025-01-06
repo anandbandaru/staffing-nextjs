@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/context";
-import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
-import MarkunreadOutlinedIcon from '@mui/icons-material/MarkunreadOutlined';
-import CompaniesListToolbar from './companiesListToolbar'
-import CompanyEdit from "./companyEdit";
+import { AgGridReact } from 'ag-grid-react';
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import JobTypesListToolbar from './jobTypesListToolbar'
 import GenericDetails from "../forms/GenericDetails";
+import JobTypeEdit from "./jobTypeEdit";
 import CustomSnackbar from "../snackbar/snackbar";
 
-const CompaniesList = () => {
+const JobTypeList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
@@ -49,7 +48,7 @@ const CompaniesList = () => {
 
     const getList = () => {
         setData({ data: [] });
-        let apiUrl = APIPath + "/getcompanies"
+        let apiUrl = APIPath + "/getjobtypes"
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -74,26 +73,21 @@ const CompaniesList = () => {
                 }
             )
     }
+
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="COMPANIES" />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="JOBTYPES" />
             </>
         );
     };
     const CustomEditComponent = (props) => {
         return (
             <>
-                <CompanyEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
+                <JobTypeEdit ID={props.data.Id} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
-    const CustomEmailRenderer = ({ value }) => (
-        <span >
-            <MarkunreadOutlinedIcon fontSize="small" className="mr-2" />
-            {value}
-        </span>
-    );
     const CustomDisabledRenderer = ({ value }) => (
         <span className={(value === null || !value) ? 'rag-green-bg badgeSpan' : 'rag-red-bg badgeSpan'}>
             {(value === null || !value) ? "NO" : "YES"}
@@ -105,29 +99,22 @@ const CompaniesList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
-        { field: "Name", filter: true },
-        { field: "Phone", filter: true },
+        { field: "name", filter: true },
+        { field: "description" },
         {
-            field: "Email", filter: true, editable: true,
-            cellClassRules: {
-                // apply green to electric cars
-                'rag-green': params => params.value === "sa.ke@aol.com",
-            },
-            cellRenderer: CustomEmailRenderer
-        },
-        { field: "EstablishedDate", filter: true },
-        {
-            field: "Disabled", filter: false, maxWidth: 100,
+            field: "disabled", filter: false,
             // cellClassRules: {
             //     // apply green to electric cars
-            //     'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
-            //     'rag-red-bg': params => params.value === 1 || params.value === true,
+            //     'rag-green': params => params.value === null || params.value === false,
+            //     'rag-red': params => params.value === true,
             // },
             cellRenderer: CustomDisabledRenderer
         },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
+        { field: "createdDate", filter: true },
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
     ]);
     const rowClassRules = {
+        // apply red to Ford cars
         //'rag-red': params => params.data.firstName === "anand",
     };
     const pagination = true;
@@ -149,7 +136,7 @@ const CompaniesList = () => {
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}
-                <CompaniesListToolbar
+                <JobTypesListToolbar
                     operation="Add"
                     itemCount={itemCount}
                     apiLoading={apiLoading}
@@ -179,4 +166,4 @@ const CompaniesList = () => {
     )
 }
 
-export default CompaniesList;
+export default JobTypeList;

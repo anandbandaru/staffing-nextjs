@@ -25,6 +25,7 @@ const Dashboard = () => {
         timesheets: 0,
         filetypes: 0,
         expensetypes: 0,
+        jobtypes:0,
         files: 0,
         storageusage: 0,
         storagelimit: 0,
@@ -49,6 +50,7 @@ const Dashboard = () => {
                 // '/counts/timesheets',
                 '/counts/filetypes',
                 '/counts/expensetypes',
+                '/counts/jobtypes',
                 '/counts/files',
                 '/counts/storagelimit',
                 '/counts/storageusage'
@@ -156,6 +158,9 @@ const Dashboard = () => {
                 </Grid>
                 <Grid item md={1}>
                     {renderCard('Expense Types', counts.expensetypes)}
+                </Grid>
+                <Grid item md={1}>
+                    {renderCard('Job Types', counts.jobtypes)}
                 </Grid>
                 <Grid item md={1}>
                     {renderCard('Files', counts.files)}
