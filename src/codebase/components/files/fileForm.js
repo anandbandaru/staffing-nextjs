@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { Context } from "../../context/context";
 import configData from "../../../CONFIG_RELEASE.json";
 import Button from '@mui/material/Button';
@@ -11,7 +11,6 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
-import { styled } from '@mui/material/styles';
 
 function FileForm({ props, ID, operation }) {
     const [componentName] = useState('APPLICATION');
@@ -19,10 +18,8 @@ function FileForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
-    const [apiLoading, setApiLoading] = useState(true);
 
     //FILE RELATED
-    const [parentId, setParentId] = useState('');
     const [file, setFile] = useState(null);
     //FILE RELATED
 
@@ -43,23 +40,8 @@ function FileForm({ props, ID, operation }) {
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
-    const VisuallyHiddenInput = styled('input')({
-        clip: 'rect(0 0 0 0)',
-        clipPath: 'inset(50%)',
-        height: 1,
-        overflow: 'hidden',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        whiteSpace: 'nowrap',
-        width: 1,
-    });
     //FILE RELATED
 
-    //page title
-    useEffect(() => {
-        setParentId(configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid);
-    });
 
     return (
         <>
@@ -83,7 +65,6 @@ function FileForm({ props, ID, operation }) {
                     createdBy: userName,
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                    setApiLoading(true)
                     setSubmitionCompleted(false);
                     setSubmitting(true);
                     const formData = new FormData();
@@ -109,13 +90,11 @@ function FileForm({ props, ID, operation }) {
                         else {
                             showSnackbar('success', 'File uploaded successfully');
                         }
-                        setApiLoading(false)
                     }).catch(function (error) {
                         setSubmitionCompleted(true);
                         setSubmitting(false);
                         console.log(error);
                         showSnackbar('error', 'Error while uploading: ' + error);
-                        setApiLoading(false)
                     });
 
                 }}

@@ -28,13 +28,6 @@
     float: left;
     margin-right: 40px;
 }
-.release_version_Div{
-    font-size: 9px;
-    background-color: #5e6060;
-    color: #ffffff;
-    border-radius: 3px;
-    padding: 1px 3px;
-}
 .topTabsHolder{
     margin-left: 0px;
     /* min-height: 100vh; */
@@ -64,26 +57,6 @@
     top: 25px;
     cursor: pointer;
 }
-.optionsHolder{
-    position: absolute;
-    right: 255px;
-    top: 27px;
-    font-size: 14px;
-    align-items: center;
-    justify-content: start;
-    text-align: center;
-    cursor: pointer;
-}
-.optionsHolder:hover{
-    /* box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); */
-    color: #44d3eb;
-}
- .SettingsPart{
-    margin: 5px;
- }
- .SettingsHighlight{
-    border-left: solid 3px #c959e7 !important;
- }
  .ToggleTitle{
     color: #c959e7;
     font-size: 14px !important;

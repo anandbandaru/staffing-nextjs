@@ -11,8 +11,6 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
-import { styled } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Alert from '@mui/material/Alert';
 
 function GenericFileForm({ props, componentName, moduleId }) {
@@ -21,14 +19,9 @@ function GenericFileForm({ props, componentName, moduleId }) {
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
     const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
-    const resetButtonRef = useRef(null);
-    const [apiLoading, setApiLoading] = useState(true);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
     const [gDriveFolderNotPresent, setGDriveFolderNotPresent] = useState(false);
 
     //FILE RELATED
-    const [parentId, setParentId] = useState('');
     const [file, setFile] = useState(null);
     //FILE RELATED
 
@@ -49,23 +42,12 @@ function GenericFileForm({ props, componentName, moduleId }) {
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
-    const VisuallyHiddenInput = styled('input')({
-        clip: 'rect(0 0 0 0)',
-        clipPath: 'inset(50%)',
-        height: 1,
-        overflow: 'hidden',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        whiteSpace: 'nowrap',
-        width: 1,
-    });
     //FILE RELATED
 
     //page title
     useEffect(() => {
         try {
-            setParentId(configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid);
+            // setParentId(configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid);
         } catch (error) {
             setGDriveFolderNotPresent(true);
             showSnackbar('error', 'There is no Google Drive configured for this module');
@@ -99,7 +81,6 @@ function GenericFileForm({ props, componentName, moduleId }) {
                             createdBy: userName,
                         }}
                         onSubmit={(values, { setSubmitting }) => {
-                            setApiLoading(true)
                             setSubmitionCompleted(false);
                             setSubmitting(true);
                             const formData = new FormData();
@@ -128,14 +109,12 @@ function GenericFileForm({ props, componentName, moduleId }) {
                                     setFormSubmitionAPIError(false);
                                     showSnackbar('success', 'File uploaded successfully');
                                 }
-                                setApiLoading(false)
                             }).catch(function (error) {
                                 setSubmitionCompleted(true);
                                 setFormSubmitionAPIErrorMessage(error);
                                 setFormSubmitionAPIError(true);
                                 console.log(error);
                                 showSnackbar('error', 'Error while uploading: ' + error);
-                                setApiLoading(false)
                             });
 
                         }}
@@ -154,12 +133,10 @@ function GenericFileForm({ props, componentName, moduleId }) {
                                 values,
                                 touched,
                                 errors,
-                                dirty,
                                 isSubmitting,
                                 handleChange,
                                 handleBlur,
                                 handleSubmit,
-                                handleReset
                             } = props;
                             return (
                                 <form onSubmit={handleSubmit}>

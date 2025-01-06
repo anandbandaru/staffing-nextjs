@@ -16,8 +16,6 @@ function ExpenseType({ props, ID, operation }) {
     const [data, setData] = useState({ data: [] });
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -43,7 +41,6 @@ function ExpenseType({ props, ID, operation }) {
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setData({});
-                        setApiLoadingError(true);
                     }
                     else {
                         setData(result);

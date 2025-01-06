@@ -17,7 +17,7 @@ const ContextProvider = (props) => {
     const [userType, setUserType] = useState("");
 
     const flaskAPI_Availability = process.env.REACT_APP_API_SUFFIX;
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     const [showGreetings, setShowGreetings] = useState(false);
 
     const [selectedDBType, setSelectedDBType] = useState("SQL");
@@ -26,7 +26,7 @@ const ContextProvider = (props) => {
     const [selectedDBID, setSelectedDBID] = useState(process.env.REACT_APP_DEFAULT_DBID);
     const [isAPILoading, setIsAPILoading] = useState(false);
     const [isAPIError, setIsAPIError] = useState(false);
-    const [isAPIReturnExecutionError, setIsAPIReturnExecutionError] = useState(false);
+    // const [isAPIReturnExecutionError, setIsAPIReturnExecutionError] = useState(false);
     const [APIAvailabilityResponse, setAPIAvailabilityResponse] = useState(null);
     const [APItext, setAPIText] = useState('');
     const [APIVersion, setAPIVersion] = useState('');
@@ -190,11 +190,6 @@ const ContextProvider = (props) => {
                 throw new Error('No accounts found');
             }
 
-            const request = {
-                scopes: ['Files.ReadWrite.All'],
-                account: accounts[0],
-            };
-
             const graphClient = Client.init({
                 authProvider: (done) => {
                     done(null, accessToken);
@@ -286,7 +281,7 @@ const ContextProvider = (props) => {
         selectedDBID,
         APIAvailabilityResponse,
         APIPath,
-        isAPIReturnExecutionError,
+        // isAPIReturnExecutionError,
         topTabName,
         setTopTabName,
         top2TabName,
@@ -299,7 +294,9 @@ const ContextProvider = (props) => {
         refreshPage,
         createOneDriveFolder,
         accessToken,
-        createGDriveFolder
+        createGDriveFolder,
+        loginError,
+        token
     }
 
     return (

@@ -6,8 +6,8 @@ import IconButton from '@mui/material/IconButton';
 // import Dialog from '@mui/material/Dialog';
 // import DialogContent from '@mui/material/DialogContent';
 // import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import { styled } from '@mui/material/styles';
+// import Slide from '@mui/material/Slide';
+// import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
@@ -25,9 +25,9 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
     const [apiLoading, setApiLoading] = useState(true);
 
     // For dialog MUI
-    const Transition = React.forwardRef(function Transition(props, ref) {
-        return <Slide direction="up" ref={ref} {...props} />;
-    });
+    // const Transition = React.forwardRef(function Transition(props, ref) {
+    //     return <Slide direction="up" ref={ref} {...props} />;
+    // });
 
     const handleClose = () => {
         setOpen(false);
@@ -40,14 +40,14 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
         }
     };
 
-    const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-        '& .MuiDialogContent-root': {
-            padding: theme.spacing(2),
-        },
-        '& .MuiDialogActions-root': {
-            padding: theme.spacing(1),
-        },
-    }));
+    // const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    //     '& .MuiDialogContent-root': {
+    //         padding: theme.spacing(2),
+    //     },
+    //     '& .MuiDialogActions-root': {
+    //         padding: theme.spacing(1),
+    //     },
+    // }));
 
     const getAPIEndpoint = () => {
         switch (moduleName) {
