@@ -10,6 +10,35 @@
       "title": "Staffing"
     }
   ],
+  "releases": [
+    {
+      "version": "1.2",
+      "date": "JAN 07 2024",
+      "notes": [
+        "Job module",
+        "Configuration sections",
+        "Calendar module",
+        "Settings drawer with live & Azure links"
+      ]
+    },
+    {
+      "version": "1.1",
+      "date": "JAN 05 2024",
+      "notes": [
+        "Deletion confirm dialog will now asks for DELETE text to be typed",
+        "Settings drawer as separate component",
+        "Added Job types"
+      ]
+    },
+    {
+      "version": "1.0",
+      "date": "Dec 09 2024",
+      "notes": [
+        "Added ability to show greetings in landing page too",
+        "UI changes for cards & prompts in landing page"
+      ]
+    }
+  ],
   "timesheetPeriods": [
     {
       "name": "Weekly (Monday)"
@@ -95,25 +124,6 @@
     },
     {
       "name": "CITIZEN"
-    }
-  ],
-  "releases": [
-    {
-      "version": "1.1",
-      "date": "JAN 05 2024",
-      "notes": [
-        "Deletion confirm dialog will now asks for DELETE text to be typed",
-        "Settings drawer as separate component",
-        "Added Job types"
-      ]
-    },
-    {
-      "version": "1.0",
-      "date": "Dec 09 2024",
-      "notes": [
-        "Added ability to show greetings in landing page too",
-        "UI changes for cards & prompts in landing page"
-      ]
     }
   ],
   "GOOGLEDRIVE_FOLDERS": [
