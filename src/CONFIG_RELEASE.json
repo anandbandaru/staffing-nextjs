@@ -19,6 +19,9 @@
     },
     {
       "name": "FULLTIME"
+    },
+    {
+      "name": "TEST"
     }
   ],
   "employeeTypes": [

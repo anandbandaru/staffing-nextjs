@@ -2,9 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
-import { Stack, Grid, Card, CardContent, Typography, Box, Chip, Skeleton } from '@mui/material';
-import LinearProgress from '@mui/material/LinearProgress';
-import AddToDriveOutlinedIcon from '@mui/icons-material/AddToDriveOutlined';
+import { Stack, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
 
 const Dashboard = () => {
     const { APIPath } = useContext(Context);

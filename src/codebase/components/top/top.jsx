@@ -31,9 +31,11 @@ import AttachmentIcon from '@mui/icons-material/Attachment';
 import AttributionIcon from '@mui/icons-material/Attribution';
 import CustomSnackbar from "../snackbar/snackbar";
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import GenericList from "../forms/GenericList";
 import Settings from "../settings/settings";
 import Balance from "../balance/balance";
+import Calendar from "../calendar/calendar";
 
 const Top = () => {
 
@@ -46,7 +48,7 @@ const Top = () => {
         setTopTabName,
         userName, userType } = useContext(Context);
 
-    const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo', 'Users', 'Configuration'];
+    const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo', 'Users', 'Configuration', 'Calendar'];
     const [tabIndex, setTabIndex] = React.useState(0);
     const handleTabSelect = (index) => {
         setTabIndex(index);
@@ -115,6 +117,7 @@ const Top = () => {
                             <Tab ><CheckCircleOutlineIcon className="mr-1" />Todo</Tab>
                             <Tab ><AttributionIcon className="mr-1" />Users</Tab>
                             <Tab ><SettingsEthernetIcon className="mr-1" />Configuration</Tab>
+                            <Tab ><CalendarMonthOutlinedIcon className="mr-1" />Calendar</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">
@@ -145,10 +148,16 @@ const Top = () => {
                             <UsersMain />
                         </TabPanel>
                         <TabPanel className="px-2">
-                            <GenericList formType={'jobTypes'} />
-                            {/* <GenericList formType={"employeeTypes"} />
-                            <GenericList formType={"dependentTypes"} />
-                            <GenericList formType={"visaTypes"} /> */}
+                            <Stack spacing={2} direction={"row"}>
+                                <GenericList formType={'jobTypes'} />
+                                <GenericList formType={"employeeTypes"} />
+                                <GenericList formType={"dependentTypes"} />
+                                <GenericList formType={"visaTypes"} />
+                                <GenericList formType={"GOOGLEDRIVE_FOLDERS"} />
+                            </Stack>
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <Calendar />
                         </TabPanel>
                     </Tabs>
                 </Box>
