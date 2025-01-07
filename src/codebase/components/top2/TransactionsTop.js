@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
+import JobsMain from "../jobs/jobsMain";
 
 const TransactionsTop = ({ module }) => {
 
@@ -47,7 +48,7 @@ const TransactionsTop = ({ module }) => {
                                 ))}
                             </TabList>
                             <TabPanel className="px-2">
-                                Jobs
+                                <JobsMain />
                             </TabPanel>
                             <TabPanel className="px-2">
                                 Invoices

@@ -67,10 +67,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                 return APIPath + "/getimplementationpartnerdetails";
             case 'JOBTYPES':
                 return APIPath + "/getjobtypedetails";
+            case 'JOBS':
+                return APIPath + "/getjobdetails";
             case 'EXPENSETYPES':
                 return APIPath + "/getexpensetypedetails";
-                case 'JOBTYPES':
-                    return APIPath + "/getjobtypedetails";
             case 'FILETYPES':
                 return APIPath + "/getfiletypedetails";
             case 'TODOS':
