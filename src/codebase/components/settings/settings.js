@@ -36,6 +36,8 @@ import preval from 'preval.macro';
 import axios from 'axios';
 import AddToDriveOutlinedIcon from '@mui/icons-material/AddToDriveOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import { Button, Link } from '@mui/material';
+import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 
 const Settings = () => {
 
@@ -45,7 +47,7 @@ const Settings = () => {
         isAPILoading,
         isAPIError,
         APIType,
-        loading,} = useContext(Context);
+        loading, } = useContext(Context);
     //drawer
     const [state, setState] = React.useState({
         top: false,
@@ -140,9 +142,64 @@ const Settings = () => {
                     <Card className="SettingsPart" variant="outlined">
                         <CardContent>
                             <Typography className="ToggleTitle" component="div">
+                                Quick Links
+                            </Typography>
+                            <Stack spacing={2} direction={"column"} className="my-2">
+                                <Link className='float-right'
+                                    href="https://outlook.live.com/calendar/0/view/month"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    underline="none"
+                                >
+                                    <Button
+                                        size='small'
+                                        variant="contained"
+                                        color="info"
+                                        startIcon={<InsertLinkOutlinedIcon />}
+                                    >
+                                        VSK Calendar
+                                    </Button>
+                                </Link>
+                                <Link className='float-right'
+                                    href="https://outlook.live.com/mail/0/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    underline="none"
+                                >
+                                    <Button
+                                        size='small'
+                                        variant="contained"
+                                        color="info"
+                                        startIcon={<InsertLinkOutlinedIcon />}
+                                    >
+                                        VSK Mail
+                                    </Button>
+                                </Link>
+                                <Link className='float-right'
+                                    href="https://portal.azure.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/AllUsers"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    underline="none"
+                                >
+                                    <Button
+                                        size='small'
+                                        variant="contained"
+                                        color="info"
+                                        startIcon={<InsertLinkOutlinedIcon />}
+                                    >
+                                        Azure User Management
+                                    </Button>
+                                </Link>
+                            </Stack>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="SettingsPart" variant="outlined">
+                        <CardContent>
+                            <Typography className="ToggleTitle" component="div">
                                 Storage:
                             </Typography>
-                            <div className=' flex-0 p-1' >
+                            <div className=' flex-0 p-1 my-2' >
                                 <Card sx={{ maxWidth: 335 }} >
                                     <CardContent className='mt-0'>
                                         <Stack className='mt-0' spacing={2} direction={"row"}>
@@ -195,7 +252,7 @@ const Settings = () => {
                                             <>
                                                 <Chip className="info_release_API_type_Div mb-4"
                                                     label={APIType === "LOCAL" ? "Local API Consumption" : "Online Azure API Consumption"}
-                                                    size="small" color={APIType === "LOCAL" ? 'primary' : 'success'} />
+                                                    size="small" color={APIType === "LOCAL" ? 'warning' : 'success'} />
                                                 {/* <div className="info_release_API_Div" dangerouslySetInnerHTML={{ __html: APItext }}> */}
                                                 <div className="info_release_API_Div">
                                                     <TableContainer component={Paper}>

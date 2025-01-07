@@ -45,13 +45,6 @@
     top: 25px;
     cursor: pointer;
 }
- .ToggleTitle{
-    color: #c959e7;
-    font-size: 14px !important;
- }
- .ToggleCaption{
-    font-size: 11px !important;
- }
 .APICheckHolder{
     position: absolute;
     left: 0px;

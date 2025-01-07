@@ -116,8 +116,8 @@ const Top = () => {
                             <Tab ><AttachmentIcon className="mr-1" />Files</Tab>
                             <Tab ><CheckCircleOutlineIcon className="mr-1" />Todo</Tab>
                             <Tab ><AttributionIcon className="mr-1" />Users</Tab>
-                            <Tab ><SettingsEthernetIcon className="mr-1" />Configuration</Tab>
                             <Tab ><CalendarMonthOutlinedIcon className="mr-1" />Calendar</Tab>
+                            <Tab ><SettingsEthernetIcon className="mr-1" />Configuration</Tab>
                         </TabList>
 
                         <TabPanel className="px-2">
@@ -148,6 +148,9 @@ const Top = () => {
                             <UsersMain />
                         </TabPanel>
                         <TabPanel className="px-2">
+                            <Calendar />
+                        </TabPanel>
+                        <TabPanel className="px-2">
                             <Stack spacing={2} direction={"row"}>
                                 <GenericList formType={'jobTypes'} />
                                 <GenericList formType={"employeeTypes"} />
@@ -155,9 +158,6 @@ const Top = () => {
                                 <GenericList formType={"visaTypes"} />
                                 <GenericList formType={"GOOGLEDRIVE_FOLDERS"} />
                             </Stack>
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            <Calendar />
                         </TabPanel>
                     </Tabs>
                 </Box>

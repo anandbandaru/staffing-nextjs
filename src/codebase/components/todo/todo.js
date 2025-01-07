@@ -3,7 +3,7 @@ import './todo.css';
 import { Context } from "../../context/context";
 import axios from 'axios';
 import {
-    Button, IconButton, 
+    Button, IconButton,
     Card, CardContent, CardActions, Checkbox, Stack, Menu, MenuItem
 } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -15,9 +15,14 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import CustomSnackbar from "../snackbar/snackbar";
 
 const ToDo = () => {
+    const [todos, setTodos] = useState({ data: [] });
+    const [todosCompleted, setTodosCompleted] = useState({ data: [] });
+    const [apiTodoLoading, setApiTodoLoading] = useState(false);
+    const [itemCountActive, setItemCountActive] = useState(0);
+    const [itemCountCompleted, setItemCountCompleted] = useState(0);
     const {
-        APIPath, 
-        userName, fetchTodos, todos, itemCountActive, itemCountCompleted, apiTodoLoading  } = useContext(Context);
+        APIPath,
+        userName } = useContext(Context);
 
     const [tabIndex, setTabIndex] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -31,7 +36,7 @@ const ToDo = () => {
         setSelectedTodo(null);
     };
 
-    
+
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -45,10 +50,58 @@ const ToDo = () => {
         setSnackbarOpen(true);
     };
 
+    const fetchTodos = (todoType) => {
+        setApiTodoLoading(true);
+        console.log("TODO fetching in content")
+        let apiUrl = APIPath + "/todos/active";
+        if (todoType === "Completed") {
+            setTodosCompleted({ data: [] });
+            apiUrl = APIPath + "/todos/completed";
+        }
+        else
+            setTodos({ data: [] });
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    if (result.error) {
+
+                        if (todoType === "Completed") {
+                            setItemCountCompleted(0);
+                            setTodosCompleted({});
+                        }
+                        else {
+                            setItemCountActive(0);
+                            setTodos({});
+                        }
+                        setItemCountActive(0);
+                    } else {
+                        if (todoType === "Completed") {
+                            setItemCountCompleted(result.total);
+                            setTodosCompleted(result);
+                        }
+                        else {
+                            setTodos(result);
+                            setItemCountActive(result.total);
+                        }
+                    }
+                    setApiTodoLoading(false);
+                },
+                (error) => {
+                    setApiTodoLoading(false);
+                    setTodos({});
+                    setTodosCompleted({});
+                    setItemCountCompleted(0);
+                    setItemCountActive(0);
+                }
+            );
+    };
     useEffect(() => {
         console.log("TODO SCREEN INTI HERE")
-        setTimeout(async() => {
-            await fetchTodos("Active");
+        setTimeout(async () => {
+            fetchTodos("Active");
+            fetchTodos("Completed");
         }, 1);
     }, []);
 
@@ -61,48 +114,6 @@ const ToDo = () => {
             fetchTodos("Completed")
         }
     };
-
-    // const fetchTodos1 = (todoType) => {
-    //     setTodos({ data: [] });
-    //     setApiLoading(true);
-    //     let apiUrl = APIPath + "/todos/active"
-    //     if (todoType === "Completed")
-    //         apiUrl = APIPath + "/todos/completed"
-    //     fetch(apiUrl)
-    //         .then(response => response.json())
-    //         .then(
-    //             (result) => {
-    //                 //console.log(result);
-    //                 if (result.error) {
-    //                     console.log(todoType + ":fetchTodos:On error return: setting empty")
-    //                     setDataAPIError(result.error.code + " - " + result.error.message);
-    //                     setTodos({});
-    //                     setApiLoadingError(true);
-    //                     setItemCountCompleted(0);
-    //                     setItemCountActive(0);
-    //                 }
-    //                 else {
-    //                     setTodos(result);
-    //                     if (todoType === "Completed")
-    //                         setItemCountCompleted(result.total);
-    //                     else
-    //                         setItemCountActive(result.total);
-    //                     setDataAPIError(result.total == 0 ? "No To Do information present." : "ok");
-    //                 }
-    //                 setApiLoading(false);
-    //             },
-    //             (error) => {
-    //                 setTodos({});
-    //                 setItemCountCompleted(0);
-    //                 setItemCountActive(0);
-    //                 console.log(todoType + ":fetchTodos:On JUST error: API call failed")
-    //                 setDataAPIError(todoType + ":fetchTodos:On JUST error: API call failed");
-    //                 setApiLoading(false);
-    //                 setApiLoadingError(true);
-    //                 setApiLoading(false);
-    //             }
-    //         )
-    // }
 
     const completeTodo = async (id) => {
 
@@ -163,7 +174,7 @@ const ToDo = () => {
                             <Tab label="Actions" title="Actions" >
                                 <NotificationsActiveIcon />
                                 <span className="todoCounts">0</span>
-                                </Tab>
+                            </Tab>
                         </TabList>
                         <TabPanel className="px-0">
                             <div className="h-screen overflow-y-auto pb-36">
@@ -206,7 +217,7 @@ const ToDo = () => {
                         </TabPanel>
                         <TabPanel className="px-0">
                             <div className="h-screen overflow-y-auto pb-36">
-                                {todos.data.map((todo, key) => (
+                                {todosCompleted.data.map((todo, key) => (
                                     <div key={key} divider="true" className="mb-2" >
                                         <Card className="w-full mx-0">
                                             <CardContent>

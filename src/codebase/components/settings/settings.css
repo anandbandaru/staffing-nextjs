@@ -17,5 +17,13 @@
     margin: 5px;
  }
  .SettingsHighlight{
-    border-left: solid 3px #c959e7 !important;
+    border-left: solid 3px #f12fa7 !important;
+ }
+ 
+ .ToggleTitle{
+    color: #f12fa7;
+    font-size: 14px !important;
+ }
+ .ToggleCaption{
+    font-size: 11px !important;
  }
