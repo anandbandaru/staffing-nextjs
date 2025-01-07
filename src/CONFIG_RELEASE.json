@@ -10,6 +10,28 @@
       "title": "Staffing"
     }
   ],
+  "timesheetPeriods": [
+    {
+      "name": "Weekly (Monday)"
+    },
+    {
+      "name": "BiWeekly (15)"
+    },
+    {
+      "name": "Monthly (1)"
+    }
+  ],
+  "invoicePeriods": [
+    {
+      "name": "Weekly (Monday)"
+    },
+    {
+      "name": "BiWeekly (15)"
+    },
+    {
+      "name": "Monthly (1)"
+    }
+  ],
   "jobTypes": [
     {
       "name": "C2C"

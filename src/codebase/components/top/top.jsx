@@ -32,7 +32,7 @@ import AttributionIcon from '@mui/icons-material/Attribution';
 import CustomSnackbar from "../snackbar/snackbar";
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import GenericList from "../forms/GenericList";
+import Configuration from "../configuration/configuration";
 import Settings from "../settings/settings";
 import Balance from "../balance/balance";
 import Calendar from "../calendar/calendar";
@@ -151,13 +151,7 @@ const Top = () => {
                             <Calendar />
                         </TabPanel>
                         <TabPanel className="px-2">
-                            <Stack spacing={2} direction={"row"}>
-                                <GenericList formType={'jobTypes'} />
-                                <GenericList formType={"employeeTypes"} />
-                                <GenericList formType={"dependentTypes"} />
-                                <GenericList formType={"visaTypes"} />
-                                <GenericList formType={"GOOGLEDRIVE_FOLDERS"} />
-                            </Stack>
+                            <Configuration />
                         </TabPanel>
                     </Tabs>
                 </Box>

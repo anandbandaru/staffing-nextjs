@@ -2,14 +2,13 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function Job({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -128,10 +127,30 @@ function Job({ props, ID, operation }) {
                     }}
 
                     validationSchema={Yup.object().shape({
-                        name: Yup.string()
-                            .required('Required'),
-                        description: Yup.string()
-                            .required('Required'),
+                        jobName: Yup.string()
+                            .required('jobName Required'),
+                        employeeId: Yup.string()
+                            .required('employeeId Required'),
+                        clientId: Yup.string()
+                            .required('clientId Required'),
+                        rate: Yup.string()
+                            .required('rate Required'),
+                        deductionPercentage: Yup.string()
+                            .required('deductionPercentage Required'),
+                        deductionFlat: Yup.string()
+                            .required('deductionFlat Required'),
+                        jobTitle: Yup.string()
+                            .required('jobTitle Required'),
+                        jobStartDate: Yup.string()
+                            .required('jobStartDate Required'),
+                        jobEndDate: Yup.string()
+                            .required('jobEndDate Required'),
+                        timesheetsPeriod: Yup.string()
+                            .required('timesheetsPeriod Required'),
+                        invoicePeriod: Yup.string()
+                            .required('invoicePeriod Required'),
+                        notes: Yup.string()
+                            .required('notes Required'),
                     })}
                 >
                     {(props) => {
@@ -148,30 +167,103 @@ function Job({ props, ID, operation }) {
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>
+                                <Stack direction={"row"} spacing={1}>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="Id"
+                                        name="Id"
+                                        label="Id"
+                                        disabled
+                                        value={values.Id}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="jobName"
+                                        name="jobName"
+                                        label="Job Name"
+                                        value={values.jobName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.jobName && touched.jobName) && errors.jobName}
+                                    />
+                                </Stack>
+                                <Stack direction={"row"} spacing={1} className='mt-4'>
+                                    <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+
+                                        <div className='flex-1'>Job Start Date:
+                                            {ID ?
+                                                <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobStartDate}</span>
+                                                : <></>
+                                            }
+                                        </div>
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            className='flex-1'
+                                            id="jobStartDate"
+                                            name="jobStartDate"
+                                            type="date"
+                                            value={values.jobStartDate}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.jobStartDate && touched.jobStartDate) && errors.jobStartDate}
+                                        />
+                                    </Stack>
+                                    <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+
+                                        <div className='flex-1'>Job End Date:
+                                            {ID ?
+                                                <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobEndDate}</span>
+                                                : <></>
+                                            }
+                                        </div>
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            className='flex-1'
+                                            id="jobEndDate"
+                                            name="jobEndDate"
+                                            type="date"
+                                            value={values.jobEndDate}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.jobEndDate && touched.jobEndDate) && errors.jobEndDate}
+                                        />
+                                    </Stack>
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
-                                    id="Id"
-                                    name="Id"
-                                    label="Id"
-                                    disabled
-                                    value={values.Id}
+                                    id="notes"
+                                    name="notes"
+                                    label="Notes"
+                                    multiline
+                                    rows={4}
+                                    value={values.notes}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    helperText={(errors.notes && touched.notes) && errors.notes}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="jobName"
-                                    name="jobName"
-                                    label="Job Name"
-                                    value={values.jobName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.jobName && touched.jobName) && errors.jobName}
-                                />
+                                
+                                {Object.keys(errors).length > 0 && (
+                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                        <h3>Validation Errors:</h3>
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                                 <Stack direction="row" spacing={2} className='float-right'>
                                     {operation === "Edit" ? (
                                         isSubmitting ? (

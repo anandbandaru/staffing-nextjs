@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
-
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function EmployeeForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -541,7 +541,7 @@ function EmployeeForm({ props, ID, operation }) {
                                         <h3>Validation Errors:</h3>
                                         <ul>
                                             {Object.keys(errors).map((key) => (
-                                                <li key={key}>{errors[key]}</li>
+                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
                                             ))}
                                         </ul>
                                     </div>
