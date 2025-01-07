@@ -87,7 +87,7 @@ const Dashboard = () => {
                 {apiLoading ?
                     <Skeleton variant="circular" width={20} height={20} />
                     :
-                    <div className='dashCardsCounts'>{count}</div>
+                    <div className='dashCardsCounts'>{count ? count : "-"}</div>
                 }
             </CardContent>
             {/* <CardActions>

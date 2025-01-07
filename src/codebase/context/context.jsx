@@ -18,7 +18,7 @@ const ContextProvider = (props) => {
 
     const flaskAPI_Availability = process.env.REACT_APP_API_SUFFIX;
     const [loading] = useState(false);
-    const [showGreetings, setShowGreetings] = useState(false);
+    const [refreshBalance, setRefreshBalance] = useState(false);
 
     const [selectedDBType, setSelectedDBType] = useState("SQL");
     const [APIPath, setAPIPath] = useState(flaskAPI_Availability);
@@ -265,8 +265,6 @@ const ContextProvider = (props) => {
         itemCountActive,
         itemCountCompleted,
         loading,
-        showGreetings,
-        setShowGreetings,
         isAPILoading,
         isAPIError,
         APItext,
@@ -296,7 +294,9 @@ const ContextProvider = (props) => {
         accessToken,
         createGDriveFolder,
         loginError,
-        token
+        token,
+        setRefreshBalance,
+        refreshBalance
     }
 
     return (

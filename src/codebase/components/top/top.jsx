@@ -33,6 +33,7 @@ import CustomSnackbar from "../snackbar/snackbar";
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import GenericList from "../forms/GenericList";
 import Settings from "../settings/settings";
+import Balance from "../balance/balance";
 
 const Top = () => {
 
@@ -153,9 +154,7 @@ const Top = () => {
                 </Box>
             </div>
 
-            <div className="balanceHolder">
-                $ 102.45
-            </div>
+            <Balance />
 
             <div className="userHolder">
                 <div className="px-2  rounded-sm text-white">

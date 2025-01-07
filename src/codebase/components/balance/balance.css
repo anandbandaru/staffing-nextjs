@@ -1,0 +1,17 @@
+.balanceHolder{
+    position: absolute;
+    right: 390px;
+    top: 25px;
+    cursor: pointer;
+    padding: 2px 0px 1px 0px;
+    font-size: 18px !important;
+    background-color: #ff068c;
+    padding: 0px 10px;
+    border-radius: 5px;
+    color:#fff;
+}
+.balanceHolder SPAN{
+    font-size: 18px !important;
+    background-color: #ff068c;
+    color:#fff;
+}
