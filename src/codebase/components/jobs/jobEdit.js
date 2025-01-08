@@ -11,11 +11,14 @@ import JobForm from "./jobForm";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Context } from "../../context/context";
+import BackupIcon from '@mui/icons-material/Backup';
+import GenericFileForm from '../forms/GenericFileForm';
 import axios from 'axios';
 
 function JobEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
+    const [openDocuments, setOpenDocuments] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -26,6 +29,12 @@ function JobEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar })
     };
     const handleClickOpen = () => {
         setOpen(true);
+    };
+    const handleCloseDocuments = () => {
+        setOpenDocuments(false);
+    };
+    const handleClickOpenDocuments = () => {
+        setOpenDocuments(true);
     };
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         '& .MuiDialogContent-root': {
@@ -62,6 +71,12 @@ function JobEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar })
     return (
         <>
             <Stack direction="row" spacing={1} className='float-right'>
+                <IconButton aria-label="Upload Documents" title="Upload Documents" color="primary" onClick={() => {
+                    handleClickOpenDocuments();
+                }
+                }>
+                    <BackupIcon />
+                </IconButton>
                 <IconButton aria-label="Edit" title="Edit" color="primary" onClick={() => {
                     // window.alert(ownerID);
                     handleClickOpen();
@@ -106,6 +121,34 @@ function JobEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar })
                 </IconButton>
                 <DialogContent dividers>
                     <JobForm ID={ID} operation="Edit" />
+                </DialogContent>
+            </BootstrapDialog>
+
+            {/* DOCUMENTS */}
+            <BootstrapDialog
+                className=""
+                onClose={handleCloseDocuments}
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={openDocuments}
+            >
+                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    Documents: Job: ID: {ID}
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleCloseDocuments}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
+                    <GenericFileForm moduleId={ID} componentName="JOBS" />
                 </DialogContent>
             </BootstrapDialog>
         </>

@@ -31,6 +31,7 @@ import AttributionIcon from '@mui/icons-material/Attribution';
 import CustomSnackbar from "../snackbar/snackbar";
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import Configuration from "../configuration/configuration";
 import Settings from "../settings/settings";
 import Balance from "../balance/balance";
@@ -94,7 +95,7 @@ const Top = () => {
                             {userType === 'ADMIN' && (
                                 <Tab ><MoreTimeIcon className="mr-1" />Timesheets</Tab>
                             )}
-                            <Tab ><AttachmentIcon className="mr-1" />Files</Tab>
+                            <Tab ><FileCopyOutlinedIcon className="mr-1" />Files</Tab>
                             <Tab ><CheckCircleOutlineIcon className="mr-1" />Todo</Tab>
                             {userType === 'ADMIN' && (
                                 <Tab ><AttributionIcon className="mr-1" />Users</Tab>
