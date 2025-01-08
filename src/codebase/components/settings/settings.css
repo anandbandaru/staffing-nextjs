@@ -14,7 +14,9 @@
     color: #44d3eb;
 }
  .SettingsPart{
-    margin: 5px;
+    width: 100%;
+ }
+ .SettingsPart-developer{
  }
  .SettingsHighlight{
     border-left: solid 3px #f12fa7 !important;

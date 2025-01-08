@@ -106,240 +106,240 @@ const Settings = () => {
                     :
                     <></>
                 }
-                <SettingsOutlinedIcon sx={{ width: 24, height: 24 }} onClick={toggleDrawer("right", true)} />
+                <SettingsOutlinedIcon sx={{ width: 24, height: 24 }} onClick={toggleDrawer("bottom", true)} />
             </div>
 
             <Drawer
-                anchor="right"
-                open={state["right"]}
-                onClose={toggleDrawer("right", false)}
+                anchor="bottom"
+                open={state["bottom"]}
+                onClose={toggleDrawer("bottom", false)}
             >
-                <Box className="SettingsPartsHolder" role="presentation" onClick={toggleDrawer("right", true)}>
-                    <Card className="SettingsPart" variant="outlined">
-                        <CardContent>
-                            <Typography className="ToggleTitle" component="div">
-                                Developer Info
-                            </Typography>
-                            <Stack spacing={1}>
-                                {
-                                    configData.developers.map((item, index) => (
-                                        <List key={index} className="devContainer" sx={{ width: '300px', maxWidth: 350 }}>
-                                            <ListItem>
-                                                <ListItemAvatar>
-                                                    <Avatar className="devContainerAvatar">
-                                                        <AssignmentIndSharpIcon color="#f0ad4e" />
-                                                    </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText primary={item.name} secondary={item.role} />
-                                            </ListItem>
-                                        </List>
-                                    ))
-                                }
-                            </Stack>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="SettingsPart" variant="outlined">
-                        <CardContent>
-                            <Typography className="ToggleTitle" component="div">
-                                Quick Links
-                            </Typography>
-                            <Stack spacing={2} direction={"column"} className="my-2">
-                                <Link className='float-right'
-                                    href="https://outlook.live.com/calendar/0/view/month"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    underline="none"
-                                >
-                                    <Button
-                                        size='small'
-                                        variant="contained"
-                                        color="info"
-                                        startIcon={<InsertLinkOutlinedIcon />}
+                <Box className="w-full SettingsPartsHolder" role="presentation" onClick={toggleDrawer("bottom", true)} >
+                    <Stack direction={"row"} spacing={2}
+                        className="w-full py-4">
+                        <Card className="SettingsPart SettingsPart-developer" variant="outlined">
+                            <CardContent>
+                                <Typography className="ToggleTitle" component="div">
+                                    Developer Info
+                                </Typography>
+                                <Stack spacing={1}>
+                                    {
+                                        configData.developers.map((item, index) => (
+                                            <List key={index} className="devContainer" sx={{ width: '300px', maxWidth: 350 }}>
+                                                <ListItem>
+                                                    <ListItemAvatar>
+                                                        <Avatar className="devContainerAvatar">
+                                                            <AssignmentIndSharpIcon color="#f0ad4e" />
+                                                        </Avatar>
+                                                    </ListItemAvatar>
+                                                    <ListItemText primary={item.name} secondary={item.role} />
+                                                </ListItem>
+                                            </List>
+                                        ))
+                                    }
+                                </Stack>
+                            </CardContent>
+                        </Card>
+                        <Card className="SettingsPart" variant="outlined">
+                            <CardContent>
+                                <Typography className="ToggleTitle" component="div">
+                                    Quick Links
+                                </Typography>
+                                <Stack spacing={2} direction={"column"} className="my-2">
+                                    <Link className='float-right'
+                                        href="https://outlook.live.com/calendar/0/view/month"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        underline="none"
                                     >
-                                        VSK Calendar
-                                    </Button>
-                                </Link>
-                                <Link className='float-right'
-                                    href="https://outlook.live.com/mail/0/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    underline="none"
-                                >
-                                    <Button
-                                        size='small'
-                                        variant="contained"
-                                        color="info"
-                                        startIcon={<InsertLinkOutlinedIcon />}
+                                        <Button
+                                            size='small'
+                                            variant="contained"
+                                            color="info"
+                                            startIcon={<InsertLinkOutlinedIcon />}
+                                        >
+                                            VSK Calendar
+                                        </Button>
+                                    </Link>
+                                    <Link className='float-right'
+                                        href="https://outlook.live.com/mail/0/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        underline="none"
                                     >
-                                        VSK Mail
-                                    </Button>
-                                </Link>
-                                <Link className='float-right'
-                                    href="https://portal.azure.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/AllUsers"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    underline="none"
-                                >
-                                    <Button
-                                        size='small'
-                                        variant="contained"
-                                        color="info"
-                                        startIcon={<InsertLinkOutlinedIcon />}
+                                        <Button
+                                            size='small'
+                                            variant="contained"
+                                            color="info"
+                                            startIcon={<InsertLinkOutlinedIcon />}
+                                        >
+                                            VSK Mail
+                                        </Button>
+                                    </Link>
+                                    <Link className='float-right'
+                                        href="https://portal.azure.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/AllUsers"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        underline="none"
                                     >
-                                        Azure User Management
-                                    </Button>
-                                </Link>
-                            </Stack>
-                        </CardContent>
-                    </Card>
+                                        <Button
+                                            size='small'
+                                            variant="contained"
+                                            color="info"
+                                            startIcon={<InsertLinkOutlinedIcon />}
+                                        >
+                                            Azure User Management
+                                        </Button>
+                                    </Link>
+                                </Stack>
+                            </CardContent>
+                        </Card>
 
-                    <Card className="SettingsPart" variant="outlined">
-                        <CardContent>
-                            <Typography className="ToggleTitle" component="div">
-                                Storage:
-                            </Typography>
-                            <div className=' flex-0 p-1 my-2' >
-                                <Card sx={{ maxWidth: 335 }} >
-                                    <CardContent className='mt-0'>
-                                        <Stack className='mt-0' spacing={2} direction={"row"}>
-                                            <div className='flex justify-center items-center border-r-2 border-red-500 pr-2'>
-                                                <AddToDriveOutlinedIcon fontSize='large' className="h-36" />
-                                            </div>
-                                            <div className='pr-2'>
-                                                <Typography component="div">
-                                                    Google Drive Storage Utilization
-                                                </Typography>
-                                                {apiLoading
-                                                    ?
-                                                    <Skeleton variant="circular" width={20} height={20} />
-                                                    :
-                                                    <>
-                                                        <Stack className='mt-3' spacing={2} direction={"row"}>
-                                                            <Chip label={`LIMIT: ${counts.storagelimit} GB`} color="primary" variant="outlined" size="small"></Chip>
-                                                            <Chip label={`USAGE: ${counts.storageusage.toFixed(2)} GB`} color="error" variant="outlined" size="small"></Chip>
-                                                        </Stack>
-                                                        <Box mt={1} spacing="2">
-                                                            <LinearProgress className='gDriveProgress' variant="determinate" value={(counts.storageusage / counts.storagelimit) * 100} />
-                                                        </Box>
-                                                    </>
-                                                }
-                                            </div>
-                                        </Stack>
-                                    </CardContent>
-                                </Card>
-                            </div>
-
-                        </CardContent>
-                    </Card>
-
-                    <Card className="SettingsPart" variant="outlined">
-                        <CardContent>
-                            <Tabs>
-                                <TabList className="settingsTabsListHolder">
-                                    <Tab>API details</Tab>
-                                    <Tab>UI Build</Tab>
-                                    <Tab>Versions</Tab>
-                                </TabList>
-
-                                <TabPanel className="py-4">
-                                    <div className="info_release_builddate_Div">
-                                        {isAPILoading
-                                            ?
-                                            // <img className="icon" src={assets.loader_Circles_icon} alt="" />
-                                            <LinearProgress color="secondary" />
-                                            :
-                                            <>
-                                                <Chip className="info_release_API_type_Div mb-4"
-                                                    label={APIType === "LOCAL" ? "Local API Consumption" : "Online Azure API Consumption"}
-                                                    size="small" color={APIType === "LOCAL" ? 'warning' : 'success'} />
-                                                {/* <div className="info_release_API_Div" dangerouslySetInnerHTML={{ __html: APItext }}> */}
-                                                <div className="info_release_API_Div">
-                                                    <TableContainer component={Paper}>
-                                                        <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
-                                                            <TableBody className="info_release_API_response_TableRow">
-                                                                <TableRow>
-                                                                    <TableCell component="th" scope="row">API URL</TableCell>
-                                                                    <TableCell align="right">{APIPath}</TableCell>
-                                                                </TableRow>
-                                                                <TableRow>
-                                                                    <TableCell component="th" scope="row">API TYPE</TableCell>
-                                                                    <TableCell align="right">{APIType}</TableCell>
-                                                                </TableRow>
-                                                                <TableRow>
-                                                                    <TableCell component="th" scope="row">API Availability</TableCell>
-                                                                    <TableCell align="right">{isAPIError ?
-                                                                        <>
-                                                                            <ErrorIcon fontSize="small" color="error" />
-                                                                        </>
-                                                                        :
-                                                                        <>
-                                                                            <CheckCircleIcon fontSize="small" color="success" />
-                                                                        </>
-                                                                    }</TableCell>
-                                                                </TableRow>
-                                                                <TableRow>
-                                                                    <TableCell component="th" scope="row">API Version</TableCell>
-                                                                    <TableCell align="right">{APIAvailabilityResponse ? APIAvailabilityResponse.APIVersion : ""}</TableCell>
-                                                                </TableRow>
-                                                            </TableBody>
-                                                        </Table>
-                                                    </TableContainer>
+                        <Card className="SettingsPart" variant="outlined">
+                            <CardContent>
+                                <Typography className="ToggleTitle" component="div">
+                                    Storage:
+                                </Typography>
+                                <div className=' flex-0 p-1 my-2' >
+                                    <Card sx={{ maxWidth: 335 }} >
+                                        <CardContent className='mt-0'>
+                                            <Stack className='mt-0' spacing={2} direction={"row"}>
+                                                <div className='flex justify-center items-center border-r-2 border-red-500 pr-2'>
+                                                    <AddToDriveOutlinedIcon fontSize='large' className="h-36" />
                                                 </div>
-                                            </>
-                                        }
-                                    </div>
-                                </TabPanel>
-                                <TabPanel className="py-1">
-                                    <div className="info_release_builddate_Div">
-                                        <Chip label={preval`module.exports = 'Last build Date: ' + new Date().toLocaleString();`} size="small" color='primary' variant="outlined" />
-                                    </div>
-                                </TabPanel>
-                                <TabPanel className="py-0">
-                                    <div>
-                                        {
-                                            configData.releases.map((item, index) => (
-                                                <Accordion
-                                                    key={index}
-                                                    // expanded={expanded === `panel${index + 1}`} 
-                                                    // onChange={handleChange(`panel${index + 1}`)}
-                                                    slotProps={{ transition: { unmountOnExit: true } }}
-                                                >
-                                                    <AccordionSummary
-                                                        expandIcon={<ArrowDownwardIcon />}
-                                                        aria-controls={`panel${index + 1}bh-content`}
-                                                        id={`panel${index + 1}bh-header`}
+                                                <div className='pr-2'>
+                                                    <Typography component="div">
+                                                        Google Drive Storage Utilization
+                                                    </Typography>
+                                                    {apiLoading
+                                                        ?
+                                                        <Skeleton variant="circular" width={20} height={20} />
+                                                        :
+                                                        <>
+                                                            <Stack className='mt-3' spacing={2} direction={"row"}>
+                                                                <Chip label={`LIMIT: ${counts.storagelimit} GB`} color="primary" variant="outlined" size="small"></Chip>
+                                                                <Chip label={`USAGE: ${counts.storageusage.toFixed(2)} GB`} color="error" variant="outlined" size="small"></Chip>
+                                                            </Stack>
+                                                            <Box mt={1} spacing="2">
+                                                                <LinearProgress className='gDriveProgress' variant="determinate" value={(counts.storageusage / counts.storagelimit) * 100} />
+                                                            </Box>
+                                                        </>
+                                                    }
+                                                </div>
+                                            </Stack>
+                                        </CardContent>
+                                    </Card>
+                                </div>
+
+                            </CardContent>
+                        </Card>
+
+                        <Card className="SettingsPart" variant="outlined">
+                            <CardContent>
+                                <Tabs>
+                                    <TabList className="settingsTabsListHolder">
+                                        <Tab>API details</Tab>
+                                        <Tab>UI Build</Tab>
+                                        <Tab>Versions</Tab>
+                                    </TabList>
+
+                                    <TabPanel className="py-4">
+                                        <div className="info_release_builddate_Div">
+                                            {isAPILoading
+                                                ?
+                                                // <img className="icon" src={assets.loader_Circles_icon} alt="" />
+                                                <LinearProgress color="secondary" />
+                                                :
+                                                <>
+                                                    <Chip className="info_release_API_type_Div mb-4"
+                                                        label={APIType === "LOCAL" ? "Local API Consumption" : "Online Azure API Consumption"}
+                                                        size="small" color={APIType === "LOCAL" ? 'warning' : 'success'} />
+                                                    {/* <div className="info_release_API_Div" dangerouslySetInnerHTML={{ __html: APItext }}> */}
+                                                    <div className="info_release_API_Div">
+                                                        <TableContainer component={Paper}>
+                                                            <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
+                                                                <TableBody className="info_release_API_response_TableRow">
+                                                                    <TableRow>
+                                                                        <TableCell component="th" scope="row">API URL</TableCell>
+                                                                        <TableCell align="right">{APIPath}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow>
+                                                                        <TableCell component="th" scope="row">API TYPE</TableCell>
+                                                                        <TableCell align="right">{APIType}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow>
+                                                                        <TableCell component="th" scope="row">API Availability</TableCell>
+                                                                        <TableCell align="right">{isAPIError ?
+                                                                            <>
+                                                                                <ErrorIcon fontSize="small" color="error" />
+                                                                            </>
+                                                                            :
+                                                                            <>
+                                                                                <CheckCircleIcon fontSize="small" color="success" />
+                                                                            </>
+                                                                        }</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow>
+                                                                        <TableCell component="th" scope="row">API Version</TableCell>
+                                                                        <TableCell align="right">{APIAvailabilityResponse ? APIAvailabilityResponse.APIVersion : ""}</TableCell>
+                                                                    </TableRow>
+                                                                </TableBody>
+                                                            </Table>
+                                                        </TableContainer>
+                                                    </div>
+                                                </>
+                                            }
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel className="py-1">
+                                        <div className="info_release_builddate_Div">
+                                            <Chip label={preval`module.exports = 'Last build Date: ' + new Date().toLocaleString();`} size="small" color='primary' variant="outlined" />
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel className="py-0">
+                                        <div>
+                                            {
+                                                configData.releases.map((item, index) => (
+                                                    <Accordion
+                                                        key={index}
+                                                        // expanded={expanded === `panel${index + 1}`} 
+                                                        // onChange={handleChange(`panel${index + 1}`)}
+                                                        slotProps={{ transition: { unmountOnExit: true } }}
                                                     >
-                                                        <Stack spacing={1} direction="row">
-                                                            <Chip label={item.version} size="small" color={index === 0 ? 'success' : 'default'} variant="outlined" />
-                                                            <Chip label={item.date} size="small" color={index === 0 ? 'success' : 'default'} variant="outlined" />
-                                                            {index === 0 ?
-                                                                <Chip label="current" size="small" color='success' />
-                                                                :
-                                                                <></>}
-                                                        </Stack>
-                                                    </AccordionSummary>
-                                                    <AccordionDetails>
-                                                        <Typography variant="caption">
-                                                            <ul className="ChangeLogUL">
-                                                                {item.notes.map((noteitem, noteindex) => (
-                                                                    <li key={noteindex}><KeyboardArrowRightOutlinedIcon fontSize="small" />{noteitem}</li>
-                                                                ))}
-                                                            </ul>
-                                                        </Typography>
-                                                    </AccordionDetails>
-                                                </Accordion>
-                                            ))
-                                        }
+                                                        <AccordionSummary
+                                                            expandIcon={<ArrowDownwardIcon />}
+                                                            aria-controls={`panel${index + 1}bh-content`}
+                                                            id={`panel${index + 1}bh-header`}
+                                                        >
+                                                            <Stack spacing={1} direction="row">
+                                                                <Chip label={item.version} size="small" color={index === 0 ? 'success' : 'default'} variant="outlined" />
+                                                                <Chip label={item.date} size="small" color={index === 0 ? 'success' : 'default'} variant="outlined" />
+                                                                {index === 0 ?
+                                                                    <Chip label="current" size="small" color='success' />
+                                                                    :
+                                                                    <></>}
+                                                            </Stack>
+                                                        </AccordionSummary>
+                                                        <AccordionDetails>
+                                                            <Typography variant="caption">
+                                                                <ul className="ChangeLogUL">
+                                                                    {item.notes.map((noteitem, noteindex) => (
+                                                                        <li key={noteindex}><KeyboardArrowRightOutlinedIcon fontSize="small" />{noteitem}</li>
+                                                                    ))}
+                                                                </ul>
+                                                            </Typography>
+                                                        </AccordionDetails>
+                                                    </Accordion>
+                                                ))
+                                            }
 
-                                    </div>
-                                </TabPanel>
-                            </Tabs>
+                                        </div>
+                                    </TabPanel>
+                                </Tabs>
 
-                        </CardContent>
-                    </Card>
-
-
+                            </CardContent>
+                        </Card>
+                    </Stack>
                 </Box>
             </Drawer>
         </>
