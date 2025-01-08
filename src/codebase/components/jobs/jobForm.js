@@ -359,97 +359,101 @@ function Job({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="companyId"
-                                    name="companyId"
-                                    select
-                                    label="Company Id"
-                                    defaultValue="12"
-                                    value={values.companyId}
-                                    onChange={handleChange}
-                                    // onChange={(event) => {
-                                    //     handleChange(event);
-                                    //     //handleCompanyIdChange(event);
-                                    // }}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.companyId && touched.companyId) && errors.companyId}
-                                >
-                                    {companiesData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.Name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="vendorId"
-                                    name="vendorId"
-                                    select
-                                    label="Vendor Id"
-                                    defaultValue="12"
-                                    value={values.vendorId}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                        handleVendorIdChange(event);
-                                    }}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.vendorId && touched.vendorId) && errors.vendorId}
-                                >
-                                    {vendorsData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="implementationPartnerId"
-                                    name="implementationPartnerId"
-                                    select
-                                    label="Implementation Partner Id"
-                                    value={values.implementationPartnerId}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                        handleIPIdChange(event);
-                                    }}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.implementationPartnerId && touched.implementationPartnerId) && errors.implementationPartnerId}
-                                >
-                                    {iPsData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.Name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="clientId"
-                                    name="clientId"
-                                    select
-                                    label="Client Id"
-                                    value={values.clientId}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                        handleClientIdChange(event);
-                                    }}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.clientId && touched.clientId) && errors.clientId}
-                                >
-                                    {clientsData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.Name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                <Stack direction="row" spacing={2} className='mt-4'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="companyId"
+                                        name="companyId"
+                                        select
+                                        label="Company Id"
+                                        defaultValue="12"
+                                        value={values.companyId}
+                                        onChange={handleChange}
+                                        // onChange={(event) => {
+                                        //     handleChange(event);
+                                        //     //handleCompanyIdChange(event);
+                                        // }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.companyId && touched.companyId) && errors.companyId}
+                                    >
+                                        {companiesData.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.Id}>
+                                                {item.Name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="vendorId"
+                                        name="vendorId"
+                                        select
+                                        label="Vendor Id"
+                                        defaultValue="12"
+                                        value={values.vendorId}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleVendorIdChange(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.vendorId && touched.vendorId) && errors.vendorId}
+                                    >
+                                        {vendorsData.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.Id}>
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Stack>
+                                <Stack direction="row" spacing={2} className='mt-6'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="implementationPartnerId"
+                                        name="implementationPartnerId"
+                                        select
+                                        label="Implementation Partner Id"
+                                        value={values.implementationPartnerId}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleIPIdChange(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.implementationPartnerId && touched.implementationPartnerId) && errors.implementationPartnerId}
+                                    >
+                                        {iPsData.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.Id}>
+                                                {item.Name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="clientId"
+                                        name="clientId"
+                                        select
+                                        label="Client Id"
+                                        value={values.clientId}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleClientIdChange(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.clientId && touched.clientId) && errors.clientId}
+                                    >
+                                        {clientsData.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.Id}>
+                                                {item.Name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -496,30 +500,32 @@ function Job({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.rate && touched.rate) && errors.rate}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="deductionPercentage"
-                                    name="deductionPercentage"
-                                    label="Deduction Percentage"
-                                    value={values.deductionPercentage}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.deductionPercentage && touched.deductionPercentage) && errors.deductionPercentage}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="deductionFlat"
-                                    name="deductionFlat"
-                                    label="Deduction Flat (make this zero if above % is entered)"
-                                    value={values.deductionFlat}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.deductionFlat && touched.deductionFlat) && errors.deductionFlat}
-                                />
+                                <Stack direction="row" spacing={2} className='mt-4'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="deductionPercentage"
+                                        name="deductionPercentage"
+                                        label="Deduction Percentage"
+                                        value={values.deductionPercentage}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.deductionPercentage && touched.deductionPercentage) && errors.deductionPercentage}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="deductionFlat"
+                                        name="deductionFlat"
+                                        label="Deduction Flat (make this zero if above % is entered)"
+                                        value={values.deductionFlat}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.deductionFlat && touched.deductionFlat) && errors.deductionFlat}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -532,92 +538,96 @@ function Job({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.jobTitle && touched.jobTitle) && errors.jobTitle}
                                 />
-                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+                                <Stack direction="row" spacing={2} className='mt-4'>
+                                    <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
 
-                                    <div className='flex-1'>Job Start Date:
-                                        {ID ?
-                                            <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobStartDate}</span>
-                                            : <></>
-                                        }
-                                    </div>
+                                        <div className='flex-1'>Job Start Date:
+                                            {ID ?
+                                                <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobStartDate}</span>
+                                                : <></>
+                                            }
+                                        </div>
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            className='flex-1'
+                                            id="jobStartDate"
+                                            name="jobStartDate"
+                                            type="date"
+                                            value={values.jobStartDate}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.jobStartDate && touched.jobStartDate) && errors.jobStartDate}
+                                        />
+                                    </Stack>
+                                    <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+
+                                        <div className='flex-1'>Job End Date:
+                                            {ID ?
+                                                <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobEndDate}</span>
+                                                : <></>
+                                            }
+                                        </div>
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            className='flex-1'
+                                            id="jobEndDate"
+                                            name="jobEndDate"
+                                            type="date"
+                                            value={values.jobEndDate}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.jobEndDate && touched.jobEndDate) && errors.jobEndDate}
+                                        />
+                                    </Stack>
+                                </Stack>
+                                <Stack direction="row" spacing={2} className='mt-4'>
                                     <TextField
                                         size="small"
                                         margin="normal"
                                         fullWidth
-                                        className='flex-1'
-                                        id="jobStartDate"
-                                        name="jobStartDate"
-                                        type="date"
-                                        value={values.jobStartDate}
-                                        onChange={handleChange}
+                                        id="timesheetsPeriod"
+                                        name="timesheetsPeriod"
+                                        select
+                                        label="Timesheets Period"
+                                        value={values.timesheetsPeriod}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                        }}
                                         onBlur={handleBlur}
-                                        helperText={(errors.jobStartDate && touched.jobStartDate) && errors.jobStartDate}
-                                    />
-                                </Stack>
-                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-
-                                    <div className='flex-1'>Job End Date:
-                                        {ID ?
-                                            <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobEndDate}</span>
-                                            : <></>
-                                        }
-                                    </div>
+                                        helperText={(errors.timesheetsPeriod && touched.timesheetsPeriod) && errors.timesheetsPeriod}
+                                    >
+                                        {configData.timesheetsPeriods.map((item, index) => (
+                                            <MenuItem key={index} value={item.name}>
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                     <TextField
                                         size="small"
                                         margin="normal"
                                         fullWidth
-                                        className='flex-1'
-                                        id="jobEndDate"
-                                        name="jobEndDate"
-                                        type="date"
-                                        value={values.jobEndDate}
-                                        onChange={handleChange}
+                                        id="invoicePeriod"
+                                        name="invoicePeriod"
+                                        select
+                                        label="Invoice Period"
+                                        value={values.invoicePeriod}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                        }}
                                         onBlur={handleBlur}
-                                        helperText={(errors.jobEndDate && touched.jobEndDate) && errors.jobEndDate}
-                                    />
+                                        helperText={(errors.invoicePeriod && touched.invoicePeriod) && errors.invoicePeriod}
+                                    >
+                                        {configData.invoicePeriods.map((item, index) => (
+                                            <MenuItem key={index} value={item.name}>
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </Stack>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="timesheetsPeriod"
-                                    name="timesheetsPeriod"
-                                    select
-                                    label="Timesheets Period"
-                                    value={values.timesheetsPeriod}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                    }}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.timesheetsPeriod && touched.timesheetsPeriod) && errors.timesheetsPeriod}
-                                >
-                                    {configData.timesheetsPeriods.map((item, index) => (
-                                        <MenuItem key={index} value={item.name}>
-                                            {item.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="invoicePeriod"
-                                    name="invoicePeriod"
-                                    select
-                                    label="Invoice Period"
-                                    value={values.invoicePeriod}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                    }}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.invoicePeriod && touched.invoicePeriod) && errors.invoicePeriod}
-                                >
-                                    {configData.invoicePeriods.map((item, index) => (
-                                        <MenuItem key={index} value={item.name}>
-                                            {item.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
                                 <TextField
                                     size="small"
                                     margin="normal"

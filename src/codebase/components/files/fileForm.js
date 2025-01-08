@@ -11,6 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function FileForm({ props, ID, operation }) {
     const [componentName] = useState('APPLICATION');
@@ -51,9 +52,9 @@ function FileForm({ props, ID, operation }) {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            <Stack direction="row" spacing={2} className='justify-center items-center'>
-                <InfoOutlinedIcon />
-                <Chip label={`In this screen, file would be uploaded into ${componentName} folder of Google Drive by default`} />
+            <Stack direction="column" spacing={1} className='justify-center items-center'>
+                <Chip label={`In this screen, file would be uploaded into below folder of Google Drive by default`} />
+                <Chip label={`${componentName}`} color='warning' />
             </Stack>
             <Formik
                 enableReinitialize
@@ -101,11 +102,11 @@ function FileForm({ props, ID, operation }) {
 
                 validationSchema={Yup.object().shape({
                     title: Yup.string()
-                        .required('Required'),
+                        .required('title Required'),
                     notes: Yup.string()
-                        .required('Required'),
+                        .required('notes Required'),
                     file: Yup.string()
-                        .required('Required'),
+                        .required('file Required'),
                 })}
             >
                 {(props) => {
@@ -188,7 +189,7 @@ function FileForm({ props, ID, operation }) {
                                 Select a File
                             </label> */}
                             <TextField
-                                className='bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-200'
+                                className='bg-yellow-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
                                 type="file"
                                 size="small"
                                 margin="normal"
@@ -202,6 +203,16 @@ function FileForm({ props, ID, operation }) {
                                 onBlur={handleBlur}
                                 helperText={(errors.file && touched.file) && errors.file}
                             />
+                            {Object.keys(errors).length > 0 && (
+                                <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                    <span className='error-summary-heading' >Validation Errors:</span>
+                                    <ul>
+                                        {Object.keys(errors).map((key) => (
+                                            <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                             <Stack direction="row" spacing={2} className='float-right mt-10'>
                                 {operation === "Edit" ?
                                     <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>

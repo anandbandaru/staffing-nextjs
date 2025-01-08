@@ -372,7 +372,6 @@ function VendorForm({ props, ID, operation }) {
                                             // value={values.Disabled}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            // helperText={(errors.Disabled && touched.Disabled) && errors.Disabled}
                                             checked={values.disabled} />
                                     }
                                     label="Disabled"

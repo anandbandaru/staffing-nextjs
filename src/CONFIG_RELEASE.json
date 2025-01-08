@@ -12,6 +12,15 @@
   ],
   "releases": [
     {
+      "version": "1.3",
+      "date": "JAN 08 2024",
+      "notes": [
+        "TODO bar now refreshes from TODO module actions",
+        "All ADD forms now in full screen",
+        "All ADD forms will not close on out of boundary click"
+      ]
+    },
+    {
       "version": "1.2",
       "date": "JAN 07 2024",
       "notes": [

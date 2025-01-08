@@ -312,3 +312,6 @@ width: 300px !important;
 .myFullScreenDialog{
   margin-top: 100px;
 }
+.fileUploadControl INPUT{
+  margin-bottom: 8px;
+}
