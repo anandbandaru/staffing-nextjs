@@ -14,7 +14,7 @@ function GenericList({ formType }) {
                 employeeTypes: configData.employeeTypes,
                 dependentTypes: configData.dependentTypes,
                 visaTypes: configData.visaTypes,
-                timesheetPeriods: configData.timesheetPeriods,
+                timesheetsPeriods: configData.timesheetsPeriods,
                 invoicePeriods: configData.invoicePeriods,
                 GOOGLEDRIVE_FOLDERS: configData.GOOGLEDRIVE_FOLDERS
             };

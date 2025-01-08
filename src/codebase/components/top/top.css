@@ -1,18 +1,4 @@
 
-.topHolder
-{
-    /* align-items: center;
-    justify-content: start;
-    gap: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    position: fixed;
-    /* border-bottom: 3px solid #164a53 !important; */
-    /* background: ; */
-    /* width: 100%; */
-    /* z-index: 999;
-    background-color: #fff; */
-}
 .topLeft span.logo
 {
     color: #000;
@@ -34,7 +20,7 @@
 }
 .userHolder{
     position: absolute;
-    right: 240px;
+    right: 230px;
     top: -2px;
     cursor: pointer;
     padding: 2px 0px 1px 0px;

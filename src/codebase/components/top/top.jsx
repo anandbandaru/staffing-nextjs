@@ -25,7 +25,6 @@ import AppsIcon from '@mui/icons-material/Apps';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import AttributionIcon from '@mui/icons-material/Attribution';
@@ -45,17 +44,7 @@ const Top = () => {
         APIVersion,
         APIType,
         checkAPIAvailability,
-        setTopTabName,
         userName, userType } = useContext(Context);
-
-    const tabNames = ['Dashboard', 'Modules', 'Transactions', 'Timesheets', 'Expenses', 'Files', 'Todo', 'Users', 'Configuration', 'Calendar'];
-    const [tabIndex, setTabIndex] = React.useState(0);
-    const handleTabSelect = (index) => {
-        setTabIndex(index);
-        console.log('Selected Tab:', tabNames[index]);
-        setTopTabName(tabNames[index]);
-    };
-
 
     //page title
     useEffect(() => {
@@ -97,27 +86,23 @@ const Top = () => {
                         </Stack>
                         <div className="release_version_Div">{configData.releases[0].version}</div>
                     </div>
-                    <Tabs selectedIndex={tabIndex}
-                        onSelect={handleTabSelect}>
+                    <Tabs >
                         <TabList className="topTabsListHolder">
-                            {/* {tabNames.map((name, idx) => (
-                                // <Tab key={idx}>{name}</Tab>
-                                (name !== 'Timesheets' || userType === 'ADMIN') && (
-                                    <Tab key={idx} ><CenterFocusWeakOutlinedIcon className="mr-1" />{name}</Tab>
-                                )
-                            ))} */}
                             <Tab ><AppsIcon className="mr-1" />Dashboard</Tab>
                             <Tab ><WorkspacesIcon className="mr-1" />Modules</Tab>
                             <Tab ><CurrencyExchangeIcon className="mr-1" />Transactions</Tab>
                             {userType === 'ADMIN' && (
                                 <Tab ><MoreTimeIcon className="mr-1" />Timesheets</Tab>
                             )}
-                            <Tab ><AddShoppingCartIcon className="mr-1" />Expenses</Tab>
                             <Tab ><AttachmentIcon className="mr-1" />Files</Tab>
                             <Tab ><CheckCircleOutlineIcon className="mr-1" />Todo</Tab>
-                            <Tab ><AttributionIcon className="mr-1" />Users</Tab>
+                            {userType === 'ADMIN' && (
+                                <Tab ><AttributionIcon className="mr-1" />Users</Tab>
+                            )}
                             <Tab ><CalendarMonthOutlinedIcon className="mr-1" />Calendar</Tab>
-                            <Tab ><SettingsEthernetIcon className="mr-1" />Configuration</Tab>
+                            {userType === 'ADMIN' && (
+                                <Tab ><SettingsEthernetIcon className="mr-1" />Configuration</Tab>
+                            )}
                         </TabList>
 
                         <TabPanel className="px-2">
@@ -129,30 +114,30 @@ const Top = () => {
                         <TabPanel className="px-2">
                             <TransactionsTop />
                         </TabPanel>
-                        {userType === 'ADMIN' ?
+                        {userType === 'ADMIN' && (
                             <TabPanel className="px-2">
                                 Timesheets
                             </TabPanel>
-                            :
-                            <></>}
-                        <TabPanel className="px-2">
-                            Expenses
-                        </TabPanel>
+                        )}
                         <TabPanel className="px-2">
                             <FilesMain />
                         </TabPanel>
                         <TabPanel className="px-2">
                             <TodosMain />
                         </TabPanel>
-                        <TabPanel className="px-2">
-                            <UsersMain />
-                        </TabPanel>
+                        {userType === 'ADMIN' && (
+                            <TabPanel className="px-2">
+                                <UsersMain />
+                            </TabPanel>
+                        )}
                         <TabPanel className="px-2">
                             <Calendar />
                         </TabPanel>
-                        <TabPanel className="px-2">
-                            <Configuration />
-                        </TabPanel>
+                        {userType === 'ADMIN' && (
+                            <TabPanel className="px-2">
+                                <Configuration />
+                            </TabPanel>
+                        )}
                     </Tabs>
                 </Box>
             </div>

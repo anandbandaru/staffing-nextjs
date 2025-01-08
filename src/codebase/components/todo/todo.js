@@ -145,7 +145,7 @@ const ToDo = () => {
             />
             <div >
                 <Stack spacing={0} direction="row" className="items-center justify-center">
-                    <div className="bg-pink-500 text-white px-2 w-full mb-2">TO DOs & ACTIONS</div>
+                    <div className="bg-gray-600 text-white px-2 w-full mb-2">TO DOs & ACTIONS</div>
                 </Stack>
             </div>
             <div className="todoAPILoadingHolder">

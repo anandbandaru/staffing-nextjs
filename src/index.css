@@ -95,9 +95,9 @@ body{
 
 .topTabsListHolder{
   font-size: 12px;
-  color: #ff068c !important;
+  color: #5a4d1e !important;
   margin-bottom: 10px;
-  border-bottom: 1px solid #ff068c;
+  border-bottom: 1px solid #ddbd49;
 }
 .topTabsListHolder .react-tabs__tab-panel{
   min-height: 100vh;
@@ -106,9 +106,8 @@ body{
   padding: 6px 10px;
 }
 .topTabsListHolder .react-tabs__tab--selected {
-  border-top: 4px solid #ff068c;
-  /* background-color: #ff068c;
-  color: #fff; */
+  /* border-top: 4px solid #ddbd49; */
+  background-color: #eaedb9;
 }
 
 .top2TabsListHolder{
@@ -169,9 +168,9 @@ body{
 
 .todoTabsListHolder{
   font-size: 12px;
-  color: #ff068c !important;
+  color: #2e3013 !important;
   margin-bottom: 10px;
-  border-bottom: 1px solid #ff068c;
+  border-bottom: 1px solid #2e3013;
 }
 .todoTabsListHolder .react-tabs__tab-panel{
   min-height: 100vh;
@@ -202,7 +201,12 @@ body{
   /* background-color: #ff068c;
   color: #fff; */
 }
-
+.error-summary-heading{
+  background-color: #000;
+  padding: 2px 10px;
+  width: 100%;
+  display: block;
+}
 
 @keyframes spin {
   to {

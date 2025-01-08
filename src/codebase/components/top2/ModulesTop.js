@@ -20,24 +20,10 @@ import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
 
 const ModulesTop = ({ module }) => {
 
-    const {
-        topTabName,
-        setTop2TabName } = useContext(Context);
-
-    const [tab2Index, setTab2Index] = React.useState(0);
+    const { userType } = useContext(Context);
 
     const tab2Names_Modules = ['Owners', 'Companies', 'Ownerships', 'Employees', 'Vendors', 'Clients', 'Implementation Partners', 'Job Types List', 'Expense Types List', 'File Types List'];
-    const handleTab2Select_Modules = (index) => {
-        setTab2Index(index);
-        console.log('Selected Tab2:', tab2Names_Modules[index]);
-        setTop2TabName(tab2Names_Modules[index]);
-    };
-
-
-    //page title
-    useEffect(() => {
-        console.log("FRO TOP 2: Main TAB:" + topTabName)
-    });
+    const filteredTabs = userType === 'ADMIN' ? tab2Names_Modules : tab2Names_Modules.filter(name => name !== 'Owners' && name !== 'Companies');
 
     return (
         <div className="top2Holder px-0 py-0">
@@ -49,46 +35,64 @@ const ModulesTop = ({ module }) => {
             </div>
             <div className="top2TabsHolder">
 
-            <Box sx={{ width: '100%', typography: 'body1' }}>
-                        <Tabs selectedIndex={tab2Index}
-                            onSelect={handleTab2Select_Modules}>
-                            <TabList className="top2TabsListHolder">
-                                {tab2Names_Modules.map((name, idx) => (
-                                    <Tab key={idx}><AdjustOutlinedIcon className="mr-1" />{name}</Tab>
-                                ))}
-                            </TabList>
+                <Box sx={{ width: '100%', typography: 'body1' }}>
+                    <Tabs>
+                        <TabList className="top2TabsListHolder">
+                            {userType === 'ADMIN' && (
+                                <Tab ><AdjustOutlinedIcon className="mr-1" />Owners</Tab>
+                            )}
+                            {userType === 'ADMIN' && (
+                                <Tab ><AdjustOutlinedIcon className="mr-1" />Companies</Tab>
+                            )}
+                            {userType === 'ADMIN' && (
+                                <Tab ><AdjustOutlinedIcon className="mr-1" />Ownerships</Tab>
+                            )}
+                            <Tab ><AdjustOutlinedIcon className="mr-1" />Employees</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" />Vendors</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" />Clients</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" />Implementation Partners</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" />Job Types List</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" />Expense Types List</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" />File Types List</Tab>
+                        </TabList>
+                        {userType === 'ADMIN' && (
                             <TabPanel className="px-2">
                                 <OwnersMain />
                             </TabPanel>
+                        )}
+                        {userType === 'ADMIN' && (
                             <TabPanel className="px-2">
                                 <CompaniesMain />
                             </TabPanel>
+                        )}
+                        {userType === 'ADMIN' && (
                             <TabPanel className="px-2">
                                 <OwnershipsMain />
                             </TabPanel>
-                            <TabPanel className="px-2">
-                                <EmployeesMain />
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                <VendorsMain />
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                <ClientsMain />
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                <ImpPartnersMain />
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                <JobTypesMain />
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                <ExpenseTypesMain />
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                <FileTypesMain />
-                            </TabPanel>
-                        </Tabs>
-                    </Box>
+                        )}
+                        <TabPanel className="px-2">
+                            <EmployeesMain />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <VendorsMain />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <ClientsMain />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <ImpPartnersMain />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <JobTypesMain />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <ExpenseTypesMain />
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <FileTypesMain />
+                        </TabPanel>
+                    </Tabs>
+                </Box>
             </div>
         </div>
     )

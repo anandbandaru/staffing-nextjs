@@ -80,7 +80,7 @@ const Main = () => {
                         <TopBanner />
                         <Top />
                     </div>
-                    <div className="w-80 h-full fixed right-0  bg-slate-100 border-l-4 border-pink-500 toDoRightHolder">
+                    <div className="w-80 h-full fixed right-0  bg-slate-100 border-l-4 border-gray-500 toDoRightHolder">
                         <ToDo />
                     </div>
                 </>

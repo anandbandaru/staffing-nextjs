@@ -48,7 +48,7 @@ const UserList = () => {
             setApiLoading(false);
             setData(resp.data);
         }).catch(function (error) {
-            console.log(error);
+            console.log("fetchUsers:ERROR:" + error);
             setApiLoadingError(true);
             setDataAPIError(error);
             setItemCount(0);
@@ -63,7 +63,6 @@ const UserList = () => {
         TIMESHEET: <PersonOutlinedIcon />,
         DEFAULT: <AttributionOutlinedIcon />,
     };
-
     const classMap = {
         ADMIN: 'rag-green-bg badgeSpan',
         COHOST: 'rag-red-bg badgeSpan',
@@ -105,7 +104,6 @@ const UserList = () => {
     return (
         <>
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
-
                 {/* TOOLS */}
                 <UsersListToolbar
                     operation="Add"
@@ -115,7 +113,6 @@ const UserList = () => {
                     dataAPIError={dataAPIError}
                     manualLoadData={manualLoadData} />
                 {/* TOOLS */}
-
             </div>
 
             <div
@@ -123,7 +120,7 @@ const UserList = () => {
                 style={{ height: 500 }} // the Data Grid will fill the size of the parent container
             >
                 <AgGridReact
-                    rowData={data.value}
+                    rowData={data ? data.value : []}
                     columnDefs={colDefs}
                     pagination={pagination}
                     paginationPageSize={paginationPageSize}

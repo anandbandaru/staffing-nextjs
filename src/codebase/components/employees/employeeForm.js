@@ -538,7 +538,7 @@ function EmployeeForm({ props, ID, operation }) {
 
                                 {Object.keys(errors).length > 0 && (
                                     <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
-                                        <h3>Validation Errors:</h3>
+                                    <span className='error-summary-heading' >Validation Errors:</span>
                                         <ul>
                                             {Object.keys(errors).map((key) => (
                                                 <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>

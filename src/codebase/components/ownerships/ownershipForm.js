@@ -11,6 +11,7 @@ import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function OwnershipForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -31,13 +32,15 @@ function OwnershipForm({ props, ID, operation }) {
         fetch(apiUrl)
             .then(response => response.json())
             .then(
-                (result) => {
+                async (result) => {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setData({});
                     }
                     else {
+                        await getCompaniesList();
+                        await getOwnersList();
                         setData(result);
                         setName(result.data[0].companyId);
                         //alert(firstName);
@@ -51,9 +54,9 @@ function OwnershipForm({ props, ID, operation }) {
                 }
             )
     }
-    const getCompaniesList = () => {
+    const getCompaniesList = async () => {
         setApiLoading(true);
-        setOwnersData({ data: [] });
+        setCompaniesData({ data: [] });
         let apiUrl = APIPath + "/getcompanies"
         fetch(apiUrl)
             .then(response => response.json())
@@ -62,7 +65,7 @@ function OwnershipForm({ props, ID, operation }) {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setCompaniesData({});
+                        setCompaniesData({ data: [] });
                     }
                     else {
                         setCompaniesData(result);
@@ -70,13 +73,13 @@ function OwnershipForm({ props, ID, operation }) {
                     setApiLoading(false);
                 },
                 (error) => {
-                    setData({});
+                    setCompaniesData({ data: [] });
                     console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
     }
-    const getOwnersList = () => {
+    const getOwnersList = async () => {
         setApiLoading(true);
         setOwnersData({ data: [] });
         let apiUrl = APIPath + "/getowners"
@@ -160,9 +163,9 @@ function OwnershipForm({ props, ID, operation }) {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            {apiLoading && operation !== "New" ?
+            {apiLoading ?
                 <>
-                    <div className="spinner"></div>
+                    <div className="spinner"></div>Loading...
                 </>
                 :
                 <Formik
@@ -203,18 +206,18 @@ function OwnershipForm({ props, ID, operation }) {
 
                     validationSchema={Yup.object().shape({
                         companyId: Yup.string()
-                            .required('Required'),
+                            .required('companyId Required'),
                         ownerId: Yup.string()
-                            .required('Required'),
+                            .required('ownerId Required'),
                         owingPercentage: Yup.number()
                             .typeError('Must be a number')
                             .max(maxOwingPercentage, `Value must be less than or equal to ${maxOwingPercentage}`)
                             .min(1, 'Value must be greater than or equal to 1')
-                            .required('Required').test('is-decimal', 'Must be a decimal number', (value) =>
+                            .required('owingPercentage Required').test('is-decimal', 'Must be a decimal number', (value) =>
                                 (value + "").match(/^\d+(\.\d+)?$/)
                             ),
                         notes: Yup.string()
-                            .required('Required'),
+                            .required('notes Required'),
                     })}
                 >
                     {(props) => {
@@ -243,56 +246,60 @@ function OwnershipForm({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="companyId"
-                                    name="companyId"
-                                    select
-                                    label="Company Id"
-                                    defaultValue="12"
-                                    value={values.companyId}
-                                    // onChange={handleChange}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                        handleCompanyIdChange(event);
-                                    }}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.companyId && touched.companyId) && errors.companyId}
-                                >
-                                    {companiesData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.Name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                {companiesData.data && (
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="companyId"
+                                        name="companyId"
+                                        select
+                                        label="Company Id"
+                                        defaultValue="12"
+                                        value={values.companyId || ''}
+                                        // onChange={handleChange}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleCompanyIdChange(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.companyId && touched.companyId) && errors.companyId}
+                                    >
+                                        {companiesData.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.Id}>
+                                                {item.Name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                )}
                                 <Stack direction="row" spacing={2} className='items-center'>
                                     {companyId ? <>
                                         <InfoOutlinedIcon />
                                         <Chip color='warning' label={`Remaining % allocation is ${maxOwingPercentage}`} />
                                     </> : <></>}
                                 </Stack>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="ownerId"
-                                    name="ownerId"
-                                    select
-                                    label="Owner Id"
-                                    defaultValue="12"
-                                    value={values.ownerId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.ownerId && touched.ownerId) && errors.ownerId}
-                                >
-                                    {ownersData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.firstName} {item.lastName}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                {ownersData.data && (
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="ownerId"
+                                        name="ownerId"
+                                        select
+                                        label="Owner Id"
+                                        defaultValue="12"
+                                        value={values.ownerId || ''}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.ownerId && touched.ownerId) && errors.ownerId}
+                                    >
+                                        {ownersData.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.Id}>
+                                                {item.firstName} {item.lastName}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                )}
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -319,6 +326,16 @@ function OwnershipForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.notes && touched.notes) && errors.notes}
                                 />
+                                {Object.keys(errors).length > 0 && (
+                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                        <span className='error-summary-heading' >Validation Errors:</span>
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                                 <Stack direction="row" spacing={2} className='float-right'>
                                     {operation === "Edit" ?
                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>

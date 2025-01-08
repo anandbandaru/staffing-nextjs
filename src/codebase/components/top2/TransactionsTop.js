@@ -6,29 +6,14 @@ import { Context } from "../../context/context";
 import Box from '@mui/material/Box';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
+import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
+import AssuredWorkloadOutlinedIcon from '@mui/icons-material/AssuredWorkloadOutlined';
 import JobsMain from "../jobs/jobsMain";
 
 const TransactionsTop = ({ module }) => {
-
-    const {
-        topTabName,
-        setTop2TabName } = useContext(Context);
-
-    const [tab2Index, setTab2Index] = React.useState(0);
-
-    const tab2Names_Transactions = ['Jobs', 'Invoices', 'Expenses', 'Payroll'];
-    const handleTab2Select_Transactions = (index) => {
-        setTab2Index(index);
-        console.log('Selected Tab2:', tab2Names_Transactions[index]);
-        setTop2TabName(tab2Names_Transactions[index]);
-    };
-
-    //page title
-    useEffect(() => {
-        console.log("FRO TOP 2: Main TAB:" + topTabName)
-    });
-
+    const { userType } = useContext(Context);
     return (
         <div className="top2Holder px-0">
 
@@ -39,34 +24,41 @@ const TransactionsTop = ({ module }) => {
             </div>
             <div className="top2TabsHolder">
 
-            <Box sx={{ width: '100%', typography: 'body1' }}>
-                        <Tabs selectedIndex={tab2Index}
-                            onSelect={handleTab2Select_Transactions}>
-                            <TabList className="top2TabsListHolder">
-                                {tab2Names_Transactions.map((name, idx) => (
-                                    <Tab key={idx}><AdjustOutlinedIcon className="mr-1" />{name}</Tab>
-                                ))}
-                            </TabList>
-                            <TabPanel className="px-2">
-                                <JobsMain />
-                            </TabPanel>
+                <Box sx={{ width: '100%', typography: 'body1' }}>
+                    <Tabs>
+                        <TabList className="top2TabsListHolder">
+                            <Tab ><AssuredWorkloadOutlinedIcon className="mr-1" />Jobs</Tab>
+                            {userType === 'ADMIN' && (
+                                <Tab ><SellOutlinedIcon className="mr-1" />Invoices</Tab>
+                            )}
+                            {userType === 'ADMIN' && (
+                                <Tab ><AddShoppingCartIcon className="mr-1" />Expenses</Tab>
+                            )}
+                            {userType === 'ADMIN' && (
+                                <Tab ><PointOfSaleOutlinedIcon className="mr-1" />Payroll</Tab>
+                            )}
+                        </TabList>
+                        <TabPanel className="px-2">
+                            <JobsMain />
+                        </TabPanel>
+                        {userType === 'ADMIN' && (
                             <TabPanel className="px-2">
                                 Invoices
                             </TabPanel>
+                        )}
+                        {userType === 'ADMIN' && (
                             <TabPanel className="px-2">
                                 Expenses
                             </TabPanel>
+                        )}
+                        {userType === 'ADMIN' && (
                             <TabPanel className="px-2">
                                 Payroll
                             </TabPanel>
-                        </Tabs>
-                    </Box>
-
-
-
-
+                        )}
+                    </Tabs>
+                </Box>
             </div>
-
         </div>
     )
 }
