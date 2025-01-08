@@ -309,3 +309,6 @@ form P{
 #customized-dialog-title{
 width: 300px !important;
 }
+.myFullScreenDialog{
+  margin-top: 100px;
+}

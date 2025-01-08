@@ -83,6 +83,8 @@ const OwnershipsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError,
                 </div>
             </div>
             <BootstrapDialog
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"

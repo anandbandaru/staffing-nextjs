@@ -8,6 +8,7 @@ import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function ExpenseType({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -114,9 +115,9 @@ function ExpenseType({ props, ID, operation }) {
 
                     validationSchema={Yup.object().shape({
                         name: Yup.string()
-                            .required('Required'),
+                            .required('name Required'),
                         description: Yup.string()
-                            .required('Required'),
+                            .required('description Required'),
                     })}
                 >
                     {(props) => {
@@ -171,7 +172,17 @@ function ExpenseType({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.description && touched.description) && errors.description}
                                 />
-                                <Stack direction="row" spacing={2} className='float-right'>
+                                {Object.keys(errors).length > 0 && (
+                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                        <span className='error-summary-heading' >Validation Errors:</span>
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <Stack direction="row" spacing={2} className='float-right mt-2'>
                                     {operation === "Edit" ? (
                                         isSubmitting ? (
                                             <div className="spinner"></div>

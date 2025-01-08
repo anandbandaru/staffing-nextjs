@@ -19,6 +19,7 @@ const ContextProvider = (props) => {
     const flaskAPI_Availability = process.env.REACT_APP_API_SUFFIX;
     const [loading] = useState(false);
     const [refreshBalance, setRefreshBalance] = useState(false);
+    const [refreshTodos, setRefreshTodos] = useState(false);
 
     const [selectedDBType, setSelectedDBType] = useState("SQL");
     const [APIPath, setAPIPath] = useState(flaskAPI_Availability);
@@ -256,7 +257,8 @@ const ContextProvider = (props) => {
         loginError,
         token,
         setRefreshBalance,
-        refreshBalance
+        refreshBalance,
+        refreshTodos, setRefreshTodos
     }
 
     return (

@@ -83,6 +83,8 @@ const ClientsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, ma
                 </div>
             </div>
             <BootstrapDialog
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"

@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function OwnerForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -155,20 +156,20 @@ function OwnerForm({ props, ID, operation }) {
 
                     validationSchema={Yup.object().shape({
                         firstName: Yup.string()
-                            .required('Required'),
+                            .required('firstName Required'),
                         lastName: Yup.string()
-                            .required('Required'),
+                            .required('lastName Required'),
                         email: Yup.string()
                             .email()
-                            .required('Required'),
+                            .required('email Required'),
                         phone1: Yup.string()
-                            .required('Required'),
+                            .required('phone1 Required'),
                         IDNumber: Yup.string()
-                            .required('Required'),
+                            .required('IDNumber Required'),
                         SSN: Yup.string()
-                            .required('Required'),
+                            .required('SSN Required'),
                         Address: Yup.string()
-                            .required('Required'),
+                            .required('Address Required'),
                     })}
                 >
                     {(props) => {
@@ -197,30 +198,32 @@ function OwnerForm({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="firstName"
-                                    name="firstName"
-                                    label="First Name"
-                                    value={values.firstName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.firstName && touched.firstName) && errors.firstName}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="lastName"
-                                    name="lastName"
-                                    label="Last Name"
-                                    value={values.lastName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.lastName && touched.lastName) && errors.lastName}
-                                />
+                                <Stack direction="row" spacing={2} className='mt-2'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="firstName"
+                                        name="firstName"
+                                        label="First Name"
+                                        value={values.firstName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.firstName && touched.firstName) && errors.firstName}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="lastName"
+                                        name="lastName"
+                                        label="Last Name"
+                                        value={values.lastName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.lastName && touched.lastName) && errors.lastName}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -233,62 +236,66 @@ function OwnerForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.email && touched.email) && errors.email}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="phone1"
-                                    name="phone1"
-                                    label="Phone 1"
-                                    value={values.phone1}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.phone1 && touched.phone1) && errors.phone1}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="phone2"
-                                    name="phone2"
-                                    label="Phone 2"
-                                    value={values.phone2}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.phone2 && touched.phone2) && errors.phone2}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="IDType"
-                                    name="IDType"
-                                    select
-                                    label="ID Type"
-                                    defaultValue="12"
-                                    value={values.IDType}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.IDType && touched.IDType) && errors.IDType}
-                                >
-                                    {fileTypesData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="IDNumber"
-                                    name="IDNumber"
-                                    label="ID Number"
-                                    value={values.IDNumber}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.IDNumber && touched.IDNumber) && errors.IDNumber}
-                                />
+                                <Stack direction="row" spacing={2} className='mt-2'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="phone1"
+                                        name="phone1"
+                                        label="Phone 1"
+                                        value={values.phone1}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.phone1 && touched.phone1) && errors.phone1}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="phone2"
+                                        name="phone2"
+                                        label="Phone 2"
+                                        value={values.phone2}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.phone2 && touched.phone2) && errors.phone2}
+                                    />
+                                </Stack>
+                                <Stack direction="row" spacing={2} className='mt-6'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="IDType"
+                                        name="IDType"
+                                        select
+                                        label="ID Type"
+                                        defaultValue="12"
+                                        value={values.IDType}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.IDType && touched.IDType) && errors.IDType}
+                                    >
+                                        {fileTypesData.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.Id}>
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="IDNumber"
+                                        name="IDNumber"
+                                        label="ID Number"
+                                        value={values.IDNumber}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.IDNumber && touched.IDNumber) && errors.IDNumber}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -309,7 +316,7 @@ function OwnerForm({ props, ID, operation }) {
                                     name="Address"
                                     label="Address"
                                     multiline
-                                    rows={4}
+                                    rows={2}
                                     value={values.Address}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -329,7 +336,17 @@ function OwnerForm({ props, ID, operation }) {
                                     }
                                     label="Disabled"
                                 />
-                                <Stack direction="row" spacing={2} className='float-right'>
+                                {Object.keys(errors).length > 0 && (
+                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                        <span className='error-summary-heading' >Validation Errors:</span>
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <Stack direction="row" spacing={2} className='float-right mt-2'>
                                     {operation === "Edit" ? (
                                         isSubmitting ? (
                                             <div className="spinner"></div>

@@ -284,30 +284,32 @@ function EmployeeForm({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="firstName"
-                                    name="firstName"
-                                    label="First Name"
-                                    value={values.firstName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.firstName && touched.firstName) && errors.firstName}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="lastName"
-                                    name="lastName"
-                                    label="Last Name"
-                                    value={values.lastName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.lastName && touched.lastName) && errors.lastName}
-                                />
+                                <Stack direction="row" spacing={2} className='mt-2'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="firstName"
+                                        name="firstName"
+                                        label="First Name"
+                                        value={values.firstName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.firstName && touched.firstName) && errors.firstName}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="lastName"
+                                        name="lastName"
+                                        label="Last Name"
+                                        value={values.lastName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.lastName && touched.lastName) && errors.lastName}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -320,30 +322,32 @@ function EmployeeForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.personalEmail && touched.personalEmail) && errors.personalEmail}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="personalPhone"
-                                    name="personalPhone"
-                                    label="Personal Phone"
-                                    value={values.personalPhone}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.personalPhone && touched.personalPhone) && errors.personalPhone}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="personalUSPhone"
-                                    name="personalUSPhone"
-                                    label="Personal US Phone"
-                                    value={values.personalUSPhone}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.personalUSPhone && touched.personalUSPhone) && errors.personalUSPhone}
-                                />
+                                <Stack direction="row" spacing={2} className='mt-2'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="personalPhone"
+                                        name="personalPhone"
+                                        label="Personal Phone"
+                                        value={values.personalPhone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.personalPhone && touched.personalPhone) && errors.personalPhone}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="personalUSPhone"
+                                        name="personalUSPhone"
+                                        label="Personal US Phone"
+                                        value={values.personalUSPhone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.personalUSPhone && touched.personalUSPhone) && errors.personalUSPhone}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -368,78 +372,84 @@ function EmployeeForm({ props, ID, operation }) {
                                         <div className='text-black my-1'>
                                             OFFSHORE employee Specific details:
                                         </div>
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            id="OFF_PAN"
-                                            name="OFF_PAN"
-                                            label="OFFSHORE PAN"
-                                            value={values.OFF_PAN}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.OFF_PAN && touched.OFF_PAN) && errors.OFF_PAN}
-                                        />
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            id="OFF_Designation"
-                                            name="OFF_Designation"
-                                            label="OFFSHORE Designation"
-                                            value={values.OFF_Designation}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.OFF_Designation && touched.OFF_Designation) && errors.OFF_Designation}
-                                        />
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            id="OFF_Aadhaar"
-                                            name="OFF_Aadhaar"
-                                            label="OFFSHORE Aadhaar"
-                                            value={values.OFF_Aadhaar}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.OFF_Aadhaar && touched.OFF_Aadhaar) && errors.OFF_Aadhaar}
-                                        />
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            id="OFF_SonOf"
-                                            name="OFF_SonOf"
-                                            label="OFFSHORE Son Of"
-                                            value={values.OFF_SonOf}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.OFF_SonOf && touched.OFF_SonOf) && errors.OFF_SonOf}
-                                        />
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            id="OFF_DaughterOf"
-                                            name="OFF_DaughterOf"
-                                            label="OFFSHORE Daughter Of"
-                                            value={values.OFF_DaughterOf}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.OFF_DaughterOf && touched.OFF_DaughterOf) && errors.OFF_DaughterOf}
-                                        />
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            id="OFF_WifeOf"
-                                            name="OFF_WifeOf"
-                                            label="OFFSHORE Wife Of"
-                                            value={values.OFF_WifeOf}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.OFF_WifeOf && touched.OFF_WifeOf) && errors.OFF_WifeOf}
-                                        />
+                                        <Stack direction="row" spacing={2} className='mt-2'>
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="OFF_PAN"
+                                                name="OFF_PAN"
+                                                label="OFFSHORE PAN"
+                                                value={values.OFF_PAN}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.OFF_PAN && touched.OFF_PAN) && errors.OFF_PAN}
+                                            />
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="OFF_Designation"
+                                                name="OFF_Designation"
+                                                label="OFFSHORE Designation"
+                                                value={values.OFF_Designation}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.OFF_Designation && touched.OFF_Designation) && errors.OFF_Designation}
+                                            />
+                                        </Stack>
+                                        <Stack direction="row" spacing={2} className='mt-2'>
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="OFF_Aadhaar"
+                                                name="OFF_Aadhaar"
+                                                label="OFFSHORE Aadhaar"
+                                                value={values.OFF_Aadhaar}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.OFF_Aadhaar && touched.OFF_Aadhaar) && errors.OFF_Aadhaar}
+                                            />
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="OFF_SonOf"
+                                                name="OFF_SonOf"
+                                                label="OFFSHORE Son Of"
+                                                value={values.OFF_SonOf}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.OFF_SonOf && touched.OFF_SonOf) && errors.OFF_SonOf}
+                                            />
+                                        </Stack>
+                                        <Stack direction="row" spacing={2} className='mt-2'>
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="OFF_DaughterOf"
+                                                name="OFF_DaughterOf"
+                                                label="OFFSHORE Daughter Of"
+                                                value={values.OFF_DaughterOf}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.OFF_DaughterOf && touched.OFF_DaughterOf) && errors.OFF_DaughterOf}
+                                            />
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="OFF_WifeOf"
+                                                name="OFF_WifeOf"
+                                                label="OFFSHORE Wife Of"
+                                                value={values.OFF_WifeOf}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.OFF_WifeOf && touched.OFF_WifeOf) && errors.OFF_WifeOf}
+                                            />
+                                        </Stack>
                                         <TextField
                                             size="small"
                                             margin="normal"
@@ -461,38 +471,40 @@ function EmployeeForm({ props, ID, operation }) {
                                         </TextField>
                                     </div>
                                 )}
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="IDType"
-                                    name="IDType"
-                                    select
-                                    label="ID Type"
-                                    defaultValue="12"
-                                    value={values.IDType}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.IDType && touched.IDType) && errors.IDType}
-                                >
-                                    {fileTypesData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="IDNumber"
-                                    name="IDNumber"
-                                    label="ID Number"
-                                    value={values.IDNumber}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.IDNumber && touched.IDNumber) && errors.IDNumber}
-                                />
+                                <Stack direction="row" spacing={2} className='mt-2'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="IDType"
+                                        name="IDType"
+                                        select
+                                        label="ID Type"
+                                        defaultValue="12"
+                                        value={values.IDType}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.IDType && touched.IDType) && errors.IDType}
+                                    >
+                                        {fileTypesData.data.map((item, index) => (
+                                            <MenuItem key={index} value={item.Id}>
+                                                {item.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="IDNumber"
+                                        name="IDNumber"
+                                        label="ID Number"
+                                        value={values.IDNumber}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.IDNumber && touched.IDNumber) && errors.IDNumber}
+                                    />
+                                </Stack>
                                 {values.employeeType === 'ONSHORE' && (
                                     <TextField
                                         size="small"
@@ -535,10 +547,9 @@ function EmployeeForm({ props, ID, operation }) {
                                     }
                                     label="Disabled"
                                 />
-
                                 {Object.keys(errors).length > 0 && (
                                     <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
-                                    <span className='error-summary-heading' >Validation Errors:</span>
+                                        <span className='error-summary-heading' >Validation Errors:</span>
                                         <ul>
                                             {Object.keys(errors).map((key) => (
                                                 <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>

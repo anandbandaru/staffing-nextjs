@@ -17,7 +17,7 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 const TodosListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
     const [open, setOpen] = React.useState(false);
-    const { fetchTodos } = useContext(Context);
+    const { setRefreshTodos } = useContext(Context);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -27,7 +27,7 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manu
             return;
         setOpen(false);
         manualLoadData();
-        fetchTodos("Active");
+        setRefreshTodos(true);
     };
     const handleClickOpen = () => {
         setOpen(true);
@@ -40,7 +40,6 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manu
             padding: theme.spacing(1),
         },
     }));
-
     return (
         <>
             <div className="flex flex-grow">
@@ -57,7 +56,7 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manu
                         {/* REFRESH ICON */}
                         <div className="float-right ">
                                     <Button size="small" variant="contained"
-                                        onClick={() => {manualLoadData(); fetchTodos("Active");  }}
+                                        onClick={() => {manualLoadData(); setRefreshTodos(true); }}
                                         disabled={apiLoading}
                                     >
                                         {apiLoading ? <div className="spinner"></div> :

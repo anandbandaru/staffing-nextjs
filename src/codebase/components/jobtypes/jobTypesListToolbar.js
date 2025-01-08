@@ -83,6 +83,8 @@ const JobTypesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
                 </div>
             </div>
             <BootstrapDialog
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"

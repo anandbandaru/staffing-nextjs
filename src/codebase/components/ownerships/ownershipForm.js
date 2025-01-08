@@ -336,7 +336,7 @@ function OwnershipForm({ props, ID, operation }) {
                                         </ul>
                                     </div>
                                 )}
-                                <Stack direction="row" spacing={2} className='float-right'>
+                                <Stack direction="row" spacing={2} className='float-right mt-2'>
                                     {operation === "Edit" ?
                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                             <SaveOutlinedIcon className="mr-1" />

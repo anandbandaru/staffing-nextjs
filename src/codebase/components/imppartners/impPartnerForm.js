@@ -10,6 +10,7 @@ import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function ImpPartnerForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -117,13 +118,13 @@ function ImpPartnerForm({ props, ID, operation }) {
 
                     validationSchema={Yup.object().shape({
                         Name: Yup.string()
-                            .required('Required'),
+                            .required('Name Required'),
                         Address: Yup.string()
-                            .required('Required'),
+                            .required('Address Required'),
                         Emails: Yup.string()
-                            .required('Required'),
+                            .required('Emails Required'),
                         Notes: Yup.string()
-                            .required('Required'),
+                            .required('Notes Required'),
                     })}
                 >
                     {(props) => {
@@ -221,7 +222,17 @@ function ImpPartnerForm({ props, ID, operation }) {
                                     }
                                     label="Disabled"
                                 />
-                                <Stack direction="row" spacing={2} className='float-right'>
+                                {Object.keys(errors).length > 0 && (
+                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                        <span className='error-summary-heading' >Validation Errors:</span>
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <Stack direction="row" spacing={2} className='float-right mt-2'>
                                     {operation === "Edit" ?
                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                             <SaveOutlinedIcon className="mr-1" />

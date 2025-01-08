@@ -10,6 +10,7 @@ import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function CompanyForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -130,22 +131,22 @@ function CompanyForm({ props, ID, operation }) {
 
                     validationSchema={Yup.object().shape({
                         Name: Yup.string()
-                            .required('Required'),
+                            .required('Name Required'),
                         Description: Yup.string()
-                            .required('Required'),
+                            .required('Description Required'),
                         Address: Yup.string()
-                            .required('Required'),
+                            .required('Address Required'),
                         EIN: Yup.string()
-                            .required('Required'),
+                            .required('EIN Required'),
                         Phone: Yup.string()
-                            .required('Required'),
+                            .required('Phone Required'),
                         Email: Yup.string()
                             .email()
-                            .required('Required'),
+                            .required('Email Required'),
                         EstablishedDate: Yup.string()
-                            .required('Required'),
+                            .required('EstablishedDate Required'),
                         Notes: Yup.string()
-                            .required('Required'),
+                            .required('Notes Required'),
                     })}
                 >
                     {(props) => {
@@ -208,7 +209,7 @@ function CompanyForm({ props, ID, operation }) {
                                     name="Address"
                                     label="Address"
                                     multiline
-                                    rows={4}
+                                    rows={2}
                                     value={values.Address}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -226,6 +227,7 @@ function CompanyForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.EIN && touched.EIN) && errors.EIN}
                                 />
+                                <Stack direction="row" spacing={2} className='mt-2'>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -250,6 +252,7 @@ function CompanyForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.Email && touched.Email) && errors.Email}
                                 />
+                                </Stack>
                                 <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
 
                                     <div className='flex-1'>Established Date:
@@ -300,7 +303,17 @@ function CompanyForm({ props, ID, operation }) {
                                     }
                                     label="Disabled"
                                 />
-                                <Stack direction="row" spacing={2} className='float-right'>
+                                {Object.keys(errors).length > 0 && (
+                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                        <span className='error-summary-heading' >Validation Errors:</span>
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <Stack direction="row" spacing={2} className='float-right mt-2'>
                                     {/* <div>
                                         {ID}:{operation}
                                     </div> */}

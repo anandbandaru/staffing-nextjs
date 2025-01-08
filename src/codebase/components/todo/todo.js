@@ -21,7 +21,7 @@ const ToDo = () => {
     const [itemCountActive, setItemCountActive] = useState(0);
     const [itemCountCompleted, setItemCountCompleted] = useState(0);
     const {
-        APIPath,
+        APIPath, refreshTodos, setRefreshTodos,
         userName } = useContext(Context);
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -35,7 +35,6 @@ const ToDo = () => {
         setAnchorEl(null);
         setSelectedTodo(null);
     };
-
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -102,8 +101,9 @@ const ToDo = () => {
         setTimeout(async () => {
             fetchTodos("Active");
             fetchTodos("Completed");
+            setRefreshTodos(false)
         }, 1);
-    }, []);
+    }, [refreshTodos]);
 
     const handleTabSelect = (index) => {
         setTabIndex(index);

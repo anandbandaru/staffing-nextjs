@@ -10,6 +10,7 @@ import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 function VendorForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -208,66 +209,82 @@ function VendorForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.address && touched.address) && errors.address}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="city"
-                                    name="city"
-                                    label="City"
-                                    value={values.city}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.city && touched.city) && errors.city}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="state"
-                                    name="state"
-                                    label="State"
-                                    value={values.state}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.state && touched.state) && errors.state}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="zip"
-                                    name="zip"
-                                    label="Zip"
-                                    value={values.zip}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.zip && touched.zip) && errors.zip}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="country"
-                                    name="country"
-                                    label="Country"
-                                    value={values.country}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.country && touched.country) && errors.country}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="email"
-                                    name="email"
-                                    label="Email"
-                                    value={values.email}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.email && touched.email) && errors.email}
-                                />
+                                <Stack direction="row" spacing={2}>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="city"
+                                        name="city"
+                                        label="City"
+                                        value={values.city}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.city && touched.city) && errors.city}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="state"
+                                        name="state"
+                                        label="State"
+                                        value={values.state}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.state && touched.state) && errors.state}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="zip"
+                                        name="zip"
+                                        label="Zip"
+                                        value={values.zip}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.zip && touched.zip) && errors.zip}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="country"
+                                        name="country"
+                                        label="Country"
+                                        value={values.country}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.country && touched.country) && errors.country}
+                                    />
+                                </Stack>
+                                <Stack direction="row" spacing={2} className='mt-4'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="email"
+                                        name="email"
+                                        label="Email"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.email && touched.email) && errors.email}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="phone"
+                                        name="phone"
+                                        label="phone"
+                                        value={values.phone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.phone && touched.phone) && errors.phone}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -280,66 +297,58 @@ function VendorForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.EIN && touched.EIN) && errors.EIN}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="phone"
-                                    name="phone"
-                                    label="phone"
-                                    value={values.phone}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.phone && touched.phone) && errors.phone}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="accountsEmail"
-                                    name="accountsEmail"
-                                    label="Accounts Email"
-                                    value={values.accountsEmail}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.accountsEmail && touched.accountsEmail) && errors.accountsEmail}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="accountsManagerEmail"
-                                    name="accountsManagerEmail"
-                                    label="Accounts Manager Email"
-                                    value={values.accountsManagerEmail}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.accountsManagerEmail && touched.accountsManagerEmail) && errors.accountsManagerEmail}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="salesEmail"
-                                    name="salesEmail"
-                                    label="Sales Email"
-                                    value={values.salesEmail}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.salesEmail && touched.salesEmail) && errors.salesEmail}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="salesManagerEmail"
-                                    name="salesManagerEmail"
-                                    label="Sales Manager Email"
-                                    value={values.salesManagerEmail}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.salesManagerEmail && touched.salesManagerEmail) && errors.salesManagerEmail}
-                                />
+                                <Stack direction="row" spacing={2} className='mt-4'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="accountsEmail"
+                                        name="accountsEmail"
+                                        label="Accounts Email"
+                                        value={values.accountsEmail}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.accountsEmail && touched.accountsEmail) && errors.accountsEmail}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="accountsManagerEmail"
+                                        name="accountsManagerEmail"
+                                        label="Accounts Manager Email"
+                                        value={values.accountsManagerEmail}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.accountsManagerEmail && touched.accountsManagerEmail) && errors.accountsManagerEmail}
+                                    />
+                                </Stack>
+                                <Stack direction="row" spacing={2} className='mt-4'>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="salesEmail"
+                                        name="salesEmail"
+                                        label="Sales Email"
+                                        value={values.salesEmail}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.salesEmail && touched.salesEmail) && errors.salesEmail}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="salesManagerEmail"
+                                        name="salesManagerEmail"
+                                        label="Sales Manager Email"
+                                        value={values.salesManagerEmail}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.salesManagerEmail && touched.salesManagerEmail) && errors.salesManagerEmail}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -368,7 +377,17 @@ function VendorForm({ props, ID, operation }) {
                                     }
                                     label="Disabled"
                                 />
-                                <Stack direction="row" spacing={2} className='float-right'>
+                                {Object.keys(errors).length > 0 && (
+                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                        <span className='error-summary-heading' >Validation Errors:</span>
+                                        <ul>
+                                            {Object.keys(errors).map((key) => (
+                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <Stack direction="row" spacing={2} className='float-right mt-2'>
                                     {operation === "Edit" ?
                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                             <SaveOutlinedIcon className="mr-1" />
