@@ -7,9 +7,9 @@
 }
 .balanceHolder SPAN{
     font-size: 22px !important;
-    color:#fff;
+    color:#000;
     /* border:1px solid #ff068c; */
-    background-color: #ff068c;
+    background-color: #83c5be;
     border-radius: 4px;
     padding: 1px 10px 1px 10px;
 }

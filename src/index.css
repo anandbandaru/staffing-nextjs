@@ -107,14 +107,15 @@ body{
 }
 .topTabsListHolder .react-tabs__tab--selected {
   /* border-top: 4px solid #ddbd49; */
-  background-color: #ecf18b;
+  background-color: #a53860;
   border:0px;
   border-radius: 0px;
+  color: #fff;
 }
 
 .top2TabsListHolder{
   font-size: 12px;
-  color: #3496ce !important;
+  color: #415a77 !important;
   margin-bottom: 10px;
   border-bottom: 1px solid #3496ce;
 }
@@ -128,12 +129,12 @@ body{
   /* border-top: 4px solid #3496ce; */
   border:0px;
   border-radius: 0px;
-  background-color: #3496ce;
+  background-color: #415a77;
   color: #fff;
 }
 .subTabsListHolder{
   font-size: 12px;
-  color: rgb(11, 155, 30) !important;
+  color: #3a1120 !important;
   margin-bottom: 10px;
   border-bottom: 1px solid rgb(11, 155, 30);
 }
@@ -144,11 +145,13 @@ body{
   padding: 4px 10px;
 }
 .subTabsListHolder .react-tabs__tab--selected {
-  border: 2px solid rgb(11, 155, 30);
-  border-bottom: 0px;
-  border-top: 4px solid rgb(11, 155, 30);
-  /* background-color: #ff068c;
-  color: #fff; */
+  /* border: 2px solid rgb(11, 155, 30); */
+  /* border-bottom: 0px;
+  border-top: 4px solid #a53860; */
+  border:0px;
+  border-radius: 0px;
+  background-color: #f9dbbd;
+  color: #000;
 }
 .thirdTabsListHolder{
   font-size: 12px;

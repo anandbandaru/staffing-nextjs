@@ -148,13 +148,13 @@ const Top = () => {
                 <div className="px-2  rounded-sm text-white">
                     <Stack spacing={1} direction="row" className="items-center justify-center">
                         <Avatar
-                            sx={{ width: 16, height: 16, bgcolor: pink[500] }}
+                            sx={{ width: 16, height: 16, bgcolor: "ActiveCaption" }}
                         >
                         </Avatar>
                         <div className="">
                             {userName}
                         </div>
-                        <div className="bg-pink-500 px-2 ml-2">
+                        <div className="userTypeHolder px-2 ml-2">
                             {userType}
                         </div>
                     </Stack>
