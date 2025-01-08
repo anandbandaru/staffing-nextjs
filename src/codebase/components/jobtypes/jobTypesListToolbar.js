@@ -20,7 +20,9 @@ const JobTypesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
-    const handleClose = () => {
+    const handleClose = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpen(false);
         manualLoadData();
     };

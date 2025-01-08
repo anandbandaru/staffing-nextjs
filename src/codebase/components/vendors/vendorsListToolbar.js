@@ -20,7 +20,9 @@ const VendorsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, ma
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
-    const handleClose = () => {
+    const handleClose = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpen(false);
         manualLoadData();
     };
@@ -35,6 +37,8 @@ const VendorsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, ma
             padding: theme.spacing(1),
         },
     }));
+    const handleEntering = () => {
+    };
 
     return (
         <>
@@ -51,17 +55,17 @@ const VendorsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, ma
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                                    <Button size="small" variant="contained"
-                                        onClick={manualLoadData}
-                                        disabled={apiLoading}
-                                    >
-                                        {apiLoading ? <div className="spinner"></div> :
-                                            <>
-                                                <CachedIcon className="mr-1" />
-                                                Refresh now
-                                            </>}
+                            <Button size="small" variant="contained"
+                                onClick={manualLoadData}
+                                disabled={apiLoading}
+                            >
+                                {apiLoading ? <div className="spinner"></div> :
+                                    <>
+                                        <CachedIcon className="mr-1" />
+                                        Refresh now
+                                    </>}
 
-                                    </Button>
+                            </Button>
                         </div>
                         {/* REFRESH ICON */}
                         {/* API LOADER & MESSAGE */}

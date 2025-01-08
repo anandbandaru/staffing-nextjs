@@ -3,7 +3,6 @@ import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
 import { Stack, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
-// import RefreshIcon from '@mui/icons-material/Refresh';
 
 const Dashboard = () => {
     const { APIPath, userType } = useContext(Context);
@@ -107,16 +106,6 @@ const Dashboard = () => {
                     <div className='dashCardsCounts'>{count ? count : "-"}</div>
                 }
             </CardContent>
-            {/* <CardActions>
-                <Button variant="outlined" size='small'
-                    onClick={() => {
-                        APICaller(['/counts/owners']);
-                    }
-                    }
-                    startIcon={<RefreshIcon />}>
-                    Refresh
-                </Button>
-            </CardActions> */}
         </Card >
     );
 
@@ -125,14 +114,14 @@ const Dashboard = () => {
             <div className="my-10 mx-3">
                 <Grid container spacing={1} className='p-5 mt-10 bg-slate-200'>
                     {userType === 'ADMIN' && (
-                        <Grid item md={1}>
-                            {renderCard('Owners', counts.owners)}
-                        </Grid>
-                    )}
-                    {userType === 'ADMIN' && (
-                        <Grid item md={1}>
-                            {renderCard('Companies', counts.companies)}
-                        </Grid>
+                        <>
+                            <Grid item md={1}>
+                                {renderCard('Owners', counts.owners)}
+                            </Grid>
+                            <Grid item md={1}>
+                                {renderCard('Companies', counts.companies)}
+                            </Grid>
+                        </>
                     )}
                     <Grid item md={1}>
                         {renderCard('employees', counts.employees)}
@@ -150,19 +139,17 @@ const Dashboard = () => {
                         {renderCard('Jobs', counts.jobs)}
                     </Grid>
                     {userType === 'ADMIN' && (
-                        <Grid item md={1}>
-                            {renderCard('Invoices', counts.invoices)}
-                        </Grid>
-                    )}
-                    {userType === 'ADMIN' && (
-                        <Grid item md={1}>
-                            {renderCard('Payroll', counts.payroll)}
-                        </Grid>
-                    )}
-                    {userType === 'ADMIN' && (
-                        <Grid item md={1}>
-                            {renderCard('Timesheets', counts.timesheets)}
-                        </Grid>
+                        <>
+                            <Grid item md={1}>
+                                {renderCard('Invoices', counts.invoices)}
+                            </Grid>
+                            <Grid item md={1}>
+                                {renderCard('Payroll', counts.payroll)}
+                            </Grid>
+                            <Grid item md={1}>
+                                {renderCard('Timesheets', counts.timesheets)}
+                            </Grid>
+                        </>
                     )}
                     <Grid item md={1}>
                         {renderCard('Files', counts.files)}
