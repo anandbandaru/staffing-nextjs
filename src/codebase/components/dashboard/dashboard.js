@@ -3,6 +3,7 @@ import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
 import { Stack, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
+// import RefreshIcon from '@mui/icons-material/Refresh';
 
 const Dashboard = () => {
     const { APIPath, userType } = useContext(Context);
@@ -69,27 +70,30 @@ const Dashboard = () => {
                 }
                 return true;
             });
-            try {
-                const responses = await Promise.all(
-                    endpoints.map(endpoint => axios.get(APIPath + endpoint).catch(() => ({ data: { total: 0 } })))
-                );
-
-                const newCounts = responses.reduce((acc, response, index) => {
-                    const key = endpoints[index].split('/').pop();
-                    acc[key] = response.data.total;
-                    return acc;
-                }, {});
-
-                setCounts(newCounts);
-            } catch (error) {
-                console.error('Error fetching counts:', error);
-            } finally {
-                setApiLoading(false);
-            }
+            APICaller(endpoints);
         };
-
         fetchCounts();
     }, [APIPath]);
+
+    const APICaller = async (endpoints) => {
+        try {
+            const responses = await Promise.all(
+                endpoints.map(endpoint => axios.get(APIPath + endpoint).catch(() => ({ data: { total: 0 } })))
+            );
+
+            const newCounts = responses.reduce((acc, response, index) => {
+                const key = endpoints[index].split('/').pop();
+                acc[key] = response.data.total;
+                return acc;
+            }, {});
+
+            setCounts(newCounts);
+        } catch (error) {
+            console.error('Error fetching counts:', error);
+        } finally {
+            setApiLoading(false);
+        }
+    }
 
     const renderCard = (title, count) => (
         <Card sx={{ minWidth: 75 }}>
@@ -104,9 +108,16 @@ const Dashboard = () => {
                 }
             </CardContent>
             {/* <CardActions>
-                Something here
+                <Button variant="outlined" size='small'
+                    onClick={() => {
+                        APICaller(['/counts/owners']);
+                    }
+                    }
+                    startIcon={<RefreshIcon />}>
+                    Refresh
+                </Button>
             </CardActions> */}
-        </Card>
+        </Card >
     );
 
     return (

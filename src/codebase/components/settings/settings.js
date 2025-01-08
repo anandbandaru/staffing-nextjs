@@ -115,9 +115,8 @@ const Settings = () => {
                 onClose={toggleDrawer("bottom", false)}
             >
                 <Box className="w-full SettingsPartsHolder" role="presentation" onClick={toggleDrawer("bottom", true)} >
-                    <Stack direction={"row"} spacing={2}
-                        className="w-full py-4">
-                        <Card className="SettingsPart SettingsPart-developer" variant="outlined">
+                    <Stack direction={"row"} spacing={2} className="w-full py-4 px-4">
+                        <Card sx={{ maxWidth: 245 }} className="SettingsPart SettingsPart-developer" variant="outlined">
                             <CardContent>
                                 <Typography className="ToggleTitle" component="div">
                                     Developer Info
@@ -140,7 +139,7 @@ const Settings = () => {
                                 </Stack>
                             </CardContent>
                         </Card>
-                        <Card className="SettingsPart" variant="outlined">
+                        <Card sx={{ maxWidth: 245 }} className="SettingsPart" variant="outlined">
                             <CardContent>
                                 <Typography className="ToggleTitle" component="div">
                                     Quick Links
@@ -195,7 +194,7 @@ const Settings = () => {
                             </CardContent>
                         </Card>
 
-                        <Card className="SettingsPart" variant="outlined">
+                        <Card sx={{ maxWidth: 345 }} className="SettingsPart" variant="outlined">
                             <CardContent>
                                 <Typography className="ToggleTitle" component="div">
                                     Storage:
