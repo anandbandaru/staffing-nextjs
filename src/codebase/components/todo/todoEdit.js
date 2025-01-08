@@ -15,7 +15,7 @@ import axios from 'axios';
 
 function TodoEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath } = useContext(Context);
-    const { fetchTodos } = useContext(Context);
+    const { setRefreshTodos } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -24,7 +24,7 @@ function TodoEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }
     const handleClose = () => {
         setOpen(false);
         manualLoadData();
-        fetchTodos("Active");
+        setRefreshTodos(true);
     };
     const handleClickOpen = () => {
         setOpen(true);
@@ -75,6 +75,7 @@ function TodoEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }
                     const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
                     if (userInput.toUpperCase() === "DELETE") {
                         deleteItem();
+                        setRefreshTodos(true);
                     } else {
                         console.log("Delete operation cancelled");
                         showSnackbar('warning', "Delete operation cancelled");
