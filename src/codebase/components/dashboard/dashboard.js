@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Stack, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
 
 const Dashboard = () => {
-    const { APIPath } = useContext(Context);
+    const { APIPath, userType } = useContext(Context);
     const [apiLoading, setApiLoading] = useState(false);
     const [counts, setCounts] = useState({
         owners: 0,
@@ -33,7 +33,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchCounts = async () => {
             setApiLoading(true);
-            const endpoints = [
+            const allEndpoints = [
                 '/counts/owners',
                 '/counts/todos',
                 '/counts/activetodos',
@@ -51,11 +51,24 @@ const Dashboard = () => {
                 '/counts/filetypes',
                 '/counts/expensetypes',
                 '/counts/jobtypes',
-                '/counts/files',
-                '/counts/storagelimit',
-                '/counts/storageusage'
+                '/counts/files'
             ];
-
+            // Filter endpoints based on userType
+            const endpoints = allEndpoints.filter(endpoint => {
+                if (userType !== 'ADMIN'
+                    &&
+                    (
+                        endpoint.includes('owners')
+                        || endpoint.includes('companies')
+                        || endpoint.includes('invoices')
+                        || endpoint.includes('payroll')
+                        || endpoint.includes('timesheets')
+                    )
+                ) {
+                    return false;
+                }
+                return true;
+            });
             try {
                 const responses = await Promise.all(
                     endpoints.map(endpoint => axios.get(APIPath + endpoint).catch(() => ({ data: { total: 0 } })))
@@ -100,12 +113,16 @@ const Dashboard = () => {
         <>
             <div className="my-10 mx-3">
                 <Grid container spacing={1} className='p-5 mt-10 bg-slate-200'>
-                    <Grid item md={1}>
-                        {renderCard('Owners', counts.owners)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Companies', counts.companies)}
-                    </Grid>
+                    {userType === 'ADMIN' && (
+                        <Grid item md={1}>
+                            {renderCard('Owners', counts.owners)}
+                        </Grid>
+                    )}
+                    {userType === 'ADMIN' && (
+                        <Grid item md={1}>
+                            {renderCard('Companies', counts.companies)}
+                        </Grid>
+                    )}
                     <Grid item md={1}>
                         {renderCard('employees', counts.employees)}
                     </Grid>
@@ -121,15 +138,21 @@ const Dashboard = () => {
                     <Grid item md={1}>
                         {renderCard('Jobs', counts.jobs)}
                     </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Invoices', counts.invoices)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Payroll', counts.payroll)}
-                    </Grid>
-                    <Grid item md={1}>
-                        {renderCard('Timesheets', counts.timesheets)}
-                    </Grid>
+                    {userType === 'ADMIN' && (
+                        <Grid item md={1}>
+                            {renderCard('Invoices', counts.invoices)}
+                        </Grid>
+                    )}
+                    {userType === 'ADMIN' && (
+                        <Grid item md={1}>
+                            {renderCard('Payroll', counts.payroll)}
+                        </Grid>
+                    )}
+                    {userType === 'ADMIN' && (
+                        <Grid item md={1}>
+                            {renderCard('Timesheets', counts.timesheets)}
+                        </Grid>
+                    )}
                     <Grid item md={1}>
                         {renderCard('Files', counts.files)}
                     </Grid>
