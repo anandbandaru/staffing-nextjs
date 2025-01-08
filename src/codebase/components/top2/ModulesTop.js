@@ -27,14 +27,7 @@ const ModulesTop = ({ module }) => {
 
     return (
         <div className="top2Holder px-0 py-0">
-
-            <div className="top2Left px-1 mt-2">
-                <span className="logo" >
-                    {module}
-                </span>
-            </div>
             <div className="top2TabsHolder">
-
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <Tabs>
                         <TabList className="top2TabsListHolder">
@@ -56,39 +49,39 @@ const ModulesTop = ({ module }) => {
                             <Tab ><AdjustOutlinedIcon className="mr-1" />File Types List</Tab>
                         </TabList>
                         {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
+                            <TabPanel className="-mt-1">
                                 <OwnersMain />
                             </TabPanel>
                         )}
                         {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
+                            <TabPanel className="-mt-1">
                                 <CompaniesMain />
                             </TabPanel>
                         )}
                         {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
+                            <TabPanel className="-mt-1">
                                 <OwnershipsMain />
                             </TabPanel>
                         )}
-                        <TabPanel className="px-2">
+                        <TabPanel className="-mt-1">
                             <EmployeesMain />
                         </TabPanel>
-                        <TabPanel className="px-2">
+                        <TabPanel className="-mt-1">
                             <VendorsMain />
                         </TabPanel>
-                        <TabPanel className="px-2">
+                        <TabPanel className="-mt-1">
                             <ClientsMain />
                         </TabPanel>
-                        <TabPanel className="px-2">
+                        <TabPanel className="-mt-1">
                             <ImpPartnersMain />
                         </TabPanel>
-                        <TabPanel className="px-2">
+                        <TabPanel className="-mt-1">
                             <JobTypesMain />
                         </TabPanel>
-                        <TabPanel className="px-2">
+                        <TabPanel className="-mt-1">
                             <ExpenseTypesMain />
                         </TabPanel>
-                        <TabPanel className="px-2">
+                        <TabPanel className="-mt-1">
                             <FileTypesMain />
                         </TabPanel>
                     </Tabs>

@@ -38,21 +38,21 @@ const TransactionsTop = ({ module }) => {
                                 <Tab ><PointOfSaleOutlinedIcon className="mr-1" />Payroll</Tab>
                             )}
                         </TabList>
-                        <TabPanel className="px-2">
+                        <TabPanel className="py-2">
                             <JobsMain />
                         </TabPanel>
                         {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
+                            <TabPanel className="py-2">
                                 Invoices
                             </TabPanel>
                         )}
                         {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
+                            <TabPanel className="py-2">
                                 Expenses
                             </TabPanel>
                         )}
                         {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
+                            <TabPanel className="py-2">
                                 Payroll
                             </TabPanel>
                         )}

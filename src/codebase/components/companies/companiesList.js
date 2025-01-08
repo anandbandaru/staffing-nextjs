@@ -13,8 +13,7 @@ const CompaniesList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError] = useState(false);
-    const [dataAPIError] = useState("");
+    const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -67,6 +66,7 @@ const CompaniesList = () => {
                     setApiLoading(false);
                 },
                 (error) => {
+                    setDataAPIError(error.toString());
                     setData({});
                     setItemCount(0);
                     console.log("RequestData:On JUST error: API call failed")
@@ -153,7 +153,6 @@ const CompaniesList = () => {
                     operation="Add"
                     itemCount={itemCount}
                     apiLoading={apiLoading}
-                    apiLoadingError={apiLoadingError}
                     dataAPIError={dataAPIError}
                     manualLoadData={manualLoadData} />
                 {/* TOOLS */}

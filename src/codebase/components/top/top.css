@@ -13,6 +13,12 @@
     gap: 5px;
     float: left;
     margin-right: 40px;
+    margin-left: 4px;
+}
+.release_version_Div{
+    background-color: #83c5be;
+    border-radius: 4px;
+    padding: 0px 5px;
 }
 .topTabsHolder{
     margin-left: 0px;
@@ -59,6 +65,9 @@
 }
 .formControl{
     width: 300px;
+}
+.top2TabsHolder{
+    margin-top: -5px;
 }
 @media (max-width: 1050px) {
     /* .templateSwitchHolder {

@@ -77,7 +77,7 @@ const Top = () => {
 
             <div className="topTabsHolder  flex flex-grow">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
-                    <div className="topLeft px-1 mt-2">
+                    <div className="topLeft px-1 mt-1">
                         <Stack spacing={1} direction="row" className="items-center justify-center">
                             <img className="icon" src={assets.logo_24} alt="" />
                             <PriceChangeOutlinedIcon fontSize='large' />
