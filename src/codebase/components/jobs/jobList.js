@@ -95,14 +95,15 @@ const JobList = () => {
         },
         { field: "Id", maxWidth: 50 },
         { field: "jobName", filter: true },
-        { field: "employeeId", filter: true },
-        { field: "vendorId", filter: true },
-        { field: "implementationPartnerId", filter: true },
-        { field: "clientId", filter: true },
+        { field: "employeeName", filter: true },
+        { field: "vendorName", filter: true },
+        { field: "implementationPartnerName", filter: true },
+        { field: "clientName", filter: true },
+        { field: "companyName", filter: true },
         { field: "jobTitle", filter: true },
         { field: "jobStartDate", filter: true },
         { field: "jobEndDate", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 150, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
