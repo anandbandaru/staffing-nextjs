@@ -18,7 +18,8 @@
         "Job module",
         "Configuration sections",
         "Calendar module",
-        "Settings drawer with live & Azure links"
+        "Settings drawer with live & Azure links",
+        "Permissions for tabs for ADMIN only"
       ]
     },
     {
