@@ -13,8 +13,9 @@ import TodoForm from "./todoForm";
 import Stack from '@mui/material/Stack';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const TodosListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, dataAPIError, manualLoadData }) => {
+const TodosListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
     const [open, setOpen] = React.useState(false);
     const { fetchTodos } = useContext(Context);
     //For dialog MUI
@@ -53,8 +54,6 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                            {itemCount === 0 ? null :
-                                <>
                                     <Button size="small" variant="contained"
                                         onClick={() => {manualLoadData(); fetchTodos("Active");  }}
                                         disabled={apiLoading}
@@ -66,8 +65,6 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
                                             </>}
 
                                     </Button>
-                                </>
-                            }
                         </div>
                         {/* REFRESH ICON */}
                         {/* API LOADER & MESSAGE */}
@@ -76,10 +73,10 @@ const TodosListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
                                 <span className="text-white">loading...</span>
                             </> : <div className="text-s hidden lg:inline-block dark:text-white">
                                 API Call Status:
-                                {apiLoadingError ?
+                                {dataAPIError ?
                                     <span className="bg-red-600 px-2 rounded-sm mx-2">{dataAPIError}</span>
                                     :
-                                    <span className="bg-green-500 text-black px-2 rounded-sm mx-2">{dataAPIError}</span>
+                                    <CheckCircleOutlinedIcon className="ml-2 text-green-500" />
                                 }
                             </div>}
                         {/* API LOADER & MESSAGE */}

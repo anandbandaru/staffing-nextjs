@@ -11,7 +11,6 @@ const FileList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
 
@@ -48,10 +47,12 @@ const FileList = () => {
                     else {
                         setData(result);
                         setItemCount(result.total);
+                        setDataAPIError("");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
+                    setDataAPIError(error.toString());
                     setData({});
                     setItemCount(0);
                     console.log("RequestData:On JUST error: API call failed")
@@ -112,7 +113,6 @@ const FileList = () => {
                     operation="Add"
                     itemCount={itemCount}
                     apiLoading={apiLoading}
-                    apiLoadingError={apiLoadingError}
                     dataAPIError={dataAPIError}
                     manualLoadData={manualLoadData} />
                 {/* TOOLS */}

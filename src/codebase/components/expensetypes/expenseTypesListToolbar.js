@@ -12,8 +12,9 @@ import ExpenseTypeForm from "./expenseTypeForm";
 import Stack from '@mui/material/Stack';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const ExpenseTypesListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, dataAPIError, manualLoadData }) => {
+const ExpenseTypesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -50,8 +51,6 @@ const ExpenseTypesListToolbar = ({ operation, itemCount, apiLoading, apiLoadingE
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                            {itemCount === 0 ? null :
-                                <>
                                     <Button size="small" variant="contained"
                                         onClick={manualLoadData}
                                         disabled={apiLoading}
@@ -63,8 +62,6 @@ const ExpenseTypesListToolbar = ({ operation, itemCount, apiLoading, apiLoadingE
                                             </>}
 
                                     </Button>
-                                </>
-                            }
                         </div>
                         {/* REFRESH ICON */}
                         {/* API LOADER & MESSAGE */}
@@ -73,10 +70,10 @@ const ExpenseTypesListToolbar = ({ operation, itemCount, apiLoading, apiLoadingE
                                 <span className="text-white">loading...</span>
                             </> : <div className="text-s hidden lg:inline-block dark:text-white">
                                 API Call Status:
-                                {apiLoadingError ?
+                                {dataAPIError ?
                                     <span className="bg-red-600 px-2 rounded-sm mx-2">{dataAPIError}</span>
                                     :
-                                    <span className="bg-green-500 text-black px-2 rounded-sm mx-2">{dataAPIError}</span>
+                                    <CheckCircleOutlinedIcon className="ml-2 text-green-500" />
                                 }
                             </div>}
                         {/* API LOADER & MESSAGE */}

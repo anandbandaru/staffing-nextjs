@@ -5,8 +5,9 @@ import { Link } from "@mui/material";
 import Stack from '@mui/material/Stack';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const UsersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, dataAPIError, manualLoadData }) => {
+const UsersListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
     return (
         <>
             <div className="flex flex-grow">
@@ -26,8 +27,6 @@ const UsersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                            {itemCount === 0 ? null :
-                                <>
                                     <Button size="small" variant="contained"
                                         onClick={manualLoadData}
                                         disabled={apiLoading}
@@ -39,8 +38,6 @@ const UsersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
                                             </>}
 
                                     </Button>
-                                </>
-                            }
                         </div>
                         {/* REFRESH ICON */}
                         {/* API LOADER & MESSAGE */}
@@ -49,10 +46,10 @@ const UsersListToolbar = ({ operation, itemCount, apiLoading, apiLoadingError, d
                                 <span className="text-white">loading...</span>
                             </> : <div className="text-s hidden lg:inline-block dark:text-white">
                                 API Call Status:
-                                {apiLoadingError ?
+                                {dataAPIError ?
                                     <span className="bg-red-600 px-2 rounded-sm mx-2">{dataAPIError}</span>
                                     :
-                                    <span className="bg-green-500 text-black px-2 rounded-sm mx-2">{dataAPIError}</span>
+                                    <CheckCircleOutlinedIcon className="ml-2 text-green-500" />
                                 }
                             </div>}
                         {/* API LOADER & MESSAGE */}

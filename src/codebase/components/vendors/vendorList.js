@@ -12,7 +12,6 @@ const VendorList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
 
@@ -57,25 +56,22 @@ const VendorList = () => {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
-                        setDataAPIError(result.error.code + " - " + result.error.message);
                         setData({});
-                        setApiLoadingError(true);
                         setItemCount(0);
                     }
                     else {
                         setData(result);
                         setItemCount(result.total);
-                        setDataAPIError(result.total === 0 ? "No Vendors information present." : "ok");
+                        setDataAPIError("");
                     }
                     setApiLoading(false);
                 },
                 (error) => {
+                    setDataAPIError(error.toString());
                     setData({});
                     setItemCount(0);
                     console.log("RequestData:On JUST error: API call failed")
-                    setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             )
     }
@@ -151,7 +147,6 @@ const VendorList = () => {
                     operation="Add"
                     itemCount={itemCount}
                     apiLoading={apiLoading}
-                    apiLoadingError={apiLoadingError}
                     dataAPIError={dataAPIError}
                     manualLoadData={manualLoadData} />
                 {/* TOOLS */}

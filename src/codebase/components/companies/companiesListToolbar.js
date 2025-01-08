@@ -12,7 +12,7 @@ import CompanyForm from "./companyForm";
 import Stack from '@mui/material/Stack';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 const CompaniesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
     const [open, setOpen] = React.useState(false);
@@ -73,7 +73,7 @@ const CompaniesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, 
                                 {dataAPIError ?
                                     <span className="bg-red-600 px-2 rounded-sm mx-2">{dataAPIError}</span>
                                     :
-                                    <span className="bg-green-500 text-black p-2 rounded-sm mx-2">{dataAPIError}</span>
+                                    <CheckCircleOutlinedIcon className="ml-2 text-green-500" />
                                 }
                             </div>}
                         {/* API LOADER & MESSAGE */}

@@ -62,6 +62,7 @@ const CompaniesList = () => {
                     else {
                         setData(result);
                         setItemCount(result.total);
+                        setDataAPIError("");
                     }
                     setApiLoading(false);
                 },
