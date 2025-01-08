@@ -143,7 +143,9 @@ const Top = () => {
                 </Box>
             </div>
 
-            <Balance />
+            {userType === 'ADMIN' && (
+                <Balance />
+            )}
 
             <div className="userHolder">
                 <div className="px-2  rounded-sm text-white">
@@ -163,7 +165,10 @@ const Top = () => {
 
             </div>
 
-            <Settings />
+
+            {userType === 'ADMIN' && (
+                <Settings />
+            )}
 
             <Tooltip id="my-tooltip-api-availability" className="tooltip-example" />
 

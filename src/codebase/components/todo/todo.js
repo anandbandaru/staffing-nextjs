@@ -158,7 +158,7 @@ const ToDo = () => {
                     </>
                 }
             </div>
-            {todos && todos.data ?
+            {todos && todos.data && todosCompleted && todosCompleted.data ?
                 <>
                     <Tabs selectedIndex={tabIndex} className="mx-2"
                         onSelect={handleTabSelect}>

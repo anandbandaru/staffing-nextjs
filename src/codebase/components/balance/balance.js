@@ -5,7 +5,7 @@ import { Context } from "../../context/context";
 
 const Balance = () => {
 
-    const { userName, refreshBalance } = useContext(Context);
+    const { refreshBalance } = useContext(Context);
     const [apiLoading, setApiLoading] = useState(false);
     const [balance, setBalance] = useState(0.00);
 

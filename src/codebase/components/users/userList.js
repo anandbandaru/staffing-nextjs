@@ -9,6 +9,8 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import AttributionOutlinedIcon from '@mui/icons-material/AttributionOutlined';
+import { Stack, Card, CardContent, Typography } from "@mui/material";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 const UserList = () => {
     const { accessToken } = useContext(Context);
@@ -58,13 +60,13 @@ const UserList = () => {
     const iconMap = {
         ADMIN: <AdminPanelSettingsOutlinedIcon />,
         COHOST: <SupervisedUserCircleOutlinedIcon />,
-        TIMESHEET: <PersonOutlinedIcon />,
+        OPERATOR: <PersonOutlinedIcon />,
         DEFAULT: <AttributionOutlinedIcon />,
     };
     const classMap = {
         ADMIN: 'rag-green-bg badgeSpan',
         COHOST: 'rag-red-bg badgeSpan',
-        TIMESHEET: 'rag-blue-bg badgeSpan',
+        OPERATOR: 'rag-blue-bg badgeSpan',
         DEFAULT: 'rag-gray-bg badgeSpan',
     };
     const CustomJobTitleRenderer = ({ value }) => (
@@ -112,9 +114,68 @@ const UserList = () => {
                 {/* TOOLS */}
             </div>
 
+            <Stack direction={"row"} spacing={2} className="w-full py-4">
+                <Card sx={{ maxWidth: 275 }} className="rag-green-bg text-white">
+                    <CardContent>
+                        <Typography variant="h5" component="div">
+                            <AdminPanelSettingsOutlinedIcon className="mr-3" /> ADMIN
+                        </Typography>
+                        <div className="mt-4">
+                            Can:
+                            <ul>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />view all components of the application.</li>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Access Azure using Admin account</li>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Access Calendar using Admin account</li>
+                            </ul>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card sx={{ maxWidth: 275 }} className="rag-blue-bg text-white">
+                    <CardContent>
+                        <Typography variant="h5" component="div">
+                            <PersonOutlinedIcon className="mr-3" />OPERATOR
+                        </Typography>
+                        <div className="mt-4">
+                            Can only look at:
+                            <ul>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Dashboard
+                                    <ul className="ml-10">
+                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Employees</li>
+                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Vendors</li>
+                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Clients</li>
+                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Implementation Partners</li>
+                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Job Types List</li>
+                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Expense Types List</li>
+                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />File Types List</li>
+                                    </ul>
+                                </li>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Transactions
+                                    <ul className="ml-10">
+                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Jobs</li>
+                                    </ul>
+                                </li>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Files</li>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Todo</li>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Calendar</li>
+                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Todo Sidebar</li>
+                            </ul>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card sx={{ maxWidth: 275 }} className="rag-red-bg text-white">
+                    <CardContent>
+                        <Typography variant="h5" component="div">
+                            <SupervisedUserCircleOutlinedIcon className="mr-3" />COHOST
+                        </Typography>
+                        <div className="mt-4">
+                            Yet to define permissions
+                        </div>
+                    </CardContent>
+                </Card>
+            </Stack>
             <div
                 className="ag-theme-quartz" // applying the Data Grid theme
-                style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+                style={{ height: 400 }} // the Data Grid will fill the size of the parent container
             >
                 <AgGridReact
                     rowData={data ? data.value : []}
@@ -127,7 +188,6 @@ const UserList = () => {
                     enableCellTextSelection={true}
                 />
             </div>
-
         </>
     )
 }
