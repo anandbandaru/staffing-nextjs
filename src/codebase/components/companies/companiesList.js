@@ -56,13 +56,17 @@ const CompaniesList = () => {
                     //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
+                        setDataAPIError("RequestData:On error return: setting empty")
                         setData({});
                         setItemCount(0);
                     }
                     else {
                         setData(result);
                         setItemCount(result.total);
-                        setDataAPIError("");
+                        setDataAPIError(result.STATUS === "FAIL" ? "API Error" : "");
+                        if (result.STATUS === "FAIL") {
+                            showSnackbar('error', result.ERROR.MESSAGE);
+                        }
                     }
                     setApiLoading(false);
                 },

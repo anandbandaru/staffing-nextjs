@@ -5,8 +5,7 @@ import axios from 'axios';
 import { Stack, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
 
 const Dashboard = () => {
-    const { APIPath, userType } = useContext(Context);
-    const [apiLoading, setApiLoading] = useState(false);
+    const { APIPath, userType, isAPILoading, setIsAPILoading } = useContext(Context);
     const [counts, setCounts] = useState({
         owners: 0,
         todos: 0,
@@ -29,10 +28,9 @@ const Dashboard = () => {
         storageusage: 0,
         storagelimit: 0,
     });
-
     useEffect(() => {
         const fetchCounts = async () => {
-            setApiLoading(true);
+            setIsAPILoading(true);
             const allEndpoints = [
                 '/counts/owners',
                 '/counts/todos',
@@ -90,7 +88,7 @@ const Dashboard = () => {
         } catch (error) {
             console.error('Error fetching counts:', error);
         } finally {
-            setApiLoading(false);
+            setIsAPILoading(false);
         }
     }
 
@@ -100,7 +98,7 @@ const Dashboard = () => {
                 <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
                     {title}
                 </Typography>
-                {apiLoading ?
+                {isAPILoading ?
                     <Skeleton variant="circular" width={20} height={20} />
                     :
                     <div className='dashCardsCounts'>{count ? count : "-"}</div>
@@ -161,7 +159,7 @@ const Dashboard = () => {
                                     To Dos
                                 </Typography>
                                 <Stack spacing={1} direction="row">
-                                    {apiLoading ? (
+                                    {isAPILoading ? (
                                         <Skeleton variant="rectangular" width={210} height={20} />
                                     ) : (
                                         <>

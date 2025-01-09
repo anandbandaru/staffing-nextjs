@@ -230,6 +230,7 @@ const ContextProvider = (props) => {
     const contextValue = {
         loading,
         isAPILoading,
+        setIsAPILoading,
         isAPIError,
         APItext,
         APIVersion,

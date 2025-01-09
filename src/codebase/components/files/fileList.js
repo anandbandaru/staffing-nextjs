@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import FilesListToolbar from './filesListToolbar'
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import { Button, Link } from '@mui/material';
+import CustomSnackbar from "../snackbar/snackbar";
 
 const FileList = () => {
     const { APIPath } = useContext(Context);
@@ -31,6 +32,18 @@ const FileList = () => {
         }, 1);
     }
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
     const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getfiles"
@@ -47,7 +60,10 @@ const FileList = () => {
                     else {
                         setData(result);
                         setItemCount(result.total);
-                        setDataAPIError("");
+                        setDataAPIError(result.STATUS === "FAIL" ? "API Error" : "");
+                        if (result.STATUS === "FAIL") {
+                            showSnackbar('error', result.ERROR.MESSAGE);
+                        }
                     }
                     setApiLoading(false);
                 },
@@ -106,6 +122,12 @@ const FileList = () => {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
 
                 {/* TOOLS */}

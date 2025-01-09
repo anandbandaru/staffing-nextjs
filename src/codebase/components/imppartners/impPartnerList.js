@@ -61,7 +61,10 @@ const ImpPartnerList = () => {
                     else {
                         setData(result);
                         setItemCount(result.total);
-                        setDataAPIError("");
+                        setDataAPIError(result.STATUS === "FAIL" ? "API Error" : "");
+                        if (result.STATUS === "FAIL") {
+                            showSnackbar('error', result.ERROR.MESSAGE);
+                        }
                     }
                     setApiLoading(false);
                 },
