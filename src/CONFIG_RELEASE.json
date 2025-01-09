@@ -18,7 +18,8 @@
         "TODO bar now refreshes from TODO module actions",
         "All ADD forms now in full screen",
         "All ADD forms will not close on out of boundary click",
-        "API error handling based on STATUS & showing snackbar"
+        "API error handling based on STATUS & showing snackbar",
+        "Balance using API call & currency converter API call for USD to INR"
       ]
     },
     {
