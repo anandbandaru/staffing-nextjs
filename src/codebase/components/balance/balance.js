@@ -4,33 +4,42 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { Context } from "../../context/context";
 import axios from 'axios';
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
+import { Tooltip } from 'react-tooltip';
 
 const Balance = () => {
-
-    const { refreshBalance, freecurrencyapi, freecurrencyapi_key } = useContext(Context);
+    const { APIPath, refreshBalance, freecurrencyapi, freecurrencyapi_key } = useContext(Context);
     const [apiLoading, setApiLoading] = useState(false);
-    const [balance, setBalance] = useState(0.00);
     const [usd, setUsd] = useState('');
     const [inr, setInr] = useState(null);
+    const [exchangeRate, setExchangeRate] = useState(null);
     const [errorCurrency, setErrorCurrency] = useState(false);
 
-    //page title
     useEffect(() => {
-        // USE BELOW TO REFRESH FROM ANTOHER COMPONENT
-        //setRefreshBalance(!refreshBalance);
-        setApiLoading(true);
-        setTimeout(() => {
-            setApiLoading(false);
-            let usdValue = 1;
-            setUsd(usdValue);
-            convertCurrency(usdValue);
-            console.log("LOADED BALANCE")
-        }, 5000);
-    }, [refreshBalance]);
-
-    const convertCurrency = async () => {
-        try {
+         // USE BELOW TO REFRESH FROM ANTOHER COMPONENT //setRefreshBalance(!refreshBalance);
+        const fetchBalance = async () => {
             setApiLoading(true);
+            try {
+                const response = await fetch(`${APIPath}/getbalance`);
+                const result = await response.json();
+                if (result.error) {
+                    setUsd(0);
+                } else {
+                    setUsd(result.BALANCE);
+                }
+                convertCurrency(result.BALANCE);
+            } catch (error) {
+                setUsd(0);
+                convertCurrency(0);
+            } finally {
+                setApiLoading(false);
+            }
+        };
+
+        fetchBalance();
+    }, [APIPath, refreshBalance]);
+
+    const convertCurrency = async (usdValue) => {
+        try {
             const response = await axios.get(freecurrencyapi, {
                 params: {
                     apikey: freecurrencyapi_key,
@@ -39,31 +48,29 @@ const Balance = () => {
                 }
             });
             const exchangeRate = response.data.data.INR;
-            setInr((usd * exchangeRate).toFixed(2));
+            setExchangeRate(`Exchange rate: ${exchangeRate.toFixed(2)}`);
+            setInr((usdValue * exchangeRate).toFixed(2));
             setErrorCurrency(false);
-            setApiLoading(false);
         } catch (error) {
             console.error('Error fetching exchange rate:', error);
             setErrorCurrency(true);
-            setApiLoading(false);
         }
     };
 
-
     return (
         <div className="balanceHolder">
+            <Tooltip id="my-tooltip-api-exchange" className="tooltip-example" />
             {apiLoading ? (
-                <div>
-                    <div className="spinner my-1 mx-4">
-                    </div>
-                </div>
+                <div className="spinner my-1 mx-4"></div>
             ) : (
-                <span>
+                <span
+                    data-tooltip-id="my-tooltip-api-exchange"
+                    data-tooltip-html={exchangeRate}>
                     <span>BALANCE:</span> $ {usd} - (₹ {!errorCurrency ? inr : <ReportProblemOutlinedIcon className="error mb-2" fontSize="small" />})
                 </span>
             )}
-
         </div>
-    )
-}
+    );
+};
+
 export default Balance;

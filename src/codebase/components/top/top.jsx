@@ -222,7 +222,7 @@ const Top = () => {
                         </>
                         :
                         <>
-                            <Button size="small" variant="outlined" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />}
+                            <Button size="small" variant="contained" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />}
                                 onClick={() => {
                                     checkAPIAvailability();
                                     showSnackbar('info', "Checked API availability");
