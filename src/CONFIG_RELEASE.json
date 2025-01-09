@@ -17,7 +17,8 @@
       "notes": [
         "TODO bar now refreshes from TODO module actions",
         "All ADD forms now in full screen",
-        "All ADD forms will not close on out of boundary click"
+        "All ADD forms will not close on out of boundary click",
+        "API error handling based on STATUS & showing snackbar"
       ]
     },
     {
