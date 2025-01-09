@@ -41,10 +41,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import LinearProgress from '@mui/material/LinearProgress';
+import Alert from '@mui/material/Alert';
+import CachedIcon from '@mui/icons-material/Cached';
 
 const Top = () => {
 
     const {
+        refreshPage,
+        openDashboardAPIError,
+        dashboardAPIError,
         isAPILoading,
         isAPIError,
         APIVersion,
@@ -254,6 +259,25 @@ const Top = () => {
                             <div>Fetching configured list</div>
                         </Stack>
                     </Stack>
+                </DialogContent>
+            </BootstrapDialog>
+
+            <BootstrapDialog
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={openDashboardAPIError}
+            >
+                <DialogTitle className="dialogTitle" sx={{ m: 0, p: 1 }} id="customized-dialog-title" >
+                    <Stack className="stackLoadingTitle text-red-600" direction="row" spacing={2} >
+                        <div>Errow in API - Mostly SQL issue</div>
+                    </Stack>
+                </DialogTitle>
+                <DialogContent dividers size="small">
+                    <Alert severity="error" className="mb-4">{dashboardAPIError}</Alert>
+                    <Button variant="contained" size="large" className="bg-pink-600 float-right mt-4"
+                        startIcon={<CachedIcon />}
+                        onClick={refreshPage}>Refresh
+                    </Button>
                 </DialogContent>
             </BootstrapDialog>
 

@@ -4,7 +4,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { Context } from "../../context/context";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 
@@ -23,7 +22,8 @@ export default function Login() {
                             <div>Please Login to continue...</div>
                             <Button variant="contained" size="large" className="bg-pink-600"
                                 startIcon={<LockOpenOutlinedIcon />}
-                                onClick={refreshPage}>Login with Popup</Button>
+                                onClick={refreshPage}>Login with Popup
+                            </Button>
                         </Stack>
                     </CardContent>
                 </Card>

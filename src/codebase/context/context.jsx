@@ -34,6 +34,8 @@ const ContextProvider = (props) => {
     const [APIType, setAPIType] = useState('');
     const [topTabName, setTopTabName] = useState('');
     const [top2TabName, setTop2TabName] = useState('');
+    const [openDashboardAPIError, setOpenDashboardAPIError] = useState(false);
+    const [dashboardAPIError, setDashboardAPIError] = useState(false);
     
 
     //FOR HISTORY LOCAL STORAGE
@@ -228,6 +230,10 @@ const ContextProvider = (props) => {
     
 
     const contextValue = {
+        setOpenDashboardAPIError,
+        openDashboardAPIError,
+        setDashboardAPIError,
+        dashboardAPIError,
         loading,
         isAPILoading,
         setIsAPILoading,

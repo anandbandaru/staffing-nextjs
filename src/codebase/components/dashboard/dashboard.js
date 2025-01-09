@@ -5,7 +5,9 @@ import axios from 'axios';
 import { Stack, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
 
 const Dashboard = () => {
-    const { APIPath, userType, isAPILoading, setIsAPILoading } = useContext(Context);
+    const { APIPath, userType, isAPILoading, setIsAPILoading, 
+        setOpenDashboardAPIError,
+        setDashboardAPIError } = useContext(Context);
     const [counts, setCounts] = useState({
         owners: 0,
         todos: 0,
@@ -28,6 +30,8 @@ const Dashboard = () => {
         storageusage: 0,
         storagelimit: 0,
     });
+
+
     useEffect(() => {
         const fetchCounts = async () => {
             setIsAPILoading(true);
@@ -74,8 +78,29 @@ const Dashboard = () => {
 
     const APICaller = async (endpoints) => {
         try {
+            setIsAPILoading(true);
             const responses = await Promise.all(
-                endpoints.map(endpoint => axios.get(APIPath + endpoint).catch(() => ({ data: { total: 0 } })))
+                endpoints.map(
+                    endpoint => axios.get(APIPath + endpoint)
+                        .then((res) => {
+                            // console.log(res);
+                            if (res.data.STATUS === "FAIL") {
+                                setDashboardAPIError(res.data.ERROR.MESSAGE)
+                                setOpenDashboardAPIError(true);
+                                return {
+                                    data: { total: 0 }
+                                };
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(`Error fetching ${endpoint}:`, error);
+                            setOpenDashboardAPIError(true);
+                            setDashboardAPIError(error)
+                            return {
+                                data: { total: 0 }
+                            };
+                        })
+                )
             );
 
             const newCounts = responses.reduce((acc, response, index) => {
@@ -86,7 +111,7 @@ const Dashboard = () => {
 
             setCounts(newCounts);
         } catch (error) {
-            console.error('Error fetching counts:', error);
+            console.log('Error fetching counts:', error);
         } finally {
             setIsAPILoading(false);
         }
