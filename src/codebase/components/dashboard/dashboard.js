@@ -83,32 +83,32 @@ const Dashboard = () => {
                 endpoints.map(
                     endpoint => axios.get(APIPath + endpoint)
                         .then((res) => {
-                            // console.log(res);
                             if (res.data.STATUS === "FAIL") {
-                                setDashboardAPIError(res.data.ERROR.MESSAGE)
+                                setDashboardAPIError(res.data.ERROR.MESSAGE);
                                 setOpenDashboardAPIError(true);
                                 return {
                                     data: { total: 0 }
                                 };
                             }
+                            return res; // Return the response if status is not "FAIL"
                         })
                         .catch((error) => {
                             console.log(`Error fetching ${endpoint}:`, error);
                             setOpenDashboardAPIError(true);
-                            setDashboardAPIError(error)
+                            setDashboardAPIError(error);
                             return {
                                 data: { total: 0 }
                             };
                         })
                 )
             );
-
+    
             const newCounts = responses.reduce((acc, response, index) => {
                 const key = endpoints[index].split('/').pop();
                 acc[key] = response.data.total;
                 return acc;
             }, {});
-
+    
             setCounts(newCounts);
         } catch (error) {
             console.log('Error fetching counts:', error);
