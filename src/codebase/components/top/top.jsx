@@ -5,7 +5,6 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { assets } from '../../assets/assets'
 import { Context } from "../../context/context";
 import { Tooltip } from 'react-tooltip';
-import { pink } from '@mui/material/colors';
 import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontalCircleOutlined';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -26,7 +25,6 @@ import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import AttachmentIcon from '@mui/icons-material/Attachment';
 import AttributionIcon from '@mui/icons-material/Attribution';
 import CustomSnackbar from "../snackbar/snackbar";
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
@@ -36,6 +34,13 @@ import Configuration from "../configuration/configuration";
 import Settings from "../settings/settings";
 import Balance from "../balance/balance";
 import Calendar from "../calendar/calendar";
+
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const Top = () => {
 
@@ -65,6 +70,25 @@ const Top = () => {
         setSnackbarOpen(true);
     };
 
+    //FOR NO data source scenario
+    const Transition = React.forwardRef(function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+    });
+
+    const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+        '& .MuiDialogContent-root': {
+            padding: theme.spacing(2),
+        },
+        '& .MuiDialogActions-root': {
+            padding: theme.spacing(1),
+        },
+    }));
+    const [openLoadingAPI, setOpenLoadingAPI] = React.useState(false);
+    //this ensure to show the above dialog is no DS are given by API
+    useEffect(() => {
+        console.log("SHOW LOADING:" + isAPILoading)
+        setOpenLoadingAPI(isAPILoading);
+    }, [isAPILoading]);
 
     return (
         <div className="topHolder px-0">
@@ -203,9 +227,35 @@ const Top = () => {
                             </Button>
                         </>
                 }
-
             </div>
 
+            <BootstrapDialog
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={openLoadingAPI}
+            >
+                <DialogTitle className="dialogTitle" sx={{ m: 0, p: 1 }} id="customized-dialog-title" >
+                    <Stack className="stackLoadingTitle" direction="row" spacing={2}>
+                        <div>Please wait</div>
+                    </Stack>
+                </DialogTitle>
+                <DialogContent dividers size="small">
+                    <Stack direction="column" spacing={2}>
+                        <Stack className="stackLoadingMessages" direction="column" spacing={2}>
+                            <LinearProgress color="secondary" />
+                        </Stack>
+                        <Stack className="stackLoadingMessages" direction="row" spacing={2}>
+                            <div>Checking API availability</div>
+                        </Stack>
+                        <Stack className="stackLoadingMessages" direction="row" spacing={2}>
+                            <div>Checking Application DB access</div>
+                        </Stack>
+                        <Stack className="stackLoadingMessages" direction="row" spacing={2}>
+                            <div>Fetching configured list</div>
+                        </Stack>
+                    </Stack>
+                </DialogContent>
+            </BootstrapDialog>
 
         </div>
     )

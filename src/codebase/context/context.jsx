@@ -47,6 +47,7 @@ const ContextProvider = (props) => {
 
     const checkAPIAvailability = async () => {
         setIsAPILoading(true);
+        console.log("CONTEXT: SHOW LOADING: TRUE")
         setAPIText("Checking API availability & getting list of data sources....");
         try {
             setAPIPath(flaskAPI_Availability);
@@ -64,6 +65,7 @@ const ContextProvider = (props) => {
             setAPIType(data.APIType);
             setIsAPILoading(false);
             setIsAPIError(false);
+            console.log("CONTEXT: SHOW LOADING: FALSE")
             console.log("API availability call made.");
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -73,6 +75,7 @@ const ContextProvider = (props) => {
             );
             setIsAPIError(true);
             setIsAPILoading(false);
+            console.log("CONTEXT: SHOW LOADING: FALSE")
             if (error === "TypeError: Failed to fetch") { }
             // setListOfDatasources(null);
         }
