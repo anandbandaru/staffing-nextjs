@@ -17,6 +17,8 @@ const ContextProvider = (props) => {
     const [userType, setUserType] = useState("");
 
     const flaskAPI_Availability = process.env.REACT_APP_API_SUFFIX;
+    const freecurrencyapi = process.env.REACT_APP_FREE_CURRENCY_API;
+    const freecurrencyapi_key = process.env.REACT_APP_FREE_CURRENCY_API_KEY;
     const [loading] = useState(false);
     const [refreshBalance, setRefreshBalance] = useState(false);
     const [refreshTodos, setRefreshTodos] = useState(false);
@@ -230,6 +232,8 @@ const ContextProvider = (props) => {
     
 
     const contextValue = {
+        freecurrencyapi,
+        freecurrencyapi_key,
         setOpenDashboardAPIError,
         openDashboardAPIError,
         setDashboardAPIError,
