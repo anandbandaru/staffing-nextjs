@@ -92,6 +92,28 @@ const ExpenseList = () => {
             </>
         );
     };
+    const CustomAmountComponent = (props) => {
+        return (
+            <>
+                {props.data.currencyType === 'USD' ?
+                    <span className="rag-blue-bg badgeSpan">$ </span> :
+                    <span className="rag-gray-bg badgeSpan">₹ </span>
+                }<span className="ml-4">{props.data.currencyType} {props.value}</span>
+            </>
+        );
+    };
+    const CustomCategoryComponent = (props) => {
+        return (
+            <>
+                {props.data.category === 'Company' ?
+                    <span className="rag-blue-bg badgeSpan">{props.value}</span> :
+                    props.data.category === 'Employee' ?
+                    <span className="rag-gray-bg badgeSpan">{props.value}</span> :
+                    <span className="rag-red-bg badgeSpan">{props.value}</span>
+                }
+            </>
+        );
+    };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         {
@@ -99,11 +121,12 @@ const ExpenseList = () => {
         },
         { field: "Id", maxWidth: 50 },
         { field: "expenseTypeId", filter: true },
-        { field: "amount", filter: true },
-        { field: "currencyType", filter: true },
-        { field: "category", filter: true },
-        { field: "companyId", filter: true },
-        { field: "employeeId", filter: true },
+        {
+            field: "amount", filter: true, cellRenderer: CustomAmountComponent
+        },
+        { field: "category", filter: true, cellRenderer: CustomCategoryComponent },
+        { field: "companyName", filter: true },
+        { field: "employeeName", filter: true },
         { field: "createdDate", filter: true },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false }
     ]);
