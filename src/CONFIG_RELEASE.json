@@ -19,7 +19,8 @@
         "All ADD forms now in full screen",
         "All ADD forms will not close on out of boundary click",
         "API error handling based on STATUS & showing snackbar",
-        "Balance using API call & currency converter API call for USD to INR"
+        "Balance using API call & currency converter API call for USD to INR",
+        "Expenses Module added with all features"
       ]
     },
     {
@@ -50,6 +51,34 @@
         "Added ability to show greetings in landing page too",
         "UI changes for cards & prompts in landing page"
       ]
+    }
+  ],
+  "currencyTypes": [
+    {
+      "name": "USD"
+    },
+    {
+      "name": "INR"
+    }
+  ],
+  "expenseCategories": [
+    {
+      "name": "Company"
+    },
+    {
+      "name": "Employee"
+    },
+    {
+      "name": "Suspense A"
+    },
+    {
+      "name": "Suspense B"
+    },
+    {
+      "name": "Suspense C"
+    },
+    {
+      "name": "Suspense D"
     }
   ],
   "timesheetsPeriods": [

@@ -13,6 +13,8 @@ const Configuration = () => {
             <GenericList formType={"timesheetsPeriods"} />
             <GenericList formType={"invoicePeriods"} />
             <GenericList formType={"GOOGLEDRIVE_FOLDERS"} />
+            <GenericList formType={"expenseCategories"} />
+            <GenericList formType={"currencyTypes"} />
         </Stack>
     )
 }

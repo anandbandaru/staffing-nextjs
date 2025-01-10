@@ -75,6 +75,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                 return APIPath + "/getfiletypedetails";
             case 'TODOS':
                 return APIPath + "/gettododetails";
+            case 'EXPENSES':
+                return APIPath + "/getexpensedetails";
             default:
                 return '';
         }
@@ -172,7 +174,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                                         Object.entries(item).map(([key, value]) => (
                                                             <TableRow key={`${index}-${key}`}>
                                                                 <TableCell component="th" scope="row" className="max-w-[200px]">
-                                                                    <span className={`${highlightKeys.includes(key.toUpperCase()) ? 'rag-gray-bg px-2' : ''}`}>
+                                                                    <span className={`${highlightKeys.includes(key.toUpperCase()) || key.toLowerCase().includes('id') ? 'rag-gray-bg px-2' : ''}`}>
                                                                         {key}
                                                                     </span>
                                                                 </TableCell>

@@ -11,6 +11,7 @@ import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 import AssuredWorkloadOutlinedIcon from '@mui/icons-material/AssuredWorkloadOutlined';
 import JobsMain from "../jobs/jobsMain";
+import ExpensesMain from "../expenses/expensesMain";
 
 const TransactionsTop = ({ module }) => {
     const { userType } = useContext(Context);
@@ -29,32 +30,28 @@ const TransactionsTop = ({ module }) => {
                         <TabList className="top2TabsListHolder">
                             <Tab ><AssuredWorkloadOutlinedIcon className="mr-1" />Jobs</Tab>
                             {userType === 'ADMIN' && (
+                                <>
                                 <Tab ><SellOutlinedIcon className="mr-1" />Invoices</Tab>
-                            )}
-                            {userType === 'ADMIN' && (
                                 <Tab ><AddShoppingCartIcon className="mr-1" />Expenses</Tab>
-                            )}
-                            {userType === 'ADMIN' && (
                                 <Tab ><PointOfSaleOutlinedIcon className="mr-1" />Payroll</Tab>
+                                </>
                             )}
                         </TabList>
-                        <TabPanel className="py-2">
+                        <TabPanel className="py-0">
                             <JobsMain />
                         </TabPanel>
                         {userType === 'ADMIN' && (
-                            <TabPanel className="py-2">
-                                Invoices
-                            </TabPanel>
-                        )}
-                        {userType === 'ADMIN' && (
-                            <TabPanel className="py-2">
-                                Expenses
-                            </TabPanel>
-                        )}
-                        {userType === 'ADMIN' && (
-                            <TabPanel className="py-2">
-                                Payroll
-                            </TabPanel>
+                            <>
+                                <TabPanel className="py-0">
+                                    Invoices
+                                </TabPanel>
+                                <TabPanel className="py-0">
+                                    <ExpensesMain />
+                                </TabPanel>
+                                <TabPanel className="py-0">
+                                    Payroll
+                                </TabPanel>
+                            </>
                         )}
                     </Tabs>
                 </Box>

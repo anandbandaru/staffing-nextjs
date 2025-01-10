@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Stack, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
 
 const Dashboard = () => {
-    const { APIPath, userType, isAPILoading, setIsAPILoading, 
+    const { APIPath, userType, isAPILoading, setIsAPILoading,
         setOpenDashboardAPIError,
         setDashboardAPIError } = useContext(Context);
     const [counts, setCounts] = useState({
@@ -48,6 +48,7 @@ const Dashboard = () => {
                 '/counts/vendors',
                 '/counts/jobs',
                 // '/counts/invoices',
+                '/counts/expenses',
                 // '/counts/payroll',
                 // '/counts/timesheets',
                 '/counts/filetypes',
@@ -63,6 +64,7 @@ const Dashboard = () => {
                         endpoint.includes('owners')
                         || endpoint.includes('companies')
                         || endpoint.includes('invoices')
+                        || endpoint.includes('expenses')
                         || endpoint.includes('payroll')
                         || endpoint.includes('timesheets')
                     )
@@ -74,11 +76,12 @@ const Dashboard = () => {
             APICaller(endpoints);
         };
         fetchCounts();
-    }, [APIPath]);
+    }, [APIPath, userType]);
 
     const APICaller = async (endpoints) => {
         try {
             setIsAPILoading(true);
+            console.log("FINAL DASH ENDPOINTS: " + endpoints)
             const responses = await Promise.all(
                 endpoints.map(
                     endpoint => axios.get(APIPath + endpoint)
@@ -102,13 +105,13 @@ const Dashboard = () => {
                         })
                 )
             );
-    
+
             const newCounts = responses.reduce((acc, response, index) => {
                 const key = endpoints[index].split('/').pop();
                 acc[key] = response.data.total;
                 return acc;
             }, {});
-    
+
             setCounts(newCounts);
         } catch (error) {
             console.log('Error fetching counts:', error);
@@ -159,22 +162,6 @@ const Dashboard = () => {
                         {renderCard('Vendors', counts.vendors)}
                     </Grid>
                     <Grid item md={1}>
-                        {renderCard('Jobs', counts.jobs)}
-                    </Grid>
-                    {userType === 'ADMIN' && (
-                        <>
-                            <Grid item md={1}>
-                                {renderCard('Invoices', counts.invoices)}
-                            </Grid>
-                            <Grid item md={1}>
-                                {renderCard('Payroll', counts.payroll)}
-                            </Grid>
-                            <Grid item md={1}>
-                                {renderCard('Timesheets', counts.timesheets)}
-                            </Grid>
-                        </>
-                    )}
-                    <Grid item md={1}>
                         {renderCard('Files', counts.files)}
                     </Grid>
                     <Grid item md={1.6}>
@@ -207,6 +194,29 @@ const Dashboard = () => {
                 <div className='mt-4 flex-0  bg-slate-200' >
                     <Grid container spacing={1} className='p-5 mt-10 bg-slate-200'>
                         <Grid item md={1}>
+                            {renderCard('Jobs', counts.jobs)}
+                        </Grid>
+                        {userType === 'ADMIN' && (
+                            <>
+                                <Grid item md={1}>
+                                    {renderCard('Invoices', counts.invoices)}
+                                </Grid>
+                                <Grid item md={1}>
+                                    {renderCard('Expenses', counts.expenses)}
+                                </Grid>
+                                <Grid item md={1}>
+                                    {renderCard('Payroll', counts.payroll)}
+                                </Grid>
+                                <Grid item md={1}>
+                                    {renderCard('Timesheets', counts.timesheets)}
+                                </Grid>
+                            </>
+                        )}
+                    </Grid>
+                </div>
+                <div className='mt-4 flex-0  bg-slate-200' >
+                    <Grid container spacing={1} className='p-5 mt-10 bg-slate-200'>
+                        <Grid item md={1}>
                             {renderCard('File Types', counts.filetypes)}
                         </Grid>
                         <Grid item md={1}>
@@ -217,7 +227,6 @@ const Dashboard = () => {
                         </Grid>
                     </Grid>
                 </div>
-
             </div>
         </>
     );

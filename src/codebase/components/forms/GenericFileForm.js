@@ -9,7 +9,6 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
 import Alert from '@mui/material/Alert';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
@@ -264,7 +263,6 @@ function GenericFileForm({ props, componentName, moduleId }) {
                     </Formik>
                 </>
             }
-
         </>
     );
 }

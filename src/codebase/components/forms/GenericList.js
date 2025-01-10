@@ -16,7 +16,9 @@ function GenericList({ formType }) {
                 visaTypes: configData.visaTypes,
                 timesheetsPeriods: configData.timesheetsPeriods,
                 invoicePeriods: configData.invoicePeriods,
-                GOOGLEDRIVE_FOLDERS: configData.GOOGLEDRIVE_FOLDERS
+                GOOGLEDRIVE_FOLDERS: configData.GOOGLEDRIVE_FOLDERS,
+                expenseCategories: configData.expenseCategories,
+                currencyTypes: configData.currencyTypes
             };
 
             const selectedData = dataMap[formType] || [];
