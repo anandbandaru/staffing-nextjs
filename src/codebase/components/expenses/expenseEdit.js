@@ -16,7 +16,7 @@ import GenericFileForm from '../forms/GenericFileForm';
 import axios from 'axios';
 
 function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
-    const { APIPath } = useContext(Context);
+    const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [openDocuments, setOpenDocuments] = React.useState(false);
     //For dialog MUI
@@ -31,6 +31,7 @@ function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
         setOpen(true);
     };
     const handleCloseDocuments = (event, reason) => {
+        setRefreshBalance(!refreshBalance);
         if (reason && reason === "backdropClick") 
             return;
         setOpenDocuments(false);

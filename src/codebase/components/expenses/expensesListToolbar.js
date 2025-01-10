@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../../context/context";
 import 'reactjs-popup/dist/index.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -14,7 +15,8 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import CachedIcon from '@mui/icons-material/Cached';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const ExpensesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
+const ExpensesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {    
+    const { setRefreshBalance, refreshBalance } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -24,6 +26,7 @@ const ExpensesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
         if (reason && reason === "backdropClick") 
             return;
         setOpen(false);
+        setRefreshBalance(!refreshBalance);
         manualLoadData();
     };
     const handleClickOpen = () => {

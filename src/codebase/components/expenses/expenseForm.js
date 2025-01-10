@@ -65,6 +65,7 @@ function Expense({ props, ID, operation }) {
                 },
                 (error) => {
                     setData({});
+                    setName('');
                     console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
@@ -78,7 +79,7 @@ function Expense({ props, ID, operation }) {
         fetch(apiUrl)
             .then(response => response.json())
             .then(
-                (result) => {
+                async (result) => {
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setExpenseTypesData({ data: [] });
@@ -106,7 +107,7 @@ function Expense({ props, ID, operation }) {
         fetch(apiUrl)
             .then(response => response.json())
             .then(
-                (result) => {
+                async (result) => {
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setCompaniesData({ data: [] });
@@ -134,7 +135,7 @@ function Expense({ props, ID, operation }) {
         fetch(apiUrl)
             .then(response => response.json())
             .then(
-                (result) => {
+                async (result) => {
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setEmployeesData({ data: [] });
@@ -176,7 +177,7 @@ function Expense({ props, ID, operation }) {
             />
             {apiLoading ?
                 <>
-                    <div className="spinner"></div>Loading...
+                    <div className="spinner"></div>Loading data from database....
                 </>
                 :
                 <Formik
@@ -236,15 +237,15 @@ function Expense({ props, ID, operation }) {
                             ),
                         notes: Yup.string()
                             .required('notes Required'),
-                        companyId: Yup.string().when('category', {
+                        companyId: Yup.string().nullable().when('category', {
                             is: 'Company',
-                            then: () => Yup.string()
-                                .required('companyId Required')
+                            then: () => Yup.string().required('companyId Required'),
+                            otherwise: () => Yup.string().nullable()
                         }),
-                        employeeId: Yup.string().when('category', {
+                        employeeId: Yup.string().nullable().when('category', {
                             is: 'Employee',
-                            then: () => Yup.string()
-                                .required('employeeId Required')
+                            then: () => Yup.string().required('employeeId Required'),
+                            otherwise: () => Yup.string().nullable()
                         })
                     })}
                 >

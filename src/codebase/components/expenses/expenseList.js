@@ -9,7 +9,7 @@ import ExpenseEdit from "./expenseEdit";
 import CustomSnackbar from "../snackbar/snackbar";
 
 const ExpenseList = () => {
-    const { APIPath } = useContext(Context);
+    const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
@@ -34,6 +34,7 @@ const ExpenseList = () => {
 
     function manualLoadData() {
         setApiLoading(true);
+        setRefreshBalance(!refreshBalance);
         delaydMockLoading();
     }
 
