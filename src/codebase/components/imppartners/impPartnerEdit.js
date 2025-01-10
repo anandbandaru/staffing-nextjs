@@ -30,7 +30,9 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading, showSnac
     const handleClickOpen = () => {
         setOpen(true);
     };
-    const handleCloseDocuments = () => {
+    const handleCloseDocuments = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpenDocuments(false);
     };
     const handleClickOpenDocuments = () => {

@@ -30,7 +30,9 @@ function CompanyEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
     const handleClickOpen = () => {
         setOpen(true);
     };
-    const handleCloseDocuments = () => {
+    const handleCloseDocuments = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpenDocuments(false);
     };
     const handleClickOpenDocuments = () => {

@@ -12,6 +12,13 @@
   ],
   "releases": [
     {
+      "version": "1.4",
+      "date": "JAN 10 2024",
+      "notes": [
+        "File upload dialog now stays 0 cant be closed with backdrop click"
+      ]
+    },
+    {
       "version": "1.3",
       "date": "JAN 08 2024",
       "notes": [

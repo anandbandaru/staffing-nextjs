@@ -30,7 +30,9 @@ function ClientEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar
     const handleClickOpen = () => {
         setOpen(true);
     };
-    const handleCloseDocuments = () => {
+    const handleCloseDocuments = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpenDocuments(false);
     };
     const handleClickOpenDocuments = () => {

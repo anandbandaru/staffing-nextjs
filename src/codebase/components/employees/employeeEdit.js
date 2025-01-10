@@ -41,7 +41,9 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
         setOpen(true);
     };
 
-    const handleCloseDocuments = () => {
+    const handleCloseDocuments = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpenDocuments(false);
     };
 
