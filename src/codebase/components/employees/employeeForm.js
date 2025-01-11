@@ -30,33 +30,29 @@ function EmployeeForm({ props, ID, operation }) {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
     };
-
-
     const showSnackbar = (severity, message) => {
         setSnackbarSeverity(severity);
         setSnackbarMessage(message);
         setSnackbarOpen(true);
     };
 
-    const getDetails = () => {
+    const getDetails = async() => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getemployeedetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
-                (result) => {
-                    //console.log(result);
+                async(result) => {
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setData({});
                     }
                     else {
-                        setData(result);
                         setFirstName(result.data[0].firstName);
-                        //alert(firstName);
-                        getFileTypesList();
-                        getManagersList();
+                        await getFileTypesList();
+                        await getManagersList();
+                        setData(result);
                     }
                     setApiLoading(false);
                 },
@@ -67,7 +63,7 @@ function EmployeeForm({ props, ID, operation }) {
                 }
             )
     }
-    const getFileTypesList = () => {
+    const getFileTypesList = async() => {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/masterdata/filetypes"
@@ -76,7 +72,6 @@ function EmployeeForm({ props, ID, operation }) {
             .then(response => response.json())
             .then(
                 (result) => {
-                    //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setFileTypesData({});
@@ -93,7 +88,7 @@ function EmployeeForm({ props, ID, operation }) {
                 }
             )
     }
-    const getManagersList = () => {
+    const getManagersList = async() => {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
@@ -102,7 +97,6 @@ function EmployeeForm({ props, ID, operation }) {
             .then(response => response.json())
             .then(
                 (result) => {
-                    //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setManagersData({});
@@ -120,10 +114,10 @@ function EmployeeForm({ props, ID, operation }) {
             )
     }
     useEffect(() => {
-        if (operation === "Edit") {
+        if (operation === "View" || operation === "Edit") {
             getDetails();
         }
-        if (operation === "New" || operation === "Edit") {
+        if (operation === "New") {
             getFileTypesList();
             getManagersList();
         }

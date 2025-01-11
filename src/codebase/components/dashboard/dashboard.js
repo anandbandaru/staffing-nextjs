@@ -139,7 +139,7 @@ const Dashboard = () => {
         <>
             <Button variant="contained" size="large" className="bg-pink-600 mb-10"
                 onClick={loadDashboardElements}>
-                Fetch Data
+                Click to Fetch Data
             </Button>
             <div className="my-5 mx-3">
 

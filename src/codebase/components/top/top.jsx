@@ -216,20 +216,25 @@ const Top = () => {
                                     checkAPIAvailability();
                                     showSnackbar('info', "Checked API availability");
                                 }}
+                                className="w-full"
                             >
                                 ERROR
                             </Button>
                         </>
                         :
                         <>
-                            <Button size="small" variant="contained" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />}
-                                onClick={() => {
-                                    checkAPIAvailability();
-                                    showSnackbar('info', "Checked API availability");
-                                }}
-                            >
-                                {APIType === "LOCAL" ? "LOCAL" : "ONLINE:" + APIVersion}
-                            </Button>
+                            <Stack direction={"row"} spacing={2}>
+                                <Button size="small" variant="contained" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />}
+                                    onClick={() => {
+                                        checkAPIAvailability();
+                                        showSnackbar('info', "Checked API availability");
+                                    }}
+                                    className="w-full"
+                                >
+                                    <div className="spinnerWhite mr-2"></div>
+                                    {APIType === "LOCAL" ? "LOCAL" : "ONLINE:" + APIVersion}
+                                </Button>
+                            </Stack>
                         </>
                 }
             </div>

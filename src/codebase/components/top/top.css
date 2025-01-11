@@ -43,10 +43,10 @@
 }
 .APICheckHolder{
     position: absolute;
-    left: 0px;
+    left: 2px;
     bottom: 0px;
     z-index: 999;
-    width: 20rem;
+    width: 120px;
 }
 .APICheckHolder span{
     font-size: 10px;

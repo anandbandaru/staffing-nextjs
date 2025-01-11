@@ -238,6 +238,14 @@ body{
   height: 16px;
   animation: spin 1s linear infinite;
 }
+.spinnerWhite {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+}
 
 @keyframes spin {
   0% {

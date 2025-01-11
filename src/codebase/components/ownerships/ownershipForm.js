@@ -176,6 +176,7 @@ function OwnershipForm({ props, ID, operation }) {
                         ownerId: name ? data.data[0].ownerId : '',
                         owingPercentage: name ? data.data[0].owingPercentage : '',
                         createdBy: userName,
+                        modifiedBy: userName,
                         notes: name ? data.data[0].notes : ''
                     }}
                     onSubmit={(values, { setSubmitting }) => {
