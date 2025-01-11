@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
-import { Stack, Grid, Card, CardContent, Typography, Skeleton } from '@mui/material';
+import { Stack, Grid, Card, CardContent, Typography, Skeleton, Button } from '@mui/material';
 
 const Dashboard = () => {
     const { APIPath, userType, isAPILoading, setIsAPILoading,
@@ -32,7 +32,7 @@ const Dashboard = () => {
     });
 
 
-    useEffect(() => {
+    const loadDashboardElements = () => {
         const fetchCounts = async () => {
             setIsAPILoading(true);
             const allEndpoints = [
@@ -76,7 +76,7 @@ const Dashboard = () => {
             APICaller(endpoints);
         };
         fetchCounts();
-    }, [APIPath, userType]);
+    }
 
     const APICaller = async (endpoints) => {
         try {
@@ -137,7 +137,13 @@ const Dashboard = () => {
 
     return (
         <>
-            <div className="my-10 mx-3">
+            <Button variant="contained" size="large" className="bg-pink-600 mb-10"
+                onClick={loadDashboardElements}>
+                Fetch Data
+            </Button>
+            <div className="my-5 mx-3">
+
+
                 <Grid container spacing={1} className='p-5 mt-10 bg-slate-200'>
                     {userType === 'ADMIN' && (
                         <>

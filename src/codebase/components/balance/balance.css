@@ -5,10 +5,14 @@
     cursor: pointer;
     background-color: #83c5be;
     border-radius: 20px;
+    color:#FFF !important;
 }
 .balanceHolder SPAN{
     font-size: 16px !important;
     color:#000;
     /* border:1px solid #ff068c; */
     padding: 0px 10px 0px 10px;
+}
+.tooltip-example{
+    color:#FFF !important;
 }
