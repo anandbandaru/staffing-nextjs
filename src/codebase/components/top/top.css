@@ -42,7 +42,7 @@
     cursor: pointer;
 }
 .APICheckHolder{
-    position: absolute;
+    position: fixed;
     left: 2px;
     bottom: 0px;
     z-index: 999;
