@@ -9,15 +9,18 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import AttributionOutlinedIcon from '@mui/icons-material/AttributionOutlined';
-import { Stack, Card, CardContent, Typography } from "@mui/material";
+import { Stack, Card, CardContent, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText } from "@mui/material";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 
 const UserList = () => {
-    const { accessToken } = useContext(Context);
-    const [data, setData] = useState({ data: [] });
+    const { accessToken, APIPath } = useContext(Context);
+    const [data, setData] = useState(null);
     const [apiLoading, setApiLoading] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+    const [loginDetails, setLoginDetails] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
         fetchUsers();
@@ -39,22 +42,51 @@ const UserList = () => {
 
     const fetchUsers = async () => {
         setApiLoading(true);
-        await axios.get("https://graph.microsoft.com/v1.0/users", {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        }).then((resp) => {
+        try {
+            const response = await axios.get("https://graph.microsoft.com/v1.0/users", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+            const users = response.data.value;
+            setItemCount(users.length);
             setDataAPIError("");
-            setItemCount(resp.data.value.length);
             setApiLoading(false);
-            setData(resp.data);
-        }).catch(function (error) {
+            fetchLoginDetailsForUsers(users);
+        } catch (error) {
             setDataAPIError(error.toString());
             console.log("fetchUsers:ERROR:" + error);
             setItemCount(0);
             setApiLoading(false);
             setData([]);
-        });
+        }
+    };
+
+    const fetchLoginDetails = async (userName) => {
+        try {
+            console.log(userName)
+            const response = await axios.get(APIPath + "/getlogindetails/" + userName);
+            setLoginDetails(response.data.data[0]);
+            setDialogOpen(true);
+        } catch (error) {
+            console.log("ERROR: fetching login details:", error);
+        }
+    };
+    const fetchLoginDetailsForUsers = async (users) => {
+        const updatedUsers = await Promise.all(users.map(async (user) => {
+            try {
+                const response = await axios.get(APIPath + `/getlogindetails/${user.userPrincipalName.replace('_outlook.com', '@outlook.com')}`);
+                if (response.data.data[0] && response.data.data[0].loginCount !== undefined && response.data.data[0].lastLoginDate !== undefined) {
+                    return { ...user, loginCount: response.data.data[0].loginCount, lastLoginDate: response.data.data[0].lastLoginDate };
+                } else {
+                    return { ...user, loginCount: 'N/A', lastLoginDate: 'N/A' };
+                }
+            } catch (error) {
+                console.error("Error fetching login details:", error);
+                return { ...user, loginCount: 'N/A', lastLoginDate: 'N/A' };
+            }
+        }));
+        setData(updatedUsers);
     };
 
     const iconMap = {
@@ -77,6 +109,11 @@ const UserList = () => {
             </span>
         </div>
     );
+    const CustomActionRenderer = ({ data }) => (
+        <IconButton onClick={() => fetchLoginDetails(data.userPrincipalName.replace('_outlook.com', '@outlook.com'))}>
+            <InfoIcon />
+        </IconButton>
+    );
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "givenName", filter: true },
@@ -88,6 +125,15 @@ const UserList = () => {
         { field: "userPrincipalName" },
         { field: "mail", filter: true },
         { field: "mobilePhone", filter: true },
+        { field: "loginCount", headerName: "Login Count", maxWidth: 100 },
+        { field: "lastLoginDate", headerName: "Last Login Date" },
+        {
+            headerName: "Actions",
+            field: "actions",
+            cellRenderer: CustomActionRenderer,
+            sortable: false,
+            filter: false, maxWidth: 100, resizable: false
+        }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
@@ -178,7 +224,7 @@ const UserList = () => {
                 style={{ height: 400 }} // the Data Grid will fill the size of the parent container
             >
                 <AgGridReact
-                    rowData={data ? data.value : []}
+                    rowData={data ? data : []}
                     columnDefs={colDefs}
                     pagination={pagination}
                     paginationPageSize={paginationPageSize}
@@ -188,6 +234,15 @@ const UserList = () => {
                     enableCellTextSelection={true}
                 />
             </div>
+
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+                <DialogTitle>Login Details</DialogTitle>
+                <DialogContent>
+                    <DialogContentText><strong>Login Count:</strong> {loginDetails ? loginDetails.loginCount : ''}<br />
+                        <strong>Last Login Date:</strong> {loginDetails ? loginDetails.lastLoginDate : ''}
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
         </>
     )
 }

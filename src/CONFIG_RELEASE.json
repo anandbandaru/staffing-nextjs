@@ -15,7 +15,8 @@
       "version": "1.4",
       "date": "JAN 10 2024",
       "notes": [
-        "File upload dialog now stays 0 cant be closed with backdrop click"
+        "File upload dialog now stays 0 cant be closed with backdrop click",
+        "User login capture + showing details in Users screen"
       ]
     },
     {
