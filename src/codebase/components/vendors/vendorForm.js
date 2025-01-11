@@ -11,6 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import InputMask from 'react-input-mask';
 
 function VendorForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -116,7 +117,9 @@ function VendorForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             if (resp.data.STATUS === "FAIL")
-                                showSnackbar('error', "Error saving Vendor data");
+                                showSnackbar('error', "Error saving Vendor data - " + resp.data.ERROR.MESSAGE);
+                                if(resp.data.ERROR.MESSAGE.includes("Violation of UNIQUE KEY constraint 'UQ_EIN'"))
+                                    showSnackbar('error', "You tried inserting Duplicate EIN");
                             else
                                 showSnackbar('success', "Vendor data saved");
                         })
@@ -144,6 +147,7 @@ function VendorForm({ props, ID, operation }) {
                             .email()
                             .required('email Required'),
                         EIN: Yup.string()
+                            .matches(/^\d{2}-\d{7}$/, 'EIN must be in the format 12-3456789')
                             .required('EIN Required'),
                         phone: Yup.string()
                             .required('phone Required'),
@@ -285,18 +289,27 @@ function VendorForm({ props, ID, operation }) {
                                         helperText={(errors.phone && touched.phone) && errors.phone}
                                     />
                                 </Stack>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="EIN"
-                                    name="EIN"
-                                    label="EIN"
+                                <InputMask
+                                    mask="99-9999999"
                                     value={values.EIN}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.EIN && touched.EIN) && errors.EIN}
-                                />
+                                >
+                                    {() => (
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="EIN"
+                                            name="EIN"
+                                            label="EIN"
+                                            value={values.EIN}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.EIN && touched.EIN) && errors.EIN}
+                                        />
+                                    )}
+                                </InputMask>
                                 <Stack direction="row" spacing={2} className='mt-4'>
                                     <TextField
                                         size="small"
