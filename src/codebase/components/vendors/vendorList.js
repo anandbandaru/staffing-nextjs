@@ -104,14 +104,6 @@ const VendorList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
-        { field: "name", filter: true },
-        { field: "city", filter: true },
-        { field: "state", filter: true, maxWidth: 100, },
-        { field: "zip", filter: true, maxWidth: 100, },
-        { field: "country", filter: true, maxWidth: 100, },
-        { field: "email", filter: true },
-        { field: "EIN", filter: true },
-        { field: "phone", filter: true },
         {
             field: "disabled", filter: false, maxWidth: 100,
             // cellClassRules: {
@@ -121,6 +113,14 @@ const VendorList = () => {
             // },
             cellRenderer: CustomDisabledRenderer
         },
+        { field: "name", filter: true },
+        { field: "city", filter: true },
+        { field: "state", filter: true, maxWidth: 100, },
+        { field: "zip", filter: true, maxWidth: 100, },
+        { field: "country", filter: true, maxWidth: 100, },
+        { field: "email", filter: true },
+        { field: "EIN", filter: true },
+        { field: "phone", filter: true },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
     ]);
     const rowClassRules = {
