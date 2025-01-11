@@ -43,6 +43,7 @@ import Slide from '@mui/material/Slide';
 import LinearProgress from '@mui/material/LinearProgress';
 import Alert from '@mui/material/Alert';
 import CachedIcon from '@mui/icons-material/Cached';
+import axios from 'axios';
 
 const Top = () => {
 
@@ -53,7 +54,7 @@ const Top = () => {
         isAPILoading,
         isAPIError,
         APIVersion,
-        APIType,
+        APIType, APIPath,
         checkAPIAvailability,
         userName, userType } = useContext(Context);
 
@@ -61,6 +62,19 @@ const Top = () => {
     useEffect(() => {
         document.title = "Staffing";
     });
+
+    useEffect(() => {
+        axios.post(APIPath + '/login', { userName })
+            .then(response => {
+                if(response.data.STATUS === "FAIL")
+                    showSnackbar('error', "Login trace failure");
+                else
+                    showSnackbar('info', "Login trace success");
+            })
+            .catch(error => {
+                showSnackbar('error', "Login trace failure");
+            });
+    }, []);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -231,7 +245,7 @@ const Top = () => {
                                     }}
                                     className="w-full"
                                 >
-                                    <div className="spinnerWhite mr-2"></div>
+                                    {/* <div className="spinnerWhite mr-2"></div> */}
                                     {APIType === "LOCAL" ? "LOCAL" : "ONLINE:" + APIVersion}
                                 </Button>
                             </Stack>
