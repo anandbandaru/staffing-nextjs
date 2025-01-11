@@ -10,6 +10,9 @@ const TopBanner = () => {
                     <li className="mr-2">
                         <span className="companyLogo ">VIZION TECHNOLOGIES</span>
                     </li>
+                    <li className="border-l border-gray-300">
+                        <span className="companyLogo ">STAFFING SOLUTION</span>
+                    </li>
                     <li className="px-2 pt-0.5 rounded-sm leading-5 border-l border-gray-300 md:hidden lg:block sm:hidden">
                         {/* <AccessTimeIcon fontSize="small" style={{ fontSize: '16px', height: '16px' }} /> */}
                         TIME:

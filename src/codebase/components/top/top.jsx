@@ -66,7 +66,7 @@ const Top = () => {
     useEffect(() => {
         axios.post(APIPath + '/login', { userName })
             .then(response => {
-                if(response.data.STATUS === "FAIL")
+                if (response.data.STATUS === "FAIL")
                     showSnackbar('error', "Login trace failure");
                 else
                     showSnackbar('info', "Login trace success");
@@ -118,34 +118,45 @@ const Top = () => {
                 message={snackbarMessage}
             />
 
-            <div className="topTabsHolder  flex flex-grow">
+            <div className="topTabsHolder flex flex-grow">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <div className="topLeft px-1 mt-1">
                         <Stack spacing={1} direction="row" className="items-center justify-center">
                             <img className="icon" src={assets.logo_24} alt="" />
                             <PriceChangeOutlinedIcon fontSize='large' />
-                            <span className="logo" >
-                                Staffing
-                            </span>
                         </Stack>
                         <div className="release_version_Div">{configData.releases[0].version}</div>
                     </div>
-                    <Tabs >
+                    <Tabs>
                         <TabList className="topTabsListHolder">
                             <Tab ><AppsIcon className="mr-1" />Dashboard</Tab>
                             <Tab ><WorkspacesIcon className="mr-1" />Modules</Tab>
-                            <Tab ><CurrencyExchangeIcon className="mr-1" />Transactions</Tab>
+                            <Tab >
+                                {/* <CurrencyExchangeIcon className="mr-1" /> */}
+                                Transactions</Tab>
                             {userType === 'ADMIN' && (
-                                <Tab ><MoreTimeIcon className="mr-1" />Timesheets</Tab>
+                                <Tab >
+                                    {/* <MoreTimeIcon className="mr-1" /> */}
+                                    Timesheets</Tab>
                             )}
-                            <Tab ><FileCopyOutlinedIcon className="mr-1" />Files</Tab>
-                            <Tab ><CheckCircleOutlineIcon className="mr-1" />Todo</Tab>
+                            <Tab >
+                                {/* <FileCopyOutlinedIcon className="mr-1" /> */}
+                                Files</Tab>
+                            <Tab >
+                                {/* <CheckCircleOutlineIcon className="mr-1" /> */}
+                                Todo</Tab>
                             {userType === 'ADMIN' && (
-                                <Tab ><AttributionIcon className="mr-1" />Users</Tab>
+                                <Tab >
+                                    {/* <AttributionIcon className="mr-1" /> */}
+                                    Users</Tab>
                             )}
-                            <Tab ><CalendarMonthOutlinedIcon className="mr-1" />Calendar</Tab>
+                            <Tab >
+                                {/* <CalendarMonthOutlinedIcon className="mr-1" /> */}
+                                Calendar</Tab>
                             {userType === 'ADMIN' && (
-                                <Tab ><SettingsEthernetIcon className="mr-1" />Configuration</Tab>
+                                <Tab >
+                                    {/* <SettingsEthernetIcon className="mr-1" /> */}
+                                    Configuration</Tab>
                             )}
                         </TabList>
 
