@@ -103,7 +103,7 @@ body{
   min-height: 100vh;
 }
 .topTabsListHolder .react-tabs__tab{
-  padding: 6px 5px;
+  padding: 6px 10px;
 }
 .topTabsListHolder .react-tabs__tab--selected {
   /* border-top: 4px solid #ddbd49; */

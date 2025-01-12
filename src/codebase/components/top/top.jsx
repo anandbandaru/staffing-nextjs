@@ -56,7 +56,7 @@ const Top = () => {
         APIVersion,
         APIType, APIPath,
         checkAPIAvailability,
-        userName, userType } = useContext(Context);
+        userName, userType, todoOpen } = useContext(Context);
 
     //page title
     useEffect(() => {
@@ -201,7 +201,7 @@ const Top = () => {
                 <Balance />
             )}
 
-            <div className="userHolder">
+            <div className={`userHolder ${todoOpen ? '' : 'userHolderFull'}`} >
                 <div className="px-2  rounded-sm text-white">
                     <Stack spacing={1} direction="row" className="items-center justify-center">
                         <Avatar

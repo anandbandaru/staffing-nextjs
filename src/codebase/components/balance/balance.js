@@ -5,7 +5,7 @@ import axios from 'axios';
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 
 const Balance = () => {
-    const { APIPath, refreshBalance, freecurrencyapi, freecurrencyapi_key } = useContext(Context);
+    const { APIPath, refreshBalance, freecurrencyapi, freecurrencyapi_key, todoOpen } = useContext(Context);
     const [apiLoading, setApiLoading] = useState(false);
     const [usd, setUsd] = useState('');
     const [inr, setInr] = useState(null);
@@ -56,7 +56,7 @@ const Balance = () => {
     };
 
     return (
-        <div className="balanceHolder">
+        <div className={`balanceHolder ${todoOpen ? '' : 'balanceHolderFull'}`}>
             {apiLoading ? (
                 <div className="spinner my-1 mx-4"></div>
             ) : (

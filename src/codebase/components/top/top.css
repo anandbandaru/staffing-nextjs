@@ -31,6 +31,9 @@
     cursor: pointer;
     padding: 2px 0px 1px 0px;
 }
+.userHolderFull{
+    right: 20px;
+}
 .userTypeHolder{
     background-color: #83c5be;
     color:#000;

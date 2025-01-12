@@ -47,7 +47,7 @@ const Settings = () => {
         isAPILoading,
         isAPIError,
         APIType,
-        loading, } = useContext(Context);
+        loading, todoOpen} = useContext(Context);
     //drawer
     const [state, setState] = React.useState({
         top: false,
@@ -100,7 +100,7 @@ const Settings = () => {
     return (
 
         <>
-            <div className="optionsHolder">
+            <div className={`optionsHolder ${todoOpen ? '' : 'optionsHolderFull'}`} >
                 {!loading ?
                     <></>
                     :

@@ -39,6 +39,7 @@ const ContextProvider = (props) => {
     const [openDashboardAPIError, setOpenDashboardAPIError] = useState(false);
     const [dashboardAPIError, setDashboardAPIError] = useState(false);
     
+    const [todoOpen, setTodoOpen] = useState(false);
 
     //FOR HISTORY LOCAL STORAGE
     // const [dataRecentsLS, setDataRecentsLS] = useState(() => {
@@ -272,7 +273,8 @@ const ContextProvider = (props) => {
         token,
         setRefreshBalance,
         refreshBalance,
-        refreshTodos, setRefreshTodos
+        refreshTodos, setRefreshTodos,
+        todoOpen, setTodoOpen
     }
 
     return (

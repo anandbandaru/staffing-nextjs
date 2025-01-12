@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { assets } from '../../assets/assets'
 import './main.css';
 import './table.css';
@@ -14,10 +14,14 @@ import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
+import {
+    IconButton
+} from '@mui/material';
+import SwitchLeftOutlinedIcon from '@mui/icons-material/SwitchLeftOutlined';
 
 const Main = () => {
 
-    const { results, isAPIError, refreshPage } = useContext(Context);
+    const { results, isAPIError, refreshPage, todoOpen, setTodoOpen } = useContext(Context);
     useEffect(() => {
         if (results) {
             // setStateSnack(true);
@@ -59,30 +63,43 @@ const Main = () => {
         setStateSnackAPI({ ...stateSnack, openSnackAPI: false });
     };
 
+
+    const handleTodoOpen = () => {
+        setTodoOpen(!todoOpen);
+    };
+
     return (
         <div className="main flex">
-            {isAPIError ? 
-            <div className="flex items-center justify-center w-full h-screen bg-gray-400">
-                <Card className="bg-gray-200 p-4 w-1/4">
-                    <CardContent>
-                        <Stack spacing={2} direction="column" className="items-center justify-center">
-                            <Stack spacing={2} direction="row" className="items-center justify-center">
-                                <img className="icon" src={assets.logo_24} alt="" />
-                                <PriceChangeOutlinedIcon fontSize='large' />
+            {isAPIError ?
+                <div className="flex items-center justify-center w-full h-screen bg-gray-400">
+                    <Card className="bg-gray-200 p-4 w-1/4">
+                        <CardContent>
+                            <Stack spacing={2} direction="column" className="items-center justify-center">
+                                <Stack spacing={2} direction="row" className="items-center justify-center">
+                                    <img className="icon" src={assets.logo_24} alt="" />
+                                    <PriceChangeOutlinedIcon fontSize='large' />
+                                </Stack>
+                                <Button variant="contained" onClick={refreshPage}>Refresh</Button>
                             </Stack>
-                            <Button variant="contained" onClick={refreshPage}>Refresh</Button>
-                        </Stack>
-                    </CardContent>
-                </Card>
-            </div> :
+                        </CardContent>
+                    </Card>
+                </div> :
                 <>
-                    <div className="flex-grow mr-80">
+                    <div className={`flex-grow ${todoOpen ? 'mr-80' : ''}`}>
                         <TopBanner />
                         <Top />
                     </div>
-                    <div className="w-80 h-full fixed right-0  bg-slate-100 border-l-4 border-gray-500 toDoRightHolder">
-                        <ToDo />
+
+                    <div className="todoToggleHolder">
+                        <SwitchLeftOutlinedIcon className="cursor-pointer"
+                            onClick={handleTodoOpen} />
                     </div>
+
+                    {todoOpen && (
+                        <div className="w-80 h-full fixed right-0 bg-slate-100 border-l-4 border-gray-500 toDoRightHolder">
+                            <ToDo />
+                        </div>
+                    )}
                 </>
             }
 
