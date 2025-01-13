@@ -7,7 +7,6 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const getListOfFiles = () => {
         setApiLoading(true);
@@ -19,7 +18,6 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
                     if (result.error) {
                         setDataAPIError(`${result.error.code} - ${result.error.message}`);
                         setData({});
-                        setApiLoadingError(true);
                     } else {
                         setData(result);
                         setDataAPIError(result.total === 0 ? "No Documents information present." : "ok");
@@ -30,7 +28,6 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
                     setData({});
                     setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
-                    setApiLoadingError(true);
                 }
             );
     };

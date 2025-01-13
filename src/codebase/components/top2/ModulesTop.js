@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 // import preval from 'preval.macro';
 import './ModulesTop.css';
 import 'react-tooltip/dist/react-tooltip.css';
@@ -21,9 +21,6 @@ import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
 const ModulesTop = ({ module }) => {
 
     const { userType } = useContext(Context);
-
-    const tab2Names_Modules = ['Owners', 'Companies', 'Ownerships', 'Employees', 'Vendors', 'Clients', 'Implementation Partners', 'Job Types List', 'Expense Types List', 'File Types List'];
-    const filteredTabs = userType === 'ADMIN' ? tab2Names_Modules : tab2Names_Modules.filter(name => name !== 'Owners' && name !== 'Companies');
 
     return (
         <div className="top2Holder px-0 py-0">

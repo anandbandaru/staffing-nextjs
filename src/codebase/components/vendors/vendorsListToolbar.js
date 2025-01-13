@@ -37,9 +37,7 @@ const VendorsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, ma
             padding: theme.spacing(1),
         },
     }));
-    const handleEntering = () => {
-    };
-
+    
     return (
         <>
             <div className="flex flex-grow">

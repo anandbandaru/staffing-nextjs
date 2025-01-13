@@ -142,6 +142,7 @@ function EmployeeGAddForm({ formType, employeeID }) {
                     enableReinitialize
                     initialValues={getInitialValues()}
                     onSubmit={(values, { setSubmitting }) => {
+                        setApiLoading(true)
                         var finalAPI = getAPIEndpoint();
                         setSubmitionCompleted(false);
                         setSubmitting(true);
@@ -154,6 +155,7 @@ function EmployeeGAddForm({ formType, employeeID }) {
                                 }
                             },
                         ).then((resp) => {
+                            setApiLoading(false)
                             setSubmitionCompleted(true);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving data");
@@ -164,6 +166,7 @@ function EmployeeGAddForm({ formType, employeeID }) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
                                 showSnackbar('error', "Error saving data");
+                                setApiLoading(false)
                             });
                     }}
 

@@ -368,7 +368,6 @@ function Job({ props, ID, operation }) {
                                         name="companyId"
                                         select
                                         label="Company Id"
-                                        defaultValue="12"
                                         value={values.companyId}
                                         onChange={handleChange}
                                         // onChange={(event) => {
@@ -392,7 +391,6 @@ function Job({ props, ID, operation }) {
                                         name="vendorId"
                                         select
                                         label="Vendor Id"
-                                        defaultValue="12"
                                         value={values.vendorId}
                                         onChange={(event) => {
                                             handleChange(event);

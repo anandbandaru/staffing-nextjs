@@ -1,17 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import { AgCharts } from 'ag-charts-react';
 import axios from 'axios';
-import { Stack, Grid } from '@mui/material';
 
 const OwnersReport = () => {
     const {
         APIPath } = useContext(Context);
     const [data, setData] = useState([]);
     const [apiLoading, setApiLoading] = useState(false);
-    const [apiLoadingError, setApiLoadingError] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
 
     const fetchData = async () => {
         setApiLoading(true);
@@ -27,8 +23,6 @@ const OwnersReport = () => {
             ]);
         }).catch(function (error) {
             console.log(error);
-            setDataAPIError(error);
-            setApiLoadingError(true);
             setApiLoading(false);
             setData([]);
         });
@@ -118,16 +112,24 @@ const OwnersReport = () => {
     return (
         <div class="flex flex-wrap gap-x-2">
             <div className="border-gray-700 rounded-lg bg-slate-200 justify-items-center p-1">
-                <AgCharts options={options_1}
-                    className="chart"
-                    style={{ width: "300px", height: "300px" }}
-                />
+                {apiLoading ?
+                    <div className='spinner'></div>
+                    :
+                    <AgCharts options={options_1}
+                        className="chart"
+                        style={{ width: "300px", height: "300px" }}
+                    />
+                }
             </div>
             <div className="border-gray-600 rounded-lg bg-slate-200 justify-items-center p-1">
-                <AgCharts options={options_2}
-                    className="chart"
-                    style={{ width: "300px", height: "300px" }}
-                />
+                {apiLoading ?
+                    <div className='spinner'></div>
+                    :
+                    <AgCharts options={options_2}
+                        className="chart"
+                        style={{ width: "300px", height: "300px" }}
+                    />
+                }
             </div>
         </div>
         // <Grid container spacing={1}>

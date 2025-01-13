@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 // import preval from 'preval.macro';
 import './TransactionsTop.css';
 import 'react-tooltip/dist/react-tooltip.css';

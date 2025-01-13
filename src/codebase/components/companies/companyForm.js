@@ -96,7 +96,7 @@ function CompanyForm({ props, ID, operation }) {
                         EIN: itemToCheck ? data.data[0].EIN : '',
                         Phone: itemToCheck ? data.data[0].Phone : '',
                         Email: itemToCheck ? data.data[0].Email : '',
-                        EstablishedDate: itemToCheck ? formatDate(data.data[0].EstablishedDate) : '',
+                        EstablishedDate: itemToCheck ? data.data[0].EstablishedDate : '',
                         Notes: itemToCheck ? data.data[0].Notes : '',
                         Disabled: itemToCheck ? data.data[0].Disabled : false,
                     }}

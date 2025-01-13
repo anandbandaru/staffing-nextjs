@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { assets } from '../../assets/assets'
 import './main.css';
 import './table.css';
@@ -14,9 +14,6 @@ import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
-import {
-    IconButton
-} from '@mui/material';
 import SwitchLeftOutlinedIcon from '@mui/icons-material/SwitchLeftOutlined';
 
 const Main = () => {

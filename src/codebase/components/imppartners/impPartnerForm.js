@@ -137,8 +137,7 @@ function ImpPartnerForm({ props, ID, operation }) {
                             handleChange,
                             handleBlur,
                             handleSubmit,
-                            handleReset,
-                            setFieldValue
+                            handleReset
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>
