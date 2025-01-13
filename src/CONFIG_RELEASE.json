@@ -15,7 +15,10 @@
       "version": "1.5",
       "date": "JAN 12 2024",
       "notes": [
-        "Handling foreign keys deletion error - for Jobs related parent tables"
+        "Handling foreign keys deletion error - for Jobs related parent tables",
+        "Handling foreign keys deletion error - for Ownership related parent tables",
+        "Handling foreign keys deletion error - for Expense Types related parent tables",
+        "Handling foreign keys deletion error - for File Types related parent tables"
       ]
     },
     {

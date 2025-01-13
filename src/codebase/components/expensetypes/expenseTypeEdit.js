@@ -51,7 +51,10 @@ function ExpenseTypeEdit({ ID, operation, manualLoadData, setApiLoading, showSna
         ).then((resp) => {
             setApiLoading(false);
             manualLoadData();
-            showSnackbar('success', "Item deleted.");
+            if(resp.data.ERROR.MESSAGE.includes("The DELETE statement conflicted with the REFERENCE constraint"))
+                showSnackbar('warning', "Cannot delete Item due to child rows");
+            else
+                showSnackbar('success', "Item deleted.");
         }).catch(function (error) {
             setApiLoading(false);
             showSnackbar('error', "Error occured while deletion");
