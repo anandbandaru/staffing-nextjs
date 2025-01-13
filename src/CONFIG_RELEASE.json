@@ -12,6 +12,13 @@
   ],
   "releases": [
     {
+      "version": "1.5",
+      "date": "JAN 12 2024",
+      "notes": [
+        "Handling foreign keys deletion error - for Jobs related parent tables"
+      ]
+    },
+    {
       "version": "1.4",
       "date": "JAN 10 2024",
       "notes": [
