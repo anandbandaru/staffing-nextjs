@@ -63,4 +63,7 @@
   }
   .todoToggleHolder.toggled {
     transform: scale(1.0) translateY(65px);
+    position: absolute;
+    top: 0px;
+    right: 3px;
   }
