@@ -12,27 +12,26 @@ const Balance = () => {
     const [exchangeRate, setExchangeRate] = useState(null);
     const [errorCurrency, setErrorCurrency] = useState(false);
 
-    useEffect(() => {
-         // USE BELOW TO REFRESH FROM ANTOHER COMPONENT //setRefreshBalance(!refreshBalance);
-        const fetchBalance = async () => {
-            setApiLoading(true);
-            try {
-                const response = await fetch(`${APIPath}/getbalance`);
-                const result = await response.json();
-                if (result.error) {
-                    setUsd(0);
-                } else {
-                    setUsd(result.BALANCE);
-                }
-                convertCurrency(result.BALANCE);
-            } catch (error) {
+    const fetchBalance = async () => {
+        setApiLoading(true);
+        try {
+            const response = await fetch(`${APIPath}/getbalance`);
+            const result = await response.json();
+            if (result.error) {
                 setUsd(0);
-                convertCurrency(0);
-            } finally {
-                setApiLoading(false);
+            } else {
+                setUsd(result.BALANCE);
             }
-        };
-
+            convertCurrency(result.BALANCE);
+        } catch (error) {
+            setUsd(0);
+            convertCurrency(0);
+        } finally {
+            setApiLoading(false);
+        }
+    };
+    useEffect(() => {
+        // USE BELOW TO REFRESH FROM ANTOHER COMPONENT //setRefreshBalance(!refreshBalance);
         fetchBalance();
     }, [APIPath, refreshBalance]);
 
@@ -61,8 +60,9 @@ const Balance = () => {
                 <div className="spinner my-1 mx-4"></div>
             ) : (
                 <span
-                    title={exchangeRate}>
-                    <span>BALANCE:</span> $ {usd} - (₹ {!errorCurrency ? inr : <ReportProblemOutlinedIcon className="error mb-2" fontSize="small" />})
+                    onClick={fetchBalance}
+                    title={`Click to reload balance & calculate INR as per latest exchange rate - ${exchangeRate}`}>
+                    <span>BALANCE:</span> $ {usd} = (₹ {!errorCurrency ? inr : <ReportProblemOutlinedIcon className="error mb-2" fontSize="small" />})
                 </span>
             )}
         </div>
