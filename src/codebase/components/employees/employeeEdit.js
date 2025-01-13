@@ -42,7 +42,7 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
     };
 
     const handleCloseDocuments = (event, reason) => {
-        if (reason && reason === "backdropClick") 
+        if (reason && reason === "backdropClick")
             return;
         setOpenDocuments(false);
     };
@@ -85,7 +85,10 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
         ).then((resp) => {
             setApiLoading(false);
             manualLoadData();
-            showSnackbar('success', "Item deleted.");
+            if (resp.data.ERROR.MESSAGE.includes("The DELETE statement conflicted with the REFERENCE constraint"))
+                showSnackbar('warning', "Cannot delete Item due to child rows");
+            else
+                showSnackbar('success', "Item deleted.");
         }).catch(function (error) {
             setApiLoading(false);
             showSnackbar('error', "Error occured while deletion");
@@ -115,15 +118,20 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
                     <EditIcon />
                 </IconButton>
                 <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
-                    const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
-                    if (userInput.toUpperCase() === "DELETE") {
-                        deleteItem();
+                    const proceed = window.confirm("This will delete all child table rows, including:\n- Visas\n- Passports\n- I94\n- Dependants\nDo you want to proceed?");
+                    if (proceed) {
+                        const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
+                        if (userInput && userInput.toUpperCase() === "DELETE") {
+                            deleteItem();
+                        } else {
+                            console.log("Delete operation cancelled");
+                            showSnackbar('warning', "Delete operation cancelled");
+                        }
                     } else {
                         console.log("Delete operation cancelled");
                         showSnackbar('warning', "Delete operation cancelled");
                     }
-                }
-                }>
+                }}>
                     <DeleteIcon />
                 </IconButton>
             </Stack>
