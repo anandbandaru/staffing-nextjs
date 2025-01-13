@@ -20,7 +20,9 @@
         "Handling foreign keys deletion error - for Expense Types related parent tables",
         "Handling foreign keys deletion error - for File Types related parent tables",
         "Handling foreign keys deletion error - for Employees related Expenses tables",
-        "Handling foreign keys deletion error - for Companies related Expenses tables"
+        "Handling foreign keys deletion error - for Companies related Expenses tables",
+        "Job Form - existing load DD file ups fix",
+        "Date control population - Jobs + companies"
       ]
     },
     {
