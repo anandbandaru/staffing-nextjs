@@ -184,11 +184,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                                                     ) : value === false ? (
                                                                         <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
                                                                     ) : (
-                                                                        value.toString().toLowerCase().includes('none') ? (
-                                                                            <span className="bg-red-500 text-white px-1 py-1 rounded">{value} - Looks like the record in the related table for this Id is not present/deleted</span>
-                                                                        ) : (
-                                                                            value
-                                                                        )
+                                                                        value
                                                                     )}
                                                                 </TableCell>
                                                             </TableRow>

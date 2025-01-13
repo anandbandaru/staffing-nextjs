@@ -538,53 +538,51 @@ function Job({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.jobTitle && touched.jobTitle) && errors.jobTitle}
                                 />
-                                <Stack direction="row" spacing={2} className='mt-4'>
-                                    <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
 
-                                        <div className='flex-1'>Job Start Date:
-                                            {ID ?
-                                                <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobStartDate}</span>
-                                                : <></>
-                                            }
-                                        </div>
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            className='flex-1'
-                                            id="jobStartDate"
-                                            name="jobStartDate"
-                                            type="date"
-                                            value={values.jobStartDate}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.jobStartDate && touched.jobStartDate) && errors.jobStartDate}
-                                        />
-                                    </Stack>
-                                    <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-
-                                        <div className='flex-1'>Job End Date:
-                                            {ID ?
-                                                <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobEndDate}</span>
-                                                : <></>
-                                            }
-                                        </div>
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            className='flex-1'
-                                            id="jobEndDate"
-                                            name="jobEndDate"
-                                            type="date"
-                                            value={values.jobEndDate}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.jobEndDate && touched.jobEndDate) && errors.jobEndDate}
-                                        />
-                                    </Stack>
+                                    <div className='flex-1'>Job Start Date:
+                                        {ID ?
+                                            <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobStartDate}</span>
+                                            : <></>
+                                        }
+                                    </div>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        className='flex-1'
+                                        id="jobStartDate"
+                                        name="jobStartDate"
+                                        type="date"
+                                        value={values.jobStartDate}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.jobStartDate && touched.jobStartDate) && errors.jobStartDate}
+                                    />
                                 </Stack>
-                                <Stack direction="row" spacing={2} className='mt-4'>
+                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-6">
+
+                                    <div className='flex-1'>Job End Date:
+                                        {ID ?
+                                            <span className='px-2 bg-gray-500 mx-2 text-white'>{values.jobEndDate}</span>
+                                            : <></>
+                                        }
+                                    </div>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        className='flex-1'
+                                        id="jobEndDate"
+                                        name="jobEndDate"
+                                        type="date"
+                                        value={values.jobEndDate}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.jobEndDate && touched.jobEndDate) && errors.jobEndDate}
+                                    />
+                                </Stack>
+                                <Stack direction="row" spacing={2} className='mt-8'>
                                     <TextField
                                         size="small"
                                         margin="normal"
