@@ -15,6 +15,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import SwitchLeftOutlinedIcon from '@mui/icons-material/SwitchLeftOutlined';
+import SwitchRightOutlinedIcon from '@mui/icons-material/SwitchRightOutlined';
 
 const Main = () => {
 
@@ -87,9 +88,9 @@ const Main = () => {
                         <Top />
                     </div>
 
-                    <div className="todoToggleHolder">
-                        <SwitchLeftOutlinedIcon className="cursor-pointer"
-                            onClick={handleTodoOpen} />
+                    <div className={`todoToggleHolder cursor-pointer ${!todoOpen ? 'toggled' : ''}`} onClick={handleTodoOpen}>
+                        {todoOpen ? <SwitchRightOutlinedIcon className="cursor-pointer" /> : <SwitchLeftOutlinedIcon className="cursor-pointer" />}
+                        Toggle Sidebar
                     </div>
 
                     {todoOpen && (
