@@ -84,9 +84,11 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
             },
         ).then((resp) => {
             setApiLoading(false);
-            manualLoadData();
+            manualLoadData();            
             if (resp.data.ERROR.MESSAGE.includes("The DELETE statement conflicted with the REFERENCE constraint"))
                 showSnackbar('warning', "Cannot delete Item due to child rows");
+            if (resp.data.ERROR.MESSAGE.includes("Cannot delete employee. There are related records in temp_Expenses."))
+                showSnackbar('warning', "Cannot delete employee. There are related records in Expenses.");
             else
                 showSnackbar('success', "Item deleted.");
         }).catch(function (error) {

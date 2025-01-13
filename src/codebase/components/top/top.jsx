@@ -22,7 +22,7 @@ import UsersMain from "../users/usersMain";
 import FilesMain from "../files/filesMain";
 import AppsIcon from '@mui/icons-material/Apps';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AttributionIcon from '@mui/icons-material/Attribution';
@@ -129,33 +129,33 @@ const Top = () => {
                     </div>
                     <Tabs>
                         <TabList className="topTabsListHolder">
-                            <Tab ><AppsIcon className="mr-1" />Dashboard</Tab>
-                            <Tab ><WorkspacesIcon className="mr-1" />Modules</Tab>
+                            <Tab ><AppsIcon className="mr-1" fontSize="small" />Dashboard</Tab>
+                            <Tab ><WorkspacesIcon className="mr-1" fontSize="small" />Modules</Tab>
                             <Tab >
-                                {/* <CurrencyExchangeIcon className="mr-1" /> */}
+                                <AttachMoneyOutlinedIcon className="mr-1" fontSize="small" />
                                 Transactions</Tab>
                             {userType === 'ADMIN' && (
                                 <Tab >
-                                    {/* <MoreTimeIcon className="mr-1" /> */}
+                                    <MoreTimeIcon className="mr-1" fontSize="small" />
                                     Timesheets</Tab>
                             )}
                             <Tab >
-                                {/* <FileCopyOutlinedIcon className="mr-1" /> */}
+                                <FileCopyOutlinedIcon className="mr-1" fontSize="small" />
                                 Files</Tab>
                             <Tab >
-                                {/* <CheckCircleOutlineIcon className="mr-1" /> */}
+                                <CheckCircleOutlineIcon className="mr-1" fontSize="small" />
                                 Todo</Tab>
                             {userType === 'ADMIN' && (
                                 <Tab >
-                                    {/* <AttributionIcon className="mr-1" /> */}
+                                    <AttributionIcon className="mr-1" fontSize="small" />
                                     Users</Tab>
                             )}
                             <Tab >
-                                {/* <CalendarMonthOutlinedIcon className="mr-1" /> */}
+                                <CalendarMonthOutlinedIcon className="mr-1" fontSize="small" />
                                 Calendar</Tab>
                             {userType === 'ADMIN' && (
                                 <Tab >
-                                    {/* <SettingsEthernetIcon className="mr-1" /> */}
+                                    <SettingsEthernetIcon className="mr-1" fontSize="small" />
                                     Configuration</Tab>
                             )}
                         </TabList>
@@ -249,7 +249,7 @@ const Top = () => {
                         :
                         <>
                             <Stack direction={"row"} spacing={2}>
-                                <Button size="small" variant="contained" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />}
+                                <Button size="small" variant="outlined" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />}
                                     onClick={() => {
                                         checkAPIAvailability();
                                         showSnackbar('info', "Checked API availability");

@@ -28,12 +28,12 @@ const TransactionsTop = ({ module }) => {
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <Tabs>
                         <TabList className="top2TabsListHolder">
-                            <Tab ><AssuredWorkloadOutlinedIcon className="mr-1" />Jobs</Tab>
+                            <Tab ><AssuredWorkloadOutlinedIcon className="mr-1" fontSize="small" />Jobs</Tab>
                             {userType === 'ADMIN' && (
                                 <>
-                                <Tab ><SellOutlinedIcon className="mr-1" />Invoices</Tab>
-                                <Tab ><AddShoppingCartIcon className="mr-1" />Expenses</Tab>
-                                <Tab ><PointOfSaleOutlinedIcon className="mr-1" />Payroll</Tab>
+                                <Tab ><SellOutlinedIcon className="mr-1" fontSize="small" />Invoices</Tab>
+                                <Tab ><AddShoppingCartIcon className="mr-1" fontSize="small" />Expenses</Tab>
+                                <Tab ><PointOfSaleOutlinedIcon className="mr-1" fontSize="small" />Payroll</Tab>
                                 </>
                             )}
                         </TabList>

@@ -64,6 +64,8 @@ function CompanyEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
             manualLoadData();
             if(resp.data.ERROR.MESSAGE.includes("The DELETE statement conflicted with the REFERENCE constraint"))
                 showSnackbar('warning', "Cannot delete Item due to child rows");
+            if (resp.data.ERROR.MESSAGE.includes("Cannot delete company. There are related records in temp_Expenses."))
+                showSnackbar('warning', "Cannot delete company. There are related records in Expenses.");
             else
                 showSnackbar('success', "Item deleted.");
         }).catch(function (error) {

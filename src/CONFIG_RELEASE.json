@@ -18,7 +18,9 @@
         "Handling foreign keys deletion error - for Jobs related parent tables",
         "Handling foreign keys deletion error - for Ownership related parent tables",
         "Handling foreign keys deletion error - for Expense Types related parent tables",
-        "Handling foreign keys deletion error - for File Types related parent tables"
+        "Handling foreign keys deletion error - for File Types related parent tables",
+        "Handling foreign keys deletion error - for Employees related Expenses tables",
+        "Handling foreign keys deletion error - for Companies related Expenses tables"
       ]
     },
     {

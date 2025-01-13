@@ -32,21 +32,21 @@ const ModulesTop = ({ module }) => {
                     <Tabs>
                         <TabList className="top2TabsListHolder">
                             {userType === 'ADMIN' && (
-                                <Tab ><AdjustOutlinedIcon className="mr-1" />Owners</Tab>
+                                <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Owners</Tab>
                             )}
                             {userType === 'ADMIN' && (
-                                <Tab ><AdjustOutlinedIcon className="mr-1" />Companies</Tab>
+                                <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Companies</Tab>
                             )}
                             {userType === 'ADMIN' && (
-                                <Tab ><AdjustOutlinedIcon className="mr-1" />Ownerships</Tab>
+                                <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Ownerships</Tab>
                             )}
-                            <Tab ><AdjustOutlinedIcon className="mr-1" />Employees</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" />Vendors</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" />Clients</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" />Implementation Partners</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" />Job Types List</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" />Expense Types List</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" />File Types List</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Employees</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Vendors</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Clients</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Implementation Partners</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Job Types List</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Expense Types List</Tab>
+                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />File Types List</Tab>
                         </TabList>
                         {userType === 'ADMIN' && (
                             <TabPanel className="-mt-1">
