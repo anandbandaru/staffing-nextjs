@@ -21,7 +21,7 @@ import TodosMain from "../todo/todosMain";
 import UsersMain from "../users/usersMain";
 import FilesMain from "../files/filesMain";
 import AppsIcon from '@mui/icons-material/Apps';
-import WorkspacesIcon from '@mui/icons-material/Workspaces';
+import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -130,7 +130,7 @@ const Top = () => {
                     <Tabs>
                         <TabList className="topTabsListHolder">
                             <Tab ><AppsIcon className="mr-1" fontSize="small" />Dashboard</Tab>
-                            <Tab ><WorkspacesIcon className="mr-1" fontSize="small" />Modules</Tab>
+                            <Tab ><ControlPointOutlinedIcon className="mr-1" fontSize="small" />New</Tab>
                             <Tab >
                                 <AttachMoneyOutlinedIcon className="mr-1" fontSize="small" />
                                 Transactions</Tab>
