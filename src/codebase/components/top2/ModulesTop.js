@@ -17,6 +17,7 @@ import OwnershipsMain from "../ownerships/ownershipsMain";
 import EmployeesMain from "../employees/employeesMain";
 import VendorsMain from "../vendors/vendorsMain";
 import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
+import DoubleArrowOutlinedIcon from '@mui/icons-material/DoubleArrowOutlined';
 
 const ModulesTop = ({ module }) => {
 
@@ -29,13 +30,13 @@ const ModulesTop = ({ module }) => {
                     <Tabs>
                         <TabList className="top2TabsListHolder">
                             {userType === 'ADMIN' && (
-                                <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Owners</Tab>
+                                <Tab ><DoubleArrowOutlinedIcon className="mr-1" fontSize="small" />Owners</Tab>
                             )}
                             {userType === 'ADMIN' && (
-                                <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Companies</Tab>
+                                <Tab ><DoubleArrowOutlinedIcon className="mr-1" fontSize="small" />Companies</Tab>
                             )}
                             {userType === 'ADMIN' && (
-                                <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Ownerships</Tab>
+                                <Tab ><DoubleArrowOutlinedIcon className="mr-1" fontSize="small" />Ownerships</Tab>
                             )}
                             <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Employees</Tab>
                             <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Vendors</Tab>
