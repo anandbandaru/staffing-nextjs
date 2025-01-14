@@ -7,9 +7,9 @@ import Box from '@mui/material/Box';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
-import AssuredWorkloadOutlinedIcon from '@mui/icons-material/AssuredWorkloadOutlined';
+import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import JobsMain from "../jobs/jobsMain";
 import ExpensesMain from "../expenses/expensesMain";
 
@@ -28,10 +28,10 @@ const TransactionsTop = ({ module }) => {
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <Tabs>
                         <TabList className="top2TabsListHolder">
-                            <Tab ><AssuredWorkloadOutlinedIcon className="mr-1" fontSize="small" />Jobs</Tab>
+                            <Tab ><WorkOutlineOutlinedIcon className="mr-1" fontSize="small" />Jobs</Tab>
                             {userType === 'ADMIN' && (
                                 <>
-                                <Tab ><SellOutlinedIcon className="mr-1" fontSize="small" />Invoices</Tab>
+                                <Tab ><PaidOutlinedIcon className="mr-1" fontSize="small" />Invoices</Tab>
                                 <Tab ><AddShoppingCartIcon className="mr-1" fontSize="small" />Expenses</Tab>
                                 <Tab ><PointOfSaleOutlinedIcon className="mr-1" fontSize="small" />Payroll</Tab>
                                 </>
