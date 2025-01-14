@@ -9,9 +9,13 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import AttributionOutlinedIcon from '@mui/icons-material/AttributionOutlined';
-import { Stack, Card, CardContent, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText } from "@mui/material";
+import { Stack, Card, CardContent, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, Chip } from "@mui/material";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import InfoIcon from '@mui/icons-material/Info';
+import UserTopPermissions from "./userTopPermissions";
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import UserNewPermissions from "./userNewPermissions";
+import UserTransactionsPermissions from "./userTransactionsPermissions";
 
 const UserList = () => {
     const { accessToken, APIPath } = useContext(Context);
@@ -21,6 +25,7 @@ const UserList = () => {
     const [itemCount, setItemCount] = useState(0);
     const [loginDetails, setLoginDetails] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         fetchUsers();
@@ -49,6 +54,7 @@ const UserList = () => {
                 },
             });
             const users = response.data.value;
+            setUsers(users);
             setItemCount(users.length);
             setDataAPIError("");
             setApiLoading(false);
@@ -161,11 +167,9 @@ const UserList = () => {
             </div>
 
             <Stack direction={"row"} spacing={2} className="w-full py-4">
-                <Card sx={{ maxWidth: 275 }} className="rag-green-bg text-white">
+                <Card sx={{ maxWidth: 275 }}>
                     <CardContent>
-                        <Typography variant="h5" component="div">
-                            <AdminPanelSettingsOutlinedIcon className="mr-3" /> ADMIN
-                        </Typography>
+                        <Chip label="ADMIN" className="rag-green-bg text-white w-full" />
                         <div className="mt-4">
                             Can:
                             <ul>
@@ -176,49 +180,62 @@ const UserList = () => {
                         </div>
                     </CardContent>
                 </Card>
-                <Card sx={{ maxWidth: 275 }} className="rag-blue-bg text-white">
+                <Card sx={{ maxWidth: 275 }}>
                     <CardContent>
-                        <Typography variant="h5" component="div">
-                            <PersonOutlinedIcon className="mr-3" />OPERATOR
-                        </Typography>
+                        <Chip label="OPERATOR" className="rag-blue-bg text-white w-full" />
                         <div className="mt-4">
                             Can only look at:
-                            <ul>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Dashboard
-                                    <ul className="ml-10">
-                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Employees</li>
-                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Vendors</li>
-                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Clients</li>
-                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Implementation Partners</li>
-                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Job Types List</li>
-                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Expense Types List</li>
-                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />File Types List</li>
-                                    </ul>
-                                </li>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Transactions
-                                    <ul className="ml-10">
-                                        <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Jobs</li>
-                                    </ul>
-                                </li>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Files</li>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Todo</li>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Calendar</li>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Todo Sidebar</li>
-                            </ul>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <ul>
+                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Dashboard
+                                        <ul className="ml-4">
+                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Employees</li>
+                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Vendors</li>
+                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Clients</li>
+                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Imp Partners</li>
+                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Job Types</li>
+                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Expense Types</li>
+                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />File Types</li>
+                                        </ul>
+                                    </li>
+                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Transactions
+                                        <ul className="ml-4">
+                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Jobs</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Files</li>
+                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Todo</li>
+                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Calendar</li>
+                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Todo Sidebar</li>
+                                </ul>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
-                <Card sx={{ maxWidth: 275 }} className="rag-red-bg text-white">
-                    <CardContent>
-                        <Typography variant="h5" component="div">
-                            <SupervisedUserCircleOutlinedIcon className="mr-3" />COHOST
-                        </Typography>
+                <Card sx={{ maxWidth: 275 }}>
+                    <CardContent >
+                        <Chip label="COHOST" className="rag-red-bg text-white w-full" />
                         <div className="mt-4">
                             Yet to define permissions
                         </div>
                     </CardContent>
                 </Card>
             </Stack>
+
+            <Stack direction={"row"} spacing={2} className="mt-0 w-full">
+                <div className="flex-1">
+                    <UserTopPermissions users={users} />
+                </div>
+                <div className="flex-1">
+                    <UserNewPermissions users={users} />
+                </div>
+                <div className="flex-1">
+                    <UserTransactionsPermissions users={users} />
+                </div>
+            </Stack>
+
             <div
                 className="ag-theme-quartz" // applying the Data Grid theme
                 style={{ height: 400 }} // the Data Grid will fill the size of the parent container
@@ -243,6 +260,7 @@ const UserList = () => {
                     </DialogContentText>
                 </DialogContent>
             </Dialog>
+
         </>
     )
 }

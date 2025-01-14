@@ -12,6 +12,13 @@
   ],
   "releases": [
     {
+      "version": "2.0",
+      "date": "JAN 14 2024",
+      "notes": [
+        "Top tab permissions"
+      ]
+    },
+    {
       "version": "1.5",
       "date": "JAN 12 2024",
       "notes": [
@@ -77,6 +84,9 @@
       ]
     }
   ],
+  "topTabs": ["Dashboard", "New", "Transactions", "Timesheets", "Files", "Todo", "Users", "Calendar", "Configuration"],
+  "newTabs": ["Owners", "Companies", "Ownerships", "Employees", "Vendors", "Clients", "Implementation Partners", "Job Types", "Expense Types", "File Types"],
+  "transactionsTabs": ["Jobs", "Invoices", "Expenses", "Payroll"],
   "currencyTypes": [
     {
       "name": "USD"

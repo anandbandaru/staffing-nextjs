@@ -5,7 +5,7 @@ import GenericList from "../forms/GenericList";
 const Configuration = () => {
 
     return (
-        <Stack spacing={2} direction={"row"}>
+        <Stack spacing={2} direction={"row"} className="flex-wrap">
             <GenericList formType={'jobTypes'} />
             <GenericList formType={"employeeTypes"} />
             <GenericList formType={"dependentTypes"} />

@@ -74,7 +74,7 @@ const Top = () => {
             .catch(error => {
                 showSnackbar('error', "Login trace failure");
             });
-    }, []);
+    }, [userName]);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -109,6 +109,37 @@ const Top = () => {
         setOpenLoadingAPI(isAPILoading);
     }, [isAPILoading]);
 
+    const [permissions, setPermissions] = useState([]);
+    useEffect(() => {
+        if (userType !== 'ADMIN') {
+            axios.get(APIPath + `/gettoppermissions/${userName}`)
+                .then(response => {
+                    if (response.data.STATUS === "FAIL")
+                        showSnackbar('error', "Top tabs Permissions failure");
+                    else {
+                        showSnackbar('info', "Top tabs Permissions success");
+                        setPermissions(response.data.data)
+                    }
+                })
+                .catch(error => {
+                    showSnackbar('error', "Top tabs Permissions failure");
+                });
+        }
+    }, [userName, userType]);
+
+    const allTabs = [
+        { name: 'Dashboard', icon: <AppsIcon className="mr-1" fontSize="small" /> },
+        { name: 'New', icon: <ControlPointOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Transactions', icon: <AttachMoneyOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Timesheets', icon: <MoreTimeIcon className="mr-1" fontSize="small" /> },
+        { name: 'Files', icon: <FileCopyOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Todo', icon: <CheckCircleOutlineIcon className="mr-1" fontSize="small" /> },
+        { name: 'Users', icon: <AttributionIcon className="mr-1" fontSize="small" /> },
+        { name: 'Calendar', icon: <CalendarMonthOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Configuration', icon: <SettingsEthernetIcon className="mr-1" fontSize="small" /> }
+    ];
+    const tabsToShow = userType === 'ADMIN' ? allTabs.map(tab => tab.name) : permissions;
+
     return (
         <div className="topHolder px-0">
             <CustomSnackbar
@@ -129,70 +160,20 @@ const Top = () => {
                     </div>
                     <Tabs>
                         <TabList className="topTabsListHolder">
-                            <Tab ><AppsIcon className="mr-1" fontSize="small" />Dashboard</Tab>
-                            <Tab ><ControlPointOutlinedIcon className="mr-1" fontSize="small" />New</Tab>
-                            <Tab >
-                                <AttachMoneyOutlinedIcon className="mr-1" fontSize="small" />
-                                Transactions</Tab>
-                            {userType === 'ADMIN' && (
-                                <Tab >
-                                    <MoreTimeIcon className="mr-1" fontSize="small" />
-                                    Timesheets</Tab>
-                            )}
-                            <Tab >
-                                <FileCopyOutlinedIcon className="mr-1" fontSize="small" />
-                                Files</Tab>
-                            <Tab >
-                                <CheckCircleOutlineIcon className="mr-1" fontSize="small" />
-                                Todo</Tab>
-                            {userType === 'ADMIN' && (
-                                <Tab >
-                                    <AttributionIcon className="mr-1" fontSize="small" />
-                                    Users</Tab>
-                            )}
-                            <Tab >
-                                <CalendarMonthOutlinedIcon className="mr-1" fontSize="small" />
-                                Calendar</Tab>
-                            {userType === 'ADMIN' && (
-                                <Tab >
-                                    <SettingsEthernetIcon className="mr-1" fontSize="small" />
-                                    Configuration</Tab>
-                            )}
+                            {allTabs.map(tab => (
+                                tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
+                            ))}
                         </TabList>
 
-                        <TabPanel className="px-2">
-                            <Dashboard />
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            <ModulesTop />
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            <TransactionsTop />
-                        </TabPanel>
-                        {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
-                                Timesheets
-                            </TabPanel>
-                        )}
-                        <TabPanel className="px-2">
-                            <FilesMain />
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            <TodosMain />
-                        </TabPanel>
-                        {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
-                                <UsersMain />
-                            </TabPanel>
-                        )}
-                        <TabPanel className="px-2">
-                            <Calendar />
-                        </TabPanel>
-                        {userType === 'ADMIN' && (
-                            <TabPanel className="px-2">
-                                <Configuration />
-                            </TabPanel>
-                        )}
+                        {tabsToShow.includes('Dashboard') && <TabPanel className="px-2"><Dashboard /></TabPanel>}
+                        {tabsToShow.includes('New') && <TabPanel className="px-2"><ModulesTop /></TabPanel>}
+                        {tabsToShow.includes('Transactions') && <TabPanel className="px-2"><TransactionsTop /></TabPanel>}
+                        {tabsToShow.includes('Timesheets') && <TabPanel className="px-2">Timesheets</TabPanel>}
+                        {tabsToShow.includes('Files') && <TabPanel className="px-2"><FilesMain /></TabPanel>}
+                        {tabsToShow.includes('Todo') && <TabPanel className="px-2"><TodosMain /></TabPanel>}
+                        {tabsToShow.includes('Users') && <TabPanel className="px-2"><UsersMain /></TabPanel>}
+                        {tabsToShow.includes('Calendar') && <TabPanel className="px-2"><Calendar /></TabPanel>}
+                        {tabsToShow.includes('Configuration') && <TabPanel className="px-2"><Configuration /></TabPanel>}
                     </Tabs>
                 </Box>
             </div>

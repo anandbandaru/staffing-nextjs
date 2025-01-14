@@ -18,7 +18,7 @@ function GenericList({ formType }) {
                 invoicePeriods: configData.invoicePeriods,
                 GOOGLEDRIVE_FOLDERS: configData.GOOGLEDRIVE_FOLDERS,
                 expenseCategories: configData.expenseCategories,
-                currencyTypes: configData.currencyTypes
+                currencyTypes: configData.currencyTypes,
             };
 
             const selectedData = dataMap[formType] || [];
@@ -47,9 +47,7 @@ function GenericList({ formType }) {
                     <tbody>
                         {data.map((item, index) => (
                             <tr key={index}>
-                                {formType !== "GOOGLEDRIVE_FOLDERS" ? (
-                                    <td className="py-2 px-4 border-b border-r">{item.name}</td>
-                                ) : (
+                                {formType === "GOOGLEDRIVE_FOLDERS" ? (
                                     <>
                                         <td className="py-2 px-4 border-b border-r">{item.foldername}</td>
                                         <td className="py-2 px-4 border-b border-r">{item.folderid}</td>
@@ -72,6 +70,8 @@ function GenericList({ formType }) {
                                             </Link>
                                         </td>
                                     </>
+                                ) : (
+                                    <td className="py-2 px-4 border-b border-r">{item.name}</td>
                                 )}
                             </tr>
                         ))}
@@ -80,7 +80,10 @@ function GenericList({ formType }) {
             ) : (
                 <Alert severity="error">No configured item present.</Alert>
             )}
+
+            
         </>
+        
     );
 }
 
