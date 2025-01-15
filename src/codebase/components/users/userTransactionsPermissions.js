@@ -8,7 +8,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
 
 const UserTransactionsPermissions = ({ users }) => {
-    const { APIPath, userType } = useContext(Context);
+    const { APIPath } = useContext(Context);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
     const [selectedTabs, setSelectedTabs] = useState([]);

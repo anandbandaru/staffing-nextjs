@@ -3,7 +3,6 @@ import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import './footer.css';
 import { Box, Stack, Button } from '@mui/material';
-import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -20,7 +19,7 @@ const Footer = () => {
         APIType, APIVersion
     } = useContext(Context);
     const [isTokenExpired, setIsTokenExpired] = useState(false);
-    const [loginTime, setLoginTime] = useState(Date.now());
+    const [loginTime] = useState(Date.now());
     const [elapsedTime, setElapsedTime] = useState("");
     const [timeLeft, setTimeLeft] = useState("");
 
