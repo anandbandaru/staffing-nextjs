@@ -16,7 +16,9 @@
       "date": "JAN 14 2024",
       "notes": [
         "Top tab permissions",
-        "New (Modules) tab permissions"
+        "New (Modules) tab permissions",
+        "Transactions tab permissions",
+        "Footer with info - Token expiry & Logged in time"
       ]
     },
     {
