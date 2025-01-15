@@ -166,7 +166,7 @@ const UserList = () => {
                 {/* TOOLS */}
             </div>
 
-            <Stack direction={"row"} spacing={2} className="w-full py-4">
+            {/* <Stack direction={"row"} spacing={2} className="w-full py-4">
                 <Card sx={{ maxWidth: 275 }}>
                     <CardContent>
                         <Chip label="ADMIN" className="rag-green-bg text-white w-full" />
@@ -222,7 +222,7 @@ const UserList = () => {
                         </div>
                     </CardContent>
                 </Card>
-            </Stack>
+            </Stack> */}
 
             <Stack direction={"row"} spacing={2} className="mt-0 w-full">
                 <div className="flex-1">

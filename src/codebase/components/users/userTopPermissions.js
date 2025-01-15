@@ -120,7 +120,8 @@ const UserTopPermissions = ({ users }) => {
                         className='mb-4'
                         variant="contained"
                         onClick={handleSave}
-                        disabled={isSubmitting || !selectedUser || selectedTabs.length === 0}>
+                        disabled={isSubmitting || !selectedUser}>
+                        {/* disabled={isSubmitting || !selectedUser || selectedTabs.length === 0}> */}
                         <SaveOutlinedIcon className="mr-1" />
                         Save
                     </Button>

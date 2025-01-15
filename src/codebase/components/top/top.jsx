@@ -154,23 +154,30 @@ const Top = () => {
                         </Stack>
                         <div className="release_version_Div">{configData.releases[0].version}</div>
                     </div>
-                    <Tabs>
-                        <TabList className="topTabsListHolder">
-                            {allTabs.map(tab => (
-                                tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
-                            ))}
-                        </TabList>
+                    {tabsToShow.length > 0
+                        ?
+                        <Tabs>
+                            <TabList className="topTabsListHolder">
+                                {allTabs.map(tab => (
+                                    tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
+                                ))}
+                            </TabList>
 
-                        {tabsToShow.includes('Dashboard') && <TabPanel className="px-2"><Dashboard /></TabPanel>}
-                        {tabsToShow.includes('New') && <TabPanel className="px-2"><ModulesTop /></TabPanel>}
-                        {tabsToShow.includes('Transactions') && <TabPanel className="px-2"><TransactionsTop /></TabPanel>}
-                        {tabsToShow.includes('Timesheets') && <TabPanel className="px-2">Timesheets</TabPanel>}
-                        {tabsToShow.includes('Files') && <TabPanel className="px-2"><FilesMain /></TabPanel>}
-                        {tabsToShow.includes('Todo') && <TabPanel className="px-2"><TodosMain /></TabPanel>}
-                        {tabsToShow.includes('Users') && <TabPanel className="px-2"><UsersMain /></TabPanel>}
-                        {tabsToShow.includes('Calendar') && <TabPanel className="px-2"><Calendar /></TabPanel>}
-                        {tabsToShow.includes('Configuration') && <TabPanel className="px-2"><Configuration /></TabPanel>}
-                    </Tabs>
+                            {tabsToShow.includes('Dashboard') && <TabPanel className="px-2"><Dashboard /></TabPanel>}
+                            {tabsToShow.includes('New') && <TabPanel className="px-2"><ModulesTop /></TabPanel>}
+                            {tabsToShow.includes('Transactions') && <TabPanel className="px-2"><TransactionsTop /></TabPanel>}
+                            {tabsToShow.includes('Timesheets') && <TabPanel className="px-2">Timesheets</TabPanel>}
+                            {tabsToShow.includes('Files') && <TabPanel className="px-2"><FilesMain /></TabPanel>}
+                            {tabsToShow.includes('Todo') && <TabPanel className="px-2"><TodosMain /></TabPanel>}
+                            {tabsToShow.includes('Users') && <TabPanel className="px-2"><UsersMain /></TabPanel>}
+                            {tabsToShow.includes('Calendar') && <TabPanel className="px-2"><Calendar /></TabPanel>}
+                            {tabsToShow.includes('Configuration') && <TabPanel className="px-2"><Configuration /></TabPanel>}
+                        </Tabs>
+                        :
+                        <>
+                            <Alert severity="warning" className="mt-20">Nothing is permissioned here for you. Check with your Administrator</Alert>
+                        </>
+                    }
                 </Box>
             </div>
 
@@ -205,7 +212,7 @@ const Top = () => {
 
             <Footer />
 
-            
+
 
             <BootstrapDialog
                 TransitionComponent={Transition}

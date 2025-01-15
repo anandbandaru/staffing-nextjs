@@ -4,6 +4,7 @@ import './ModulesTop.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Context } from "../../context/context";
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import OwnersMain from "../owners/ownersMain";
@@ -25,7 +26,7 @@ const ModulesTop = ({ module }) => {
 
     const { userType, APIPath, userName } = useContext(Context);
     const [permissions, setPermissions] = useState([]);
-    
+
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -38,7 +39,7 @@ const ModulesTop = ({ module }) => {
         setSnackbarMessage(message);
         setSnackbarOpen(true);
     };
-    
+
     useEffect(() => {
         if (userType !== 'ADMIN') {
             axios.get(APIPath + `/getnewpermissions/${userName}`)
@@ -81,77 +82,30 @@ const ModulesTop = ({ module }) => {
             />
             <div className="top2TabsHolder">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
-                    <Tabs>
-                        <TabList className="topTabsListHolder">
-                            {allTabs.map(tab => (
-                                tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
-                            ))}
-                        </TabList>
-                        {tabsToShow.includes('Owners') && <TabPanel className="-mt-1"><OwnersMain /></TabPanel>}
-                        {tabsToShow.includes('Companies') && <TabPanel className="-mt-1"><CompaniesMain /></TabPanel>}
-                        {tabsToShow.includes('Ownerships') && <TabPanel className="-mt-1"><OwnershipsMain /></TabPanel>}
-                        {tabsToShow.includes('Employees') && <TabPanel className="-mt-1"><EmployeesMain /></TabPanel>}
-                        {tabsToShow.includes('Vendors') && <TabPanel className="-mt-1"><VendorsMain /></TabPanel>}
-                        {tabsToShow.includes('Clients') && <TabPanel className="-mt-1"><ClientsMain /></TabPanel>}
-                        {tabsToShow.includes('Implementation Partners') && <TabPanel className="-mt-1"><ImpPartnersMain /></TabPanel>}
-                        {tabsToShow.includes('Job Types') && <TabPanel className="-mt-1"><JobTypesMain /></TabPanel>}
-                        {tabsToShow.includes('Expense Types') && <TabPanel className="-mt-1"><ExpenseTypesMain /></TabPanel>}
-                        {tabsToShow.includes('File Types') && <TabPanel className="-mt-1"><FileTypesMain /></TabPanel>}
-                        {/* <TabList className="top2TabsListHolder">
-                            {userType === 'ADMIN' && (
-                                <Tab ><DoubleArrowOutlinedIcon className="mr-1" fontSize="small" />Owners</Tab>
-                            )}
-                            {userType === 'ADMIN' && (
-                                <Tab ><DoubleArrowOutlinedIcon className="mr-1" fontSize="small" />Companies</Tab>
-                            )}
-                            {userType === 'ADMIN' && (
-                                <Tab ><DoubleArrowOutlinedIcon className="mr-1" fontSize="small" />Ownerships</Tab>
-                            )}
-                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Employees</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Vendors</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Clients</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Implementation Partners</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Job Types</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />Expense Types</Tab>
-                            <Tab ><AdjustOutlinedIcon className="mr-1" fontSize="small" />File Types</Tab>
-                        </TabList> */}
-                        {/* {userType === 'ADMIN' && (
-                            <TabPanel className="-mt-1">
-                                <OwnersMain />
-                            </TabPanel>
-                        )}
-                        {userType === 'ADMIN' && (
-                            <TabPanel className="-mt-1">
-                                <CompaniesMain />
-                            </TabPanel>
-                        )}
-                        {userType === 'ADMIN' && (
-                            <TabPanel className="-mt-1">
-                                <OwnershipsMain />
-                            </TabPanel>
-                        )}
-                        <TabPanel className="-mt-1">
-                            <EmployeesMain />
-                        </TabPanel>
-                        <TabPanel className="-mt-1">
-                            <VendorsMain />
-                        </TabPanel>
-                        <TabPanel className="-mt-1">
-                            <ClientsMain />
-                        </TabPanel>
-                        <TabPanel className="-mt-1">
-                            <ImpPartnersMain />
-                        </TabPanel>
-                        <TabPanel className="-mt-1">
-                            <JobTypesMain />
-                        </TabPanel>
-                        <TabPanel className="-mt-1">
-                            <ExpenseTypesMain />
-                        </TabPanel>
-                        <TabPanel className="-mt-1">
-                            <FileTypesMain />
-                        </TabPanel> */}
-                    </Tabs>
+                    {tabsToShow.length > 0
+                        ?
+                        <Tabs>
+                            <TabList className="topTabsListHolder">
+                                {allTabs.map(tab => (
+                                    tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
+                                ))}
+                            </TabList>
+                            {tabsToShow.includes('Owners') && <TabPanel className="-mt-1"><OwnersMain /></TabPanel>}
+                            {tabsToShow.includes('Companies') && <TabPanel className="-mt-1"><CompaniesMain /></TabPanel>}
+                            {tabsToShow.includes('Ownerships') && <TabPanel className="-mt-1"><OwnershipsMain /></TabPanel>}
+                            {tabsToShow.includes('Employees') && <TabPanel className="-mt-1"><EmployeesMain /></TabPanel>}
+                            {tabsToShow.includes('Vendors') && <TabPanel className="-mt-1"><VendorsMain /></TabPanel>}
+                            {tabsToShow.includes('Clients') && <TabPanel className="-mt-1"><ClientsMain /></TabPanel>}
+                            {tabsToShow.includes('Implementation Partners') && <TabPanel className="-mt-1"><ImpPartnersMain /></TabPanel>}
+                            {tabsToShow.includes('Job Types') && <TabPanel className="-mt-1"><JobTypesMain /></TabPanel>}
+                            {tabsToShow.includes('Expense Types') && <TabPanel className="-mt-1"><ExpenseTypesMain /></TabPanel>}
+                            {tabsToShow.includes('File Types') && <TabPanel className="-mt-1"><FileTypesMain /></TabPanel>}
+                        </Tabs>
+                        :
+                        <>
+                            <Alert severity="warning">Nothing is permissioned here for you. Check with your Administrator</Alert>
+                        </>
+                    }
                 </Box>
             </div>
         </div>
