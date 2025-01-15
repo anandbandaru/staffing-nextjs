@@ -15,7 +15,7 @@ import CustomSnackbar from "../snackbar/snackbar";
 import preval from 'preval.macro';
 
 const Footer = () => {
-    const { tokenExpiry, refreshPage, isAPILoading, isAPIError, checkAPIAvailability,
+    const { tokenExpiry, refreshPage, isAPILoading, isAPIError, setIsAPILoading, APIPath, setIsAPIError, checkAPIAvailability,
         APIType, APIVersion
     } = useContext(Context);
     const [isTokenExpired, setIsTokenExpired] = useState(false);
@@ -133,7 +133,11 @@ const Footer = () => {
                             isAPIError ?
                                 <>
                                     <Button size="small" variant="contained" color="error"
-                                        className="py-1 px-2"
+                                        sx={{
+                                            padding: '0px 6px',
+                                            fontSize: '0.75rem',
+                                            minWidth: 'auto',
+                                        }}
                                         startIcon={<SwapHorizontalCircleOutlinedIcon />}
                                         onClick={() => {
                                             checkAPIAvailability();
@@ -147,7 +151,6 @@ const Footer = () => {
                                 <>
                                     <Stack direction={"row"} spacing={2}>
                                         <Button size="small" variant="contained" color="success"
-                                            className="py-1 px-2"
                                             sx={{
                                                 padding: '0px 6px',
                                                 fontSize: '0.75rem',
@@ -155,7 +158,7 @@ const Footer = () => {
                                             }}
                                             startIcon={<SwapHorizontalCircleOutlinedIcon />}
                                             onClick={() => {
-                                                //checkAPIAvailability();
+                                                checkAPIAvailability();
                                                 showSnackbar('info', "Checked API availability");
                                             }}
                                         >
