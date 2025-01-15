@@ -1,0 +1,23 @@
+.footerHolder {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
+}
+.footerItemHolder > DIV{
+    border-right: 1px solid #fff;
+    padding-right: 10px;
+}
+
+.APICheckHolder{
+    z-index: 999;
+}
+.APICheckHolder span{
+    font-size: 10px;
+    color: #000;
+    font-weight: normal;
+}
+.APICheckClicker{
+    cursor: pointer;
+}

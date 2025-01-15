@@ -13,6 +13,8 @@ const ContextProvider = (props) => {
     // const [loginInteractionInProgress, setLoginInteractionInProgress] = useState(false);
     const [token, setToken] = useState("");
     const [accessToken, setAccessToken] = useState("");
+    const [tokenExpiry, setTokenExpiry] = useState(null);
+
     const [userName, setUserName] = useState("");
     const [userType, setUserType] = useState("");
 
@@ -38,7 +40,7 @@ const ContextProvider = (props) => {
     const [top2TabName, setTop2TabName] = useState('');
     const [openDashboardAPIError, setOpenDashboardAPIError] = useState(false);
     const [dashboardAPIError, setDashboardAPIError] = useState(false);
-    
+
     const [todoOpen, setTodoOpen] = useState(true);
 
     //FOR HISTORY LOCAL STORAGE
@@ -97,9 +99,11 @@ const ContextProvider = (props) => {
             setToken(loginResponse.idToken);
             setAccessToken(loginResponse.accessToken);
             setUserName(loginResponse.account.username);
-            // Decode the token to get the "Employee type" property
-            // const decodedToken = jwtDecode(loginResponse.idToken);
-            // const employeeType = decodedToken['acct'];
+            const decodedToken = jwtDecode(loginResponse.idToken);
+            const expiryTime = decodedToken.exp * 1000; // Convert to milliseconds
+            setTokenExpiry(expiryTime);
+            console.log("TOKEN EXPIRY:" + expiryTime);
+
             // Fetch user data from Microsoft Graph API
             const response = await axios.get('https://graph.microsoft.com/v1.0/me', {
                 headers: {
@@ -119,10 +123,19 @@ const ContextProvider = (props) => {
                     setLoginSuccess(true);
                     setToken(loginResponse.idToken);
                     setUserName(loginResponse.account.username);
-                    // Decode the token to get the "Employee type" property
                     const decodedToken = jwtDecode(loginResponse.idToken);
-                    const employeeType = decodedToken['acct'];
-                    setUserType(employeeType);
+                    const expiryTime = decodedToken.exp * 1000; // Convert to milliseconds
+                    setTokenExpiry(expiryTime);
+
+                    // Fetch user data from Microsoft Graph API
+                    const response = await axios.get('https://graph.microsoft.com/v1.0/me', {
+                        headers: {
+                            Authorization: `Bearer ${loginResponse.accessToken}`
+                        }
+                    });
+
+                    const jobTitle = response.data.jobTitle;
+                    setUserType(jobTitle);
                 } catch (tokenError) {
                     console.log("Token acquisition failed:", tokenError);
                     setLoginSuccess(false);
@@ -230,8 +243,6 @@ const ContextProvider = (props) => {
     };
 
     // Add the function to be called in the ToDo component
-    
-
     const contextValue = {
         freecurrencyapi,
         freecurrencyapi_key,
@@ -268,6 +279,7 @@ const ContextProvider = (props) => {
         refreshPage,
         createOneDriveFolder,
         accessToken,
+        tokenExpiry, setTokenExpiry,
         createGDriveFolder,
         loginError,
         token,

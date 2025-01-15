@@ -44,25 +44,6 @@
     top: 25px;
     cursor: pointer;
 }
-.APICheckHolder{
-    position: fixed;
-    left: 2px;
-    bottom: 0px;
-    z-index: 999;
-    width: 220px;
-}
-.APICheckHolder span{
-    font-size: 10px;
-    color: #000;
-    font-weight: normal;
-}
-.APICheckHolder img {
-    width: 16px;
-    cursor: pointer;
-}
-.APICheckClicker{
-    cursor: pointer;
-}
 .SettingsPartsHolder{
     width: 350px;
 }

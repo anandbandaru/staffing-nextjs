@@ -5,12 +5,10 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { assets } from '../../assets/assets'
 import { Context } from "../../context/context";
 import { Tooltip } from 'react-tooltip';
-import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontalCircleOutlined';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import { Stack } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -44,6 +42,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Alert from '@mui/material/Alert';
 import CachedIcon from '@mui/icons-material/Cached';
 import axios from 'axios';
+import Footer from "../footer/footer";
 
 const Top = () => {
 
@@ -52,10 +51,7 @@ const Top = () => {
         openDashboardAPIError,
         dashboardAPIError,
         isAPILoading,
-        isAPIError,
-        APIVersion,
-        APIType, APIPath,
-        checkAPIAvailability,
+        APIPath,
         userName, userType, todoOpen } = useContext(Context);
 
     //page title
@@ -207,43 +203,9 @@ const Top = () => {
 
             <Tooltip id="my-tooltip-api-availability" className="tooltip-example" />
 
-            <div className="APICheckHolder"
-                data-tooltip-id="my-tooltip-api-availability"
-                data-tooltip-html="Status of API">
-                {isAPILoading ?
-                    // <img
-                    //     src={assets.loader_Circles_icon} alt="" />
-                    <CircularProgress size="16px" color="secondary" />
-                    :
-                    isAPIError ?
-                        <>
-                            <Button size="small" variant="contained" color="error" startIcon={<SwapHorizontalCircleOutlinedIcon />}
-                                onClick={() => {
-                                    checkAPIAvailability();
-                                    showSnackbar('info', "Checked API availability");
-                                }}
-                                className="w-full"
-                            >
-                                ERROR
-                            </Button>
-                        </>
-                        :
-                        <>
-                            <Stack direction={"row"} spacing={2}>
-                                <Button size="small" variant="outlined" color="success" startIcon={<SwapHorizontalCircleOutlinedIcon />}
-                                    onClick={() => {
-                                        checkAPIAvailability();
-                                        showSnackbar('info', "Checked API availability");
-                                    }}
-                                    className="w-full"
-                                >
-                                    {/* <div className="spinnerWhite mr-2"></div> */}
-                                    {APIType === "LOCAL" ? "LOCAL" : "ONLINE:" + APIVersion}
-                                </Button>
-                            </Stack>
-                        </>
-                }
-            </div>
+            <Footer />
+
+            
 
             <BootstrapDialog
                 TransitionComponent={Transition}
@@ -291,6 +253,7 @@ const Top = () => {
                     </Button>
                 </DialogContent>
             </BootstrapDialog>
+
 
         </div>
     )
