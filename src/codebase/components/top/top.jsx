@@ -32,7 +32,8 @@ import Configuration from "../configuration/configuration";
 import Settings from "../settings/settings";
 import Balance from "../balance/balance";
 import Calendar from "../calendar/calendar";
-
+import Chip from '@mui/material/Chip';
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -43,6 +44,7 @@ import Alert from '@mui/material/Alert';
 import CachedIcon from '@mui/icons-material/Cached';
 import axios from 'axios';
 import Footer from "../footer/footer";
+import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
 
 const Top = () => {
 
@@ -53,11 +55,6 @@ const Top = () => {
         isAPILoading,
         APIPath,
         userName, userType, todoOpen } = useContext(Context);
-
-    //page title
-    useEffect(() => {
-        document.title = "Staffing";
-    });
 
     useEffect(() => {
         axios.post(APIPath + '/login', { userName })
@@ -99,6 +96,19 @@ const Top = () => {
         },
     }));
     const [openLoadingAPI, setOpenLoadingAPI] = React.useState(false);
+    const [openVersionDialog, setOpenVersionDialog] = useState(false);
+
+    useEffect(() => {
+        document.title = "Staffing";
+        const currentVersion = configData.releases[0].version;
+        const storedVersion = localStorage.getItem('appVersion');
+        console.log("LOCAL VERSION:" + storedVersion)
+        console.log("ONLINE VERSION:" + currentVersion)
+        if (storedVersion !== currentVersion) {
+            setOpenVersionDialog(true);
+            localStorage.setItem('appVersion', currentVersion);
+        }
+    }, []);
     //this ensure to show the above dialog is no DS are given by API
     useEffect(() => {
         console.log("SHOW LOADING:" + isAPILoading)
@@ -261,6 +271,44 @@ const Top = () => {
                 </DialogContent>
             </BootstrapDialog>
 
+            <BootstrapDialog
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={openVersionDialog}
+                onClose={() => setOpenVersionDialog(false)}
+            >
+                <DialogTitle className="dialogTitle" sx={{ m: 0, p: 1 }} id="customized-dialog-title" >
+                    <Stack className="stackLoadingTitle" direction="row" spacing={2}>
+                        <CelebrationOutlinedIcon className="text-green-600" />
+                        <div>New Version Available: {configData.releases[0].version}</div>
+                    </Stack>
+                </DialogTitle>
+                <DialogContent dividers size="small">
+                    <div className="mb-5">You are looking at new version of this application since you last logged in.</div>
+                    <div className="mb-5">
+                        {
+                            configData.releases.slice(0, 1).map((item, index) => (
+                                <>
+                                    <Stack spacing={1} direction="row">
+                                        <Chip label={item.version} size="small" color='success' variant="outlined" />
+                                        <Chip label={item.date} size="small" color='success' variant="outlined" />
+                                        <Chip label="current" size="small" color='success' />
+                                    </Stack>
+                                    <div className="my-5">Change log:</div>
+                                    <ul className="ChangeLogUL mt-5">
+                                        {item.notes.map((noteitem, noteindex) => (
+                                            <li key={noteindex}><KeyboardArrowRightOutlinedIcon fontSize="small" />{noteitem}</li>
+                                        ))}
+                                    </ul>
+                                </>
+                            ))
+                        }
+                    </div>
+                    <Button variant="contained" size="large" className="bg-blue-600 float-right mt-10"
+                        onClick={() => setOpenVersionDialog(false)}>Close
+                    </Button>
+                </DialogContent>
+            </BootstrapDialog>
 
         </div>
     )
