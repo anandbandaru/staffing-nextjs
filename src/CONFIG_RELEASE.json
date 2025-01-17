@@ -12,6 +12,13 @@
   ],
   "releases": [
     {
+      "version": "2.4",
+      "date": "JAN 17 2024",
+      "notes": [
+        "Job Rates section"
+      ]
+    },
+    {
       "version": "2.3",
       "date": "JAN 16 2024",
       "notes": [
