@@ -112,7 +112,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
         }
     }, [ID]);
 
-    const highlightKeys = ['ID', 'DISABLED', 'IMPORTANT', 'COMPLETED', 'SSN'];
+    const highlightKeys = ['ID', 'DISABLED', 'IMPORTANT', 'COMPLETED', 'SSN', 'EIN'];
 
     return (
         <>

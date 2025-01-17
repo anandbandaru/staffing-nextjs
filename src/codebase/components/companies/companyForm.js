@@ -11,6 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import InputMask from 'react-input-mask';
 
 function CompanyForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -121,7 +122,7 @@ function CompanyForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Company data");
                             else
                                 showSnackbar('success', "Company Data saved");
-                                resetForm();
+                            resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);
@@ -133,11 +134,12 @@ function CompanyForm({ props, ID, operation }) {
                     validationSchema={Yup.object().shape({
                         Name: Yup.string()
                             .required('Name Required'),
-                        Description: Yup.string()
-                            .required('Description Required'),
+                        // Description: Yup.string()
+                        //     .required('Description Required'),
                         Address: Yup.string()
                             .required('Address Required'),
                         EIN: Yup.string()
+                            .matches(/^\d{2}-\d{7}$/, 'EIN must be in the format 12-3456789')
                             .required('EIN Required'),
                         Phone: Yup.string()
                             .required('Phone Required'),
@@ -146,8 +148,8 @@ function CompanyForm({ props, ID, operation }) {
                             .required('Email Required'),
                         EstablishedDate: Yup.string()
                             .required('EstablishedDate Required'),
-                        Notes: Yup.string()
-                            .required('Notes Required'),
+                        // Notes: Yup.string()
+                        //     .required('Notes Required'),
                     })}
                 >
                     {(props) => {
@@ -216,43 +218,52 @@ function CompanyForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.Address && touched.Address) && errors.Address}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="EIN"
-                                    name="EIN"
-                                    label="EIN"
+                                <InputMask
+                                    mask="99-9999999"
                                     value={values.EIN}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.EIN && touched.EIN) && errors.EIN}
-                                />
+                                >
+                                    {() => (
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="EIN"
+                                            name="EIN"
+                                            label="EIN"
+                                            value={values.EIN}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.EIN && touched.EIN) && errors.EIN}
+                                        />
+                                    )}
+                                </InputMask>
                                 <Stack direction="row" spacing={2} className='mt-2'>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="Phone"
-                                    name="Phone"
-                                    label="Phone"
-                                    value={values.Phone}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.Phone && touched.Phone) && errors.Phone}
-                                />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="Email"
-                                    name="Email"
-                                    label="Email"
-                                    value={values.Email}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.Email && touched.Email) && errors.Email}
-                                />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="Phone"
+                                        name="Phone"
+                                        label="Phone"
+                                        value={values.Phone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.Phone && touched.Phone) && errors.Phone}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="Email"
+                                        name="Email"
+                                        label="Email"
+                                        value={values.Email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.Email && touched.Email) && errors.Email}
+                                    />
                                 </Stack>
                                 <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
 
