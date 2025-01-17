@@ -2,20 +2,19 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
-import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-
+import { Autocomplete, TextField, MenuItem } from '@mui/material';
+import JobRatesList from './jobRatesList'
 
 function Job({ props, ID, operation }) {
-    const { APIPath, userName } = useContext(Context);
+    const { APIPath, userName, userType } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
@@ -256,9 +255,9 @@ function Job({ props, ID, operation }) {
                         vendorId: name ? data.data[0].vendorId : '',
                         implementationPartnerId: name ? data.data[0].implementationPartnerId : '',
                         clientId: name ? data.data[0].clientId : '',
-                        rate: name ? data.data[0].rate : '',
-                        deductionPercentage: name ? data.data[0].deductionPercentage : '',
-                        deductionFlat: name ? data.data[0].deductionFlat : '',
+                        rate: name ? data.data[0].rate : '0',
+                        deductionPercentage: name ? data.data[0].deductionPercentage : '0',
+                        deductionFlat: name ? data.data[0].deductionFlat : '0',
                         jobTitle: name ? data.data[0].jobTitle : '',
                         jobStartDate: name ? data.data[0].jobStartDate : '',
                         jobEndDate: name ? data.data[0].jobEndDate : '',
@@ -288,9 +287,10 @@ function Job({ props, ID, operation }) {
                             setSubmitionCompleted(true);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving Job data");
-                            else
+                            else {
                                 showSnackbar('success', "Job data saved");
-                            resetForm();
+                                resetForm();
+                            }
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);
@@ -310,21 +310,30 @@ function Job({ props, ID, operation }) {
                             .required('client name Required'),
                         implementationPartnerId: Yup.string()
                             .required('implementation Partner name Required'),
-                        rate: Yup.number()
-                            .typeError('Must be a number')
-                            .required('rate Required').test('is-decimal', 'Must be a decimal number', (value) =>
-                                (value + "").match(/^\d+(\.\d+)?$/)
-                            ),
-                        deductionPercentage: Yup.number()
-                            .typeError('Must be a number')
-                            .required('deductionPercentage Required').test('is-decimal', 'Must be a decimal number', (value) =>
-                                (value + "").match(/^\d+(\.\d+)?$/)
-                            ),
-                        deductionFlat: Yup.number()
-                            .typeError('Must be a number')
-                            .required('deductionFlat Required').test('is-decimal', 'Must be a decimal number', (value) =>
-                                (value + "").match(/^\d+(\.\d+)?$/)
-                            ),
+                        rate: Yup.number().when(userType, {
+                            is: 'ADMIN',
+                            then: () => Yup.number()
+                                .typeError('Must be a number')
+                                .required('rate Required').test('is-decimal', 'Must be a decimal number', (value) =>
+                                    (value + "").match(/^\d+(\.\d+)?$/)),
+                            otherwise: () => Yup.number().nullable()
+                        }),
+                        deductionPercentage: Yup.number().when(userType, {
+                            is: 'ADMIN',
+                            then: () => Yup.number()
+                                .typeError('Must be a number')
+                                .required('deduction Percentage Required').test('is-decimal', 'Must be a decimal number', (value) =>
+                                    (value + "").match(/^\d+(\.\d+)?$/)),
+                            otherwise: () => Yup.number().nullable()
+                        }),
+                        deductionFlat: Yup.number().when(userType, {
+                            is: 'ADMIN',
+                            then: () => Yup.number()
+                                .typeError('Must be a number')
+                                .required('deduction Flat Required').test('is-decimal', 'Must be a decimal number', (value) =>
+                                    (value + "").match(/^\d+(\.\d+)?$/)),
+                            otherwise: () => Yup.number().nullable()
+                        }),
                         jobTitle: Yup.string()
                             .required('job Title (Role) Required'),
                         jobStartDate: Yup.string()
@@ -337,8 +346,12 @@ function Job({ props, ID, operation }) {
                             .required('Invoice frequency Required'),
                         notes: Yup.string()
                             .required('notes Required'),
-                        notesRate: Yup.string()
-                            .required('notes for Rate Required'),
+                        notesRate: Yup.string().when(userType, {
+                            is: 'ADMIN',
+                            then: () => Yup.string()
+                                .required('Invoice frequency Required'),
+                            otherwise: () => Yup.string().nullable()
+                        }),
                     })}
                 >
                     {(props) => {
@@ -460,28 +473,33 @@ function Job({ props, ID, operation }) {
                                         ))}
                                     </TextField>
                                 </Stack>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
+                                <Autocomplete
                                     id="employeeId"
-                                    name="employeeId"
-                                    select
-                                    label="Employee ID - Employee Name - Employee Type"
-                                    value={values.employeeId}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                        handleEmployeeIdChange(event);
+                                    options={employeesData.data}
+                                    getOptionLabel={(option) => `${option.Id} - ${option.firstName} ${option.lastName} - ${option.employeeType}`}
+                                    value={employeesData.data.find((item) => item.Id === values.employeeId) || null}
+                                    onChange={(event, newValue) => {
+                                        const fakeEvent = {
+                                            target: {
+                                                name: 'employeeId',
+                                                value: newValue ? newValue.Id : '',
+                                            },
+                                        };
+                                        handleChange(fakeEvent);
+                                        handleEmployeeIdChange(fakeEvent);
                                     }}
                                     onBlur={handleBlur}
-                                    helperText={(errors.employeeId && touched.employeeId) && errors.employeeId}
-                                >
-                                    {employeesData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.Id}>
-                                            {item.Id} - {item.firstName} {item.lastName} - {item.employeeType}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            label="Employee ID - Employee Name - Employee Type"
+                                            helperText={(errors.employeeId && touched.employeeId) && errors.employeeId}
+                                        />
+                                    )}
+                                />
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -495,72 +513,78 @@ function Job({ props, ID, operation }) {
                                     helperText={(errors.jobName && touched.jobName) && errors.jobName}
                                 />
 
-                                <div className='bg-blue-100 p-2 pb-4'>
-                                    <Tabs >
-                                        <TabList className="formTabsListHolder">
-                                            <Tab>Current Rate</Tab>
-                                            <Tab>Historical Rates</Tab>
-                                        </TabList>
+                                {userType === "ADMIN" && (
+                                    <div className='bg-blue-100 p-2 py-2 overflow-x-scroll'>
+                                        <Tabs>
+                                            <TabList className="formTabsListHolder">
+                                                <Tab>Current Rate</Tab>
+                                                {operation !== "New" && (
+                                                    <Tab>Historical Rates</Tab>
+                                                )}
+                                            </TabList>
 
-                                        <TabPanel className="px-2">
-                                            <TextField
-                                                size="small"
-                                                margin="normal"
-                                                fullWidth
-                                                id="rate"
-                                                name="rate"
-                                                label="Rate"
-                                                value={values.rate}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                helperText={(errors.rate && touched.rate) && errors.rate}
-                                            />
-                                            <Stack direction="row" spacing={2} className='mt-4'>
+                                            <TabPanel className="px-2 py-4">
                                                 <TextField
                                                     size="small"
                                                     margin="normal"
                                                     fullWidth
-                                                    id="deductionPercentage"
-                                                    name="deductionPercentage"
-                                                    label="Deduction Percentage"
-                                                    value={values.deductionPercentage}
+                                                    id="rate"
+                                                    name="rate"
+                                                    label="Rate"
+                                                    value={values.rate}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.deductionPercentage && touched.deductionPercentage) && errors.deductionPercentage}
+                                                    helperText={(errors.rate && touched.rate) && errors.rate}
                                                 />
+                                                <Stack direction="row" spacing={2} className='mt-4'>
+                                                    <TextField
+                                                        size="small"
+                                                        margin="normal"
+                                                        fullWidth
+                                                        id="deductionPercentage"
+                                                        name="deductionPercentage"
+                                                        label="Deduction Percentage"
+                                                        value={values.deductionPercentage}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        helperText={(errors.deductionPercentage && touched.deductionPercentage) && errors.deductionPercentage}
+                                                    />
+                                                    <TextField
+                                                        size="small"
+                                                        margin="normal"
+                                                        fullWidth
+                                                        id="deductionFlat"
+                                                        name="deductionFlat"
+                                                        label="Deduction Flat (make this zero if above % is entered)"
+                                                        value={values.deductionFlat}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        helperText={(errors.deductionFlat && touched.deductionFlat) && errors.deductionFlat}
+                                                    />
+                                                </Stack>
                                                 <TextField
                                                     size="small"
                                                     margin="normal"
                                                     fullWidth
-                                                    id="deductionFlat"
-                                                    name="deductionFlat"
-                                                    label="Deduction Flat (make this zero if above % is entered)"
-                                                    value={values.deductionFlat}
+                                                    id="notesRate"
+                                                    name="notesRate"
+                                                    label="Rate Notes"
+                                                    multiline
+                                                    rows={2}
+                                                    value={values.notesRate}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.deductionFlat && touched.deductionFlat) && errors.deductionFlat}
+                                                    helperText={(errors.notesRate && touched.notesRate) && errors.notesRate}
                                                 />
-                                            </Stack>
-                                            <TextField
-                                                size="small"
-                                                margin="normal"
-                                                fullWidth
-                                                id="notesRate"
-                                                name="notesRate"
-                                                label="Rate Notes"
-                                                multiline
-                                                rows={2}
-                                                value={values.notesRate}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                helperText={(errors.notesRate && touched.notesRate) && errors.notesRate}
-                                            />
-                                        </TabPanel>
-                                        <TabPanel className="px-2">
-                                            Historical Rates
-                                        </TabPanel>
-                                    </Tabs>
-                                </div>
+                                            </TabPanel>
+                                            {operation !== "New" && (
+                                                <TabPanel className="px-2 py-1">
+                                                    <JobRatesList ratesDate={data ? data.RATES : []} />
+                                                </TabPanel>
+                                            )}
+                                        </Tabs>
+                                    </div>
+                                )}
 
 
                                 <TextField

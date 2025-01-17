@@ -102,6 +102,8 @@ function JobEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar })
             <BootstrapDialog
                 fullScreen
                 className="myFullScreenDialog"
+                maxWidth="lg"  // Set the maximum width
+                fullWidth  // Make the dialog take the full width
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"

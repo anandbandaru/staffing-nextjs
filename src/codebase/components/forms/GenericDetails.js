@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search'; // Added SearchIcon import
 import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 import EmployeeGenericList from '../employees/employeeGList';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import JobRatesList from '../jobs/jobRatesList'
 
 function GenericDetails({ ID, operation, doLoading, moduleName }) {
     const { APIPath } = useContext(Context);
@@ -137,6 +138,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                 <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
                                     <TabList className="thirdTabsListHolder">
                                         <Tab>Metadata</Tab>
+                                        {((moduleName === "JOBS") && <>
+                                            <Tab>Historical Rates</Tab>
+                                        </>
+                                        )}
                                         {((moduleName !== "FILETYPES" && moduleName !== "EXPENSETYPES" && moduleName !== "JOBTYPES") && <>
                                             <Tab>Documents</Tab>
                                             <Tab>Relations</Tab>
@@ -208,6 +213,12 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                         </TableContainer>
                                     </TabPanel>
 
+                                    {(moduleName === "JOBS" && <>
+                                        <TabPanel className="px-2">
+                                            <JobRatesList ratesDate={data ? data.RATES : []} />
+                                        </TabPanel>
+                                    </>
+                                    )}
                                     {(moduleName !== "FILETYPES" && <>
                                         <TabPanel className="px-2">
                                             <GenericFilesListSimple moduleId={ID} componentName={moduleName} />
