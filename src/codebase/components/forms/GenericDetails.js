@@ -14,7 +14,7 @@ import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import JobRatesList from '../jobs/jobRatesList'
 
 function GenericDetails({ ID, operation, doLoading, moduleName }) {
-    const { APIPath } = useContext(Context);
+    const { APIPath, userType } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [tabIndex, setTabIndex] = React.useState(0);
     const [data, setData] = useState({ data: [] });
@@ -138,7 +138,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                 <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
                                     <TabList className="thirdTabsListHolder">
                                         <Tab>Metadata</Tab>
-                                        {((moduleName === "JOBS") && <>
+                                        {((moduleName === "JOBS" && userType === "ADMIN") && <>
                                             <Tab>Historical Rates</Tab>
                                         </>
                                         )}
@@ -192,16 +192,18 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                                                 <TableRow key={`${index}-${key}`}>
                                                                     <TableCell component="th" scope="row" className="max-w-[200px]">
                                                                         <span className={`${highlightKeys.includes(key.toUpperCase()) || key.toLowerCase().includes('id') || key.toLowerCase().includes('is') ? 'rag-gray-bg px-2' : ''}`}>
-                                                                            {key}
+                                                                            {(key.toUpperCase().includes('RATE') || key.toUpperCase().includes('DEDUCTION')) && userType !== 'ADMIN' ? null : key}
                                                                         </span>
                                                                     </TableCell>
                                                                     <TableCell className='bg-gray-100'>
-                                                                        {(value === true || value === 1) ? (
-                                                                            <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
-                                                                        ) : (value === false || value === 0) ? (
-                                                                            <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
-                                                                        ) : (
-                                                                            value
+                                                                        {(key.toUpperCase().includes('RATE') || key.toUpperCase().includes('DEDUCTION')) && userType !== 'ADMIN' ? null : (
+                                                                            (value === true || value === 1) ? (
+                                                                                <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
+                                                                            ) : (value === false || value === 0) ? (
+                                                                                <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
+                                                                            ) : (
+                                                                                value
+                                                                            )
                                                                         )}
                                                                     </TableCell>
                                                                 </TableRow>
@@ -213,7 +215,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                         </TableContainer>
                                     </TabPanel>
 
-                                    {(moduleName === "JOBS" && <>
+                                    {((moduleName === "JOBS" && userType === "ADMIN") && <>
                                         <TabPanel className="px-2">
                                             <JobRatesList ratesDate={data ? data.RATES : []} />
                                         </TabPanel>
