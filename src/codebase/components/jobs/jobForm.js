@@ -287,7 +287,7 @@ function Job({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Job data");
                             else
                                 showSnackbar('success', "Job data saved");
-                                resetForm();
+                            resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);
@@ -300,11 +300,13 @@ function Job({ props, ID, operation }) {
                         jobName: Yup.string()
                             .required('jobName Required'),
                         companyId: Yup.string()
-                            .required('companyId Required'),
+                            .required('company name Required'),
                         employeeId: Yup.string()
-                            .required('employeeId Required'),
+                            .required('employee name Required'),
                         clientId: Yup.string()
-                            .required('clientId Required'),
+                            .required('client name Required'),
+                        implementationPartnerId: Yup.string()
+                            .required('implementation Partner name Required'),
                         rate: Yup.number()
                             .typeError('Must be a number')
                             .required('rate Required').test('is-decimal', 'Must be a decimal number', (value) =>
@@ -321,15 +323,15 @@ function Job({ props, ID, operation }) {
                                 (value + "").match(/^\d+(\.\d+)?$/)
                             ),
                         jobTitle: Yup.string()
-                            .required('jobTitle Required'),
+                            .required('job Title (Role) Required'),
                         jobStartDate: Yup.string()
                             .required('jobStartDate Required'),
-                        jobEndDate: Yup.string()
-                            .required('jobEndDate Required'),
+                        // jobEndDate: Yup.string()
+                        //     .required('jobEndDate Required'),
                         timesheetsPeriod: Yup.string()
-                            .required('timesheetsPeriod Required'),
+                            .required('Timesheet Collection Required'),
                         invoicePeriod: Yup.string()
-                            .required('invoicePeriod Required'),
+                            .required('Invoice frequency Required'),
                         notes: Yup.string()
                             .required('notes Required'),
                     })}
@@ -368,7 +370,7 @@ function Job({ props, ID, operation }) {
                                         id="companyId"
                                         name="companyId"
                                         select
-                                        label="Company Id"
+                                        label="Company Name"
                                         value={values.companyId}
                                         onChange={handleChange}
                                         // onChange={(event) => {
@@ -391,7 +393,7 @@ function Job({ props, ID, operation }) {
                                         id="vendorId"
                                         name="vendorId"
                                         select
-                                        label="Vendor Id"
+                                        label="Vendor Name"
                                         value={values.vendorId}
                                         onChange={(event) => {
                                             handleChange(event);
@@ -415,7 +417,7 @@ function Job({ props, ID, operation }) {
                                         id="implementationPartnerId"
                                         name="implementationPartnerId"
                                         select
-                                        label="Implementation Partner Id"
+                                        label="Implementation Partner Name"
                                         value={values.implementationPartnerId}
                                         onChange={(event) => {
                                             handleChange(event);
@@ -437,7 +439,7 @@ function Job({ props, ID, operation }) {
                                         id="clientId"
                                         name="clientId"
                                         select
-                                        label="Client Id"
+                                        label="Client Name"
                                         value={values.clientId}
                                         onChange={(event) => {
                                             handleChange(event);
@@ -460,7 +462,7 @@ function Job({ props, ID, operation }) {
                                     id="employeeId"
                                     name="employeeId"
                                     select
-                                    label="Employee Id"
+                                    label="Employee ID - Employee Name - Employee Type"
                                     value={values.employeeId}
                                     onChange={(event) => {
                                         handleChange(event);
@@ -481,7 +483,7 @@ function Job({ props, ID, operation }) {
                                     fullWidth
                                     id="jobName"
                                     name="jobName"
-                                    label="Job Name"
+                                    label="Job Name (Example: Client name - Vendor Name)"
                                     value={values.jobName}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -531,7 +533,7 @@ function Job({ props, ID, operation }) {
                                     fullWidth
                                     id="jobTitle"
                                     name="jobTitle"
-                                    label="Job Title"
+                                    label="Job Title (Role)"
                                     value={values.jobTitle}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -589,7 +591,7 @@ function Job({ props, ID, operation }) {
                                         id="timesheetsPeriod"
                                         name="timesheetsPeriod"
                                         select
-                                        label="Timesheets Period"
+                                        label="Timesheet Collection"
                                         value={values.timesheetsPeriod}
                                         onChange={(event) => {
                                             handleChange(event);
@@ -610,7 +612,7 @@ function Job({ props, ID, operation }) {
                                         id="invoicePeriod"
                                         name="invoicePeriod"
                                         select
-                                        label="Invoice Period"
+                                        label="Invoice Frequency"
                                         value={values.invoicePeriod}
                                         onChange={(event) => {
                                             handleChange(event);
