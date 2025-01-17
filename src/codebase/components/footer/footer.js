@@ -12,9 +12,10 @@ import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontal
 import Alert from '@mui/material/Alert';
 import CachedIcon from '@mui/icons-material/Cached';
 import CustomSnackbar from "../snackbar/snackbar";
-import preval from 'preval.macro';
+// import preval from 'preval.macro';
+import axios from 'axios';
 
-const Footer = () => {
+const Footer = ({ipAddress, city, region, country_name}) => {
     const { tokenExpiry, refreshPage, isAPILoading, isAPIError, setIsAPILoading, APIPath, setIsAPIError, checkAPIAvailability,
         APIType, APIVersion
     } = useContext(Context);
@@ -120,10 +121,26 @@ const Footer = () => {
                     <div>
                         © {new Date().getFullYear()}
                     </div>
-                    <div>Logged in for: {elapsedTime}</div>
-                    <div>Time left in Login session: {timeLeft}</div>
+                    <div>Logged in for: <span className='bg-orange-500 px-1 text-white'>{elapsedTime}</span></div>
+                    <div>Time left in Login session: <span className='bg-pink-500 px-1 text-white'>{timeLeft}</span></div>
                     <div>APP version: {configData.releases[0].version}</div>
-                    <div>{preval`module.exports = 'Last build Date: ' + new Date().toLocaleString();`}</div>
+                    {/* <div>{preval`module.exports = 'Last build Date: ' + new Date().toLocaleString();`}</div> */}
+                    {ipAddress && (
+                        <>
+                        <div>
+                            <p>IP: {ipAddress}</p>
+                        </div>
+                        <div>
+                            <p>City: {city}</p>
+                        </div>
+                        <div>
+                            <p>Region: {region}</p>
+                        </div>
+                        <div>
+                            <p>Country: {country_name}</p>
+                        </div>
+                        </>
+                    )}
                     <div className="APICheckHolder"
                         data-tooltip-id="my-tooltip-api-availability"
                         data-tooltip-html="Status of API">

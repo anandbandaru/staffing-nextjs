@@ -56,19 +56,6 @@ const Top = () => {
         APIPath,
         userName, userType, todoOpen } = useContext(Context);
 
-    useEffect(() => {
-        axios.post(APIPath + '/login', { userName })
-            .then(response => {
-                if (response.data.STATUS === "FAIL")
-                    showSnackbar('error', "Login trace failure");
-                else
-                    showSnackbar('info', "Login trace success");
-            })
-            .catch(error => {
-                showSnackbar('error', "Login trace failure");
-            });
-    }, [userName, APIPath]);
-
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -81,6 +68,55 @@ const Top = () => {
         setSnackbarMessage(message);
         setSnackbarOpen(true);
     };
+
+    const [ipAddress, setIpAddress] = useState('');
+    const [location, setLocation] = useState({});
+
+    //USER LOGIN
+    useEffect(() => {
+        // Fetch IP address and location
+        axios.get('https://api.ipify.org?format=json')
+            .then(response => {
+                setIpAddress(response.data.ip);
+                return axios.get(`https://ipapi.co/${response.data.ip}/json/`);
+            })
+            .then(response => {
+                const locationData = response.data;
+                setLocation(locationData);
+                // Call the /login API with location details
+                return axios.post(APIPath + '/login', {
+                    userName,
+                    ipAddress: locationData.ip,
+                    city: locationData.city,
+                    region: locationData.region,
+                    country: locationData.country_name,
+                    latitude: locationData.latitude,
+                    longitude: locationData.longitude
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching IP address or location:', error);
+                // Call the /login API with null values for location details
+                return axios.post(APIPath + '/login', {
+                    userName,
+                    ipAddress: ipAddress || null,
+                    city: null,
+                    region: null,
+                    country: null,
+                    latitude: null,
+                    longitude: null
+                });
+            })
+            .then(response => {
+                if (response.data.STATUS === "FAIL")
+                    showSnackbar('error', "Login trace failure");
+                else
+                    showSnackbar('info', "Login trace success");
+            })
+            .catch(error => {
+                showSnackbar('error', "Login trace failure");
+            });
+    }, [APIPath, userName, ipAddress]);
 
     //FOR NO data source scenario
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -115,6 +151,7 @@ const Top = () => {
         setOpenLoadingAPI(isAPILoading);
     }, [isAPILoading]);
 
+    //PERMISSIONS
     const [permissions, setPermissions] = useState([]);
     useEffect(() => {
         if (userType !== 'ADMIN') {
@@ -220,9 +257,7 @@ const Top = () => {
 
             <Tooltip id="my-tooltip-api-availability" className="tooltip-example" />
 
-            <Footer />
-
-
+            <Footer ipAddress={location.ipAddress} city={location.city} region={location.region} country={location.country} />
 
             <BootstrapDialog
                 TransitionComponent={Transition}
