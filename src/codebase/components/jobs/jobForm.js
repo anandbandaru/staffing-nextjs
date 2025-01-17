@@ -11,6 +11,8 @@ import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
 
 function Job({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -263,6 +265,7 @@ function Job({ props, ID, operation }) {
                         timesheetsPeriod: name ? data.data[0].timesheetsPeriod : '',
                         invoicePeriod: name ? data.data[0].invoicePeriod : '',
                         notes: name ? data.data[0].notes : '',
+                        notesRate: name ? data.data[0].notesRate : '',
                         createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -334,6 +337,8 @@ function Job({ props, ID, operation }) {
                             .required('Invoice frequency Required'),
                         notes: Yup.string()
                             .required('notes Required'),
+                        notesRate: Yup.string()
+                            .required('notes for Rate Required'),
                     })}
                 >
                     {(props) => {
@@ -489,44 +494,75 @@ function Job({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.jobName && touched.jobName) && errors.jobName}
                                 />
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="rate"
-                                    name="rate"
-                                    label="Rate"
-                                    value={values.rate}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.rate && touched.rate) && errors.rate}
-                                />
-                                <Stack direction="row" spacing={2} className='mt-4'>
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        id="deductionPercentage"
-                                        name="deductionPercentage"
-                                        label="Deduction Percentage"
-                                        value={values.deductionPercentage}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        helperText={(errors.deductionPercentage && touched.deductionPercentage) && errors.deductionPercentage}
-                                    />
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        id="deductionFlat"
-                                        name="deductionFlat"
-                                        label="Deduction Flat (make this zero if above % is entered)"
-                                        value={values.deductionFlat}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        helperText={(errors.deductionFlat && touched.deductionFlat) && errors.deductionFlat}
-                                    />
-                                </Stack>
+
+                                <div className='bg-blue-100 p-2 pb-4'>
+                                    <Tabs >
+                                        <TabList className="formTabsListHolder">
+                                            <Tab>Current Rate</Tab>
+                                            <Tab>Historical Rates</Tab>
+                                        </TabList>
+
+                                        <TabPanel className="px-2">
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="rate"
+                                                name="rate"
+                                                label="Rate"
+                                                value={values.rate}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.rate && touched.rate) && errors.rate}
+                                            />
+                                            <Stack direction="row" spacing={2} className='mt-4'>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="deductionPercentage"
+                                                    name="deductionPercentage"
+                                                    label="Deduction Percentage"
+                                                    value={values.deductionPercentage}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.deductionPercentage && touched.deductionPercentage) && errors.deductionPercentage}
+                                                />
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="deductionFlat"
+                                                    name="deductionFlat"
+                                                    label="Deduction Flat (make this zero if above % is entered)"
+                                                    value={values.deductionFlat}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.deductionFlat && touched.deductionFlat) && errors.deductionFlat}
+                                                />
+                                            </Stack>
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="notesRate"
+                                                name="notesRate"
+                                                label="Rate Notes"
+                                                multiline
+                                                rows={2}
+                                                value={values.notesRate}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.notesRate && touched.notesRate) && errors.notesRate}
+                                            />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            Historical Rates
+                                        </TabPanel>
+                                    </Tabs>
+                                </div>
+
+
                                 <TextField
                                     size="small"
                                     margin="normal"

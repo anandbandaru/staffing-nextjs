@@ -100,7 +100,8 @@ function JobEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar })
                 </IconButton>
             </Stack>
             <BootstrapDialog
-                className=""
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"
