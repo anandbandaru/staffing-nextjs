@@ -65,6 +65,9 @@ const ExpenseTypeList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else{
+                            showSnackbar('success', "Data loaded");
+                        }
                     }
                     setApiLoading(false);
                 },

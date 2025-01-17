@@ -46,7 +46,6 @@ function ExpenseType({ props, ID, operation }) {
                     else {
                         setData(result);
                         setName(result.data[0].name);
-                        //alert(firstName);
                     }
                     setApiLoading(false);
                 },
@@ -83,7 +82,7 @@ function ExpenseType({ props, ID, operation }) {
                         name: name ? data.data[0].name : '',
                         description: name ? data.data[0].description : ''
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addexpensetype";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updateexpensetype";
@@ -105,6 +104,7 @@ function ExpenseType({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Expense Types data");
                             else
                                 showSnackbar('success', "Expense Types data saved");
+                                resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);

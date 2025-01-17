@@ -99,7 +99,7 @@ function VendorForm({ props, ID, operation }) {
                         createdBy: userName,
                         modifiedBy: userName,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addvendor";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updatevendor";
@@ -122,6 +122,7 @@ function VendorForm({ props, ID, operation }) {
                                     showSnackbar('error', "You tried inserting Duplicate EIN");
                             else
                                 showSnackbar('success', "Vendor data saved");
+                                resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);

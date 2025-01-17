@@ -64,7 +64,7 @@ function FileForm({ props, ID, operation }) {
                     moduleId: '',
                     createdBy: userName,
                 }}
-                onSubmit={(values, { setSubmitting }) => {
+                onSubmit={(values, { setSubmitting, resetForm }) => {
                     setSubmitionCompleted(false);
                     setSubmitting(true);
                     const formData = new FormData();
@@ -89,6 +89,7 @@ function FileForm({ props, ID, operation }) {
                         }
                         else {
                             showSnackbar('success', 'File uploaded successfully');
+                            resetForm();
                         }
                     }).catch(function (error) {
                         setSubmitionCompleted(true);

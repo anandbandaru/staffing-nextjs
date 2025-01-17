@@ -100,7 +100,7 @@ function CompanyForm({ props, ID, operation }) {
                         Notes: itemToCheck ? data.data[0].Notes : '',
                         Disabled: itemToCheck ? data.data[0].Disabled : false,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addcompany";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updatecompany";
@@ -118,14 +118,15 @@ function CompanyForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitionCompleted(true);
                             if (resp.data.STATUS === "FAIL")
-                                showSnackbar('error', "Error saving data");
+                                showSnackbar('error', "Error saving Company data");
                             else
-                                showSnackbar('success', "Data saved");
+                                showSnackbar('success', "Company Data saved");
+                                resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);
                                 setSubmitionCompleted(true);
-                                showSnackbar('error', "Error saving data");
+                                showSnackbar('error', "Error saving Company data");
                             });
                     }}
 

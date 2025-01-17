@@ -265,7 +265,7 @@ function Job({ props, ID, operation }) {
                         notes: name ? data.data[0].notes : '',
                         createdBy: userName,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addjob";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updatejob";
@@ -287,6 +287,7 @@ function Job({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Job data");
                             else
                                 showSnackbar('success', "Job data saved");
+                                resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);

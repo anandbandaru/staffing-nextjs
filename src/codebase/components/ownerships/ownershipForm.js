@@ -179,7 +179,7 @@ function OwnershipForm({ props, ID, operation }) {
                         modifiedBy: userName,
                         notes: name ? data.data[0].notes : ''
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addownership";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updateownership";
@@ -195,8 +195,13 @@ function OwnershipForm({ props, ID, operation }) {
                                 }
                             },
                         ).then((resp) => {
+                            setSubmitting(false);
                             setSubmitionCompleted(true);
-                            showSnackbar('success', "Ownership data saved");
+                            if (resp.data.STATUS === "FAIL")
+                                showSnackbar('error', "Error saving Ownership data");
+                            else
+                                showSnackbar('success', "Ownership data saved");
+                                resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);

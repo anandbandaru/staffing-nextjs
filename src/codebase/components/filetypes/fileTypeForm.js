@@ -83,7 +83,7 @@ function FileType({ props, ID, operation }) {
                         name: name ? data.data[0].name : '',
                         description: name ? data.data[0].description : ''
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addfiletype";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updatefiletype";
@@ -105,6 +105,7 @@ function FileType({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving File Types data");
                             else
                                 showSnackbar('success', "File Types data saved");
+                                resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);

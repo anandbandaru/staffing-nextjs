@@ -84,7 +84,7 @@ function TodoForm({ props, ID, operation }) {
                         createdBy: userName,
                         important: itemToCheck ? (data.data[0].important === null ? false : data.data[0].important) : false,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addtodo";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updatetodo";
@@ -105,6 +105,7 @@ function TodoForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving To Do data");
                             else
                                 showSnackbar('success', "To Do data saved");
+                                resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);

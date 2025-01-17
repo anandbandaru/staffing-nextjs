@@ -87,7 +87,7 @@ function ClientForm({ props, ID, operation }) {
                         Notes: name ? data.data[0].Notes : '',
                         Disabled: name ? data.data[0].Disabled : false,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addclient";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updateclient";
@@ -108,6 +108,7 @@ function ClientForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Client data");
                             else
                                 showSnackbar('success', "Client data saved");
+                                resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);

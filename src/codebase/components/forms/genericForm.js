@@ -65,7 +65,7 @@ function GenericForm({ entity, entityID, operation, fields, validationSchema, ap
                         acc[field.name] = data.data ? data.data[0][field.name] : '';
                         return acc;
                     }, {})}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         const finalAPI = `${APIPath}${operation === "Edit" ? apiEndpoints.update : apiEndpoints.add}`;
                         setSubmitionCompleted(false);
                         setSubmitting(true);

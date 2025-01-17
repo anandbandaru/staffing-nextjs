@@ -124,7 +124,7 @@ function OwnerForm({ props, ID, operation }) {
                         Address: firstName ? data.data[0].Address : '',
                         Disabled: firstName ? data.data[0].Disabled : false,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addowner";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updateowner";
@@ -146,6 +146,7 @@ function OwnerForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Owner data");
                             else
                                 showSnackbar('success', "Owner data saved");
+                                resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);

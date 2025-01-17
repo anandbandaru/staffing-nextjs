@@ -87,7 +87,7 @@ function JobType({ props, ID, operation }) {
                         disabled: name ? data.data[0].disabled : false,
                         createdBy: userName,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addjobtype";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updatejobtype";
@@ -109,6 +109,7 @@ function JobType({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Job Types data");
                             else
                                 showSnackbar('success', "Job Types data saved");
+                                resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);

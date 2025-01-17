@@ -160,7 +160,7 @@ function EmployeeForm({ props, ID, operation }) {
                         disabled: firstName ? data.data[0].disabled : false,
                         createdBy: userName,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addemployee";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updateemployee";
@@ -182,6 +182,7 @@ function EmployeeForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Owner data");
                             else
                                 showSnackbar('success', "Owner data saved");
+                                resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);

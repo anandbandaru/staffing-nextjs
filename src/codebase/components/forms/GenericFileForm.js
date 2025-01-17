@@ -80,7 +80,7 @@ function GenericFileForm({ props, componentName, moduleId }) {
                             moduleId: moduleId,
                             createdBy: userName,
                         }}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(values, { setSubmitting, resetForm }) => {
                             setSubmitionCompleted(false);
                             setSubmitting(true);
                             const formData = new FormData();
@@ -108,6 +108,7 @@ function GenericFileForm({ props, componentName, moduleId }) {
                                 else {
                                     setFormSubmitionAPIError(false);
                                     showSnackbar('success', 'File uploaded successfully');
+                                    resetForm();
                                 }
                             }).catch(function (error) {
                                 setSubmitionCompleted(true);

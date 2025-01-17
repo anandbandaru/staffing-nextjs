@@ -87,7 +87,7 @@ function ImpPartnerForm({ props, ID, operation }) {
                         Notes: name ? data.data[0].Notes : '',
                         Disabled: name ? data.data[0].Disabled : false,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addimplementationpartner";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updateimplementationpartner";
@@ -108,6 +108,7 @@ function ImpPartnerForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Implementation Partner data");
                             else
                                 showSnackbar('success', "Implementation Partner data saved");
+                                resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);

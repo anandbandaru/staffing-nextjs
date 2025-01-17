@@ -141,7 +141,7 @@ function EmployeeGAddForm({ formType, employeeID }) {
                 <Formik
                     enableReinitialize
                     initialValues={getInitialValues()}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         setApiLoading(true)
                         var finalAPI = getAPIEndpoint();
                         setSubmitionCompleted(false);
@@ -161,6 +161,7 @@ function EmployeeGAddForm({ formType, employeeID }) {
                                 showSnackbar('error', "Error saving data");
                             else
                                 showSnackbar('success', "Data saved");
+                                resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);

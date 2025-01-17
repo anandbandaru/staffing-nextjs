@@ -193,7 +193,7 @@ function Expense({ props, ID, operation }) {
                         notes: name ? data.data[0].notes : '',
                         createdBy: userName,
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addexpense";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updateexpense";
@@ -215,6 +215,7 @@ function Expense({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Expense data");
                             else
                                 showSnackbar('success', "Expense data saved");
+                                resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);
