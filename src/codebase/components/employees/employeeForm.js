@@ -36,14 +36,14 @@ function EmployeeForm({ props, ID, operation }) {
         setSnackbarOpen(true);
     };
 
-    const getDetails = async() => {
+    const getDetails = async () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getemployeedetails/" + ID;
         console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
-                async(result) => {
+                async (result) => {
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setData({});
@@ -63,7 +63,7 @@ function EmployeeForm({ props, ID, operation }) {
                 }
             )
     }
-    const getFileTypesList = async() => {
+    const getFileTypesList = async () => {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/masterdata/filetypes"
@@ -88,7 +88,7 @@ function EmployeeForm({ props, ID, operation }) {
                 }
             )
     }
-    const getManagersList = async() => {
+    const getManagersList = async () => {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
@@ -158,6 +158,11 @@ function EmployeeForm({ props, ID, operation }) {
                         SSN: firstName ? data.data[0].SSN : '',
                         notes: firstName ? data.data[0].notes : '',
                         disabled: firstName ? data.data[0].disabled : false,
+                        isCitizen: firstName ? data.data[0].isCitizen : '0',
+                        citizenIDType: firstName ? data.data[0].citizenIDType : '',
+                        citizenIDNumber: firstName ? data.data[0].citizenIDNumber : '',
+                        nonCitizenIDType: firstName ? data.data[0].nonCitizenIDType : '',
+                        nonCitizenIDNumber: firstName ? data.data[0].nonCitizenIDNumber : '',
                         createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -182,7 +187,7 @@ function EmployeeForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Owner data");
                             else
                                 showSnackbar('success', "Owner data saved");
-                                resetForm();
+                            resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             console.log(error);
@@ -202,6 +207,35 @@ function EmployeeForm({ props, ID, operation }) {
                             .required('personalUSPhone Required'),
                         employeeType: Yup.string()
                             .required('employeeType Required'),
+                        isCitizen: Yup.string().when("employeeType", {
+                            is: 'ONSHORE',
+                            then: () => Yup.string()
+                                .required("Is Citizen Required")
+                        }),
+                        citizenIDType: Yup.string().when(["isCitizen", "employeeType"], {
+                            is: (isCitizen, employeeType) => isCitizen === '1' && employeeType === 'ONSHORE',
+                            then: () => Yup.string()
+                                .required("citizen ID Type Required"),
+                            otherwise: () => Yup.string().nullable()
+                        }),
+                        citizenIDNumber: Yup.string().when(["isCitizen", "employeeType"], {
+                            is: (isCitizen, employeeType) => isCitizen === '1' && employeeType === 'ONSHORE',
+                            then: () => Yup.string()
+                                .required("citizen ID Number Required"),
+                            otherwise: () => Yup.string().nullable()
+                        }),
+                        nonCitizenIDType: Yup.string().when(["isCitizen", "employeeType"], {
+                            is: (isCitizen, employeeType) => isCitizen === '0' && employeeType === 'ONSHORE',
+                            then: () => Yup.string()
+                                .required("non Citizen ID Type Required"),
+                            otherwise: () => Yup.string().nullable()
+                        }),
+                        nonCitizenIDNumber: Yup.string().when(["isCitizen", "employeeType"], {
+                            is: (isCitizen, employeeType) => isCitizen === '0' && employeeType === 'ONSHORE',
+                            then: () => Yup.string()
+                                .required("non Citizen ID Number Required"),
+                            otherwise: () => Yup.string().nullable()
+                        }),
                         OFF_PAN: Yup.string().when("employeeType", {
                             is: 'OFFSHORE',
                             then: () => Yup.string()
@@ -302,7 +336,7 @@ function EmployeeForm({ props, ID, operation }) {
                                         onBlur={handleBlur}
                                         helperText={(errors.lastName && touched.lastName) && errors.lastName}
                                     />
-                                </Stack>                                
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -360,6 +394,105 @@ function EmployeeForm({ props, ID, operation }) {
                                         helperText={(errors.personalPhone && touched.personalPhone) && errors.personalPhone}
                                     />
                                 </Stack>
+                                {values.employeeType === 'ONSHORE' && (
+                                    <div className="error-summary bg-blue-200 my-4 p-2 text-white rounded-md">
+                                        <div className='text-black my-1'>
+                                            ONSHORE employee Specific details:
+                                        </div>
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="isCitizen"
+                                            name="isCitizen"
+                                            select
+                                            label="Citizen"
+                                            value={values.isCitizen}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.isCitizen && touched.isCitizen) && errors.isCitizen}
+                                        >
+                                            <MenuItem value="0">
+                                                No
+                                            </MenuItem>
+                                            <MenuItem value="1">
+                                                Yes
+                                            </MenuItem>
+                                        </TextField>
+
+                                        {(values.isCitizen === '1' || values.employeeType === 'ONSHORE') && (
+                                            <Stack direction="row" spacing={2} className='mt-2'>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="citizenIDType"
+                                                    name="citizenIDType"
+                                                    select
+                                                    label="Citizen ID Type"
+                                                    value={values.citizenIDType}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.citizenIDType && touched.citizenIDType) && errors.citizenIDType}
+                                                >
+                                                    {configData.citizenIdTypes.map((item, index) => (
+                                                        <MenuItem key={index} value={item.name}>
+                                                            {item.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="citizenIDNumber"
+                                                    name="citizenIDNumber"
+                                                    label="Citizen ID Number"
+                                                    value={values.citizenIDNumber}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.citizenIDNumber && touched.citizenIDNumber) && errors.citizenIDNumber}
+                                                />
+                                            </Stack>
+                                        )}
+
+                                        {(values.isCitizen === '0' || values.employeeType === 'ONSHORE') && (
+                                            <Stack direction="row" spacing={2} className='mt-2'>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="nonCitizenIDType"
+                                                    name="nonCitizenIDType"
+                                                    select
+                                                    label="Non-Citizen ID Type"
+                                                    value={values.nonCitizenIDType}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.nonCitizenIDType && touched.nonCitizenIDType) && errors.nonCitizenIDType}
+                                                >
+                                                    {configData.nonCitizenIdTypes.map((item, index) => (
+                                                        <MenuItem key={index} value={item.name}>
+                                                            {item.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="nonCitizenIDNumber"
+                                                    name="nonCitizenIDNumber"
+                                                    label="Non-Citizen ID Number"
+                                                    value={values.nonCitizenIDNumber}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.nonCitizenIDNumber && touched.nonCitizenIDNumber) && errors.nonCitizenIDNumber}
+                                                />
+                                            </Stack>
+                                        )}
+                                    </div>
+                                )}
                                 {values.employeeType === 'OFFSHORE' && (
                                     <div className="error-summary bg-blue-200 my-4 p-2 text-white rounded-md">
                                         <div className='text-black my-1'>

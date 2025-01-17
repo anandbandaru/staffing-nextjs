@@ -94,7 +94,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
         }
     }, [ID]);
 
-    const highlightKeys = ['ID', 'DISABLED', 'IMPORTANT', 'COMPLETED', 'SSN', 'EIN'];
+    const highlightKeys = ['ID', 'DISABLED', 'IMPORTANT', 'COMPLETED', 'SSN', 'EIN', 'IS'];
 
     const filteredData = data.data.filter(item =>
         Object.entries(item).some(([key, value]) => {
@@ -115,7 +115,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
 
             <Dialog open={open} onClose={() => handleClose(false)} className="relative z-50 flex w-full">
                 <div className="fixed inset-1 w-full items-center justify-center p-1 bg-gray-700 bg-opacity-50">
-                    <DialogPanel className="space-y-4 bg-white p-3 px-5 border-gray-600 border-opacity-80 border-8 rounded-lg">
+                    <DialogPanel className="space-y-4 bg-white p-3 px-5 border-gray-600 border-opacity-80 border-8 rounded-lg" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
                         <DialogTitle className="font-bold text-lg">{operation} {moduleName}: ID: {ID}</DialogTitle>
                         <IconButton
                             aria-label="close"
@@ -156,25 +156,25 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                             <Table size="small" aria-label="Details table">
                                                 <TableHead>
                                                     <TableRow>
-                                                    <TableCell className='bg-gray-200 max-w-[200px] items-center justify-center'>
-                                                        <Stack direction={'row'} spacing={2}>
-                                                            <TextField // Added TextField for search bar
-                                                                size="small"
-                                                                variant="outlined"
-                                                                fullWidth
-                                                                margin="dense"
-                                                                label="Search Column"
-                                                                value={searchTerm}
-                                                                onChange={(e) => setSearchTerm(e.target.value)}
-                                                                InputProps={{
-                                                                    endAdornment: (
-                                                                        <InputAdornment position="end">
-                                                                            <SearchIcon />
-                                                                        </InputAdornment>
-                                                                    ),
-                                                                }}
-                                                                sx={{ marginLeft: 1 }}
-                                                            />
+                                                        <TableCell className='bg-gray-200 max-w-[200px] items-center justify-center'>
+                                                            <Stack direction={'row'} spacing={2}>
+                                                                <TextField // Added TextField for search bar
+                                                                    size="small"
+                                                                    variant="outlined"
+                                                                    fullWidth
+                                                                    margin="dense"
+                                                                    label="Search Column"
+                                                                    value={searchTerm}
+                                                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                                                    InputProps={{
+                                                                        endAdornment: (
+                                                                            <InputAdornment position="end">
+                                                                                <SearchIcon />
+                                                                            </InputAdornment>
+                                                                        ),
+                                                                    }}
+                                                                    sx={{ marginLeft: 1 }}
+                                                                />
                                                             </Stack>
                                                         </TableCell>
                                                         <TableCell className='bg-gray-400'>Value</TableCell>
@@ -186,14 +186,14 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                                             key.toLowerCase().includes(searchTerm.toLowerCase()) && (
                                                                 <TableRow key={`${index}-${key}`}>
                                                                     <TableCell component="th" scope="row" className="max-w-[200px]">
-                                                                        <span className={`${highlightKeys.includes(key.toUpperCase()) || key.toLowerCase().includes('id') ? 'rag-gray-bg px-2' : ''}`}>
+                                                                        <span className={`${highlightKeys.includes(key.toUpperCase()) || key.toLowerCase().includes('id') || key.toLowerCase().includes('is') ? 'rag-gray-bg px-2' : ''}`}>
                                                                             {key}
                                                                         </span>
                                                                     </TableCell>
                                                                     <TableCell className='bg-gray-100'>
-                                                                        {value === true ? (
+                                                                        {(value === true || value === 1) ? (
                                                                             <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
-                                                                        ) : value === false ? (
+                                                                        ) : (value === false || value === 0) ? (
                                                                             <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
                                                                         ) : (
                                                                             value

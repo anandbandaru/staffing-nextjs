@@ -19,6 +19,8 @@ function GenericList({ formType }) {
                 GOOGLEDRIVE_FOLDERS: configData.GOOGLEDRIVE_FOLDERS,
                 expenseCategories: configData.expenseCategories,
                 currencyTypes: configData.currencyTypes,
+                citizenIdTypes: configData.citizenIdTypes,
+                nonCitizenIdTypes: configData.nonCitizenIdTypes,
             };
 
             const selectedData = dataMap[formType] || [];
@@ -32,7 +34,7 @@ function GenericList({ formType }) {
     return (
         <>
             {data.length > 0 ? (
-                <table className="bg-white border border-gray-200 text-left">
+                <table className="bg-white border border-gray-200 text-left my-2">
                     <thead>
                         <tr>
                             <th className="py-6 px-4 border-b bg-slate-300">{formType}</th>

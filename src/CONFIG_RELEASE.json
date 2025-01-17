@@ -18,7 +18,8 @@
         "Snack bar top right",
         "Reset form on ADD record",
         "Vendor Form - rearrange",
-        "Jobs form - labels change + IMP mandatory"
+        "Jobs form - labels change + IMP mandatory",
+        "View form - search column names"
       ]
     },
     {
@@ -100,6 +101,19 @@
   "topTabs": ["Dashboard", "New", "Transactions", "Timesheets", "Files", "Todo", "Users", "Calendar", "Configuration"],
   "newTabs": ["Owners", "Companies", "Ownerships", "Employees", "Vendors", "Clients", "Implementation Partners", "Job Types", "Expense Types", "File Types"],
   "transactionsTabs": ["Jobs", "Invoices", "Expenses", "Payroll"],
+  "citizenIdTypes": [
+    {
+      "name": "I94"
+    },
+    {
+      "name": "STATE ID"
+    }
+  ],
+  "nonCitizenIdTypes": [
+    {
+      "name": "STATE ID \\ DL"
+    }
+  ],
   "currencyTypes": [
     {
       "name": "USD"
