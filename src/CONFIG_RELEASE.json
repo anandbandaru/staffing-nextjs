@@ -19,7 +19,8 @@
         "Reset form on ADD record",
         "Vendor Form - rearrange",
         "Jobs form - labels change + IMP mandatory",
-        "View form - search column names"
+        "View form - search column names",
+        "Employee form - With Citizen + Non-Citizen details if ONSHORE"
       ]
     },
     {
