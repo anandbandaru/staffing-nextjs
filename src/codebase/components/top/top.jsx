@@ -67,7 +67,7 @@ const Top = () => {
             .catch(error => {
                 showSnackbar('error', "Login trace failure");
             });
-    }, [userName]);
+    }, [userName, APIPath]);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -108,7 +108,7 @@ const Top = () => {
             setOpenVersionDialog(true);
             localStorage.setItem('appVersion', currentVersion);
         }
-    }, []);
+    }, [userName]);
     //this ensure to show the above dialog is no DS are given by API
     useEffect(() => {
         console.log("SHOW LOADING:" + isAPILoading)
@@ -131,7 +131,7 @@ const Top = () => {
                     showSnackbar('error', "Top tabs Permissions failure");
                 });
         }
-    }, [userName, userType]);
+    }, [userName, userType, APIPath]);
 
     const allTabs = [
         { name: 'Dashboard', icon: <AppsIcon className="mr-1" fontSize="small" /> },
