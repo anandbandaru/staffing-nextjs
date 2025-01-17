@@ -20,7 +20,8 @@
         "Vendor Form - rearrange",
         "Jobs form - labels change + IMP mandatory",
         "View form - search column names",
-        "Employee form - With Citizen + Non-Citizen details if ONSHORE"
+        "Employee form - With Citizen + Non-Citizen details if ONSHORE",
+        "IP & Location capture for login with failure due to rate limits"
       ]
     },
     {
