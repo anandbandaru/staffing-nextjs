@@ -197,8 +197,6 @@ function EmployeeForm({ props, ID, operation }) {
                         personalEmail: Yup.string()
                             .email()
                             .required('personalEmail Required'),
-                        personalPhone: Yup.string()
-                            .required('personalPhone Required'),
                         personalUSPhone: Yup.string()
                             .required('personalUSPhone Required'),
                         employeeType: Yup.string()
@@ -321,18 +319,6 @@ function EmployeeForm({ props, ID, operation }) {
                                         size="small"
                                         margin="normal"
                                         fullWidth
-                                        id="personalPhone"
-                                        name="personalPhone"
-                                        label="Personal Phone"
-                                        value={values.personalPhone}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        helperText={(errors.personalPhone && touched.personalPhone) && errors.personalPhone}
-                                    />
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
                                         id="personalUSPhone"
                                         name="personalUSPhone"
                                         label="Personal US Phone"
@@ -340,6 +326,18 @@ function EmployeeForm({ props, ID, operation }) {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         helperText={(errors.personalUSPhone && touched.personalUSPhone) && errors.personalUSPhone}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="personalPhone"
+                                        name="personalPhone"
+                                        label="Personal Phone"
+                                        value={values.personalPhone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.personalPhone && touched.personalPhone) && errors.personalPhone}
                                     />
                                 </Stack>
                                 <TextField
