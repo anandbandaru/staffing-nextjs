@@ -302,7 +302,26 @@ function EmployeeForm({ props, ID, operation }) {
                                         onBlur={handleBlur}
                                         helperText={(errors.lastName && touched.lastName) && errors.lastName}
                                     />
-                                </Stack>
+                                </Stack>                                
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="employeeType"
+                                    name="employeeType"
+                                    select
+                                    label="Employee Type"
+                                    value={values.employeeType}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.employeeType && touched.employeeType) && errors.employeeType}
+                                >
+                                    {configData.employeeTypes.map((item, index) => (
+                                        <MenuItem key={index} value={item.name}>
+                                            {item.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -341,25 +360,6 @@ function EmployeeForm({ props, ID, operation }) {
                                         helperText={(errors.personalPhone && touched.personalPhone) && errors.personalPhone}
                                     />
                                 </Stack>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="employeeType"
-                                    name="employeeType"
-                                    select
-                                    label="Employee Type"
-                                    value={values.employeeType}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.employeeType && touched.employeeType) && errors.employeeType}
-                                >
-                                    {configData.employeeTypes.map((item, index) => (
-                                        <MenuItem key={index} value={item.name}>
-                                            {item.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
                                 {values.employeeType === 'OFFSHORE' && (
                                     <div className="error-summary bg-blue-200 my-4 p-2 text-white rounded-md">
                                         <div className='text-black my-1'>
@@ -464,7 +464,7 @@ function EmployeeForm({ props, ID, operation }) {
                                         </TextField>
                                     </div>
                                 )}
-                                <Stack direction="row" spacing={2} className='mt-2'>
+                                <Stack direction="row" spacing={2} className='mt-6'>
                                     <TextField
                                         size="small"
                                         margin="normal"

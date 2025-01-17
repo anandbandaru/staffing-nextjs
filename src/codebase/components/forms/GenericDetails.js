@@ -3,19 +3,14 @@ import { Context } from "../../context/context";
 import Stack from '@mui/material/Stack';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import IconButton from '@mui/material/IconButton';
-// import Dialog from '@mui/material/Dialog';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import Slide from '@mui/material/Slide';
-// import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, InputAdornment } from '@mui/material'; // Added InputAdornment import
+import SearchIcon from '@mui/icons-material/Search'; // Added SearchIcon import
 import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 import EmployeeGenericList from '../employees/employeeGList';
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 
 function GenericDetails({ ID, operation, doLoading, moduleName }) {
     const { APIPath } = useContext(Context);
@@ -23,11 +18,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
     const [tabIndex, setTabIndex] = React.useState(0);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
-
-    // For dialog MUI
-    // const Transition = React.forwardRef(function Transition(props, ref) {
-    //     return <Slide direction="up" ref={ref} {...props} />;
-    // });
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleClose = () => {
         setOpen(false);
@@ -39,15 +30,6 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
             getDetails();
         }
     };
-
-    // const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    //     '& .MuiDialogContent-root': {
-    //         padding: theme.spacing(2),
-    //     },
-    //     '& .MuiDialogActions-root': {
-    //         padding: theme.spacing(1),
-    //     },
-    // }));
 
     const getAPIEndpoint = () => {
         switch (moduleName) {
@@ -114,6 +96,15 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
 
     const highlightKeys = ['ID', 'DISABLED', 'IMPORTANT', 'COMPLETED', 'SSN', 'EIN'];
 
+    const filteredData = data.data.filter(item =>
+        Object.entries(item).some(([key, value]) => {
+            // console.log("SEARCHED:" + searchTerm.toLowerCase())
+            // console.log("MATCHING:" + key)
+            return key.toLowerCase().includes(searchTerm.toLowerCase())
+        }
+        )
+    );
+
     return (
         <>
             <Stack direction="row" spacing={1}>
@@ -165,29 +156,51 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                             <Table size="small" aria-label="Details table">
                                                 <TableHead>
                                                     <TableRow>
-                                                        <TableCell className='bg-gray-200 max-w-[200px]'>Column</TableCell>
+                                                    <TableCell className='bg-gray-200 max-w-[200px] items-center justify-center'>
+                                                        <Stack direction={'row'} spacing={2}>
+                                                            <TextField // Added TextField for search bar
+                                                                size="small"
+                                                                variant="outlined"
+                                                                fullWidth
+                                                                margin="dense"
+                                                                label="Search Column"
+                                                                value={searchTerm}
+                                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                                InputProps={{
+                                                                    endAdornment: (
+                                                                        <InputAdornment position="end">
+                                                                            <SearchIcon />
+                                                                        </InputAdornment>
+                                                                    ),
+                                                                }}
+                                                                sx={{ marginLeft: 1 }}
+                                                            />
+                                                            </Stack>
+                                                        </TableCell>
                                                         <TableCell className='bg-gray-400'>Value</TableCell>
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
-                                                    {data.data.map((item, index) => (
+                                                    {filteredData.map((item, index) => (
                                                         Object.entries(item).map(([key, value]) => (
-                                                            <TableRow key={`${index}-${key}`}>
-                                                                <TableCell component="th" scope="row" className="max-w-[200px]">
-                                                                    <span className={`${highlightKeys.includes(key.toUpperCase()) || key.toLowerCase().includes('id') ? 'rag-gray-bg px-2' : ''}`}>
-                                                                        {key}
-                                                                    </span>
-                                                                </TableCell>
-                                                                <TableCell className='bg-gray-100'>
-                                                                    {value === true ? (
-                                                                        <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
-                                                                    ) : value === false ? (
-                                                                        <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
-                                                                    ) : (
-                                                                        value
-                                                                    )}
-                                                                </TableCell>
-                                                            </TableRow>
+                                                            key.toLowerCase().includes(searchTerm.toLowerCase()) && (
+                                                                <TableRow key={`${index}-${key}`}>
+                                                                    <TableCell component="th" scope="row" className="max-w-[200px]">
+                                                                        <span className={`${highlightKeys.includes(key.toUpperCase()) || key.toLowerCase().includes('id') ? 'rag-gray-bg px-2' : ''}`}>
+                                                                            {key}
+                                                                        </span>
+                                                                    </TableCell>
+                                                                    <TableCell className='bg-gray-100'>
+                                                                        {value === true ? (
+                                                                            <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
+                                                                        ) : value === false ? (
+                                                                            <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
+                                                                        ) : (
+                                                                            value
+                                                                        )}
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            )
                                                         ))
                                                     ))}
                                                 </TableBody>
@@ -225,109 +238,6 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                     </DialogPanel>
                 </div>
             </Dialog>
-
-            {/* <BootstrapDialog
-                className=""
-                onClose={handleClose}
-                TransitionComponent={Transition}
-                aria-labelledby="customized-dialog-title"
-                open={open}
-                fullWidth
-                maxWidth={false}
-            >
-                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} {moduleName}: ID: {ID}
-                </DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={handleClose}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <DialogContent dividers>
-                    {apiLoading ? (
-                        <div className="spinner"></div>
-                    ) : (
-                        <Box sx={{ width: '100%', typography: 'body1' }}>
-                            <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
-                                <TabList className="thirdTabsListHolder">
-                                    <Tab>Metadata</Tab>
-                                    {(moduleName !== "FILETYPES" && <>
-                                        <Tab>Documents</Tab>
-                                        <Tab>Relations</Tab>
-                                    </>
-                                    )}
-                                    {(moduleName === "EMPLOYEES" && <>
-                                        <Tab>Dependents</Tab>
-                                        <Tab>Passports</Tab>
-                                        <Tab>Visas</Tab>
-                                        <Tab>I94s</Tab>
-                                    </>
-                                    )}
-                                </TabList>
-
-                                <TabPanel className="px-2">
-                                    <TableContainer component={Paper}>
-                                        <Table size="small" aria-label="a dense table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell className='bg-gray-200'>Column</TableCell>
-                                                    <TableCell className='bg-gray-300'>Value</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {data.data.map((item, index) => (
-                                                    Object.entries(item).map(([key, value]) => (
-                                                        <TableRow key={`${index}-${key}`}>
-                                                            <TableCell component="th" scope="row">
-                                                                {key}
-                                                            </TableCell>
-                                                            <TableCell className='bg-gray-100'>
-                                                                {value === true ? "YES" : value}
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                </TabPanel>
-
-                                {(moduleName !== "FILETYPES" && <>
-                                    <TabPanel className="px-2">
-                                        <GenericFilesListSimple moduleId={ID} componentName={moduleName} />
-                                    </TabPanel>
-                                    <TabPanel className="px-2">
-                                        Relations
-                                    </TabPanel>
-                                </>
-                                )}
-                                {(moduleName === "EMPLOYEES" && <>
-                                    <TabPanel className="px-2">
-                                        <EmployeeGenericList formType={'Dependent'} employeeID={ID} />
-                                    </TabPanel>
-                                    <TabPanel className="px-2">
-                                        <EmployeeGenericList formType={'Passport'} employeeID={ID} />
-                                    </TabPanel>
-                                    <TabPanel className="px-2">
-                                        <EmployeeGenericList formType={'Visa'} employeeID={ID} />
-                                    </TabPanel>
-                                    <TabPanel className="px-2">
-                                        <EmployeeGenericList formType={'I94'} employeeID={ID} />
-                                    </TabPanel>
-                                </>
-                                )}
-                            </Tabs>
-                        </Box>
-                    )}
-                </DialogContent>
-            </BootstrapDialog> */}
         </>
     );
 }
