@@ -2,49 +2,47 @@ import React, { useContext, useEffect, useState } from "react";
 import configData from "../../../CONFIG_RELEASE.json";
 import './top.css';
 import 'react-tooltip/dist/react-tooltip.css';
-import { assets } from '../../assets/assets'
+import { assets } from '../../assets/assets';
 import { Context } from "../../context/context";
 import { Tooltip } from 'react-tooltip';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
+import axios from 'axios';
+
+// MUI Components
+import { Box, Avatar, Stack, Button, Chip, Dialog, DialogContent, DialogTitle, LinearProgress, Alert, Slide } from "@mui/material";
+import { styled } from '@mui/material/styles';
+
+// MUI Icons
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
-import { Stack } from "@mui/material";
-import Button from '@mui/material/Button';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-import ModulesTop from "../top2/ModulesTop";
-import TransactionsTop from "../top2/TransactionsTop";
-import Dashboard from "../dashboard/dashboard";
-import TodosMain from "../todo/todosMain";
-import UsersMain from "../users/usersMain";
-import FilesMain from "../files/filesMain";
 import AppsIcon from '@mui/icons-material/Apps';
 import ControlPointOutlinedIcon from '@mui/icons-material/ControlPointOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AttributionIcon from '@mui/icons-material/Attribution';
-import CustomSnackbar from "../snackbar/snackbar";
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import CachedIcon from '@mui/icons-material/Cached';
+import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
+
+// React Tabs
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+
+// Components
+import ModulesTop from "../top2/ModulesTop";
+import TransactionsTop from "../top2/TransactionsTop";
+import Dashboard from "../dashboard/dashboard";
+import TodosMain from "../todo/todosMain";
+import UsersMain from "../users/usersMain";
+import FilesMain from "../files/filesMain";
+import CustomSnackbar from "../snackbar/snackbar";
 import Configuration from "../configuration/configuration";
 import Settings from "../settings/settings";
 import Balance from "../balance/balance";
 import Calendar from "../calendar/calendar";
-import Chip from '@mui/material/Chip';
-import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import LinearProgress from '@mui/material/LinearProgress';
-import Alert from '@mui/material/Alert';
-import CachedIcon from '@mui/icons-material/Cached';
-import axios from 'axios';
 import Footer from "../footer/footer";
-import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
 
 const Top = () => {
 
@@ -206,7 +204,10 @@ const Top = () => {
                         <Tabs>
                             <TabList className="topTabsListHolder">
                                 {allTabs.map((tab, index) => (
-                                    tabsToShow.includes(tab.name) && <Tab key={index}>{tab.icon}{tab.name}</Tab>
+                                    tabsToShow.includes(tab.name) && <Tab key={index}>
+                                        {tab.icon}
+                                        {tab.name}
+                                    </Tab>
                                 ))}
                             </TabList>
 
