@@ -13,10 +13,9 @@ import Alert from '@mui/material/Alert';
 import CachedIcon from '@mui/icons-material/Cached';
 import CustomSnackbar from "../snackbar/snackbar";
 // import preval from 'preval.macro';
-import axios from 'axios';
 
 const Footer = ({ipAddress, city, region, country_name}) => {
-    const { tokenExpiry, refreshPage, isAPILoading, isAPIError, setIsAPILoading, APIPath, setIsAPIError, checkAPIAvailability,
+    const { tokenExpiry, refreshPage, isAPILoading, isAPIError, checkAPIAvailability,
         APIType, APIVersion
     } = useContext(Context);
     const [isTokenExpired, setIsTokenExpired] = useState(false);

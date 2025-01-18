@@ -15,14 +15,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import UserTopPermissions from "./userTopPermissions";
 import UserNewPermissions from "./userNewPermissions";
 import UserTransactionsPermissions from "./userTransactionsPermissions";
-import PersonIcon from '@mui/icons-material/Person';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import PublicIcon from '@mui/icons-material/Public';
-import LocationCityIcon from '@mui/icons-material/LocationCity';
-import MapIcon from '@mui/icons-material/Map';
-import FlagIcon from '@mui/icons-material/Flag';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const UserList = () => {
     const { accessToken, APIPath } = useContext(Context);
@@ -262,47 +254,46 @@ const UserList = () => {
             <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
                 <DialogTitle>Login Details</DialogTitle>
                 <DialogContent>
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell><PersonIcon /> <strong>Login Count</strong></TableCell>
-                                <TableCell>{loginDetails ? loginDetails.loginCount : ''}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell><DateRangeIcon /> <strong>Last Login Date</strong></TableCell>
-                                <TableCell>{loginDetails ? loginDetails.lastLoginDate : ''}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell><PublicIcon /> <strong>IP Address</strong></TableCell>
-                                <TableCell>{loginDetails ? loginDetails.ipAddress : ''}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell><LocationCityIcon /> <strong>City</strong></TableCell>
-                                <TableCell>{loginDetails ? loginDetails.city : ''}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell><MapIcon /> <strong>Region</strong></TableCell>
-                                <TableCell>{loginDetails ? loginDetails.region : ''}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell><FlagIcon /> <strong>Country</strong></TableCell>
-                                <TableCell>{loginDetails ? loginDetails.country : ''}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell><MyLocationIcon /> <strong>Latitude</strong></TableCell>
-                                <TableCell>{loginDetails ? loginDetails.latitude : ''}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell><LocationOnIcon /> <strong>Longitude</strong></TableCell>
-                                <TableCell>{loginDetails ? loginDetails.longitude : ''}</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </DialogContent>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>Login Count</TableCell>
+                                    <TableCell>{loginDetails ? loginDetails.loginCount : ''}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Last Login Date</TableCell>
+                                    <TableCell>{loginDetails ? loginDetails.lastLoginDate : ''}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>IP Address</TableCell>
+                                    <TableCell>{loginDetails ? loginDetails.ipAddress : ''}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>City</TableCell>
+                                    <TableCell>{loginDetails ? loginDetails.city : ''}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Region</TableCell>
+                                    <TableCell>{loginDetails ? loginDetails.region : ''}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Country</TableCell>
+                                    <TableCell>{loginDetails ? loginDetails.country : ''}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Latitude:</TableCell>
+                                    <TableCell>{loginDetails ? loginDetails.latitude : ''}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Longitude:</TableCell>
+                                    <TableCell>{loginDetails ? loginDetails.longitude : ''}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </DialogContent>
             </Dialog>
-
         </>
     )
 }

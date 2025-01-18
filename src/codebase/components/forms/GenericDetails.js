@@ -188,22 +188,21 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                                 <TableBody>
                                                     {filteredData.map((item, index) => (
                                                         Object.entries(item).map(([key, value]) => (
-                                                            key.toLowerCase().includes(searchTerm.toLowerCase()) && (
+                                                            key.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                                                            !((key.toUpperCase().includes('RATE') || key.toUpperCase().includes('DEDUCTION')) && userType !== 'ADMIN') && (
                                                                 <TableRow key={`${index}-${key}`}>
                                                                     <TableCell component="th" scope="row" className="max-w-[200px]">
                                                                         <span className={`${highlightKeys.includes(key.toUpperCase()) || key.toLowerCase().includes('id') || key.toLowerCase().includes('is') ? 'rag-gray-bg px-2' : ''}`}>
-                                                                            {(key.toUpperCase().includes('RATE') || key.toUpperCase().includes('DEDUCTION')) && userType !== 'ADMIN' ? null : key}
+                                                                            {key}
                                                                         </span>
                                                                     </TableCell>
                                                                     <TableCell className='bg-gray-100'>
-                                                                        {(key.toUpperCase().includes('RATE') || key.toUpperCase().includes('DEDUCTION')) && userType !== 'ADMIN' ? null : (
-                                                                            (value === true || value === 1) ? (
-                                                                                <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
-                                                                            ) : (value === false || value === 0) ? (
-                                                                                <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
-                                                                            ) : (
-                                                                                value
-                                                                            )
+                                                                        {(value === true || value === 1) ? (
+                                                                            <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
+                                                                        ) : (value === false || value === 0) ? (
+                                                                            <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
+                                                                        ) : (
+                                                                            value
                                                                         )}
                                                                     </TableCell>
                                                                 </TableRow>

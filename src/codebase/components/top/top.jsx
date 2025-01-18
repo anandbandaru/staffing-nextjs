@@ -205,8 +205,8 @@ const Top = () => {
                         ?
                         <Tabs>
                             <TabList className="topTabsListHolder">
-                                {allTabs.map(tab => (
-                                    tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
+                                {allTabs.map((tab, index) => (
+                                    tabsToShow.includes(tab.name) && <Tab key={index}>{tab.icon}{tab.name}</Tab>
                                 ))}
                             </TabList>
 
@@ -323,7 +323,7 @@ const Top = () => {
                     <div className="mb-5">
                         {
                             configData.releases.slice(0, 1).map((item, index) => (
-                                <>
+                                <div key={index}>
                                     <Stack spacing={1} direction="row">
                                         <Chip label={item.version} size="small" color='success' variant="outlined" />
                                         <Chip label={item.date} size="small" color='success' variant="outlined" />
@@ -335,7 +335,7 @@ const Top = () => {
                                             <li key={noteindex}><KeyboardArrowRightOutlinedIcon fontSize="small" />{noteitem}</li>
                                         ))}
                                     </ul>
-                                </>
+                                </div>
                             ))
                         }
                     </div>
