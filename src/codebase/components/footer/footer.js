@@ -104,6 +104,10 @@ const Footer = ({ipAddress, city, region, country_name}) => {
         }
     }, [loginTime]);
 
+    useEffect(() => {
+        console.log("FOOTER:" + ipAddress)
+    }, []);
+
     return (
         <>
             <CustomSnackbar

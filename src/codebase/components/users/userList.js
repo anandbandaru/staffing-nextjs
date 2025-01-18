@@ -239,59 +239,60 @@ const UserList = () => {
                 className="ag-theme-quartz" // applying the Data Grid theme
                 style={{ height: 400 }} // the Data Grid will fill the size of the parent container
             >
-                <AgGridReact
-                    rowData={data ? data : []}
-                    columnDefs={colDefs}
-                    pagination={pagination}
-                    paginationPageSize={paginationPageSize}
-                    paginationPageSizeSelector={paginationPageSizeSelector}
-                    rowClassRules={rowClassRules}
-                    autoSizeStrategy={autoSizeStrategy}
-                    enableCellTextSelection={true}
-                />
+                {apiLoading ?
+                    <div className="spinner"></div> :
+                    <AgGridReact
+                        rowData={data ? data : []}
+                        columnDefs={colDefs}
+                        pagination={pagination}
+                        paginationPageSize={paginationPageSize}
+                        paginationPageSizeSelector={paginationPageSizeSelector}
+                        rowClassRules={rowClassRules}
+                        autoSizeStrategy={autoSizeStrategy}
+                        enableCellTextSelection={true}
+                    />
+                }
             </div>
 
             <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-                <DialogTitle>Login Details</DialogTitle>
+                <DialogTitle>Last Login Details</DialogTitle>
                 <DialogContent>
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell>Login Count</TableCell>
-                                    <TableCell>{loginDetails ? loginDetails.loginCount : ''}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Last Login Date</TableCell>
-                                    <TableCell>{loginDetails ? loginDetails.lastLoginDate : ''}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>IP Address</TableCell>
-                                    <TableCell>{loginDetails ? loginDetails.ipAddress : ''}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>City</TableCell>
-                                    <TableCell>{loginDetails ? loginDetails.city : ''}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Region</TableCell>
-                                    <TableCell>{loginDetails ? loginDetails.region : ''}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Country</TableCell>
-                                    <TableCell>{loginDetails ? loginDetails.country : ''}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Latitude:</TableCell>
-                                    <TableCell>{loginDetails ? loginDetails.latitude : ''}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Longitude:</TableCell>
-                                    <TableCell>{loginDetails ? loginDetails.longitude : ''}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <div>
+                        <Stack direction={'column'} spacing={1}>
+                            <Stack direction={'row'} spacing={1}>
+                                <div className="w-1/2">Login Count</div>
+                                <div className="w-1/2">{loginDetails ? loginDetails.loginCount : ''}</div>
+                            </Stack>
+                            <Stack direction={'row'} spacing={1}>
+                                <div className="">Login Date</div>
+                                <div className="">{loginDetails ? loginDetails.lastLoginDate : ''}</div>
+                            </Stack>
+                            <Stack direction={'row'} spacing={1}>
+                                <div className="w-1/2">IP Address</div>
+                                <div className="w-1/2">{loginDetails ? loginDetails.ipAddress : ''}</div>
+                            </Stack>
+                            <Stack direction={'row'} spacing={1}>
+                                <div className="w-1/2">City</div>
+                                <div className="w-1/2">{loginDetails ? loginDetails.city : ''}</div>
+                            </Stack>
+                            <Stack direction={'row'} spacing={1}>
+                                <div className="w-1/2">Region</div>
+                                <div className="w-1/2">{loginDetails ? loginDetails.region : ''}</div>
+                            </Stack>
+                            <Stack direction={'row'} spacing={1}>
+                                <div className="w-1/2">Country</div>
+                                <div className="w-1/2">{loginDetails ? loginDetails.country : ''}</div>
+                            </Stack>
+                            <Stack direction={'row'} spacing={1}>
+                                <div className="w-1/2">Latitude</div>
+                                <div className="w-1/2">{loginDetails ? loginDetails.latitude : ''}</div>
+                            </Stack>
+                            <Stack direction={'row'} spacing={1}>
+                                <div className="w-1/2">Longitude</div>
+                                <div className="w-1/2">{loginDetails ? loginDetails.longitude : ''}</div>
+                            </Stack>
+                        </Stack>
+                    </div>
                 </DialogContent>
             </Dialog>
 

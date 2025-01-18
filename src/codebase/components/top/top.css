@@ -25,23 +25,25 @@
     /* min-height: 100vh; */
 }
 .userHolder{
-    position: absolute;
-    right: 230px;
-    top: -1.5px;
+    position: fixed;
+    right: 0px;
+    bottom: 21px;
     cursor: pointer;
     padding: 2px 0px 1px 0px;
+    z-index: 101;
 }
-.userHolderFull{
+/* .userHolderFull{
     right: 0px;
-}
+} */
 .userTypeHolder{
-    background-color: #83c5be;
+    background-color: #fff;
     color:#000;
+    border-radius: 20px;
 }
 .notificationsHolder{
     position: absolute;
     right: 245px;
-    top: 25px;
+    top: 15px;
     cursor: pointer;
 }
 .SettingsPartsHolder{

@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-// import preval from 'preval.macro';
 import './ModulesTop.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Context } from "../../context/context";
@@ -22,8 +21,10 @@ import DoubleArrowOutlinedIcon from '@mui/icons-material/DoubleArrowOutlined';
 import axios from 'axios';
 import CustomSnackbar from "../snackbar/snackbar";
 
-const ModulesTop = ({ module }) => {
+import { Select, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 
+
+const ModulesTop = ({ module }) => {
     const { userType, APIPath, userName } = useContext(Context);
     const [permissions, setPermissions] = useState([]);
 
@@ -58,6 +59,23 @@ const ModulesTop = ({ module }) => {
                 });
         }
     }, [userName, userType]);
+
+    //MOBILE MENU
+    const [selectedTab, setSelectedTab] = useState('Owners');
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
+    useEffect(() => {
+        if (userType !== "ADMIN") {
+            setSelectedTab("Vendors");
+        }
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 1200);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const allTabs = [
         { name: 'Owners', icon: <DoubleArrowOutlinedIcon className="mr-1" fontSize="small" /> },
         { name: 'Companies', icon: <DoubleArrowOutlinedIcon className="mr-1" fontSize="small" /> },
@@ -70,6 +88,7 @@ const ModulesTop = ({ module }) => {
         { name: 'Expense Types', icon: <AdjustOutlinedIcon className="mr-1" fontSize="small" /> },
         { name: 'File Types', icon: <AdjustOutlinedIcon className="mr-1" fontSize="small" /> }
     ];
+
     const tabsToShow = userType === 'ADMIN' ? allTabs.map(tab => tab.name) : permissions;
 
     return (
@@ -83,32 +102,59 @@ const ModulesTop = ({ module }) => {
             <div className="top2TabsHolder">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     {tabsToShow.length > 0
-                        ?
-                        <Tabs>
-                            <TabList className="topTabsListHolder">
-                                {allTabs.map(tab => (
-                                    tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
-                                ))}
-                            </TabList>
-                            {tabsToShow.includes('Owners') && <TabPanel className="-mt-1"><OwnersMain /></TabPanel>}
-                            {tabsToShow.includes('Companies') && <TabPanel className="-mt-1"><CompaniesMain /></TabPanel>}
-                            {tabsToShow.includes('Ownerships') && <TabPanel className="-mt-1"><OwnershipsMain /></TabPanel>}
-                            {tabsToShow.includes('Employees') && <TabPanel className="-mt-1"><EmployeesMain /></TabPanel>}
-                            {tabsToShow.includes('Vendors') && <TabPanel className="-mt-1"><VendorsMain /></TabPanel>}
-                            {tabsToShow.includes('Clients') && <TabPanel className="-mt-1"><ClientsMain /></TabPanel>}
-                            {tabsToShow.includes('Implementation Partners') && <TabPanel className="-mt-1"><ImpPartnersMain /></TabPanel>}
-                            {tabsToShow.includes('Job Types') && <TabPanel className="-mt-1"><JobTypesMain /></TabPanel>}
-                            {tabsToShow.includes('Expense Types') && <TabPanel className="-mt-1"><ExpenseTypesMain /></TabPanel>}
-                            {tabsToShow.includes('File Types') && <TabPanel className="-mt-1"><FileTypesMain /></TabPanel>}
-                        </Tabs>
-                        :
-                        <>
+                        ? (
+                            isMobile ? (
+                                <div className="">
+                                    <div className="px-5">
+                                        <select
+                                            className="w-full p-2 border rounded my-3 bg-blue-100 text-black"
+                                            value={selectedTab}
+                                            onChange={(e) => setSelectedTab(e.target.value)}
+                                        >
+                                            {allTabs.map(tab => (
+                                                tabsToShow.includes(tab.name) &&
+                                                <option key={tab.name} value={tab.name}>{tab.icon}{tab.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {selectedTab === 'Owners' && <OwnersMain />}
+                                    {selectedTab === 'Companies' && <CompaniesMain />}
+                                    {selectedTab === 'Ownerships' && <OwnershipsMain />}
+                                    {selectedTab === 'Employees' && <EmployeesMain />}
+                                    {selectedTab === 'Vendors' && <VendorsMain />}
+                                    {selectedTab === 'Clients' && <ClientsMain />}
+                                    {selectedTab === 'Implementation Partners' && <ImpPartnersMain />}
+                                    {selectedTab === 'Job Types' && <JobTypesMain />}
+                                    {selectedTab === 'Expense Types' && <ExpenseTypesMain />}
+                                    {selectedTab === 'File Types' && <FileTypesMain />}
+                                </div>
+                            ) : (
+                                <Tabs>
+                                    <TabList className="topTabsListHolder">
+                                        {allTabs.map(tab => (
+                                            tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
+                                        ))}
+                                    </TabList>
+                                    {tabsToShow.includes('Owners') && <TabPanel className="-mt-1"><OwnersMain /></TabPanel>}
+                                    {tabsToShow.includes('Companies') && <TabPanel className="-mt-1"><CompaniesMain /></TabPanel>}
+                                    {tabsToShow.includes('Ownerships') && <TabPanel className="-mt-1"><OwnershipsMain /></TabPanel>}
+                                    {tabsToShow.includes('Employees') && <TabPanel className="-mt-1"><EmployeesMain /></TabPanel>}
+                                    {tabsToShow.includes('Vendors') && <TabPanel className="-mt-1"><VendorsMain /></TabPanel>}
+                                    {tabsToShow.includes('Clients') && <TabPanel className="-mt-1"><ClientsMain /></TabPanel>}
+                                    {tabsToShow.includes('Implementation Partners') && <TabPanel className="-mt-1"><ImpPartnersMain /></TabPanel>}
+                                    {tabsToShow.includes('Job Types') && <TabPanel className="-mt-1"><JobTypesMain /></TabPanel>}
+                                    {tabsToShow.includes('Expense Types') && <TabPanel className="-mt-1"><ExpenseTypesMain /></TabPanel>}
+                                    {tabsToShow.includes('File Types') && <TabPanel className="-mt-1"><FileTypesMain /></TabPanel>}
+                                </Tabs>
+                            )
+                        ) : (
                             <Alert severity="warning">Nothing is permissioned here for you. Check with your Administrator</Alert>
-                        </>
+                        )
                     }
                 </Box>
             </div>
         </div>
-    )
-}
+    );
+};
+
 export default ModulesTop;

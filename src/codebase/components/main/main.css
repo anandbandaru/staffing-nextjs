@@ -62,7 +62,7 @@
     transition: transform 0.3s ease-in-out;
   }
   .todoToggleHolder.toggled {
-    transform: scale(1.0) translateY(65px);
+    transform: scale(1.0) translateY(7px);
     position: absolute;
     top: 0px;
     right: 3px;

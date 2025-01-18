@@ -1,5 +1,10 @@
 .topBannerHolder{
-    background-color: #a53860;
+    background-color: #38a58c;
+    position: fixed;
+    bottom:20px;
+    left:0px;
+    width: 100%;
+    z-index: 100;
 }
 .companyLogo{  
     color:#fff;

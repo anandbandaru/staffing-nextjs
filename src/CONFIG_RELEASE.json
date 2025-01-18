@@ -12,6 +12,14 @@
   ],
   "releases": [
     {
+      "version": "2.5",
+      "date": "JAN 18 2024",
+      "notes": [
+        "Responsive design - Top menu & New menu as dropdowns on small screens",
+        "Top banner to bottom"
+      ]
+    },
+    {
       "version": "2.4",
       "date": "JAN 17 2024",
       "notes": [

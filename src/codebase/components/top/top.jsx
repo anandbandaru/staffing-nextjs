@@ -71,18 +71,67 @@ const Top = () => {
     const [location, setLocation] = useState({});
 
     //USER LOGIN
+    // useEffect(() => {
+    //     // Fetch IP address and location
+    //     axios.get('https://api.ipify.org?format=json')
+    //         .then(response => {
+    //             setIpAddress(response.data.ip);
+    //             return axios.get(`https://ipapi.co/${response.data.ip}/json/`);
+    //         })
+    //         .then(response => {
+    //             const locationData = response.data;
+    //             setLocation(locationData);
+    //             // Call the /login API with location details
+    //             return axios.post(APIPath + '/login', {
+    //                 userName,
+    //                 ipAddress: locationData.ip,
+    //                 city: locationData.city,
+    //                 region: locationData.region,
+    //                 country: locationData.country_name,
+    //                 latitude: locationData.latitude,
+    //                 longitude: locationData.longitude
+    //             });
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching IP address or location:', error);
+    //             // Call the /login API with null values for location details
+    //             return axios.post(APIPath + '/login', {
+    //                 userName,
+    //                 ipAddress: ipAddress || null,
+    //                 city: null,
+    //                 region: null,
+    //                 country: null,
+    //                 latitude: null,
+    //                 longitude: null
+    //             });
+    //         })
+    //         .then(response => {
+    //             if (response.data.STATUS === "FAIL")
+    //                 showSnackbar('error', "Login trace failure");
+    //             else
+    //                 showSnackbar('info', "Login trace success");
+    //         })
+    //         .catch(error => {
+    //             showSnackbar('error', "Login trace failure");
+    //         });
+    // }, [APIPath, userName, ipAddress]);
     useEffect(() => {
-        // Fetch IP address and location
-        axios.get('https://api.ipify.org?format=json')
-            .then(response => {
-                setIpAddress(response.data.ip);
-                return axios.get(`https://ipapi.co/${response.data.ip}/json/`);
-            })
-            .then(response => {
-                const locationData = response.data;
+        const fetchLocation = async () => {
+            try {
+                // Fetch IP address
+                const ipResponse = await fetch('https://api.bigdatacloud.net/data/client-info');
+                const ipData = await ipResponse.json();
+                setIpAddress(ipData.ipString);
+                console.log("IP:" + ipData.ipString)
+
+                // Fetch location data using the IP address
+                const locationResponse = await fetch(`https://ipapi.co/${ipData.ipString}/json/`);
+                const locationData = await locationResponse.json();
                 setLocation(locationData);
+                console.log("LOCATION:" + JSON.stringify(locationData))
+
                 // Call the /login API with location details
-                return axios.post(APIPath + '/login', {
+                const loginResponse = await axios.post(APIPath + '/login', {
                     userName,
                     ipAddress: locationData.ip,
                     city: locationData.city,
@@ -91,29 +140,33 @@ const Top = () => {
                     latitude: locationData.latitude,
                     longitude: locationData.longitude
                 });
-            })
-            .catch(error => {
+
+                if (loginResponse.data.STATUS === "FAIL") {
+                    showSnackbar('error', "Login trace failure");
+                } else {
+                    showSnackbar('info', "Login trace success");
+                }
+            } catch (error) {
                 console.error('Error fetching IP address or location:', error);
                 // Call the /login API with null values for location details
-                return axios.post(APIPath + '/login', {
-                    userName,
-                    ipAddress: ipAddress || null,
-                    city: null,
-                    region: null,
-                    country: null,
-                    latitude: null,
-                    longitude: null
-                });
-            })
-            .then(response => {
-                if (response.data.STATUS === "FAIL")
+                try {
+                    await axios.post(APIPath + '/login', {
+                        userName,
+                        ipAddress: ipAddress || null,
+                        city: null,
+                        region: null,
+                        country: null,
+                        latitude: null,
+                        longitude: null
+                    });
                     showSnackbar('error', "Login trace failure");
-                else
-                    showSnackbar('info', "Login trace success");
-            })
-            .catch(error => {
-                showSnackbar('error', "Login trace failure");
-            });
+                } catch (loginError) {
+                    showSnackbar('error', "Login trace failure");
+                }
+            }
+        };
+
+        fetchLocation();
     }, [APIPath, userName, ipAddress]);
 
     //FOR NO data source scenario
@@ -168,6 +221,22 @@ const Top = () => {
         }
     }, [userName, userType, APIPath]);
 
+    //MOBILE MENU
+    const [selectedTab, setSelectedTab] = useState('Dashboard');
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
+    useEffect(() => {
+        if (userType !== "ADMIN") {
+            setSelectedTab("Calendar");
+        }
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 1200);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const allTabs = [
         { name: 'Dashboard', icon: <AppsIcon className="mr-1" fontSize="small" /> },
         { name: 'New', icon: <ControlPointOutlinedIcon className="mr-1" fontSize="small" /> },
@@ -201,30 +270,54 @@ const Top = () => {
                     </div>
                     {tabsToShow.length > 0
                         ?
-                        <Tabs>
-                            <TabList className="topTabsListHolder">
-                                {allTabs.map((tab, index) => (
-                                    tabsToShow.includes(tab.name) && <Tab key={index}>
-                                        {tab.icon}
-                                        {tab.name}
-                                    </Tab>
-                                ))}
-                            </TabList>
-
-                            {tabsToShow.includes('Dashboard') && <TabPanel className="px-2"><Dashboard /></TabPanel>}
-                            {tabsToShow.includes('New') && <TabPanel className="px-2"><ModulesTop /></TabPanel>}
-                            {tabsToShow.includes('Transactions') && <TabPanel className="px-2"><TransactionsTop /></TabPanel>}
-                            {tabsToShow.includes('Timesheets') && <TabPanel className="px-2">Timesheets</TabPanel>}
-                            {tabsToShow.includes('Files') && <TabPanel className="px-2"><FilesMain /></TabPanel>}
-                            {tabsToShow.includes('Todo') && <TabPanel className="px-2"><TodosMain /></TabPanel>}
-                            {tabsToShow.includes('Users') && <TabPanel className="px-2"><UsersMain /></TabPanel>}
-                            {tabsToShow.includes('Calendar') && <TabPanel className="px-2"><Calendar /></TabPanel>}
-                            {tabsToShow.includes('Configuration') && <TabPanel className="px-2"><Configuration /></TabPanel>}
-                        </Tabs>
-                        :
-                        <>
-                            <Alert severity="warning" className="mt-20">Nothing is permissioned here for you. Check with your Administrator</Alert>
-                        </>
+                        (
+                            isMobile ? (
+                                <div>
+                                    <div className="px-5">
+                                        <select
+                                            className="w-full p-2 border rounded my-3 bg-amber-200 text-black"
+                                            value={selectedTab}
+                                            onChange={(e) => setSelectedTab(e.target.value)}
+                                        >
+                                            {allTabs.map(tab => (
+                                                tabsToShow.includes(tab.name) && <option key={tab.name} value={tab.name}>{tab.icon}{tab.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {selectedTab === 'Dashboard' && <Dashboard />}
+                                    {selectedTab === 'New' && <ModulesTop />}
+                                    {selectedTab === 'Transactions' && <TransactionsTop />}
+                                    {selectedTab === 'Timesheets' && "Timesheets"}
+                                    {selectedTab === 'Files' && <FilesMain />}
+                                    {selectedTab === 'Todo' && <TodosMain />}
+                                    {selectedTab === 'Users' && <UsersMain />}
+                                    {selectedTab === 'Calendar' && <Calendar />}
+                                    {selectedTab === 'Configuration' && <Configuration />}
+                                </div>
+                            ) : (
+                                <Tabs>
+                                    <TabList className="topTabsListHolder">
+                                        {allTabs.map((tab, index) => (
+                                            tabsToShow.includes(tab.name) && <Tab key={index}>
+                                                {tab.icon}
+                                                {tab.name}
+                                            </Tab>
+                                        ))}
+                                    </TabList>
+                                    {tabsToShow.includes('Dashboard') && <TabPanel className="px-2"><Dashboard /></TabPanel>}
+                                    {tabsToShow.includes('New') && <TabPanel className="px-2"><ModulesTop /></TabPanel>}
+                                    {tabsToShow.includes('Transactions') && <TabPanel className="px-2"><TransactionsTop /></TabPanel>}
+                                    {tabsToShow.includes('Timesheets') && <TabPanel className="px-2">Timesheets</TabPanel>}
+                                    {tabsToShow.includes('Files') && <TabPanel className="px-2"><FilesMain /></TabPanel>}
+                                    {tabsToShow.includes('Todo') && <TabPanel className="px-2"><TodosMain /></TabPanel>}
+                                    {tabsToShow.includes('Users') && <TabPanel className="px-2"><UsersMain /></TabPanel>}
+                                    {tabsToShow.includes('Calendar') && <TabPanel className="px-2"><Calendar /></TabPanel>}
+                                    {tabsToShow.includes('Configuration') && <TabPanel className="px-2"><Configuration /></TabPanel>}
+                                </Tabs>
+                            )
+                        ) : (
+                            <Alert severity="warning">Nothing is permissioned here for you. Check with your Administrator</Alert>
+                        )
                     }
                 </Box>
             </div>
@@ -234,7 +327,7 @@ const Top = () => {
             )}
 
             <div className={`userHolder ${todoOpen ? '' : 'userHolderFull'}`} >
-                <div className="px-2  rounded-sm text-white">
+                <div className="rounded-sm text-white">
                     <Stack spacing={1} direction="row" className="items-center justify-center">
                         <Avatar
                             sx={{ width: 16, height: 16, bgcolor: "ActiveCaption" }}
@@ -257,8 +350,11 @@ const Top = () => {
             )}
 
             <Tooltip id="my-tooltip-api-availability" className="tooltip-example" />
-
-            <Footer ipAddress={location.ipAddress} city={location.city} region={location.region} country={location.country} />
+            {ipAddress ? (
+                <Footer ipAddress={ipAddress} city={location.city} region={location.region} country_name={location.country} />
+            ) : (
+                <p>Loading location data...</p>
+            )}
 
             <BootstrapDialog
                 TransitionComponent={Transition}

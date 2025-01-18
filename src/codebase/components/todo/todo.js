@@ -137,7 +137,6 @@ const ToDo = () => {
 
     return (
         <div>
-
             <CustomSnackbar
                 open={snackbarOpen}
                 handleClose={handleSnackbarClose}
@@ -178,7 +177,7 @@ const ToDo = () => {
                             </Tab>
                         </TabList>
                         <TabPanel className="px-0">
-                            <div className="h-screen overflow-y-auto pb-36">
+                            <div className="h-screen overflow-y-auto pb-56">
                                 {todos.data.map((todo, key) => (
                                     <div key={key} className="mb-2" >
                                         <Card className="w-full mx-0">
