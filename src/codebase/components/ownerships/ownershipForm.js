@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import FormSlider from '../slider/formSlider';
 
 function OwnershipForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -24,6 +25,11 @@ function OwnershipForm({ props, ID, operation }) {
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     const [maxOwingPercentage, setMaxOwingPercentage] = useState(100);
+    // Default width
+   const [formWidth, setFormWidth] = useState(700);
+   const handleSliderChange = (event, newValue) => {
+       setFormWidth(newValue);
+   };
 
     const getDetails = () => {
         setApiLoading(true);
@@ -239,7 +245,8 @@ function OwnershipForm({ props, ID, operation }) {
                             handleReset
                         } = props;
                         return (
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
+                                <FormSlider value={formWidth} onChange={handleSliderChange} />
                                 <TextField
                                     size="small"
                                     margin="normal"

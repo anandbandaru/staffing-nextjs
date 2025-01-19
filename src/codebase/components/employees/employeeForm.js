@@ -13,6 +13,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import FormSlider from '../slider/formSlider';
 
 function EmployeeForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -23,6 +24,11 @@ function EmployeeForm({ props, ID, operation }) {
     const [managersData, setManagersData] = useState({ data: [] });
     const [firstName, setFirstName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
+    // Default width
+   const [formWidth, setFormWidth] = useState(700);
+   const handleSliderChange = (event, newValue) => {
+       setFormWidth(newValue);
+   };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -298,7 +304,8 @@ function EmployeeForm({ props, ID, operation }) {
                         } = props;
 
                         return (
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
+                                <FormSlider value={formWidth} onChange={handleSliderChange} />
                                 <TextField
                                     size="small"
                                     margin="normal"

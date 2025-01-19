@@ -11,6 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import FormSlider from '../slider/formSlider';
 
 function FileForm({ props, ID, operation }) {
     const [componentName] = useState('APPLICATION');
@@ -18,6 +19,11 @@ function FileForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
+    // Default width
+   const [formWidth, setFormWidth] = useState(700);
+   const handleSliderChange = (event, newValue) => {
+       setFormWidth(newValue);
+   };
 
     //FILE RELATED
     const [file, setFile] = useState(null);
@@ -122,7 +128,8 @@ function FileForm({ props, ID, operation }) {
                         handleReset
                     } = props;
                     return (
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
+                                <FormSlider value={formWidth} onChange={handleSliderChange} />
                             <TextField
                                 size="small"
                                 margin="normal"

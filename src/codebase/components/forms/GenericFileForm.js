@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import Alert from '@mui/material/Alert';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import FormSlider from '../slider/formSlider';
 
 function GenericFileForm({ props, componentName, moduleId }) {
 
@@ -20,6 +21,11 @@ function GenericFileForm({ props, componentName, moduleId }) {
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
     const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
     const [gDriveFolderNotPresent, setGDriveFolderNotPresent] = useState(false);
+    // Default width
+   const [formWidth, setFormWidth] = useState(700);
+   const handleSliderChange = (event, newValue) => {
+       setFormWidth(newValue);
+   };
 
     //FILE RELATED
     const [file, setFile] = useState(null);
@@ -140,7 +146,8 @@ function GenericFileForm({ props, componentName, moduleId }) {
                                 handleSubmit,
                             } = props;
                             return (
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
+                                <FormSlider value={formWidth} onChange={handleSliderChange} />
                                     <TextField
                                         size="small"
                                         margin="normal"

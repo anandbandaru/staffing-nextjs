@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
+import FormSlider from '../slider/formSlider';
 
 function GenericForm({ entity, entityID, operation, fields, validationSchema, apiEndpoints }) {
     const { APIPath } = useContext(Context);
@@ -22,6 +23,11 @@ function GenericForm({ entity, entityID, operation, fields, validationSchema, ap
     const [apiLoading, setApiLoading] = useState(true);
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
+    // Default width
+   const [formWidth, setFormWidth] = useState(700);
+   const handleSliderChange = (event, newValue) => {
+       setFormWidth(newValue);
+   };
 
     const getEntityDetails = () => {
         let apiUrl = `${APIPath}${apiEndpoints.getDetails}/${entityID}`;
@@ -101,7 +107,8 @@ function GenericForm({ entity, entityID, operation, fields, validationSchema, ap
                             handleReset,
                         } = props;
                         return (
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
+                                <FormSlider value={formWidth} onChange={handleSliderChange} />
                                 {fields.map((field, index) => (
                                     <TextField
                                         key={index}

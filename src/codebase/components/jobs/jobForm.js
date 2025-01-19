@@ -12,6 +12,7 @@ import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRig
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Autocomplete, TextField, MenuItem } from '@mui/material';
 import JobRatesList from './jobRatesList'
+import FormSlider from '../slider/formSlider';
 
 function Job({ props, ID, operation }) {
     const { APIPath, userName, userType } = useContext(Context);
@@ -20,6 +21,11 @@ function Job({ props, ID, operation }) {
     const [data, setData] = useState({ data: [] });
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
+    // Default width
+   const [formWidth, setFormWidth] = useState(700);
+   const handleSliderChange = (event, newValue) => {
+       setFormWidth(newValue);
+   };
 
     const [companiesData, setCompaniesData] = useState({ data: [] });
     const [companyId, setCompanyId] = useState('');
@@ -367,7 +373,8 @@ function Job({ props, ID, operation }) {
                             handleReset
                         } = props;
                         return (
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
+                                <FormSlider value={formWidth} onChange={handleSliderChange} />
                                 <TextField
                                     size="small"
                                     margin="normal"

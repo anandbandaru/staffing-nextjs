@@ -11,7 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
-import InputMask from 'react-input-mask';
+import FormSlider from '../slider/formSlider';
 
 function VendorForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -20,6 +20,11 @@ function VendorForm({ props, ID, operation }) {
     const [data, setData] = useState({ data: [] });
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
+    // Default width
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -40,7 +45,6 @@ function VendorForm({ props, ID, operation }) {
             .then(response => response.json())
             .then(
                 (result) => {
-                    //console.log(result);
                     if (result.error) {
                         console.log("RequestData:On error return: setting empty")
                         setData({});
@@ -118,11 +122,11 @@ function VendorForm({ props, ID, operation }) {
                             setSubmitionCompleted(true);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving Vendor data - " + resp.data.ERROR.MESSAGE);
-                                if(resp.data.ERROR.MESSAGE.includes("Violation of UNIQUE KEY constraint 'UQ_EIN'"))
-                                    showSnackbar('error', "You tried inserting Duplicate EIN");
+                            if (resp.data.ERROR.MESSAGE.includes("Violation of UNIQUE KEY constraint 'UQ_EIN'"))
+                                showSnackbar('error', "You tried inserting Duplicate EIN");
                             else
                                 showSnackbar('success', "Vendor data saved");
-                                resetForm();
+                            resetForm();
                         })
                             .catch(function (error) {
                                 console.log(error);
@@ -175,7 +179,8 @@ function VendorForm({ props, ID, operation }) {
                             handleReset,
                         } = props;
                         return (
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
+                                <FormSlider value={formWidth} onChange={handleSliderChange} />
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -290,27 +295,27 @@ function VendorForm({ props, ID, operation }) {
                                         helperText={(errors.phone && touched.phone) && errors.phone}
                                     />
                                 </Stack>
-                                <InputMask
+                                {/* <InputMask
                                     mask="99-9999999"
                                     value={values.EIN}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 >
                                     {() => (
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            id="EIN"
-                                            name="EIN"
-                                            label="EIN"
-                                            value={values.EIN}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.EIN && touched.EIN) && errors.EIN}
-                                        />
                                     )}
-                                </InputMask>
+                                </InputMask> */}
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="EIN"
+                                    name="EIN"
+                                    label="EIN"
+                                    value={values.EIN}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.EIN && touched.EIN) && errors.EIN}
+                                />
                                 <Stack direction="row" spacing={2} className='mt-4'>
                                     <TextField
                                         size="small"

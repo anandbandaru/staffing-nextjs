@@ -288,6 +288,13 @@ form P{
   padding: 1px 5px;
   margin: 0px !important;
 }
+form P.normal{
+  background-color: #000 !important;
+  color:#fff !important;
+  padding: 1px 5px;
+  border-radius: 10px;
+  margin: 0px !important;
+}
 
 /* GRID */
 .ag-theme-quartz {

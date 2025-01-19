@@ -11,7 +11,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
-import InputMask from 'react-input-mask';
+import FormSlider from '../slider/formSlider';
 
 function CompanyForm({ props, ID, operation }) {
     const { APIPath } = useContext(Context);
@@ -20,6 +20,11 @@ function CompanyForm({ props, ID, operation }) {
     const [data, setData] = useState({ data: [] });
     const [itemToCheck, setItemToCheck] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
+    // Default width
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -165,7 +170,8 @@ function CompanyForm({ props, ID, operation }) {
                             handleReset
                         } = props;
                         return (
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
+                                <FormSlider value={formWidth} onChange={handleSliderChange} />
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -218,27 +224,27 @@ function CompanyForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.Address && touched.Address) && errors.Address}
                                 />
-                                <InputMask
+                                {/* <InputMask
                                     mask="99-9999999"
                                     value={values.EIN}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 >
                                     {() => (
-                                        <TextField
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            id="EIN"
-                                            name="EIN"
-                                            label="EIN"
-                                            value={values.EIN}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            helperText={(errors.EIN && touched.EIN) && errors.EIN}
-                                        />
                                     )}
-                                </InputMask>
+                                </InputMask> */}
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="EIN"
+                                    name="EIN"
+                                    label="EIN"
+                                    value={values.EIN}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.EIN && touched.EIN) && errors.EIN}
+                                />
                                 <Stack direction="row" spacing={2} className='mt-2'>
                                     <TextField
                                         size="small"
@@ -266,7 +272,6 @@ function CompanyForm({ props, ID, operation }) {
                                     />
                                 </Stack>
                                 <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-
                                     <div className='flex-1'>Established Date:
                                         {ID ?
                                             <span className='px-2 bg-gray-500 mx-2 text-white'>{values.EstablishedDate}</span>
