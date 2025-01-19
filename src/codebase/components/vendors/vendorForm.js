@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Formik } from 'formik';
+import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
@@ -12,6 +12,30 @@ import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import FormSlider from '../slider/formSlider';
+
+import PropTypes from 'prop-types';
+import { IMaskInput } from 'react-imask';
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+        <IMaskInput
+            {...other}
+            mask="00-00000000"
+            definitions={{
+                '#': /[1-9]/,
+            }}
+            inputRef={ref}
+            onAccept={(value) => onChange({ target: { name: props.name, value } })}
+            overwrite
+        />
+    );
+});
+
+TextMaskCustom.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
 
 function VendorForm({ props, ID, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -183,6 +207,8 @@ function VendorForm({ props, ID, operation }) {
                                 <FormSlider value={formWidth} onChange={handleSliderChange} />
                                 <TextField
                                     size="small"
+                                    variant="filled"
+                                    color="warning"
                                     margin="normal"
                                     fullWidth
                                     id="Id"
@@ -295,26 +321,27 @@ function VendorForm({ props, ID, operation }) {
                                         helperText={(errors.phone && touched.phone) && errors.phone}
                                     />
                                 </Stack>
-                                {/* <InputMask
-                                    mask="99-9999999"
-                                    value={values.EIN}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                >
-                                    {() => (
-                                    )}
-                                </InputMask> */}
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="EIN"
+                                <Field
                                     name="EIN"
-                                    label="EIN"
-                                    value={values.EIN}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.EIN && touched.EIN) && errors.EIN}
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            label="EIN"
+                                            id="EIN"
+                                            name="EIN"
+                                            variant="outlined"
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            error={touched.EIN && Boolean(errors.EIN)}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.EIN && touched.EIN) && errors.EIN}
+                                            InputProps={{
+                                                inputComponent: TextMaskCustom,
+                                            }}
+                                        />
+                                    )}
                                 />
                                 <Stack direction="row" spacing={2} className='mt-4'>
                                     <TextField
