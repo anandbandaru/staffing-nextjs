@@ -67,6 +67,8 @@ const CompaniesList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "Companies Data fetched");
                     }
                     setApiLoading(false);
                 },

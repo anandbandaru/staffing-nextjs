@@ -66,6 +66,8 @@ const TodoList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "ToDos Data fetched");
                     }
                     setApiLoading(false);
                 },

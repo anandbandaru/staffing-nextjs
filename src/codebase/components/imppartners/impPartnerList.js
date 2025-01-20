@@ -65,6 +65,8 @@ const ImpPartnerList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "Implementation Partners Data fetched");
                     }
                     setApiLoading(false);
                 },

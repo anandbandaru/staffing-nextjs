@@ -12,9 +12,3 @@
     display: inline-block;
     /* inline-block text-white rounded-t-lg p-0.5 px-2 text-s font-medium text-center active */
 }
-
-@media (max-width: 1200px) {
-    .timeSpan{
-        display: none;
-    }
-}

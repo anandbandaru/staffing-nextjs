@@ -12,6 +12,13 @@
   ],
   "releases": [
     {
+      "version": "2.6",
+      "date": "JAN 19 2024",
+      "notes": [
+        "New toast system - Now it stacks"
+      ]
+    },
+    {
       "version": "2.5",
       "date": "JAN 18 2024",
       "notes": [

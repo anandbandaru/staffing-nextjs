@@ -127,6 +127,7 @@ const ToDo = () => {
         ).then((resp) => {
             fetchTodos("Active");
             showSnackbar('success', "To Do is completed");
+            fetchTodos("Completed");
         })
             .catch(function (error) {
                 console.log(error);

@@ -67,6 +67,8 @@ const EmployeesList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "Employees Data fetched");
                     }
                     setApiLoading(false);
                 },

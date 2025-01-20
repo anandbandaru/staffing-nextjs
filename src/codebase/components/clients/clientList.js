@@ -66,6 +66,8 @@ const ClientList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "Clients Data fetched");
                     }
                     setApiLoading(false);
                 },

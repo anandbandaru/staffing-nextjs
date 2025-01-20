@@ -66,6 +66,8 @@ const ExpenseList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "Expenses Data fetched");
                     }
                     setApiLoading(false);
                 },

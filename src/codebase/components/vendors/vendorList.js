@@ -66,6 +66,8 @@ const VendorList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "Vendors Data fetched");
                     }
                     setApiLoading(false);
                 },

@@ -14,7 +14,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import CustomSnackbar from "../snackbar/snackbar";
 // import preval from 'preval.macro';
 
-const Footer = ({ipAddress, city, region, country_name}) => {
+const Footer = ({ ipAddress, city, region, country_name }) => {
     const { tokenExpiry, refreshPage, isAPILoading, isAPIError, checkAPIAvailability,
         APIType, APIVersion
     } = useContext(Context);
@@ -126,22 +126,22 @@ const Footer = ({ipAddress, city, region, country_name}) => {
                     </div>
                     <div>Logged in for: <span className='bg-orange-500 px-1 text-white'>{elapsedTime}</span></div>
                     <div>Time left in Login session: <span className='bg-pink-500 px-1 text-white'>{timeLeft}</span></div>
-                    <div>APP version: {configData.releases[0].version}</div>
+                    <div className="itemToHideForSmall">APP version: {configData.releases[0].version}</div>
                     {/* <div>{preval`module.exports = 'Last build Date: ' + new Date().toLocaleString();`}</div> */}
                     {ipAddress && (
                         <>
-                        <div>
-                            <p>IP: {ipAddress}</p>
-                        </div>
-                        <div>
-                            <p>City: {city}</p>
-                        </div>
-                        <div>
-                            <p>Region: {region}</p>
-                        </div>
-                        <div>
-                            <p>Country: {country_name}</p>
-                        </div>
+                            <div className="itemToHideForSmall">
+                                <p>IP: {ipAddress}</p>
+                            </div>
+                            <div className="itemToHideForSmall">
+                                <p>City: {city}</p>
+                            </div>
+                            <div className="itemToHideForSmall">
+                                <p>Region: {region}</p>
+                            </div>
+                            <div className="itemToHideForSmall">
+                                <p>Country: {country_name}</p>
+                            </div>
                         </>
                     )}
                     <div className="APICheckHolder"

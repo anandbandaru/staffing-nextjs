@@ -66,7 +66,7 @@ const ExpenseTypeList = () => {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
                         else{
-                            showSnackbar('success', "Data loaded");
+                            showSnackbar('success', "Expense Types Data loaded");
                         }
                     }
                     setApiLoading(false);

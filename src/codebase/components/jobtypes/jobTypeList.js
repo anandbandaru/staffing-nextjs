@@ -65,6 +65,8 @@ const JobTypeList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "job Types Data fetched");
                     }
                     setApiLoading(false);
                 },

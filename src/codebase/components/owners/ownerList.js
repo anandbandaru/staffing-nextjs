@@ -66,6 +66,8 @@ const OwnersList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "Owners Data fetched");
                     }
                     setApiLoading(false);
                 },

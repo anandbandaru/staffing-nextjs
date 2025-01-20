@@ -64,6 +64,8 @@ const FileList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "Files Data fetched");
                     }
                     setApiLoading(false);
                 },

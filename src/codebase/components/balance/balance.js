@@ -3,6 +3,7 @@ import './balance.css';
 import { Context } from "../../context/context";
 import axios from 'axios';
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
+import CustomSnackbar from "../snackbar/snackbar";
 
 const Balance = () => {
     const { APIPath, refreshBalance, freecurrencyapi, freecurrencyapi_key, todoOpen } = useContext(Context);
@@ -11,6 +12,19 @@ const Balance = () => {
     const [inr, setInr] = useState(null);
     const [exchangeRate, setExchangeRate] = useState(null);
     const [errorCurrency, setErrorCurrency] = useState(false);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     const fetchBalance = async () => {
         setApiLoading(true);
@@ -21,8 +35,13 @@ const Balance = () => {
                 setUsd(0);
             } else {
                 setUsd(result.BALANCE);
+                if (result.STATUS === "FAIL") {
+                    showSnackbar('error', result.ERROR.MESSAGE);
+                }
+                else
+                    showSnackbar('success', "Latest Balance is fetched");
+                convertCurrency(result.BALANCE);
             }
-            convertCurrency(result.BALANCE);
         } catch (error) {
             setUsd(0);
             convertCurrency(0);
@@ -56,6 +75,12 @@ const Balance = () => {
 
     return (
         <div className={`balanceHolder ${todoOpen ? '' : 'balanceHolderFull'}`}>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading ? (
                 <div className="spinner my-1 mx-4"></div>
             ) : (

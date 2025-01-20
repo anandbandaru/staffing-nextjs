@@ -13,17 +13,17 @@ const TopBanner = () => {
                     <li className="border-l border-gray-300">
                         <span className="companyLogo ">STAFFING SOLUTION</span>
                     </li>
-                    <li className="px-2 pt-0.5 rounded-sm leading-5 border-l border-gray-300 timeSpan">
+                    <li className="px-2 pt-0.5 rounded-sm leading-5 border-l border-gray-300 itemToHideForSmall">
                         {/* <AccessTimeIcon fontSize="small" style={{ fontSize: '16px', height: '16px' }} /> */}
                         TIME:
                     </li>
-                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 timeSpan">
+                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 itemToHideForSmall">
                         PST: <Clock format={"dd, MMM Do YYYY, h:mm a"} ticking={true} timezone={'US/Pacific'} />
                     </li>
-                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 timeSpan">
+                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 itemToHideForSmall">
                         CST: <Clock format={"dd, MMM Do YYYY, h:mm a"} ticking={true} timezone={'US/Central'} />
                     </li>
-                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 timeSpan">
+                    <li className="px-2 pt-0.5 rounded-sm mr-2 leading-5 border-l border-gray-300 itemToHideForSmall">
                         IST: <Clock format={"dd, MMM Do YYYY, h:mm a"} ticking={true} timezone={'Asia/Calcutta'} />
                     </li>
                 </ul>

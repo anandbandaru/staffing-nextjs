@@ -1,10 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Context } from "../../context/context";
+import CustomSnackbar from "../snackbar/snackbar";
 
 function EmployeeGenericList({ employeeID, formType }) {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     const getApiUrl = () => {
         switch (formType) {
@@ -30,8 +44,10 @@ function EmployeeGenericList({ employeeID, formType }) {
                 (result) => {
                     if (result.ERROR && result.ERROR.CODE !== "0") {
                         setData({ data: [] });
+                        showSnackbar('error', result.ERROR.MESSAGE);
                     } else {
                         setData(result);
+                        showSnackbar('success', formType + " Data fetched");
                     }
                     setApiLoading(false);
                 },

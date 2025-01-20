@@ -65,6 +65,8 @@ const FileTypeList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
+                        else
+                            showSnackbar('success', "File Types Data fetched");
                     }
                     setApiLoading(false);
                 },
