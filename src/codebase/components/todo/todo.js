@@ -51,7 +51,6 @@ const ToDo = () => {
 
     const fetchTodos = (todoType) => {
         setApiTodoLoading(true);
-        console.log("TODO fetching in content")
         let apiUrl = APIPath + "/todos/active";
         if (todoType === "Completed") {
             setTodosCompleted({ data: [] });
@@ -97,7 +96,6 @@ const ToDo = () => {
             );
     };
     useEffect(() => {
-        console.log("TODO SCREEN INTI HERE")
         setTimeout(async () => {
             fetchTodos("Active");
             fetchTodos("Completed");

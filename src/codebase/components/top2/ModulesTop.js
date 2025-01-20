@@ -20,6 +20,9 @@ import AdjustOutlinedIcon from '@mui/icons-material/AdjustOutlined';
 import DoubleArrowOutlinedIcon from '@mui/icons-material/DoubleArrowOutlined';
 import axios from 'axios';
 import CustomSnackbar from "../snackbar/snackbar";
+import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
 
 import { Select, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 
@@ -41,6 +44,21 @@ const ModulesTop = ({ module }) => {
         setSnackbarOpen(true);
     };
 
+    // BURGER MENU
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedTabDD, setSelectedTabDD] = useState(0);
+    const handleMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = (tabIndex) => {
+        setAnchorEl(null);
+        if (tabIndex !== undefined) {
+            setSelectedTabDD(tabIndex);
+        }
+    };
+
+    //PERMISSIONS
     useEffect(() => {
         if (userType !== 'ADMIN') {
             axios.get(APIPath + `/getnewpermissions/${userName}`)
@@ -105,9 +123,9 @@ const ModulesTop = ({ module }) => {
                         ? (
                             isMobile ? (
                                 <div className="">
-                                    <div className="px-5">
+                                    <div className="px-1">
                                         <select
-                                            className="w-full p-2 border rounded my-3 bg-blue-100 text-black"
+                                            className="w-full p-2 border rounded my-0 mb-6 bg-top2Tab text-white"
                                             value={selectedTab}
                                             onChange={(e) => setSelectedTab(e.target.value)}
                                         >
@@ -129,8 +147,31 @@ const ModulesTop = ({ module }) => {
                                     {selectedTab === 'File Types' && <FileTypesMain />}
                                 </div>
                             ) : (
-                                <Tabs>
-                                    <TabList className="topTabsListHolder">
+                                <Tabs selectedIndex={selectedTabDD} onSelect={index => setSelectedTabDD(index)}>
+                                    <TabList className="top2TabsListHolder">
+                                        <span className="top2TabsMenu">
+                                            <IconButton
+                                                size="small"
+                                                color="inherit"
+                                                aria-label="menu"
+                                                onClick={handleMenuClick}
+                                            >
+                                                <MenuIcon />
+                                            </IconButton>
+                                            <Menu
+                                                anchorEl={anchorEl}
+                                                open={Boolean(anchorEl)}
+                                                onClose={() => handleMenuClose()}
+                                            >
+                                                {allTabs.map((tab, index) => (
+                                                    tabsToShow.includes(tab.name) && (
+                                                        <MenuItem key={tab.name} onClick={() => handleMenuClose(index)}>
+                                                            {tab.icon}{tab.name}
+                                                        </MenuItem>
+                                                    )
+                                                ))}
+                                            </Menu>
+                                        </span>
                                         {allTabs.map(tab => (
                                             tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
                                         ))}

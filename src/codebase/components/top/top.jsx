@@ -44,6 +44,11 @@ import Balance from "../balance/balance";
 import Calendar from "../calendar/calendar";
 import Footer from "../footer/footer";
 
+import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
 const Top = () => {
 
     const {
@@ -128,7 +133,6 @@ const Top = () => {
                 const locationResponse = await fetch(`https://ipapi.co/${ipData.ipString}/json/`);
                 const locationData = await locationResponse.json();
                 setLocation(locationData);
-                console.log("LOCATION:" + JSON.stringify(locationData))
 
                 // Call the /login API with location details
                 const loginResponse = await axios.post(APIPath + '/login', {
@@ -202,6 +206,20 @@ const Top = () => {
         setOpenLoadingAPI(isAPILoading);
     }, [isAPILoading]);
 
+    // BURGER MENU
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedTabDD, setSelectedTabDD] = useState(0);
+    const handleMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = (tabIndex) => {
+        setAnchorEl(null);
+        if (tabIndex !== undefined) {
+            setSelectedTabDD(tabIndex);
+        }
+    };
+
     //PERMISSIONS
     const [permissions, setPermissions] = useState([]);
     useEffect(() => {
@@ -273,9 +291,9 @@ const Top = () => {
                         (
                             isMobile ? (
                                 <div>
-                                    <div className="px-5">
+                                    <div className="px-1">
                                         <select
-                                            className="w-full p-2 border rounded my-3 bg-amber-200 text-black"
+                                            className="w-full p-2 border rounded my-1 bg-topTab text-white"
                                             value={selectedTab}
                                             onChange={(e) => setSelectedTab(e.target.value)}
                                         >
@@ -295,13 +313,33 @@ const Top = () => {
                                     {selectedTab === 'Configuration' && <Configuration />}
                                 </div>
                             ) : (
-                                <Tabs>
+                                <Tabs selectedIndex={selectedTabDD} onSelect={index => setSelectedTabDD(index)}>
                                     <TabList className="topTabsListHolder">
-                                        {allTabs.map((tab, index) => (
-                                            tabsToShow.includes(tab.name) && <Tab key={index}>
-                                                {tab.icon}
-                                                {tab.name}
-                                            </Tab>
+                                        <span className="top2TabsMenu">
+                                            <IconButton
+                                                size="small"
+                                                color="inherit"
+                                                aria-label="menu"
+                                                onClick={handleMenuClick}
+                                            >
+                                                <MenuIcon />
+                                            </IconButton>
+                                            <Menu
+                                                anchorEl={anchorEl}
+                                                open={Boolean(anchorEl)}
+                                                onClose={() => handleMenuClose()}
+                                            >
+                                                {allTabs.map((tab, index) => (
+                                                    tabsToShow.includes(tab.name) && (
+                                                        <MenuItem key={tab.name} onClick={() => handleMenuClose(index)}>
+                                                            {tab.icon}{tab.name}
+                                                        </MenuItem>
+                                                    )
+                                                ))}
+                                            </Menu>
+                                        </span>
+                                        {allTabs.map(tab => (
+                                            tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
                                         ))}
                                     </TabList>
                                     {tabsToShow.includes('Dashboard') && <TabPanel className="px-2"><Dashboard /></TabPanel>}

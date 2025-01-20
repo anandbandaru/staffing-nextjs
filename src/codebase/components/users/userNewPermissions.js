@@ -77,9 +77,9 @@ const UserNewPermissions = ({ users }) => {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            <Paper elevation={3} className="p-2">
+            <Paper elevation={3} className="p-4">
                 <div className='text-lg'>
-                    NEW tabs Permissions <Chip label="EXPERIMENT" color="error" />
+                    NEW tabs Permissions
                 </div>
                 <div className="mt-4 ">
                     <Stack direction="column" spacing={2} className='my-5'>
@@ -102,6 +102,9 @@ const UserNewPermissions = ({ users }) => {
                             ))}
                         </TextField>
                         <Autocomplete
+                            className='text-sm'
+                            size="small"
+                            margin="normal"
                             multiple
                             options={configData.newTabs}
                             value={selectedTabs}
@@ -110,8 +113,8 @@ const UserNewPermissions = ({ users }) => {
                                 <TextField
                                     {...params}
                                     variant="outlined"
-                                    label="Select Top tabs"
-                                    placeholder="Select top tabs"
+                                    label="Select New tabs"
+                                    placeholder="Select New tabs"
                                 />
                             )}
                         />

@@ -77,55 +77,58 @@ const UserTransactionsPermissions = ({ users }) => {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-                <Paper elevation={3} className="p-2">
-                    <div className='text-lg'>
-                        Transactions tabs Permissions <Chip label="EXPERIMENT" color="error" />
-                    </div>
-                    <div className="mt-4 ">
-                        <Stack direction="column" spacing={2} className='my-5'>
-                            <TextField
-                                className='text-sm'
-                                size="small"
-                                margin="normal"
-                                fullWidth
-                                id="userId"
-                                name="userId"
-                                select
-                                label="Users"
-                                value={selectedUser}
-                                onChange={handleUserChange}
-                            >
-                                {users.filter(user => user.jobTitle !== 'ADMIN').map((item, index) => (
-                                    <MenuItem key={index} value={item.userPrincipalName}>
-                                        {item.userPrincipalName}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <Autocomplete
-                                multiple
-                                options={configData.transactionsTabs}
-                                value={selectedTabs}
-                                onChange={handleTabsChange}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="outlined"
-                                        label="Select Top tabs"
-                                        placeholder="Select top tabs"
-                                    />
-                                )}
-                            />
-                        </Stack>
-                        <Button color="primary"
-                            className='mb-4'
-                            variant="contained"
-                            onClick={handleSave}
-                            disabled={isSubmitting || !selectedUser}>
-                            <SaveOutlinedIcon className="mr-1" />
-                            Save
-                        </Button>
-                    </div>
-                </Paper>
+            <Paper elevation={3} className="p-4">
+                <div className='text-lg'>
+                    Transactions tabs Permissions
+                </div>
+                <div className="mt-4 ">
+                    <Stack direction="column" spacing={2} className='my-5'>
+                        <TextField
+                            className='text-sm'
+                            size="small"
+                            margin="normal"
+                            fullWidth
+                            id="userId"
+                            name="userId"
+                            select
+                            label="Users"
+                            value={selectedUser}
+                            onChange={handleUserChange}
+                        >
+                            {users.filter(user => user.jobTitle !== 'ADMIN').map((item, index) => (
+                                <MenuItem key={index} value={item.userPrincipalName}>
+                                    {item.userPrincipalName}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <Autocomplete
+                            className='text-sm'
+                            size="small"
+                            margin="normal"
+                            multiple
+                            options={configData.transactionsTabs}
+                            value={selectedTabs}
+                            onChange={handleTabsChange}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="outlined"
+                                    label="Select Transactions tabs"
+                                    placeholder="Select Transactions tabs"
+                                />
+                            )}
+                        />
+                    </Stack>
+                    <Button color="primary"
+                        className='mb-4'
+                        variant="contained"
+                        onClick={handleSave}
+                        disabled={isSubmitting || !selectedUser}>
+                        <SaveOutlinedIcon className="mr-1" />
+                        Save
+                    </Button>
+                </div>
+            </Paper>
         </div>
     );
 };

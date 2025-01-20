@@ -194,13 +194,13 @@ const Settings = () => {
                             </CardContent>
                         </Card>
 
-                        <Card sx={{ maxWidth: 345 }} className="SettingsPart" variant="outlined">
+                        <Card sx={{ maxWidth: 245 }} className="SettingsPart" variant="outlined">
                             <CardContent>
                                 <Typography className="ToggleTitle" component="div">
                                     Storage:
                                 </Typography>
                                 <div className=' flex-0 p-1 my-2' >
-                                    <Card sx={{ maxWidth: 335 }} >
+                                    <Card sx={{ maxWidth: 235 }} >
                                         <CardContent className='mt-0'>
                                             <Stack className='mt-0' spacing={2} direction={"row"}>
                                                 <div className='flex justify-center items-center border-r-2 border-red-500 pr-2'>
@@ -215,7 +215,7 @@ const Settings = () => {
                                                         <Skeleton variant="circular" width={20} height={20} />
                                                         :
                                                         <>
-                                                            <Stack className='mt-3' spacing={2} direction={"row"}>
+                                                            <Stack className='mt-3' spacing={2} direction={"column"}>
                                                                 <Chip label={`LIMIT: ${counts.storagelimit} GB`} color="primary" variant="outlined" size="small"></Chip>
                                                                 <Chip label={`USAGE: ${counts.storageusage.toFixed(2)} GB`} color="error" variant="outlined" size="small"></Chip>
                                                             </Stack>

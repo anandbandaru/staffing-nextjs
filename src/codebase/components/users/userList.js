@@ -15,6 +15,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UserTopPermissions from "./userTopPermissions";
 import UserNewPermissions from "./userNewPermissions";
 import UserTransactionsPermissions from "./userTransactionsPermissions";
+import CustomSnackbar from "../snackbar/snackbar";
 
 const UserList = () => {
     const { accessToken, APIPath } = useContext(Context);
@@ -25,6 +26,19 @@ const UserList = () => {
     const [loginDetails, setLoginDetails] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [users, setUsers] = useState([]);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
 
     useEffect(() => {
         fetchUsers();
@@ -58,30 +72,37 @@ const UserList = () => {
             setDataAPIError("");
             setApiLoading(false);
             fetchLoginDetailsForUsers(users);
+            showSnackbar('success', "Users Data fetched");
         } catch (error) {
             setDataAPIError(error.toString());
             console.log("fetchUsers:ERROR:" + error);
             setItemCount(0);
             setApiLoading(false);
             setData([]);
+            showSnackbar('error', "User data fetch error" + error);
         }
     };
 
     const fetchLoginDetails = async (userName) => {
         try {
+            setApiLoading(true);
             console.log(userName)
             const response = await axios.get(APIPath + "/getlogindetails/" + userName);
             setLoginDetails(response.data.data[0]);
             setDialogOpen(true);
+            setApiLoading(false);
+            showSnackbar('success', "Users Login data fetched");
         } catch (error) {
             console.log("ERROR: fetching login details:", error);
         }
     };
     const fetchLoginDetailsForUsers = async (users) => {
+        setApiLoading(true);
         const updatedUsers = await Promise.all(users.map(async (user) => {
             try {
                 const response = await axios.get(APIPath + `/getlogindetails/${user.userPrincipalName.replace('_outlook.com', '@outlook.com')}`);
                 if (response.data.data[0] && response.data.data[0].loginCount !== undefined && response.data.data[0].lastLoginDate !== undefined) {
+                    showSnackbar('success', "Users Login data fetched");
                     return { ...user, loginCount: response.data.data[0].loginCount, lastLoginDate: response.data.data[0].lastLoginDate };
                 } else {
                     return { ...user, loginCount: 'N/A', lastLoginDate: 'N/A' };
@@ -92,6 +113,7 @@ const UserList = () => {
             }
         }));
         setData(updatedUsers);
+        setApiLoading(false);
     };
 
     const iconMap = {
@@ -154,6 +176,12 @@ const UserList = () => {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <div className="w-full flex bg-kmcBG dark:bg-gray-700 text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
                 {/* TOOLS */}
                 <UsersListToolbar

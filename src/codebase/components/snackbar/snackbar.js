@@ -15,7 +15,6 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
 
     useEffect(() => {
         if (open) {
-            console.log("TOAST CALL")
             switch (severity) {
                 case 'success':
                     toast.success(message, toastConfig);
@@ -47,7 +46,7 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
                 toastOptions={{
                     className: '',
                     style: {
-                        border: '3px solid #000',
+                        border: '2px solid #000',
                         padding: '10px',
                         color: '#fff',
                     },

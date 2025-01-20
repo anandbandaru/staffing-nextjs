@@ -116,22 +116,24 @@ body{
 .top2TabsListHolder{
   color: #415a77 !important;
   margin-bottom: 10px;
-  border-bottom: 1px solid #3496ce;
+  border-bottom: 2px solid #3496ce;
 }
 .top2TabsListHolder .react-tabs__tab-panel{
   min-height: 100vh;
 }
 .top2TabsListHolder .react-tabs__tab{
-  padding: 6px 6px;
+  padding: 5px 6px;
   font-size: 13px !important;
 }
 .top2TabsListHolder .react-tabs__tab--selected {
   /* border-top: 4px solid #3496ce; */
-  border:0px;
-  border-radius: 0px;
   background-color: #415a77;
+  border-bottom: 2px solid #415a77 !important;
+  border-radius: 0px;
   color: #fff;
 }
+
+
 .subTabsListHolder{
   color: #3a1120 !important;
   margin-bottom: 10px;
@@ -193,6 +195,9 @@ body{
   color: #fff; */
 }
 
+.top2TabsMenu{
+  margin-right: 10px;
+}
 
 .todoTabsListHolder{
   color: #2e3013 !important;

@@ -77,9 +77,9 @@ const UserTopPermissions = ({ users }) => {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            <Paper elevation={3} className="p-2">
+            <Paper elevation={3} className="p-4">
                 <div className='text-lg'>
-                    TOP tabs Permissions <Chip label="EXPERIMENT" color="error" />
+                    TOP tabs Permissions
                 </div>
                 <div className="mt-4 ">
                     <Stack direction="column" spacing={2} className='my-5'>
@@ -102,6 +102,9 @@ const UserTopPermissions = ({ users }) => {
                             ))}
                         </TextField>
                         <Autocomplete
+                            className='text-sm'
+                            size="small"
+                            margin="normal"
                             multiple
                             options={configData.topTabs}
                             value={selectedTabs}

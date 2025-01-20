@@ -52,9 +52,7 @@
 .formControl{
     width: 300px;
 }
-.top2TabsHolder{
-    margin-top: -5px;
-}
+
 @media (max-width: 1050px) {
     /* .templateSwitchHolder {
       display: none;
