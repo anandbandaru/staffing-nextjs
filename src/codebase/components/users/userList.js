@@ -10,16 +10,20 @@ import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUser
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import AttributionOutlinedIcon from '@mui/icons-material/AttributionOutlined';
 import { Stack, IconButton, Dialog, DialogTitle, DialogContent } from "@mui/material";
-import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import UserTopPermissions from "./userTopPermissions";
 import UserNewPermissions from "./userNewPermissions";
 import UserTransactionsPermissions from "./userTransactionsPermissions";
 import CustomSnackbar from "../snackbar/snackbar";
+import { Button, Link } from '@mui/material';
+import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
+import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import { AgCharts } from 'ag-charts-react';
 
 const UserList = () => {
     const { accessToken, APIPath } = useContext(Context);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [apiLoading, setApiLoading] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
@@ -116,6 +120,41 @@ const UserList = () => {
         setApiLoading(false);
     };
 
+    const chartOptions = {
+        data: data.map(user => ({ user: user.displayName, loginCount: user.loginCount })),
+        series: [{
+            type: 'bar',
+            xKey: 'user',
+            yKey: 'loginCount',
+        }],
+        axes: [
+            {
+                type: 'category',
+                position: 'bottom',
+                title: { text: 'Users' },
+            },
+            {
+                type: 'number',
+                position: 'left',
+                title: { text: 'Login Count' },
+            },
+        ],
+        background: {
+            fill: '#ccc',
+        },
+        title: {
+            text: 'Login Counts',
+        },
+        overlays: {
+            loading: {
+                renderer: () => 'LOADING...',
+            },
+            noData: {
+                renderer: () => 'NO DATA'
+            },
+        },
+    };
+
     const iconMap = {
         ADMIN: <AdminPanelSettingsOutlinedIcon />,
         COHOST: <SupervisedUserCircleOutlinedIcon />,
@@ -174,6 +213,17 @@ const UserList = () => {
         defaultMinWidth: 50
     };
 
+
+    //For dialog MUI
+    const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+        '& .MuiDialogContent-root': {
+            padding: theme.spacing(2),
+        },
+        '& .MuiDialogActions-root': {
+            padding: theme.spacing(1),
+        },
+    }));
+
     return (
         <>
             <CustomSnackbar
@@ -193,64 +243,6 @@ const UserList = () => {
                 {/* TOOLS */}
             </div>
 
-            {/* <Stack direction={"row"} spacing={2} className="w-full py-4">
-                <Card sx={{ maxWidth: 275 }}>
-                    <CardContent>
-                        <Chip label="ADMIN" className="rag-green-bg text-white w-full" />
-                        <div className="mt-4">
-                            Can:
-                            <ul>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />view all components of the application.</li>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Access Azure using Admin account</li>
-                                <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Access Calendar using Admin account</li>
-                            </ul>
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 275 }}>
-                    <CardContent>
-                        <Chip label="OPERATOR" className="rag-blue-bg text-white w-full" />
-                        <div className="mt-4">
-                            Can only look at:
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <ul>
-                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Dashboard
-                                        <ul className="ml-4">
-                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Employees</li>
-                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Vendors</li>
-                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Clients</li>
-                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Imp Partners</li>
-                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Job Types</li>
-                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Expense Types</li>
-                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />File Types</li>
-                                        </ul>
-                                    </li>
-                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Transactions
-                                        <ul className="ml-4">
-                                            <li><KeyboardArrowRightOutlinedIcon fontSize="small" />Jobs</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Files</li>
-                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Todo</li>
-                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Calendar</li>
-                                    <li><ArrowForwardOutlinedIcon fontSize="small" />Todo Sidebar</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 275 }}>
-                    <CardContent >
-                        <Chip label="COHOST" className="rag-red-bg text-white w-full" />
-                        <div className="mt-4">
-                            Yet to define permissions
-                        </div>
-                    </CardContent>
-                </Card>
-            </Stack> */}
-
             <Stack direction={"row"} spacing={2} className="mt-0 w-full">
                 <div className="flex-1">
                     <UserTopPermissions users={users} />
@@ -267,62 +259,110 @@ const UserList = () => {
                 className="ag-theme-quartz" // applying the Data Grid theme
                 style={{ height: 400 }} // the Data Grid will fill the size of the parent container
             >
-                {apiLoading ?
+                {apiLoading && !data ?
                     <div className="spinner"></div> :
-                    <AgGridReact
-                        rowData={data ? data : []}
-                        columnDefs={colDefs}
-                        pagination={pagination}
-                        paginationPageSize={paginationPageSize}
-                        paginationPageSizeSelector={paginationPageSizeSelector}
-                        rowClassRules={rowClassRules}
-                        autoSizeStrategy={autoSizeStrategy}
-                        enableCellTextSelection={true}
-                    />
+                    <>
+                        <AgGridReact
+                            rowData={data ? data : []}
+                            columnDefs={colDefs}
+                            pagination={pagination}
+                            paginationPageSize={paginationPageSize}
+                            paginationPageSizeSelector={paginationPageSizeSelector}
+                            rowClassRules={rowClassRules}
+                            autoSizeStrategy={autoSizeStrategy}
+                            enableCellTextSelection={true}
+                        />
+                        <div className="py-4">
+                            <AgCharts options={chartOptions}
+                                style={{ width: "100%", height: "400px" }}
+                            />
+                        </div>
+                    </>
                 }
             </div>
 
-            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-                <DialogTitle>Last Login Details</DialogTitle>
-                <DialogContent>
+            <BootstrapDialog
+                onClose={() => setDialogOpen(false)}
+                aria-labelledby="customized-dialog-title"
+                open={dialogOpen}
+            >
+                <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    Last Login Details
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={() => setDialogOpen(false)}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
                     <div>
                         <Stack direction={'column'} spacing={1}>
                             <Stack direction={'row'} spacing={1}>
-                                <div className="w-1/2">Login Count</div>
-                                <div className="w-1/2">{loginDetails ? loginDetails.loginCount : ''}</div>
+                                <div className="w-[200px] dialogItemTitle">Login Count</div>
+                                <div className="">{loginDetails ? loginDetails.loginCount : ''}</div>
                             </Stack>
                             <Stack direction={'row'} spacing={1}>
-                                <div className="">Login Date</div>
+                                <div className="w-[200px] dialogItemTitle">Login Date</div>
                                 <div className="">{loginDetails ? loginDetails.lastLoginDate : ''}</div>
                             </Stack>
                             <Stack direction={'row'} spacing={1}>
-                                <div className="w-1/2">IP Address</div>
-                                <div className="w-1/2">{loginDetails ? loginDetails.ipAddress : ''}</div>
+                                <div className="w-[200px] dialogItemTitle">IP Address</div>
+                                <div className="">{loginDetails ? loginDetails.ipAddress : ''}</div>
                             </Stack>
                             <Stack direction={'row'} spacing={1}>
-                                <div className="w-1/2">City</div>
-                                <div className="w-1/2">{loginDetails ? loginDetails.city : ''}</div>
+                                <div className="w-[200px] dialogItemTitle">City</div>
+                                <div className="">{loginDetails ? loginDetails.city : ''}</div>
                             </Stack>
                             <Stack direction={'row'} spacing={1}>
-                                <div className="w-1/2">Region</div>
-                                <div className="w-1/2">{loginDetails ? loginDetails.region : ''}</div>
+                                <div className="w-[200px] dialogItemTitle">Region</div>
+                                <div className="">{loginDetails ? loginDetails.region : ''}</div>
                             </Stack>
                             <Stack direction={'row'} spacing={1}>
-                                <div className="w-1/2">Country</div>
-                                <div className="w-1/2">{loginDetails ? loginDetails.country : ''}</div>
+                                <div className="w-[200px] dialogItemTitle">Country</div>
+                                <div className="">{loginDetails ? loginDetails.country : ''}</div>
                             </Stack>
                             <Stack direction={'row'} spacing={1}>
-                                <div className="w-1/2">Latitude</div>
-                                <div className="w-1/2">{loginDetails ? loginDetails.latitude : ''}</div>
+                                <div className="w-[200px] dialogItemTitle">Latitude</div>
+                                <div className="">{loginDetails ? loginDetails.latitude : ''}</div>
                             </Stack>
                             <Stack direction={'row'} spacing={1}>
-                                <div className="w-1/2">Longitude</div>
-                                <div className="w-1/2">{loginDetails ? loginDetails.longitude : ''}</div>
+                                <div className="w-[200px] dialogItemTitle">Longitude</div>
+                                <div className="">{loginDetails ? loginDetails.longitude : ''}</div>
                             </Stack>
+                            {loginDetails && (
+                                <Stack direction={'row'} spacing={1}>
+                                    <div className="w-[200px] dialogItemTitle">Google Map</div>
+                                    <div className="">
+                                        <Link
+                                            className=''
+                                            href={`https://www.google.com/maps?q=${loginDetails.latitude},${loginDetails.longitude}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            underline="none"
+                                        >
+                                            <Button
+                                                size='small'
+                                                variant="contained"
+                                                color="info"
+                                                startIcon={<RoomOutlinedIcon />}
+                                            >
+                                                Open
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </Stack>
+                            )}
                         </Stack>
                     </div>
                 </DialogContent>
-            </Dialog>
+            </BootstrapDialog>
 
         </>
     )

@@ -31,7 +31,6 @@ const Dashboard = () => {
         storagelimit: 0,
     });
 
-
     const loadDashboardElements = () => {
         const fetchCounts = async () => {
             setIsAPILoading(true);
@@ -142,8 +141,6 @@ const Dashboard = () => {
                 Click to Fetch Data
             </Button>
             <div className="my-5 mx-3">
-
-
                 <Grid container spacing={1} className='p-5 mt-10 bg-slate-200'>
                     {userType === 'ADMIN' && (
                         <>

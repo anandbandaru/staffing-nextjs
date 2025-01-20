@@ -16,12 +16,13 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 const OwnersListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
     const [open, setOpen] = React.useState(false);
+
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
     const handleClose = (event, reason) => {
-        if (reason && reason === "backdropClick") 
+        if (reason && reason === "backdropClick")
             return;
         setOpen(false);
         manualLoadData();
@@ -66,6 +67,23 @@ const OwnersListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, man
                             </Button>
                         </div>
                         {/* REFRESH ICON */}
+
+                        {/* PRINT */}
+                        {/* <div className="float-right ">
+                            <Button size="small" variant="contained"
+                                onClick={handlePrint}
+                                disabled={apiLoading}
+                            >
+                                {apiLoading ? <div className="spinner"></div> :
+                                    <>
+                                        <LocalPrintshopOutlinedIcon className="mr-1" />
+                                        Print as PDF
+                                    </>}
+
+                            </Button>
+                        </div> */}
+                        {/* PRINT */}
+
                         {/* API LOADER & MESSAGE */}
                         {apiLoading ?
                             <>
