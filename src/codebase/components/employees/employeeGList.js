@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Context } from "../../context/context";
 import CustomSnackbar from "../snackbar/snackbar";
+import Alert from '@mui/material/Alert';
 
 function EmployeeGenericList({ employeeID, formType }) {
     const { APIPath } = useContext(Context);
@@ -64,6 +65,12 @@ function EmployeeGenericList({ employeeID, formType }) {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading ? (
                 <div className="spinner"></div>
             ) : (
@@ -150,7 +157,9 @@ function EmployeeGenericList({ employeeID, formType }) {
                             </table>
                         </div>
                     ) : (
-                        <>API ISSUES</>
+                        <>
+                            <Alert severity="warning">No {formType} Data</Alert>
+                        </>
                     )}
                 </>
             )}

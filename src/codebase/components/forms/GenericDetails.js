@@ -115,16 +115,16 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
             </Stack>
 
             <Dialog open={open} onClose={() => handleClose(false)} className="relative z-50 flex w-full">
-                <div className="fixed inset-1 w-full items-center justify-center p-1 bg-gray-700 bg-opacity-50">
-                    <DialogPanel className="space-y-4 bg-white p-3 px-5 border-gray-600 border-opacity-80 border-8 rounded-lg" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
-                        <DialogTitle className="font-bold text-lg">{operation} {moduleName}: ID: {ID}</DialogTitle>
+                <div className="fixed inset-1 w-full items-center justify-center p-20 bg-gray-700 bg-opacity-50 pt-20">
+                    <DialogPanel className="space-y-4 bg-white p-1 px-2 border-gray-600 border-opacity-80 border-8 rounded-lg" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+                        <DialogTitle className="font-bold text-lg">{operation} - {moduleName}: ID: {ID}</DialogTitle>
                         <IconButton
                             aria-label="close"
                             onClick={handleClose}
                             sx={{
                                 position: 'absolute',
-                                right: 12,
-                                top: 4,
+                                right: 72,
+                                top: 64,
                                 color: (theme) => theme.palette.grey[500],
                             }}
                         >

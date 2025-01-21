@@ -2,12 +2,28 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Context } from "../../context/context";
 import { Button, Link } from '@mui/material';
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
+import CustomSnackbar from "../snackbar/snackbar";
+import Alert from '@mui/material/Alert';
 
 function GenericFilesListSimple({ ID, moduleId, componentName }) {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
     const [dataAPIError, setDataAPIError] = useState("");
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
     const getListOfFiles = () => {
         setApiLoading(true);
         let apiUrl = `${APIPath}/getfilesformoduleid/${componentName}/${moduleId}`;
@@ -18,9 +34,15 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
                     if (result.error) {
                         setDataAPIError(`${result.error.code} - ${result.error.message}`);
                         setData({});
+                        showSnackbar('error', result.error.message);
                     } else {
                         setData(result);
-                        setDataAPIError(result.total === 0 ? "No Documents information present." : "ok");
+                        if (result.total === 0) {
+                            setDataAPIError(result.total === 0 ? "No Documents information present." : "ok");
+                        }
+                        else {
+                        }
+                        showSnackbar('success', "Documents information fetched.");
                     }
                     setApiLoading(false);
                 },
@@ -28,6 +50,7 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
                     setData({});
                     setDataAPIError("RequestData:On JUST error: API call failed");
                     setApiLoading(false);
+                    showSnackbar('error', "Documents information Error.");
                 }
             );
     };
@@ -38,11 +61,17 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
 
     return (
         <>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             {apiLoading ? (
                 <div className="spinner"></div>
             ) : (
                 <>
-                    {data ? (
+                    {data && data.data.length > 0 ? (
                         <div>
                             <table className="min-w-full bg-white border border-gray-200 text-left">
                                 <thead>
@@ -86,7 +115,9 @@ function GenericFilesListSimple({ ID, moduleId, componentName }) {
                             </table>
                         </div>
                     ) : (
-                        <>{dataAPIError}</>
+                        <>
+                            <Alert severity="warning">No Data: {dataAPIError}</Alert>
+                        </>
                     )}
                 </>
             )}

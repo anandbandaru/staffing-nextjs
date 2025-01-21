@@ -54,6 +54,7 @@ const Top = () => {
     const {
         refreshPage,
         openDashboardAPIError,
+        setOpenDashboardAPIError,
         dashboardAPIError,
         isAPILoading,
         APIPath,
@@ -185,16 +186,19 @@ const Top = () => {
                     if (response.data.STATUS === "FAIL") {
                         showSnackbar('error', "Top tabs Permissions failure");
                         setOpenLoadingAPI(true);
+                        setOpenDashboardAPIError(true)
                     }
                     else {
                         showSnackbar('info', "Top tabs Permissions success");
                         setPermissions(response.data.data)
                         setOpenLoadingAPI(false);
+                        setOpenDashboardAPIError(false)
                     }
                 })
                 .catch(error => {
                     showSnackbar('error', "Top tabs Permissions failure");
                     setOpenLoadingAPI(true);
+                    setOpenDashboardAPIError(true)
                 });
         }
     }, [userName, userType, APIPath]);
