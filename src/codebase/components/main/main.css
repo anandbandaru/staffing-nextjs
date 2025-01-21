@@ -53,8 +53,8 @@
 } */
 .todoToggleHolder {
     position: fixed;
-    top: 0px;
-    right: 3px;
+    top: 18px;
+    right: 1px;
     z-index: 2;
     background-color: bisque;
     border-radius: 40px;
@@ -62,7 +62,7 @@
     transition: transform 0.3s ease-in-out;
   }
   .todoToggleHolder.toggled {
-    transform: scale(1.0) translateY(7px);
+    transform: scale(1.0) translateY(24px);
     position: absolute;
     top: 0px;
     right: 3px;

@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import SwitchLeftOutlinedIcon from '@mui/icons-material/SwitchLeftOutlined';
 import SwitchRightOutlinedIcon from '@mui/icons-material/SwitchRightOutlined';
+import Realtime from "../realtime/realtime";
 
 const Main = () => {
 
@@ -84,6 +85,9 @@ const Main = () => {
                 </div> :
                 <>
                     <div className={`flex-grow ${todoOpen ? 'mr-80' : ''}`}>
+                        <div className="mb-6">
+                            <Realtime />
+                        </div>
                         <TopBanner />
                         <Top />
                     </div>
@@ -94,7 +98,7 @@ const Main = () => {
                     </div>
 
                     {todoOpen && (
-                        <div className="w-80 h-full fixed right-0 bg-slate-100 border-l-4 border-gray-500 toDoRightHolder">
+                        <div className="w-80 h-full fixed right-0 bg-slate-100 border-l-4 border-gray-500 toDoRightHolder mt-6">
                             <ToDo />
                         </div>
                     )}

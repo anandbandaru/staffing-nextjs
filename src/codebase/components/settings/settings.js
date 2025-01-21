@@ -38,6 +38,8 @@ import AddToDriveOutlinedIcon from '@mui/icons-material/AddToDriveOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import { Button, Link } from '@mui/material';
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
+import RealtimeNoteUpdate from "../realtime/realtimeNoteUpdate";
+import RealtimeCount from "../realtime/realtimeCount";
 
 const Settings = () => {
 
@@ -47,7 +49,7 @@ const Settings = () => {
         isAPILoading,
         isAPIError,
         APIType,
-        loading, todoOpen} = useContext(Context);
+        loading, todoOpen } = useContext(Context);
     //drawer
     const [state, setState] = React.useState({
         top: false,
@@ -116,34 +118,135 @@ const Settings = () => {
             >
                 <Box className="w-full SettingsPartsHolder" role="presentation" onClick={toggleDrawer("bottom", true)} >
                     <Stack direction={"row"} spacing={2} className="w-full py-4 px-4">
-                        <Card sx={{ maxWidth: 245 }} className="SettingsPart SettingsPart-developer" variant="outlined">
+
+                        <Card sx={{ maxWidth: 195 }} className="SettingsPart" variant="outlined">
                             <CardContent>
                                 <Typography className="ToggleTitle" component="div">
-                                    Developer Info
+                                    Real Time Note:
                                 </Typography>
-                                <Stack spacing={1}>
-                                    {
-                                        configData.developers.map((item, index) => (
-                                            <List key={index} className="devContainer" sx={{ width: '300px', maxWidth: 350 }}>
-                                                <ListItem>
-                                                    <ListItemAvatar>
-                                                        <Avatar className="devContainerAvatar">
-                                                            <AssignmentIndSharpIcon color="#f0ad4e" />
-                                                        </Avatar>
-                                                    </ListItemAvatar>
-                                                    <ListItemText primary={item.name} secondary={item.role} />
-                                                </ListItem>
-                                            </List>
-                                        ))
-                                    }
-                                </Stack>
+                                <div className="my-2">
+                                    This gets dispayed to all users who are viewing at the application.
+                                </div>
+                                <div className='py-4' >
+                                    <RealtimeNoteUpdate />
+                                </div>
                             </CardContent>
                         </Card>
-                        <Card sx={{ maxWidth: 245 }} className="SettingsPart" variant="outlined">
+
+                        <Card sx={{ maxWidth: 100 }} className="SettingsPart" variant="outlined">
                             <CardContent>
                                 <Typography className="ToggleTitle" component="div">
-                                    Quick Links
+                                    Visits:
                                 </Typography>
+                                <div className='py-4' >
+                                    <RealtimeCount />
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Tabs>
+                            <TabList className="settingsTabsListHolder">
+                                <Tab>API details</Tab>
+                                <Tab>UI Build</Tab>
+                                <Tab>Versions</Tab>
+                                <Tab>Quick Links</Tab>
+                                <Tab>Developer Info</Tab>
+                                <Tab>Google Drive Storage</Tab>
+                            </TabList>
+
+                            <TabPanel className="py-4">
+                                <div className="info_release_builddate_Div">
+                                    {isAPILoading
+                                        ?
+                                        // <img className="icon" src={assets.loader_Circles_icon} alt="" />
+                                        <LinearProgress color="secondary" />
+                                        :
+                                        <>
+                                            <Chip className="info_release_API_type_Div mb-4"
+                                                label={APIType === "LOCAL" ? "Local API Consumption" : "Online Azure API Consumption"}
+                                                size="small" color={APIType === "LOCAL" ? 'warning' : 'success'} />
+                                            {/* <div className="info_release_API_Div" dangerouslySetInnerHTML={{ __html: APItext }}> */}
+                                            <div className="info_release_API_Div">
+                                                <TableContainer component={Paper}>
+                                                    <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
+                                                        <TableBody className="info_release_API_response_TableRow">
+                                                            <TableRow>
+                                                                <TableCell component="th" scope="row">API URL</TableCell>
+                                                                <TableCell align="right">{APIPath}</TableCell>
+                                                            </TableRow>
+                                                            <TableRow>
+                                                                <TableCell component="th" scope="row">API TYPE</TableCell>
+                                                                <TableCell align="right">{APIType}</TableCell>
+                                                            </TableRow>
+                                                            <TableRow>
+                                                                <TableCell component="th" scope="row">API Availability</TableCell>
+                                                                <TableCell align="right">{isAPIError ?
+                                                                    <>
+                                                                        <ErrorIcon fontSize="small" color="error" />
+                                                                    </>
+                                                                    :
+                                                                    <>
+                                                                        <CheckCircleIcon fontSize="small" color="success" />
+                                                                    </>
+                                                                }</TableCell>
+                                                            </TableRow>
+                                                            <TableRow>
+                                                                <TableCell component="th" scope="row">API Version</TableCell>
+                                                                <TableCell align="right">{APIAvailabilityResponse ? APIAvailabilityResponse.APIVersion : ""}</TableCell>
+                                                            </TableRow>
+                                                        </TableBody>
+                                                    </Table>
+                                                </TableContainer>
+                                            </div>
+                                        </>
+                                    }
+                                </div>
+                            </TabPanel>
+                            <TabPanel className="py-1">
+                                <div className="info_release_builddate_Div">
+                                    <Chip label={preval`module.exports = 'Last build Date: ' + new Date().toLocaleString();`} size="small" color='primary' variant="outlined" />
+                                </div>
+                            </TabPanel>
+                            <TabPanel className="py-0">
+                                <div className="max-h-52 overflow-y-auto">
+                                    {
+                                        configData.releases.map((item, index) => (
+                                            <Accordion
+                                                key={index}
+                                                // expanded={expanded === `panel${index + 1}`} 
+                                                // onChange={handleChange(`panel${index + 1}`)}
+                                                slotProps={{ transition: { unmountOnExit: true } }}
+                                            >
+                                                <AccordionSummary
+                                                    expandIcon={<ArrowDownwardIcon />}
+                                                    aria-controls={`panel${index + 1}bh-content`}
+                                                    id={`panel${index + 1}bh-header`}
+                                                >
+                                                    <Stack spacing={1} direction="row">
+                                                        <Chip label={item.version} size="small" color={index === 0 ? 'success' : 'default'} variant="outlined" />
+                                                        <Chip label={item.date} size="small" color={index === 0 ? 'success' : 'default'} variant="outlined" />
+                                                        {index === 0 ?
+                                                            <Chip label="current" size="small" color='success' />
+                                                            :
+                                                            <></>}
+                                                    </Stack>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <Typography variant="caption">
+                                                        <ul className="ChangeLogUL">
+                                                            {item.notes.map((noteitem, noteindex) => (
+                                                                <li key={noteindex}><KeyboardArrowRightOutlinedIcon fontSize="small" />{noteitem}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </Typography>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        ))
+                                    }
+
+                                </div>
+                            </TabPanel>
+                            <TabPanel className="py-4">
                                 <Stack spacing={2} direction={"column"} className="my-2">
                                     <Link className='float-right'
                                         href="https://outlook.live.com/calendar/0/view/month"
@@ -191,14 +294,26 @@ const Settings = () => {
                                         </Button>
                                     </Link>
                                 </Stack>
-                            </CardContent>
-                        </Card>
-
-                        <Card sx={{ maxWidth: 245 }} className="SettingsPart" variant="outlined">
-                            <CardContent>
-                                <Typography className="ToggleTitle" component="div">
-                                    Storage:
-                                </Typography>
+                            </TabPanel>
+                            <TabPanel className="py-4">
+                                <Stack spacing={1}>
+                                    {
+                                        configData.developers.map((item, index) => (
+                                            <List key={index} className="devContainer" sx={{ width: '300px', maxWidth: 350 }}>
+                                                <ListItem>
+                                                    <ListItemAvatar>
+                                                        <Avatar className="devContainerAvatar">
+                                                            <AssignmentIndSharpIcon color="#f0ad4e" />
+                                                        </Avatar>
+                                                    </ListItemAvatar>
+                                                    <ListItemText primary={item.name} secondary={item.role} />
+                                                </ListItem>
+                                            </List>
+                                        ))
+                                    }
+                                </Stack>
+                            </TabPanel>
+                            <TabPanel className="py-4">
                                 <div className=' flex-0 p-1 my-2' >
                                     <Card sx={{ maxWidth: 235 }} >
                                         <CardContent className='mt-0'>
@@ -229,115 +344,9 @@ const Settings = () => {
                                         </CardContent>
                                     </Card>
                                 </div>
+                            </TabPanel>
+                        </Tabs>
 
-                            </CardContent>
-                        </Card>
-
-                        <Card className="SettingsPart" variant="outlined">
-                            <CardContent>
-                                <Tabs>
-                                    <TabList className="settingsTabsListHolder">
-                                        <Tab>API details</Tab>
-                                        <Tab>UI Build</Tab>
-                                        <Tab>Versions</Tab>
-                                    </TabList>
-
-                                    <TabPanel className="py-4">
-                                        <div className="info_release_builddate_Div">
-                                            {isAPILoading
-                                                ?
-                                                // <img className="icon" src={assets.loader_Circles_icon} alt="" />
-                                                <LinearProgress color="secondary" />
-                                                :
-                                                <>
-                                                    <Chip className="info_release_API_type_Div mb-4"
-                                                        label={APIType === "LOCAL" ? "Local API Consumption" : "Online Azure API Consumption"}
-                                                        size="small" color={APIType === "LOCAL" ? 'warning' : 'success'} />
-                                                    {/* <div className="info_release_API_Div" dangerouslySetInnerHTML={{ __html: APItext }}> */}
-                                                    <div className="info_release_API_Div">
-                                                        <TableContainer component={Paper}>
-                                                            <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
-                                                                <TableBody className="info_release_API_response_TableRow">
-                                                                    <TableRow>
-                                                                        <TableCell component="th" scope="row">API URL</TableCell>
-                                                                        <TableCell align="right">{APIPath}</TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow>
-                                                                        <TableCell component="th" scope="row">API TYPE</TableCell>
-                                                                        <TableCell align="right">{APIType}</TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow>
-                                                                        <TableCell component="th" scope="row">API Availability</TableCell>
-                                                                        <TableCell align="right">{isAPIError ?
-                                                                            <>
-                                                                                <ErrorIcon fontSize="small" color="error" />
-                                                                            </>
-                                                                            :
-                                                                            <>
-                                                                                <CheckCircleIcon fontSize="small" color="success" />
-                                                                            </>
-                                                                        }</TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow>
-                                                                        <TableCell component="th" scope="row">API Version</TableCell>
-                                                                        <TableCell align="right">{APIAvailabilityResponse ? APIAvailabilityResponse.APIVersion : ""}</TableCell>
-                                                                    </TableRow>
-                                                                </TableBody>
-                                                            </Table>
-                                                        </TableContainer>
-                                                    </div>
-                                                </>
-                                            }
-                                        </div>
-                                    </TabPanel>
-                                    <TabPanel className="py-1">
-                                        <div className="info_release_builddate_Div">
-                                            <Chip label={preval`module.exports = 'Last build Date: ' + new Date().toLocaleString();`} size="small" color='primary' variant="outlined" />
-                                        </div>
-                                    </TabPanel>
-                                    <TabPanel className="py-0">
-                                        <div>
-                                            {
-                                                configData.releases.map((item, index) => (
-                                                    <Accordion
-                                                        key={index}
-                                                        // expanded={expanded === `panel${index + 1}`} 
-                                                        // onChange={handleChange(`panel${index + 1}`)}
-                                                        slotProps={{ transition: { unmountOnExit: true } }}
-                                                    >
-                                                        <AccordionSummary
-                                                            expandIcon={<ArrowDownwardIcon />}
-                                                            aria-controls={`panel${index + 1}bh-content`}
-                                                            id={`panel${index + 1}bh-header`}
-                                                        >
-                                                            <Stack spacing={1} direction="row">
-                                                                <Chip label={item.version} size="small" color={index === 0 ? 'success' : 'default'} variant="outlined" />
-                                                                <Chip label={item.date} size="small" color={index === 0 ? 'success' : 'default'} variant="outlined" />
-                                                                {index === 0 ?
-                                                                    <Chip label="current" size="small" color='success' />
-                                                                    :
-                                                                    <></>}
-                                                            </Stack>
-                                                        </AccordionSummary>
-                                                        <AccordionDetails>
-                                                            <Typography variant="caption">
-                                                                <ul className="ChangeLogUL">
-                                                                    {item.notes.map((noteitem, noteindex) => (
-                                                                        <li key={noteindex}><KeyboardArrowRightOutlinedIcon fontSize="small" />{noteitem}</li>
-                                                                    ))}
-                                                                </ul>
-                                                            </Typography>
-                                                        </AccordionDetails>
-                                                    </Accordion>
-                                                ))
-                                            }
-
-                                        </div>
-                                    </TabPanel>
-                                </Tabs>
-
-                            </CardContent>
-                        </Card>
                     </Stack>
                 </Box>
             </Drawer>

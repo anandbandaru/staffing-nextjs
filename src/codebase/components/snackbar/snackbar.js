@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import toast, { Toaster } from 'react-hot-toast';
+import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -32,6 +33,13 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
                     toast.custom(<Alert severity={severity} sx={{ width: '50%' }}>
                         {message}
                     </Alert>);
+                    break;
+                case 'admin':
+                    toast.custom(
+                        <Alert severity={severity} sx={{ width: '50%' }}>
+                            <NotificationsActiveOutlinedIcon />
+                            {message}
+                        </Alert>);
                     break;
                 default:
                     toast.success(message, toastConfig);
@@ -77,6 +85,11 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
                         },
                     },
                     warning: {
+                        style: {
+                            background: 'yellow',
+                        },
+                    },
+                    admin: {
                         style: {
                             background: 'yellow',
                         },

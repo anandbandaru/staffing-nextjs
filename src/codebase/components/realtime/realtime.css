@@ -1,0 +1,46 @@
+.realtimeHolder {
+    background-color: #11425e;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 100;
+    color: #fff;
+    padding-left: 4px;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.blink {
+    animation: blink 1s linear infinite;
+}
+
+@keyframes changeColor {
+    0% {
+        color: black;
+    }
+
+    50% {
+        color: red;
+    }
+
+    100% {
+        color: black;
+    }
+}
+
+.changeColor {
+    animation: changeColor 1s linear;
+}
