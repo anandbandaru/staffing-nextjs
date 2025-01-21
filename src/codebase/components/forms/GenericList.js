@@ -25,7 +25,7 @@ function GenericList({ formType }) {
 
             const selectedData = dataMap[formType] || [];
             setData(selectedData);
-            console.log(`Setting data for ${formType}`);
+            // console.log(`Setting data for ${formType}`);
         };
 
         fetchData();

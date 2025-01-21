@@ -58,13 +58,13 @@ function Job({ props, ID, operation }) {
         setApiLoading(true);
         setData({});
         let apiUrl = APIPath + "/getjobdetails/" + ID;
-        console.log(apiUrl)
+        // console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
                 async (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setData({});
                     }
                     else {
@@ -80,7 +80,7 @@ function Job({ props, ID, operation }) {
                 },
                 (error) => {
                     setData({});
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -95,7 +95,7 @@ function Job({ props, ID, operation }) {
             .then(
                 (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setCompaniesData({ data: [] });
                     }
                     else {
@@ -105,7 +105,7 @@ function Job({ props, ID, operation }) {
                 },
                 (error) => {
                     setCompaniesData({ data: [] });
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -123,7 +123,7 @@ function Job({ props, ID, operation }) {
             .then(
                 (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setVendorsData({ data: [] });
                     }
                     else {
@@ -133,7 +133,7 @@ function Job({ props, ID, operation }) {
                 },
                 (error) => {
                     setVendorsData({ data: [] });
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -151,7 +151,7 @@ function Job({ props, ID, operation }) {
             .then(
                 (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setIPsData({ data: [] });
                     }
                     else {
@@ -161,7 +161,7 @@ function Job({ props, ID, operation }) {
                 },
                 (error) => {
                     setIPsData({ data: [] });
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -179,7 +179,7 @@ function Job({ props, ID, operation }) {
             .then(
                 (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setClientsData({ data: [] });
                     }
                     else {
@@ -189,7 +189,7 @@ function Job({ props, ID, operation }) {
                 },
                 (error) => {
                     setClientsData({ data: [] });
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -206,7 +206,7 @@ function Job({ props, ID, operation }) {
             .then(
                 (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setEmployeesData({ data: [] });
                     }
                     else {
@@ -216,7 +216,7 @@ function Job({ props, ID, operation }) {
                 },
                 (error) => {
                     setEmployeesData({ data: [] });
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -299,7 +299,7 @@ function Job({ props, ID, operation }) {
                             }
                         }).catch(function (error) {
                             setSubmitting(false);
-                            console.log(error);
+                            // console.log(error);
                             setSubmitionCompleted(true);
                             showSnackbar('error', "Error saving Job data");
                         });

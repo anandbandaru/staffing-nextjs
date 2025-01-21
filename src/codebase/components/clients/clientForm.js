@@ -40,14 +40,14 @@ function ClientForm({ props, ID, operation }) {
     };
     const getDetails = () => {
         let apiUrl = APIPath + "/getclientdetails/" + ID;
-        console.log(apiUrl)
+        // console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
                 (result) => {
-                    //console.log(result);
+                    //// console.log(result);
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setData({});
                     }
                     else {
@@ -59,7 +59,7 @@ function ClientForm({ props, ID, operation }) {
                 },
                 (error) => {
                     setData({});
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -117,7 +117,7 @@ function ClientForm({ props, ID, operation }) {
                                 resetForm();
                         })
                             .catch(function (error) {
-                                console.log(error);
+                                // console.log(error);
                                 setSubmitionCompleted(true);
                                 showSnackbar('error', "Error saving Client data");
                             });

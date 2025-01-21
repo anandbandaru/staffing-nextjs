@@ -19,8 +19,8 @@ export const TableSearch = (props) => {
 
     function sbTextChange(event) {
         const textValue = event.target.value;
-        console.log(textValue);
-        console.log(props.paramName);
+        // console.log(textValue);
+        // console.log(props.paramName);
         const newVal = {
             something: 0,
             value: []

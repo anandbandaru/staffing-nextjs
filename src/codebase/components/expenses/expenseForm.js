@@ -51,13 +51,13 @@ function Expense({ props, ID, operation }) {
         setApiLoading(true);
         setData({});
         let apiUrl = APIPath + "/getexpensedetails/" + ID;
-        console.log(apiUrl)
+        // console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
                 async (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setData({});
                     }
                     else {
@@ -72,7 +72,7 @@ function Expense({ props, ID, operation }) {
                 (error) => {
                     setData({});
                     setName('');
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -87,7 +87,7 @@ function Expense({ props, ID, operation }) {
             .then(
                 async (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setExpenseTypesData({ data: [] });
                     }
                     else {
@@ -97,7 +97,7 @@ function Expense({ props, ID, operation }) {
                 },
                 (error) => {
                     setExpenseTypesData({ data: [] });
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -115,7 +115,7 @@ function Expense({ props, ID, operation }) {
             .then(
                 async (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setCompaniesData({ data: [] });
                     }
                     else {
@@ -125,7 +125,7 @@ function Expense({ props, ID, operation }) {
                 },
                 (error) => {
                     setCompaniesData({ data: [] });
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -143,7 +143,7 @@ function Expense({ props, ID, operation }) {
             .then(
                 async (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setEmployeesData({ data: [] });
                     }
                     else {
@@ -153,7 +153,7 @@ function Expense({ props, ID, operation }) {
                 },
                 (error) => {
                     setEmployeesData({ data: [] });
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -224,7 +224,7 @@ function Expense({ props, ID, operation }) {
                                 resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
-                            console.log(error);
+                            // console.log(error);
                             setSubmitionCompleted(true);
                             showSnackbar('error', "Error saving Expense data");
                         });

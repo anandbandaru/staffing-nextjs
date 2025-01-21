@@ -79,7 +79,7 @@ const UserList = () => {
             showSnackbar('success', "Users Data fetched");
         } catch (error) {
             setDataAPIError(error.toString());
-            console.log("fetchUsers:ERROR:" + error);
+            // console.log("fetchUsers:ERROR:" + error);
             setItemCount(0);
             setApiLoading(false);
             setData([]);
@@ -90,14 +90,14 @@ const UserList = () => {
     const fetchLoginDetails = async (userName) => {
         try {
             setApiLoading(true);
-            console.log(userName)
+            // console.log(userName)
             const response = await axios.get(APIPath + "/getlogindetails/" + userName);
             setLoginDetails(response.data.data[0]);
             setDialogOpen(true);
             setApiLoading(false);
             showSnackbar('success', "Users Login data fetched");
         } catch (error) {
-            console.log("ERROR: fetching login details:", error);
+            // console.log("ERROR: fetching login details:", error);
         }
     };
     const fetchLoginDetailsForUsers = async (users) => {

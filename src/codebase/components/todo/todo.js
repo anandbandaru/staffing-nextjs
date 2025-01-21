@@ -128,7 +128,7 @@ const ToDo = () => {
             fetchTodos("Completed");
         })
             .catch(function (error) {
-                console.log(error);
+                // console.log(error);
                 showSnackbar('error', 'Error completing To do' + error);
             });
     };

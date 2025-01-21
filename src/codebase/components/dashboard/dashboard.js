@@ -3,6 +3,8 @@ import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
 import { Stack, Grid, Card, CardContent, Typography, Skeleton, Button } from '@mui/material';
+import SaveButton from '../button/saveButton';
+import BorderInnerIcon from '@mui/icons-material/BorderInner';
 
 const Dashboard = () => {
     const { APIPath, userType, isAPILoading, setIsAPILoading,
@@ -80,7 +82,7 @@ const Dashboard = () => {
     const APICaller = async (endpoints) => {
         try {
             setIsAPILoading(true);
-            console.log("FINAL DASH ENDPOINTS: " + endpoints)
+            // console.log("FINAL DASH ENDPOINTS: " + endpoints)
             const responses = await Promise.all(
                 endpoints.map(
                     endpoint => axios.get(APIPath + endpoint)
@@ -95,7 +97,7 @@ const Dashboard = () => {
                             return res; // Return the response if status is not "FAIL"
                         })
                         .catch((error) => {
-                            console.log(`Error fetching ${endpoint}:`, error);
+                            // console.log(`Error fetching ${endpoint}:`, error);
                             setOpenDashboardAPIError(true);
                             setDashboardAPIError(error);
                             return {
@@ -113,7 +115,7 @@ const Dashboard = () => {
 
             setCounts(newCounts);
         } catch (error) {
-            console.log('Error fetching counts:', error);
+            // console.log('Error fetching counts:', error);
         } finally {
             setIsAPILoading(false);
         }
@@ -136,10 +138,9 @@ const Dashboard = () => {
 
     return (
         <>
-            <Button variant="contained" size="large" className="bg-pink-600 mb-10"
-                onClick={loadDashboardElements}>
+            <SaveButton onClick={loadDashboardElements} startIcon={<BorderInnerIcon />} >
                 Click to Fetch Data
-            </Button>
+            </SaveButton>
             <div className="my-5 mx-3">
                 <Grid container spacing={1} className='p-5 mt-10 bg-slate-200'>
                     {userType === 'ADMIN' && (

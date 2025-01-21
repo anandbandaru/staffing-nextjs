@@ -54,11 +54,11 @@ const ContextProvider = (props) => {
 
     const checkAPIAvailability = async () => {
         setIsAPILoading(true);
-        console.log("CONTEXT: SHOW LOADING: TRUE")
+        // // console.log("CONTEXT: SHOW LOADING: TRUE")
         setAPIText("Checking API availability & getting list of data sources....");
         try {
             setAPIPath(flaskAPI_Availability);
-            console.log(flaskAPI_Availability);
+            // console.log(flaskAPI_Availability);
             const response = await fetch(flaskAPI_Availability);
             const data = await response.json();
             setAPIAvailabilityResponse(data);
@@ -72,8 +72,8 @@ const ContextProvider = (props) => {
             setAPIType(data.APIType);
             setIsAPILoading(false);
             setIsAPIError(false);
-            console.log("CONTEXT: SHOW LOADING: FALSE")
-            console.log("API availability call made.");
+            // // console.log("CONTEXT: SHOW LOADING: FALSE")
+            // // console.log("API availability call made.");
         } catch (error) {
             console.error('Error fetching data:', error);
             setAPIText('<span class="APIAvailabilityCheckError">API ERROR: ' + error + '</span>'
@@ -82,7 +82,7 @@ const ContextProvider = (props) => {
             );
             setIsAPIError(true);
             setIsAPILoading(false);
-            console.log("CONTEXT: SHOW LOADING: FALSE")
+            // // console.log("CONTEXT: SHOW LOADING: FALSE")
             if (error === "TypeError: Failed to fetch") { }
             // setListOfDatasources(null);
         }
@@ -92,7 +92,7 @@ const ContextProvider = (props) => {
         try {
             await PUBLIC_CLIENT_APPLICATION.handleRedirectPromise();
             const loginResponse = await PUBLIC_CLIENT_APPLICATION.loginPopup(LOGIN_REQUEST);
-            console.log("Login successful:", loginResponse);
+            // console.log("Login successful:", loginResponse);
 
             setLoginSuccess(true);
             setToken(loginResponse.idToken);
@@ -101,7 +101,7 @@ const ContextProvider = (props) => {
             const decodedToken = jwtDecode(loginResponse.idToken);
             const expiryTime = decodedToken.exp * 1000; // Convert to milliseconds
             setTokenExpiry(expiryTime);
-            console.log("TOKEN EXPIRY:" + expiryTime);
+            // console.log("TOKEN EXPIRY:" + expiryTime);
 
             // Fetch user data from Microsoft Graph API
             const response = await axios.get('https://graph.microsoft.com/v1.0/me', {
@@ -117,7 +117,7 @@ const ContextProvider = (props) => {
             if (error.name === "InteractionRequiredAuthError") {
                 try {
                     const loginResponse = await MSAL_CONFIG.acquireTokenPopup(LOGIN_REQUEST);
-                    console.log("Token acquired:", loginResponse);
+                    // console.log("Token acquired:", loginResponse);
 
                     setLoginSuccess(true);
                     setToken(loginResponse.idToken);
@@ -136,7 +136,7 @@ const ContextProvider = (props) => {
                     const jobTitle = response.data.jobTitle;
                     setUserType(jobTitle);
                 } catch (tokenError) {
-                    console.log("Token acquisition failed:", tokenError);
+                    // console.log("Token acquisition failed:", tokenError);
                     setLoginSuccess(false);
                     setToken("");
                     setUserName("");
@@ -145,11 +145,11 @@ const ContextProvider = (props) => {
                 }
             }
             else if (error.name === "BrowserAuthError" && error.errorCode === "interaction_in_progress") {
-                console.log("Interaction already in progress. Please wait.");
+                // console.log("Interaction already in progress. Please wait.");
                 setLoginError("Interaction already in progress. Please wait.")
             }
             else {
-                console.log("Login failed:", error);
+                // console.log("Login failed:", error);
                 setLoginSuccess(false);
                 setToken("");
                 setUserName("");
@@ -164,7 +164,7 @@ const ContextProvider = (props) => {
                 account: PUBLIC_CLIENT_APPLICATION.getAllAccounts()[0], // Get the currently signed-in account
             };
             await PUBLIC_CLIENT_APPLICATION.logoutPopup(logoutRequest);
-            console.log("Logout successful");
+            // console.log("Logout successful");
             setToken("");
             setUserName("");
             setUserType("");
@@ -215,16 +215,16 @@ const ContextProvider = (props) => {
 
             let endpoint = 'https://graph.microsoft.com/v1.0/users/vsk.software_outlook.com#EXT#@vsksoftwareoutlook.onmicrosoft.com/drive/root:/owners:/children';
             endpoint = "https://graph.microsoft.com/v1.0/me/drive/root/owners/children";
-            console.log("ENDPOINTA: " + endpoint)
+            // console.log("ENDPOINTA: " + endpoint)
             const body = {
                 name: "anand",
                 folder: {},
                 '@microsoft.graph.conflictBehavior': 'rename'
             };
             await graphClient.api(endpoint).post(body);
-            console.log("folder created")
+            // console.log("folder created")
         } catch (error) {
-            console.log(`Error creating folder: ${error.message}`)
+            // console.log(`Error creating folder: ${error.message}`)
         }
     }
 

@@ -40,7 +40,7 @@ const OwnerDocumentsNew = () => {
                 showSnackbar('error', 'Error creating folder');
             }
         } else {
-            console.log("Folder not found")
+            // console.log("Folder not found")
             showSnackbar('error', "Folder not found")
         }
     };
@@ -66,7 +66,7 @@ const OwnerDocumentsNew = () => {
             }).then((resp) => {
                 showSnackbar('success', `File uploaded successfully: ${resp.data.FILE_PATH}`);
             }).catch(function (error) {
-                console.log(error);
+                // console.log(error);
                 showSnackbar('error', 'Error while uploading: ' + error);
             });
         } catch (error) {

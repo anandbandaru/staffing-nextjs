@@ -170,7 +170,7 @@ function EmployeeGAddForm({ formType, employeeID }) {
                                 resetForm();
                         })
                             .catch(function (error) {
-                                console.log(error);
+                                // console.log(error);
                                 setSubmitionCompleted(true);
                                 showSnackbar('error', "Error saving data");
                                 setApiLoading(false)

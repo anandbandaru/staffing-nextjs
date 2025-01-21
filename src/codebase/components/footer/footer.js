@@ -106,7 +106,7 @@ const Footer = ({ ipAddress, city, region, country_name }) => {
     }, [loginTime]);
 
     useEffect(() => {
-        console.log("FOOTER:" + ipAddress)
+        // console.log("FOOTER:" + ipAddress)
     }, []);
 
     return (

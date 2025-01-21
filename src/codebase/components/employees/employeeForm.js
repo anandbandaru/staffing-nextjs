@@ -45,13 +45,13 @@ function EmployeeForm({ props, ID, operation }) {
     const getDetails = async () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getemployeedetails/" + ID;
-        console.log(apiUrl)
+        // console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
                 async (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setData({});
                     }
                     else {
@@ -64,7 +64,7 @@ function EmployeeForm({ props, ID, operation }) {
                 },
                 (error) => {
                     setData({});
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -73,13 +73,13 @@ function EmployeeForm({ props, ID, operation }) {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/masterdata/filetypes"
-        console.log(apiUrl)
+        // console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
                 (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setFileTypesData({});
                     }
                     else {
@@ -89,7 +89,7 @@ function EmployeeForm({ props, ID, operation }) {
                 },
                 (error) => {
                     setFileTypesData({});
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -98,13 +98,13 @@ function EmployeeForm({ props, ID, operation }) {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
-        console.log(apiUrl)
+        // console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
                 (result) => {
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setManagersData({});
                     }
                     else {
@@ -114,7 +114,7 @@ function EmployeeForm({ props, ID, operation }) {
                 },
                 (error) => {
                     setManagersData({});
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -196,7 +196,7 @@ function EmployeeForm({ props, ID, operation }) {
                             resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
-                            console.log(error);
+                            // console.log(error);
                             setSubmitionCompleted(true);
                             showSnackbar('error', "Error saving Owner data");
                         });

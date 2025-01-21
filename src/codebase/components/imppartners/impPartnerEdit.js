@@ -69,7 +69,7 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading, showSnac
         }).catch(function (error) {
             setApiLoading(false);
             showSnackbar('error', "Error occured while deletion");
-            console.log(error);
+            // console.log(error);
         });
     }
 
@@ -94,7 +94,7 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading, showSnac
                     if (userInput.toUpperCase() === "DELETE") {
                         deleteItem();
                     } else {
-                        console.log("Delete operation cancelled");
+                        // console.log("Delete operation cancelled");
                         showSnackbar('warning', "Delete operation cancelled");
                     }
                 }

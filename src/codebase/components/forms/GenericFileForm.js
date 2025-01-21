@@ -120,7 +120,7 @@ function GenericFileForm({ props, componentName, moduleId }) {
                                 setSubmitionCompleted(true);
                                 setFormSubmitionAPIErrorMessage(error);
                                 setFormSubmitionAPIError(true);
-                                console.log(error);
+                                // console.log(error);
                                 showSnackbar('error', 'Error while uploading: ' + error);
                             });
 

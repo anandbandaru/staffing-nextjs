@@ -68,7 +68,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
     const getDetails = () => {
         setApiLoading(true);
         let apiUrl = getAPIEndpoint() + "/" + ID;
-        console.log(apiUrl)
+        // console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -99,8 +99,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
 
     const filteredData = data.data.filter(item =>
         Object.entries(item).some(([key, value]) => {
-            // console.log("SEARCHED:" + searchTerm.toLowerCase())
-            // console.log("MATCHING:" + key)
+            // // console.log("SEARCHED:" + searchTerm.toLowerCase())
+            // // console.log("MATCHING:" + key)
             return key.toLowerCase().includes(searchTerm.toLowerCase())
         }
         )

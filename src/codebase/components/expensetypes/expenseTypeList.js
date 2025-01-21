@@ -52,9 +52,9 @@ const ExpenseTypeList = () => {
             .then(response => response.json())
             .then(
                 (result) => {
-                    //console.log(result);
+                    //// console.log(result);
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
+                        // console.log("RequestData:On error return: setting empty")
                         setData({});
                         setItemCount(0);
                     }
@@ -75,7 +75,7 @@ const ExpenseTypeList = () => {
                     setDataAPIError(error.toString());
                     setData({});
                     setItemCount(0);
-                    console.log("RequestData:On JUST error: API call failed")
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )

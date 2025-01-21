@@ -22,7 +22,7 @@ const OwnersReport = () => {
                 { status: 'Active', count: activeCount }
             ]);
         }).catch(function (error) {
-            console.log(error);
+            // console.log(error);
             setApiLoading(false);
             setData([]);
         });

@@ -27,7 +27,7 @@ const UserNewPermissions = ({ users }) => {
     };
 
     const handleUserChange = (event) => {
-        console.log("User selected: " + event.target.value)
+        // console.log("User selected: " + event.target.value)
         setSelectedUser(event.target.value);
         axios.get(APIPath + `/getnewpermissions/${event.target.value}`)
             .then(response => {
@@ -48,7 +48,7 @@ const UserNewPermissions = ({ users }) => {
             });
     };
     const handleTabsChange = (event, value) => {
-        console.log("Tab selected: " + value)
+        // console.log("Tab selected: " + value)
         setSelectedTabs(value);
     };
     const handleSave = () => {

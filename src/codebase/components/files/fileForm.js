@@ -100,7 +100,7 @@ function FileForm({ props, ID, operation }) {
                     }).catch(function (error) {
                         setSubmitionCompleted(true);
                         setSubmitting(false);
-                        console.log(error);
+                        // console.log(error);
                         showSnackbar('error', 'Error while uploading: ' + error);
                     });
 

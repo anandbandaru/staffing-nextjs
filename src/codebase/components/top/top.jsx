@@ -48,6 +48,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import LanIcon from '@mui/icons-material/Lan';
 
 const Top = () => {
 
@@ -84,7 +85,7 @@ const Top = () => {
                 const ipResponse = await fetch('https://api.bigdatacloud.net/data/client-info');
                 const ipData = await ipResponse.json();
                 setIpAddress(ipData.ipString);
-                console.log("IP:" + ipData.ipString)
+                // console.log("IP:" + ipData.ipString)
 
                 // Fetch location data using the IP address
                 const locationResponse = await fetch(`https://ipapi.co/${ipData.ipString}/json/`);
@@ -150,8 +151,8 @@ const Top = () => {
         document.title = "Staffing";
         const currentVersion = configData.releases[0].version;
         const storedVersion = localStorage.getItem('appVersion');
-        console.log("LOCAL VERSION:" + storedVersion)
-        console.log("ONLINE VERSION:" + currentVersion)
+        // console.log("LOCAL VERSION:" + storedVersion)
+        // console.log("ONLINE VERSION:" + currentVersion)
         if (storedVersion !== currentVersion) {
             setOpenVersionDialog(true);
             localStorage.setItem('appVersion', currentVersion);
@@ -159,7 +160,7 @@ const Top = () => {
     }, [userName]);
     //this ensure to show the above dialog is no DS are given by API
     useEffect(() => {
-        console.log("SHOW LOADING:" + isAPILoading)
+        // console.log("SHOW LOADING:" + isAPILoading)
         setOpenLoadingAPI(isAPILoading);
     }, [isAPILoading]);
 
@@ -398,8 +399,8 @@ const Top = () => {
                     </Stack>
                 </DialogTitle>
                 <DialogContent dividers size="small">
-                    <Alert severity="error" className="mb-4">{dashboardAPIError}</Alert>
-                    <Button variant="contained" size="large" className="bg-pink-600 float-right mt-4"
+                    <Alert severity="error" className="mb-4"><LanIcon />{dashboardAPIError}</Alert>
+                    <Button variant="contained" size="small" className="bg-pink-600 float-right mt-4"
                         startIcon={<CachedIcon />}
                         onClick={refreshPage}>Refresh
                     </Button>

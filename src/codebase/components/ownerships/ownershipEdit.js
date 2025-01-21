@@ -66,7 +66,7 @@ function OwnershipEdit({ ID, operation, manualLoadData, setApiLoading, showSnack
         }).catch(function (error) {
             setApiLoading(false);
             showSnackbar('error', "Error occured while deletion");
-            console.log(error);
+            // console.log(error);
         });
     }
 
@@ -91,7 +91,7 @@ function OwnershipEdit({ ID, operation, manualLoadData, setApiLoading, showSnack
                     if (userInput.toUpperCase() === "DELETE") {
                         deleteItem();
                     } else {
-                        console.log("Delete operation cancelled");
+                        // console.log("Delete operation cancelled");
                         showSnackbar('warning', "Delete operation cancelled");
                     }
                 }
