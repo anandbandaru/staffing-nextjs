@@ -54,7 +54,6 @@ const ImpPartnerList = () => {
                 (result) => {
                     //console.log(result);
                     if (result.error) {
-                        console.log("RequestData:On error return: setting empty")
                         setData({});
                         setItemCount(0);
                     }
@@ -74,8 +73,8 @@ const ImpPartnerList = () => {
                     setDataAPIError(error.toString());
                     setData({});
                     setItemCount(0);
-                    console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
+                    showSnackbar('error', error.toString());
                 }
             )
     }

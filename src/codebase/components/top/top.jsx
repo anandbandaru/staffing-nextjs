@@ -75,51 +75,7 @@ const Top = () => {
     const [ipAddress, setIpAddress] = useState('');
     const [location, setLocation] = useState({});
 
-    //USER LOGIN
-    // useEffect(() => {
-    //     // Fetch IP address and location
-    //     axios.get('https://api.ipify.org?format=json')
-    //         .then(response => {
-    //             setIpAddress(response.data.ip);
-    //             return axios.get(`https://ipapi.co/${response.data.ip}/json/`);
-    //         })
-    //         .then(response => {
-    //             const locationData = response.data;
-    //             setLocation(locationData);
-    //             // Call the /login API with location details
-    //             return axios.post(APIPath + '/login', {
-    //                 userName,
-    //                 ipAddress: locationData.ip,
-    //                 city: locationData.city,
-    //                 region: locationData.region,
-    //                 country: locationData.country_name,
-    //                 latitude: locationData.latitude,
-    //                 longitude: locationData.longitude
-    //             });
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching IP address or location:', error);
-    //             // Call the /login API with null values for location details
-    //             return axios.post(APIPath + '/login', {
-    //                 userName,
-    //                 ipAddress: ipAddress || null,
-    //                 city: null,
-    //                 region: null,
-    //                 country: null,
-    //                 latitude: null,
-    //                 longitude: null
-    //             });
-    //         })
-    //         .then(response => {
-    //             if (response.data.STATUS === "FAIL")
-    //                 showSnackbar('error', "Login trace failure");
-    //             else
-    //                 showSnackbar('info', "Login trace success");
-    //         })
-    //         .catch(error => {
-    //             showSnackbar('error', "Login trace failure");
-    //         });
-    // }, [APIPath, userName, ipAddress]);
+    //IP + LOCATION
     useEffect(() => {
         const fetchLocation = async () => {
             try {
@@ -226,15 +182,19 @@ const Top = () => {
         if (userType !== 'ADMIN') {
             axios.get(APIPath + `/gettoppermissions/${userName}`)
                 .then(response => {
-                    if (response.data.STATUS === "FAIL")
+                    if (response.data.STATUS === "FAIL") {
                         showSnackbar('error', "Top tabs Permissions failure");
+                        setOpenLoadingAPI(true);
+                    }
                     else {
                         showSnackbar('info', "Top tabs Permissions success");
                         setPermissions(response.data.data)
+                        setOpenLoadingAPI(false);
                     }
                 })
                 .catch(error => {
                     showSnackbar('error', "Top tabs Permissions failure");
+                    setOpenLoadingAPI(true);
                 });
         }
     }, [userName, userType, APIPath]);
@@ -315,8 +275,9 @@ const Top = () => {
                             ) : (
                                 <Tabs selectedIndex={selectedTabDD} onSelect={index => setSelectedTabDD(index)}>
                                     <TabList className="topTabsListHolder">
-                                        <span className="top2TabsMenu">
+                                        <span className="top2TabsMenu bg-topTab pb-2 pt-1 text-white">
                                             <IconButton
+                                                className=""
                                                 size="small"
                                                 color="inherit"
                                                 aria-label="menu"

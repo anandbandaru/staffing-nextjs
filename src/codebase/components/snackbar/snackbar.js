@@ -10,7 +10,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const CustomSnackbar = ({ open, handleClose, severity, message }) => {
     const toastConfig = {
         duration: 6000,
-        position: 'top-right'
+        position: 'top-right',
+        removeDelay: 1000,
     };
 
     useEffect(() => {
@@ -21,6 +22,16 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
                     break;
                 case 'error':
                     toast.error(message, toastConfig);
+                    break;
+                case 'info':
+                    toast.custom(<Alert severity={severity} sx={{ width: '50%' }}>
+                        {message}
+                    </Alert>);
+                    break;
+                case 'warning':
+                    toast.custom(<Alert severity={severity} sx={{ width: '50%' }}>
+                        {message}
+                    </Alert>);
                     break;
                 default:
                     toast.success(message, toastConfig);

@@ -12,6 +12,7 @@ import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontal
 import Alert from '@mui/material/Alert';
 import CachedIcon from '@mui/icons-material/Cached';
 import CustomSnackbar from "../snackbar/snackbar";
+import axios from "axios";
 // import preval from 'preval.macro';
 
 const Footer = ({ ipAddress, city, region, country_name }) => {

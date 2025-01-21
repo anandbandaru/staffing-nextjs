@@ -133,7 +133,7 @@ const TransactionsTop = ({ module }) => {
                             ) : (
                                 <Tabs selectedIndex={selectedTabDD} onSelect={index => setSelectedTabDD(index)}>
                                     <TabList className="top2TabsListHolder">
-                                        <span className="top2TabsMenu">
+                                        <span className="top2TabsMenu bg-top2Tab pb-2 pt-1 text-white">
                                             <IconButton
                                                 size="small"
                                                 color="inherit"

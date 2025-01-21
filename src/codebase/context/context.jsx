@@ -89,7 +89,6 @@ const ContextProvider = (props) => {
     };
 
     const signIn = async () => {
-
         try {
             await PUBLIC_CLIENT_APPLICATION.handleRedirectPromise();
             const loginResponse = await PUBLIC_CLIENT_APPLICATION.loginPopup(LOGIN_REQUEST);
