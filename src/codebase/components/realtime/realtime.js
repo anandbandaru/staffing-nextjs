@@ -3,6 +3,7 @@ import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 import { database } from '../../../firebase';
 import './realtime.css';
 import { Stack } from '@mui/material';
+import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 
 const Realtime = () => {
     const [dataCount, setDataCount] = useState(0);
@@ -51,13 +52,14 @@ const Realtime = () => {
 
     return (
         <div className='realtimeHolder'>
-            <Stack direction="row" spacing={2}>
-                {/* <div className=''>
-                    <span className={`${blink ? 'blink changeColor' : ''}`}>COUNT: {dataCount ? dataCount : "0"}</span>
-                </div> */}
+            <Stack direction="row" spacing={1}>
+                <NotificationsActiveOutlinedIcon  color='warning' />
                 <div className=''>
-                    <span className={`${blink ? 'blink changeColor' : ''}`}>Notification: {dataNote ? dataNote : "0"}</span>
+                    <span className={`${blink ? 'blink changeColor' : ''}`}>
+                        Notification: {dataNote ? dataNote : "0"}
+                    </span>
                 </div>
+                <NotificationsActiveOutlinedIcon  color='warning' />
             </Stack>
         </div>
     );

@@ -12,6 +12,15 @@
   ],
   "releases": [
     {
+      "version": "2.7",
+      "date": "JAN 21 2024",
+      "notes": [
+        "Realtime notifications",
+        "Visits in Firebase",
+        "Settings UI"
+      ]
+    },
+    {
       "version": "2.6",
       "date": "JAN 19 2024",
       "notes": [
