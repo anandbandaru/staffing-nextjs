@@ -40,7 +40,8 @@
   },
   "scripts": {
     "start": "env-cmd -f .env.local react-scripts start",
-    "build": "env-cmd -f .env.prod react-scripts build",
+    "build-azure": "env-cmd -f .env.azure react-scripts build",
+    "build-google": "env-cmd -f .env.google react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
