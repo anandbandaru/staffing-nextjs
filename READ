@@ -1,0 +1,8 @@
+-----------VERCEL:
+App settings - Build command: env-cmd -f .env.vercel react-scripts build
+Modify .env.vercel
+Checkin
+
+-----------GOOGLE:
+npm run build-GOOGLE
+firebase deploy
