@@ -13,6 +13,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import CustomSnackbar from "../snackbar/snackbar";
+import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
+import RealtimeChatUpdate from "../realtime/realtimeChatUpdate";
 
 const ToDo = () => {
     const [todos, setTodos] = useState({ data: [] });
@@ -174,6 +176,10 @@ const ToDo = () => {
                                 <NotificationsActiveIcon />
                                 <span className="todoCounts">0</span>
                             </Tab>
+                            <Tab label="Chat" title="Chat" >
+                                <MarkUnreadChatAltOutlinedIcon color="error" />
+                                <span className="todoCounts">0</span>
+                            </Tab>
                         </TabList>
                         <TabPanel className="px-0">
                             <div className="h-screen overflow-y-auto pb-56">
@@ -255,6 +261,10 @@ const ToDo = () => {
                         </TabPanel>
                         <TabPanel className="px-0">
                             Actions from DB entries will be listed here
+                        </TabPanel>
+                        <TabPanel className="px-0">
+                            Realtime chat messages
+                            <RealtimeChatUpdate />
                         </TabPanel>
 
                         <Menu className="todoItem"

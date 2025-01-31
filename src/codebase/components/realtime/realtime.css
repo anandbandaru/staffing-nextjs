@@ -8,7 +8,46 @@
     color: #fff;
     padding-left: 4px;
 }
+.realtimeHolderChat{
+    position: relative;
+    height: 100vh;
+}
+.realtimeChatControls{
+    position: fixed;
+    bottom: 40px;
+    padding: 4px;
+    background-color: #fff;
+    width: 225px;
+}
+.realtimeChatMessages {
+    max-height: 80vh; /* Adjust the height as needed */
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-overflow: clip;
+    border: 1px solid #ccc;
+    padding: 10px;
+    padding-bottom: 220px;
+}
 
+.chatMessageHolder {
+    margin-bottom: 10px;
+}
+.chatUser{
+    font-weight: bold !important;
+    color: #527df3 !important;
+}
+.chatMessage{
+    background-color: #fce1e1;
+    padding: 10px 5px;
+    border-radius: 10px;
+    display: inline-block;
+}
+.chatMessageOther{
+    background-color: #aeec85;
+    padding: 10px 5px;
+    border-radius: 10px;
+    display: inline-block;
+}
 @keyframes blink {
     0% {
         opacity: 1;

@@ -49,7 +49,6 @@ const ContextProvider = (props) => {
     //     return storedData ? JSON.parse(storedData) : [];
     // });
 
-
     //API CHECK
 
     const checkAPIAvailability = async () => {
