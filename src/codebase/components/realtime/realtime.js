@@ -1,16 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { getDatabase, ref, onValue, set, get } from 'firebase/database';
 import { database } from '../../../firebase';
 import './realtime.css';
 import { Stack } from '@mui/material';
+import { Context } from "../../context/context";
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
+import CustomSnackbar from "../snackbar/snackbar";
 
 const Realtime = () => {
+    const { userName } = useContext(Context);
     const [dataCount, setDataCount] = useState(0);
     const [dataNote, setDataNote] = useState(0);
     const [updateOnce, setUpdateOnce] = useState(true);
+    const [updateOnceUser, setUpdateOnceUser] = useState(true);
     const [blink, setBlink] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
 
+    const showSnackbar = (severity, message) => {
+        setSnackbarSeverity(severity);
+        setSnackbarMessage(message);
+        setSnackbarOpen(true);
+    };
+
+    // COUNT
     useEffect(() => {
         const dbRef = ref(getDatabase(), '/count');
 
@@ -37,6 +54,35 @@ const Realtime = () => {
         }
     }, []);
 
+    // USER
+    useEffect(() => {
+        const dbRef = ref(getDatabase(), '/lastloginuser');
+
+        // Read the current count value
+        onValue(dbRef, (snapshot) => {
+            const newData = snapshot.val();
+            console.log("CUrrent User: " + userName);
+            if (newData !== userName) {
+                showSnackbar('info', "Realtime: Another user logged into the application: " + newData);
+            }
+            console.log("setDataUser: " + newData);
+        });
+
+        // Update the count value only once
+        const updateUser = async () => {
+            const currentUser = (await get(dbRef)).val();
+            set(dbRef, "AUTH GOING ON..........");
+            setTimeout(() => set(dbRef, userName), 10000);
+            
+            setUpdateOnceUser(false);
+        };
+        if (updateOnceUser) {
+            updateUser();
+            setUpdateOnceUser(false);
+        }
+    }, []);
+
+    // NOTE
     useEffect(() => {
         const dbRef = ref(getDatabase(), '/note');
         // Read the current count value
@@ -45,6 +91,7 @@ const Realtime = () => {
             if (newData !== dataNote) {
                 setBlink(true);
                 setTimeout(() => setBlink(false), 1000); // Remove blink class after 1 second
+                showSnackbar('warning', newData);
             }
             setDataNote(newData);
         });
@@ -52,14 +99,20 @@ const Realtime = () => {
 
     return (
         <div className='realtimeHolder'>
+            <CustomSnackbar
+                open={snackbarOpen}
+                handleClose={handleSnackbarClose}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+            />
             <Stack direction="row" spacing={1}>
-                <NotificationsActiveOutlinedIcon  color='warning' />
+                <NotificationsActiveOutlinedIcon color='warning' />
                 <div className=''>
                     <span className={`${blink ? 'blink changeColor' : ''}`}>
                         Notification: {dataNote ? dataNote : "0"}
                     </span>
                 </div>
-                <NotificationsActiveOutlinedIcon  color='warning' />
+                <NotificationsActiveOutlinedIcon color='warning' />
             </Stack>
         </div>
     );

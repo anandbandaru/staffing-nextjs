@@ -40,6 +40,7 @@ import { Button, Link } from '@mui/material';
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import RealtimeNoteUpdate from "../realtime/realtimeNoteUpdate";
 import RealtimeCount from "../realtime/realtimeCount";
+import RealtimeUserUpdate from "../realtime/realtimeUserUpdate";
 
 const Settings = () => {
 
@@ -129,6 +130,7 @@ const Settings = () => {
                                 </div>
                                 <div className='py-4' >
                                     <RealtimeNoteUpdate />
+                                    {/* <RealtimeUserUpdate /> */}
                                 </div>
                             </CardContent>
                         </Card>
