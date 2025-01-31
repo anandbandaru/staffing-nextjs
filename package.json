@@ -40,6 +40,7 @@
   },
   "scripts": {
     "start": "env-cmd -f .env.local react-scripts start",
+    "start-ngrok": "env-cmd -f .env.ngrok react-scripts start",
     "build-azure": "env-cmd -f .env.azure react-scripts build",
     "build-google": "env-cmd -f .env.google react-scripts build",
     "build-vercel": "env-cmd -f .env.vercel react-scripts build",
