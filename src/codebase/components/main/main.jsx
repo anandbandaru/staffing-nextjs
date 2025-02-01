@@ -20,7 +20,7 @@ import Realtime from "../realtime/realtime";
 
 const Main = () => {
 
-    const { results, isAPIError, refreshPage, todoOpen, setTodoOpen } = useContext(Context);
+    const { results, isAPIError, refreshPage, todoOpen, setTodoOpen, userType } = useContext(Context);
     useEffect(() => {
         if (results) {
             // setStateSnack(true);
@@ -84,24 +84,37 @@ const Main = () => {
                     </Card>
                 </div> :
                 <>
-                    <div className={`flex-grow ${todoOpen ? 'mr-80' : ''}`}>
-                        <div className="mb-6">
-                            <Realtime />
-                        </div>
-                        <TopBanner />
-                        <Top />
-                    </div>
+                    {(userType === 'ADMIN' || userType === 'OPERATOR') ?
+                        <>
+                            <div className={`flex-grow ${todoOpen ? 'mr-80' : ''}`}>
+                                <div className="mb-6">
+                                    <Realtime />
+                                </div>
+                                <TopBanner />
+                                <Top />
+                            </div>
+                            <div className={`todoToggleHolder cursor-pointer ${!todoOpen ? 'toggled' : ''}`} onClick={handleTodoOpen}>
+                                {todoOpen ? <SwitchRightOutlinedIcon className="cursor-pointer" /> : <SwitchLeftOutlinedIcon className="cursor-pointer" />}
+                                Toggle Sidebar
+                            </div>
 
-                    <div className={`todoToggleHolder cursor-pointer ${!todoOpen ? 'toggled' : ''}`} onClick={handleTodoOpen}>
-                        {todoOpen ? <SwitchRightOutlinedIcon className="cursor-pointer" /> : <SwitchLeftOutlinedIcon className="cursor-pointer" />}
-                        Toggle Sidebar
-                    </div>
-
-                    {todoOpen && (
-                        <div className="w-80 h-full fixed right-0 bg-slate-100 border-l-4 border-gray-500 toDoRightHolder mt-6">
-                            <ToDo />
-                        </div>
-                    )}
+                            {todoOpen && (
+                                <div className="w-80 h-full fixed right-0 bg-slate-100 border-l-4 border-gray-500 toDoRightHolder mt-6">
+                                    <ToDo />
+                                </div>
+                            )}
+                        </>
+                        :
+                        <>
+                            <div className='flex-grow'>
+                                <div className="mb-6">
+                                    <Realtime />
+                                </div>
+                                <TopBanner />
+                                <Top />
+                            </div>
+                        </>
+                    }
                 </>
             }
 

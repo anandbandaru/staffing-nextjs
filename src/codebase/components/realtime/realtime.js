@@ -38,7 +38,7 @@ const Realtime = () => {
                 setBlink(true);
                 setTimeout(() => setBlink(false), 1000); // Remove blink class after 1 second
             }
-            console.log("setDataCount: " + newData);
+            // console.log("setDataCount: " + newData);
             setDataCount(newData);
         });
 
@@ -61,11 +61,11 @@ const Realtime = () => {
         // Read the current count value
         onValue(dbRef, (snapshot) => {
             const newData = snapshot.val();
-            console.log("CUrrent User: " + userName);
+            // console.log("CUrrent User: " + userName);
             if (newData !== userName) {
                 showSnackbar('info', "Realtime: Another user logged into the application: " + newData);
             }
-            console.log("setDataUser: " + newData);
+            // console.log("setDataUser: " + newData);
         });
 
         // Update the count value only once
