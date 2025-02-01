@@ -32,7 +32,9 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
         return <Slide direction="up" ref={ref} {...props} />;
     });
 
-    const handleClose = () => {
+    const handleClose = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpen(false);
         manualLoadData();
     };
@@ -51,7 +53,9 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
         setOpenDocuments(true);
     };
 
-    const handleCloseGenericForm = () => {
+    const handleCloseGenericForm = (event, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
         setOpenGenericForm(false);
     };
 
@@ -140,7 +144,8 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
 
             {/* EDIT SCREEN */}
             <BootstrapDialog
-                className=""
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"
@@ -168,7 +173,8 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
 
             {/* DOCUMENTS */}
             <BootstrapDialog
-                className=""
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleCloseDocuments}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"
@@ -196,7 +202,8 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
 
             {/* GENERIC FORM */}
             <BootstrapDialog
-                className=""
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleCloseGenericForm}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"

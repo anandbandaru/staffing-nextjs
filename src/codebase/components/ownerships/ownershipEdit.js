@@ -23,7 +23,9 @@ function OwnershipEdit({ ID, operation, manualLoadData, setApiLoading, showSnack
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
-    const handleClose = () => {
+    const handleClose = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpen(false);
         manualLoadData();
     };
@@ -100,7 +102,8 @@ function OwnershipEdit({ ID, operation, manualLoadData, setApiLoading, showSnack
                 </IconButton>
             </Stack>
             <BootstrapDialog
-                className=""
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"

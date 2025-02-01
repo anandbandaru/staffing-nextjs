@@ -23,7 +23,9 @@ function CompanyEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
-    const handleClose = () => {
+    const handleClose = (event, reason) => {
+        if (reason && reason === "backdropClick") 
+            return;
         setOpen(false);
         manualLoadData();
     };
@@ -107,7 +109,8 @@ function CompanyEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
             </Stack>
 
             <BootstrapDialog
-                className=""
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleClose}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"
