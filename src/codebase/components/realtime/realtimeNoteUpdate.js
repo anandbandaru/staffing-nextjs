@@ -41,7 +41,7 @@ const RealtimeNoteUpdate = () => {
         const dbRef = ref(getDatabase(), '/note');
         await set(dbRef, dataNote);
         setIsSubmitting(false);
-        showSnackbar('warning', dataNote);
+        //showSnackbar('warning', dataNote);
     };
 
     return (
