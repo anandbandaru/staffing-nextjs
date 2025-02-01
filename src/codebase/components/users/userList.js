@@ -62,6 +62,7 @@ const UserList = () => {
         }, 1);
     }
 
+    // Fetch Users Data from Microsoft Graph API
     const fetchUsers = async () => {
         setApiLoading(true);
         try {
@@ -87,19 +88,7 @@ const UserList = () => {
         }
     };
 
-    const fetchLoginDetails = async (userName) => {
-        try {
-            setApiLoading(true);
-            // console.log(userName)
-            const response = await axios.get(APIPath + "/getlogindetails/" + userName);
-            setLoginDetails(response.data.data[0]);
-            setDialogOpen(true);
-            setApiLoading(false);
-            showSnackbar('success', "Users Login data fetched");
-        } catch (error) {
-            // console.log("ERROR: fetching login details:", error);
-        }
-    };
+    // Fetch Login Details for ALL Users from API
     const fetchLoginDetailsForUsers = async (users) => {
         setApiLoading(true);
         const updatedUsers = await Promise.all(users.map(async (user) => {
@@ -118,6 +107,21 @@ const UserList = () => {
         }));
         setData(updatedUsers);
         setApiLoading(false);
+    };
+
+    // Fetch Login Details for EACH User from API
+    const fetchLoginDetails = async (userName) => {
+        try {
+            setApiLoading(true);
+            // console.log(userName)
+            const response = await axios.get(APIPath + "/getlogindetails/" + userName);
+            setLoginDetails(response.data.data[0]);
+            setDialogOpen(true);
+            setApiLoading(false);
+            showSnackbar('success', "Users Login data fetched");
+        } catch (error) {
+            // console.log("ERROR: fetching login details:", error);
+        }
     };
 
     const chartOptions = {
@@ -160,12 +164,14 @@ const UserList = () => {
         COHOST: <SupervisedUserCircleOutlinedIcon />,
         OPERATOR: <PersonOutlinedIcon />,
         DEFAULT: <AttributionOutlinedIcon />,
+        EMPLOYEE: <AttributionOutlinedIcon />,
     };
     const classMap = {
         ADMIN: 'rag-green-bg badgeSpan',
-        COHOST: 'rag-red-bg badgeSpan',
+        COHOST: 'rag-gray-bg badgeSpan',
         OPERATOR: 'rag-blue-bg badgeSpan',
-        DEFAULT: 'rag-gray-bg badgeSpan',
+        DEFAULT: 'rag-red-bg badgeSpan',
+        EMPLOYEE: 'rag-red-bg badgeSpan',
     };
     const CustomJobTitleRenderer = ({ value }) => (
         <div>
@@ -212,7 +218,6 @@ const UserList = () => {
         type: 'fitGridWidth',
         defaultMinWidth: 50
     };
-
 
     //For dialog MUI
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({

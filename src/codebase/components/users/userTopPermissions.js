@@ -6,6 +6,10 @@ import TextField from '@mui/material/TextField';
 import { Stack, MenuItem, Chip, Button, Paper, Autocomplete } from '@mui/material';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import AttributionOutlinedIcon from '@mui/icons-material/AttributionOutlined';
 
 const UserTopPermissions = ({ users }) => {
     const { APIPath } = useContext(Context);
@@ -68,6 +72,20 @@ const UserTopPermissions = ({ users }) => {
                 showSnackbar('error', "Top tabs Permissions save failure");
             });
     };
+    const iconMap = {
+        ADMIN: <AdminPanelSettingsOutlinedIcon />,
+        COHOST: <SupervisedUserCircleOutlinedIcon />,
+        OPERATOR: <PersonOutlinedIcon />,
+        DEFAULT: <AttributionOutlinedIcon />,
+        EMPLOYEE: <AttributionOutlinedIcon />,
+    };
+    const classMap = {
+        ADMIN: 'rag-green-bg badgeSpan',
+        COHOST: 'rag-gray-bg badgeSpan',
+        OPERATOR: 'rag-blue-bg badgeSpan',
+        DEFAULT: 'rag-red-bg badgeSpan',
+        EMPLOYEE: 'rag-red-bg badgeSpan',
+    };
 
     return (
         <div className='py-0 my-1 mb-4'>
@@ -97,6 +115,9 @@ const UserTopPermissions = ({ users }) => {
                         >
                             {users.filter(user => user.jobTitle !== 'ADMIN').map((item, index) => (
                                 <MenuItem key={index} value={item.userPrincipalName}>
+                                    <span className={`mr-3 ${classMap[item.jobTitle] || classMap.DEFAULT}`}>
+                                        {item.jobTitle}
+                                    </span>
                                     {item.userPrincipalName}
                                 </MenuItem>
                             ))}
