@@ -25,10 +25,10 @@ function EmployeeForm({ props, ID, operation }) {
     const [firstName, setFirstName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
     // Default width
-   const [formWidth, setFormWidth] = useState(700);
-   const handleSliderChange = (event, newValue) => {
-       setFormWidth(newValue);
-   };
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -169,6 +169,7 @@ function EmployeeForm({ props, ID, operation }) {
                         citizenIDNumber: firstName ? data.data[0].citizenIDNumber : '',
                         nonCitizenIDType: firstName ? data.data[0].nonCitizenIDType : '',
                         nonCitizenIDNumber: firstName ? data.data[0].nonCitizenIDNumber : '',
+                        applicationEmail: firstName ? data.data[0].applicationEmail : '',
                         createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -202,6 +203,10 @@ function EmployeeForm({ props, ID, operation }) {
                         });
                     }}
                     validationSchema={Yup.object().shape({
+                        applicationEmail: Yup.string()
+                            .email()
+                            .matches(/^[a-zA-Z0-9._%+-]+@vsksoftwareoutlook\.onmicrosoft\.com$/, 'Invalid email format: xxxxx@vsksoftwareoutlook.onmicrosoft.com')
+                            .required('Application Login Email is Required'),
                         firstName: Yup.string()
                             .required('firstName Required'),
                         lastName: Yup.string()
@@ -317,6 +322,19 @@ function EmployeeForm({ props, ID, operation }) {
                                     value={values.Id}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="applicationEmail"
+                                    name="applicationEmail"
+                                    label="Application Login Email (this would be in format xxxx@vsksoftwareoutlook.onmicrosoft.com)"
+                                    color="secondary"
+                                    value={values.applicationEmail}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.applicationEmail && touched.applicationEmail) && errors.applicationEmail}
                                 />
                                 <Stack direction="row" spacing={2} className='mt-2'>
                                     <TextField
@@ -464,7 +482,7 @@ function EmployeeForm({ props, ID, operation }) {
                                         )}
 
                                         {(values.isCitizen === '0' || values.employeeType === 'ONSHORE') && (
-                                            <Stack direction="row" spacing={2} className='mt-2'>
+                                            <Stack direction="row" spacing={2} className='mt-6'>
                                                 <TextField
                                                     size="small"
                                                     margin="normal"

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,6 +16,7 @@ import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import AirplanemodeActiveOutlinedIcon from '@mui/icons-material/AirplanemodeActiveOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Context } from "../../context/context";
 import axios from 'axios';
 import GenericFileForm from '../forms/GenericFileForm';
@@ -26,14 +28,28 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
     const [openDocuments, setOpenDocuments] = React.useState(false);
     const [openGenericForm, setOpenGenericForm] = React.useState(false);
     const [formType, setFormType] = React.useState('');
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
-    //For dialog MUI
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleMenuItemClick = (type) => {
+        setFormType(type);
+        setOpenGenericForm(true);
+        handleMenuClose();
+    };
+
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
 
     const handleClose = (event, reason) => {
-        if (reason && reason === "backdropClick") 
+        if (reason && reason === "backdropClick")
             return;
         setOpen(false);
         manualLoadData();
@@ -57,11 +73,6 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
         if (reason && reason === "backdropClick")
             return;
         setOpenGenericForm(false);
-    };
-
-    const handleClickOpenGenericForm = (type) => {
-        setFormType(type);
-        setOpenGenericForm(true);
     };
 
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -88,7 +99,7 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
             },
         ).then((resp) => {
             setApiLoading(false);
-            manualLoadData();            
+            manualLoadData();
             if (resp.data.ERROR.MESSAGE.includes("The DELETE statement conflicted with the REFERENCE constraint"))
                 showSnackbar('warning', "Cannot delete Item due to child rows");
             if (resp.data.ERROR.MESSAGE.includes("Cannot delete employee. There are related records in temp_Expenses."))
@@ -98,49 +109,57 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
         }).catch(function (error) {
             setApiLoading(false);
             showSnackbar('error', "Error occured while deletion");
-            // console.log(error);
         });
     }
 
     return (
         <>
-            <Stack direction="row" spacing={0.5} className='float-right'>
-                <IconButton aria-label="Passports" title="Passports" color="primary" onClick={() => handleClickOpenGenericForm('Passport')}>
-                    <BadgeOutlinedIcon />
-                </IconButton>
-                <IconButton aria-label="Visas" title="Visas" color="primary" onClick={() => handleClickOpenGenericForm('Visa')}>
-                    <PublicOutlinedIcon />
-                </IconButton>
-                <IconButton aria-label="Dependents" title="Dependents" color="primary" onClick={() => handleClickOpenGenericForm('Dependent')}>
-                    <SupervisorAccountOutlinedIcon />
-                </IconButton>
-                <IconButton aria-label="I94" title="I94" color="primary" onClick={() => handleClickOpenGenericForm('I94')}>
-                    <AirplanemodeActiveOutlinedIcon />
-                </IconButton>
-                <IconButton aria-label="Upload Documents" title="Upload Documents" color="primary" onClick={handleClickOpenDocuments}>
-                    <BackupIcon />
-                </IconButton>
-                <IconButton aria-label="Edit" title="Edit" color="primary" onClick={handleClickOpen}>
-                    <EditIcon />
-                </IconButton>
-                <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
-                    const proceed = window.confirm("This will delete all child table rows, including:\n- Visas\n- Passports\n- I94\n- Dependants\nDo you want to proceed?");
-                    if (proceed) {
-                        const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
-                        if (userInput && userInput.toUpperCase() === "DELETE") {
-                            deleteItem();
-                        } else {
-                            // console.log("Delete operation cancelled");
-                            showSnackbar('warning', "Delete operation cancelled");
-                        }
+            <IconButton aria-label="more" aria-controls="long-menu" aria-haspopup="true" onClick={handleMenuOpen}>
+                <MoreVertIcon />
+            </IconButton>
+            <Menu
+                id="long-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+            >
+                <MenuItem onClick={() => handleMenuItemClick('Passport')}>
+                    <BadgeOutlinedIcon className='mr-2' /> Passports
+                </MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick('Visa')}>
+                    <PublicOutlinedIcon className='mr-2' /> Visas
+                </MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick('Dependent')}>
+                    <SupervisorAccountOutlinedIcon className='mr-2' /> Dependents
+                </MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick('I94')}>
+                    <AirplanemodeActiveOutlinedIcon className='mr-2' /> I94
+                </MenuItem>
+            </Menu>
+            <IconButton aria-label="Upload Documents" title="Upload Documents" color="primary" onClick={handleClickOpenDocuments}>
+                <BackupIcon />
+            </IconButton>
+            <IconButton aria-label="Edit" title="Edit" color="primary" onClick={handleClickOpen}>
+                <EditIcon />
+            </IconButton>
+            <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
+                const proceed = window.confirm("This will delete all child table rows, including:\n- Visas\n- Passports\n- I94\n- Dependants\nDo you want to proceed?");
+                if (proceed) {
+                    const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
+                    if (userInput && userInput.toUpperCase() === "DELETE") {
+                        deleteItem();
                     } else {
                         // console.log("Delete operation cancelled");
                         showSnackbar('warning', "Delete operation cancelled");
                     }
-                }}>
-                    <DeleteIcon />
-                </IconButton>
-            </Stack>
+                } else {
+                    // console.log("Delete operation cancelled");
+                    showSnackbar('warning', "Delete operation cancelled");
+                }
+            }}>
+                <DeleteIcon />
+            </IconButton>
 
             {/* EDIT SCREEN */}
             <BootstrapDialog

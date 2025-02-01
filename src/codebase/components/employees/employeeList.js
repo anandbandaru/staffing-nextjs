@@ -117,6 +117,15 @@ const EmployeesList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
+        {
+            field: "disabled", filter: false, maxWidth: 100,
+            // cellClassRules: {
+            //     // apply green to electric cars
+            //     'rag-green': params => params.value === null || params.value === false,
+            //     'rag-red': params => params.value === true,
+            // },
+            cellRenderer: CustomDisabledRenderer
+        },
         { field: "firstName", filter: true, maxWidth: 200 },
         { field: "lastName", filter: true, maxWidth: 200 },
         {
@@ -133,16 +142,8 @@ const EmployeesList = () => {
             field: "employeeType", filter: true, maxWidth: 150,
             cellRenderer: CustomEmployeeTypeRenderer
         },
-        {
-            field: "disabled", filter: false, maxWidth: 100,
-            // cellClassRules: {
-            //     // apply green to electric cars
-            //     'rag-green': params => params.value === null || params.value === false,
-            //     'rag-red': params => params.value === true,
-            // },
-            cellRenderer: CustomDisabledRenderer
-        },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 290, resizable: false }
+        { field: "applicationEmail", filter: true, editable: true, },
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 170, resizable: true }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
@@ -154,6 +155,10 @@ const EmployeesList = () => {
     const autoSizeStrategy = {
         type: 'fitGridWidth',
         defaultMinWidth: 50
+    };
+    const gridOptions = {
+      enableCellTextSelection: true,
+      ensureDomOrder: true,
     };
 
     return (
@@ -189,6 +194,7 @@ const EmployeesList = () => {
                     paginationPageSizeSelector={paginationPageSizeSelector}
                     rowClassRules={rowClassRules}
                     autoSizeStrategy={autoSizeStrategy}
+                    gridOptions={gridOptions}
                 />
             </div>
 

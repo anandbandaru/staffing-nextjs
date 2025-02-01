@@ -107,7 +107,7 @@ const Realtime = () => {
             />
             <Stack direction="row" spacing={1}>
                 <NotificationsActiveOutlinedIcon color='warning' />
-                <div className=''>
+                <div className='flashing-div'>
                     <span className={`${blink ? 'blink changeColor' : ''}`}>
                         Notification: {dataNote ? dataNote : "0"}
                     </span>
