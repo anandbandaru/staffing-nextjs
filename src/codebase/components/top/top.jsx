@@ -210,7 +210,11 @@ const Top = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1200);
     useEffect(() => {
         if (userType !== "ADMIN") {
-            setSelectedTab("Calendar");
+            if (userType !== "OPERATOR") {
+                setSelectedTab("Timesheet Entry");
+            }
+            else
+                setSelectedTab("Calendar");
         }
         const handleResize = () => {
             setIsMobile(window.innerWidth < 1200);
