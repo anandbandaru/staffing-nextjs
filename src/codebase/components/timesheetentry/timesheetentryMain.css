@@ -3,6 +3,14 @@
 }
 .titleDate{
     background-color: bisque;
+    margin-bottom: 20px;
+}
+.timeHoursItem{
+    padding: 10px 15px;
+    color: #000;
+    margin: 15px 15px 0px 0px;
+    border-radius: 8px;
+    background-color: rgb(231, 226, 221);
 }
 .jobLevelPendingTSCounts{
     position: absolute;

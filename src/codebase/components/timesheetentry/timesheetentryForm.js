@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, FieldArray } from 'formik';
-import { Button, Grid, Typography, Box, Accordion, AccordionSummary, AccordionDetails, Stack, Dialog, DialogTitle, DialogContent } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Button, Grid, Typography, Box, Stack, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import TimesheetEntryDialog from './timesheetentryDialog';
@@ -18,7 +17,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
 const TimesheetEntryForm = ({ data }) => {
@@ -217,8 +215,8 @@ const TimesheetEntryForm = ({ data }) => {
                             aria-labelledby="customized-dialog-title"
                             open={openDialog}
                         >
-                            <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                                Timesheet Entry
+                            <DialogTitle className="text-pink-600 w-[900]" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                                Timesheet: {selectedTimesheet.timesheetNumber}
                             </DialogTitle>
                             <IconButton
                                 aria-label="close"

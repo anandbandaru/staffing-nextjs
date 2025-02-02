@@ -12,9 +12,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 
 const validationSchema = Yup.object().shape({
     hours: Yup.array().of(
@@ -26,7 +23,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const TimesheetEntryDialog = ({ timesheet, onClose }) => {
-
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -65,6 +61,13 @@ const TimesheetEntryDialog = ({ timesheet, onClose }) => {
         }
     });
 
+    const getDayOfWeek = (date) => {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[new Date(date).getDay()];
+    };
+
+    const totalHours = formik.values.hours.reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
+
     return (
         <FormikProvider value={formik}>
             <Form className='w-full' style={{ maxWidth: `1300px`, margin: '0 auto' }}>
@@ -73,19 +76,16 @@ const TimesheetEntryDialog = ({ timesheet, onClose }) => {
                     Days pending: {timesheet.daysPending}
                 </div>
                 <div>
-                    <div gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                        TIMESHEET ID
-                    </div>
-                    <Typography variant="h5" component="div">
-                        {timesheet.timesheetNumber}
-                    </Typography>
-                    <Stack direction="row" spacing={2} className='my-8'>
+                    <Stack direction="row" spacing={2} className='mt-8 mb-0'>
+                        <Typography variant="h5" component="div">
+                            {timesheet.timesheetNumber}
+                        </Typography>
                         <TextField
                             size="small"
                             margin="normal"
                             id="wes"
                             name="wes"
-                            label="Week Start Date"
+                            label="Timesheet Start Date"
                             disabled
                             value={timesheet.startDate}
                         />
@@ -95,78 +95,85 @@ const TimesheetEntryDialog = ({ timesheet, onClose }) => {
                             margin="normal"
                             id="wed"
                             name="wed"
-                            label="Week End Date"
+                            label="Timesheet End Date"
                             disabled
                             value={timesheet.endDate}
                         />
                     </Stack>
+                    <Stack direction="row" spacing={2} className='mt-8 mb-4'>
+                        
+                        <TableContainer component={Paper}>
+                            <Table size="small" aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell align="left">Title</StyledTableCell>
+                                        <StyledTableCell align="right">Value</StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">JOB ID</TableCell>
+                                        <TableCell align="right">{timesheet.jobID}</TableCell>
+                                    </TableRow>
+                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">Job Timesheet Type</TableCell>
+                                        <TableCell align="right">
+                                            <span className='badgeSpan rag-blue-bg'>{timesheet.jobType}</span>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">Job Start Date</TableCell>
+                                        <TableCell align="right">{timesheet.jobStartDate}</TableCell>
+                                    </TableRow>
+                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">Job End Date</TableCell>
+                                        <TableCell align="right">{timesheet.jobEndDate}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+
+                        <TableContainer component={Paper}>
+                            <Table size="small" aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell align="left">Title</StyledTableCell>
+                                        <StyledTableCell align="right">Value</StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">JOB TITLE</TableCell>
+                                        <TableCell align="right">{timesheet.jobTitle}</TableCell>
+                                    </TableRow>
+                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">Client</TableCell>
+                                        <TableCell align="right">{timesheet.clientName}</TableCell>
+                                    </TableRow>
+                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">Implementation Partner</TableCell>
+                                        <TableCell align="right">{timesheet.implementationPartnerName}</TableCell>
+                                    </TableRow>
+                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">Vendor</TableCell>
+                                        <TableCell align="right">{timesheet.vendorName}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Stack>
                 </div>
 
-                <Stack direction="row" spacing={1} className='mb-10'>
-                    <TableContainer component={Paper}>
-                        <Table size="small" aria-label="a dense table">
-                            <TableHead>
-                                <TableRow>
-                                    <StyledTableCell align="left">Title</StyledTableCell>
-                                    <StyledTableCell align="right">Value</StyledTableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">JOB ID</TableCell>
-                                    <TableCell align="right">{timesheet.jobID}</TableCell>
-                                </TableRow>
-                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">Job Timesheet Type</TableCell>
-                                    <TableCell align="right">
-                                        <span className='badgeSpan rag-blue-bg'>{timesheet.jobType}</span>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">Job Start Date</TableCell>
-                                    <TableCell align="right">{timesheet.jobStartDate}</TableCell>
-                                </TableRow>
-                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">Job End Date</TableCell>
-                                    <TableCell align="right">{timesheet.jobEndDate}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                <Stack direction="row" spacing={1} className='mb-1'>
 
-                    <TableContainer component={Paper}>
-                        <Table size="small" aria-label="a dense table">
-                            <TableHead>
-                                <TableRow>
-                                    <StyledTableCell align="left">Title</StyledTableCell>
-                                    <StyledTableCell align="right">Value</StyledTableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">JOB TITLE</TableCell>
-                                    <TableCell align="right">{timesheet.jobTitle}</TableCell>
-                                </TableRow>
-                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">Client</TableCell>
-                                    <TableCell align="right">{timesheet.clientName}</TableCell>
-                                </TableRow>
-                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">Implementation Partner</TableCell>
-                                    <TableCell align="right">{timesheet.implementationPartnerName}</TableCell>
-                                </TableRow>
-                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">Vendor</TableCell>
-                                    <TableCell align="right">{timesheet.vendorName}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
                 </Stack>
 
-                <Grid container spacing={1} >
+                <Grid container spacing={0} >
                     {formik.values.hours.map((hour, hourIndex) => (
-                        <Grid item key={hourIndex}>
+                        <Grid key={hourIndex} className='timeHoursItem'>
+                            <div className='dayOfWeek'>
+                                {getDayOfWeek(addDays(new Date(timesheet.startDate), hourIndex))}
+                            </div>
                             <div className='titleDate'>
                                 {format(addDays(new Date(timesheet.startDate), hourIndex), 'yyyy-MM-dd')}
                             </div>
@@ -186,14 +193,26 @@ const TimesheetEntryDialog = ({ timesheet, onClose }) => {
                     ))}
                 </Grid>
                 <DialogActions>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={formik.handleSubmit}
-                        disabled={formik.isSubmitting}
-                    >
-                        Submit
-                    </Button>
+                    <Stack direction="row" spacing={2} className='mt-10'>
+                        <TextField
+                            className='mr-4'
+                            size="small"
+                            margin="normal"
+                            id="totalHours"
+                            name="totalHours"
+                            label="Total Hours"
+                            disabled
+                            value={totalHours}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={formik.handleSubmit}
+                            disabled={formik.isSubmitting}
+                        >
+                            Submit
+                        </Button>
+                    </Stack>
                 </DialogActions>
             </Form>
         </FormikProvider>
