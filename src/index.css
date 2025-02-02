@@ -245,7 +245,7 @@ body{
   min-height: 100vh;
 }
 .timeTabsListHolder .react-tabs__tab{
-  padding: 4px 10px;
+  padding: 4px 20px;
   border-radius: 0px !important;
 }
 .timeTabsListHolder .react-tabs__tab--selected {

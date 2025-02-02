@@ -83,7 +83,9 @@ const TimesheetEntryForm = ({ data }) => {
                     <Tabs className='mt-4 rounded-md w-[1200px]'>
                         <TabList className="timeTabsListHolder">
                             {uniqueJobNames.map((jobName, index) => (
-                                <Tab key={index}>JOB: {jobName}</Tab>
+                                <Tab key={index}>
+                                    JOB: {jobName}
+                                </Tab>
                             ))}
                         </TabList>
                         {uniqueJobNames.map((jobName, tabIndex) => {

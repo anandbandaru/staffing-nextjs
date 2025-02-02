@@ -4,3 +4,12 @@
 .titleDate{
     background-color: bisque;
 }
+.jobLevelPendingTSCounts{
+    position: absolute;
+    right: -4px;
+    top: -6px;
+    padding: 0px 5px;
+    border-radius: 10px;
+    color: #fff !important;
+    background-color: #ce344e !important;
+}
