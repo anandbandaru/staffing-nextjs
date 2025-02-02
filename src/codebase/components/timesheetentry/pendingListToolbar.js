@@ -13,7 +13,7 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import CachedIcon from '@mui/icons-material/Cached';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const PendingListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
+const PendingListToolbar = ({ operation, jobsCount, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -43,7 +43,11 @@ const PendingListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, ma
                 <div className="flex flex-grow items-center place-items-center">
                     <Stack direction="row" spacing={1} className="place-items-center">
                         <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
-                            <span className="">Total Pending:</span>
+                            <span className="">Total Jobs:</span>
+                            <span className="font-bold text-sm ml-2">{jobsCount}</span>
+                        </div>
+                        <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
+                            <span className="">Total Pending Timesheets:</span>
                             <span className="font-bold text-sm ml-2">{itemCount}</span>
                         </div>
 

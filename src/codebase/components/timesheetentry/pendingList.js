@@ -11,6 +11,7 @@ const PendingList = ({ employeeId }) => {
     const [apiLoading, setApiLoading] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+    const [jobsCount, setJobsCount] = useState(0);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -45,6 +46,8 @@ const PendingList = ({ employeeId }) => {
 
     const getTimesheets = () => {
         setData({ data: [] });
+        setItemCount(0);
+        setJobsCount(0);
         let apiUrl = APIPath + "/getmypendingtimesheets/" + employeeId;
         fetch(apiUrl)
             .then(response => response.json())
@@ -53,6 +56,7 @@ const PendingList = ({ employeeId }) => {
                     if (result.error) {
                         setData({});
                         setItemCount(0);
+                        setJobsCount(0);
                     } else {
                         setData(result);
                         setItemCount(result.total);
@@ -61,6 +65,8 @@ const PendingList = ({ employeeId }) => {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         } else {
                             showSnackbar('success', "Pending Timesheets Data fetched");
+                            const uniqueJobIds = new Set(result.data.map(item => item.jobID));
+                            setJobsCount(uniqueJobIds.size);
                         }
                     }
                     setApiLoading(false);
@@ -69,6 +75,7 @@ const PendingList = ({ employeeId }) => {
                     setDataAPIError(error.toString());
                     setData({});
                     setItemCount(0);
+                    setJobsCount(0);
                     setApiLoading(false);
                 }
             );
@@ -85,6 +92,7 @@ const PendingList = ({ employeeId }) => {
             <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
                 <PendingListToolbar
                     operation="Add"
+                    jobsCount={jobsCount}
                     itemCount={itemCount}
                     apiLoading={apiLoading}
                     dataAPIError={dataAPIError}

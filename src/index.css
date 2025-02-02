@@ -371,6 +371,11 @@ form P.normal{
   color: #fff !important;
   background-color: #464343 !important;
 }
+.rag-graylight-bg{
+  color: #000 !important;
+  background-color: #c0b8b8 !important;
+  border-radius: 3px;
+}
 .rag-gray{
   color: #464343 !important;
 }
