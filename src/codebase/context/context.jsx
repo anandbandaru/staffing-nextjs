@@ -17,6 +17,7 @@ const ContextProvider = (props) => {
 
     const [userName, setUserName] = useState("");
     const [userType, setUserType] = useState("");
+    const [userEmployeeId, setUserEmployeeId] = useState(0);
 
     const flaskAPI_Availability = process.env.REACT_APP_API_SUFFIX;
     const freecurrencyapi = process.env.REACT_APP_FREE_CURRENCY_API;
@@ -284,7 +285,8 @@ const ContextProvider = (props) => {
         setRefreshBalance,
         refreshBalance,
         refreshTodos, setRefreshTodos,
-        todoOpen, setTodoOpen
+        todoOpen, setTodoOpen,
+        userEmployeeId, setUserEmployeeId
     }
 
     return (

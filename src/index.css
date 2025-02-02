@@ -234,6 +234,27 @@ body{
   /* background-color: #ff068c;
   color: #fff; */
 }
+
+
+.timeTabsListHolder{
+  color: rgb(6, 87, 207) !important;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgb(6, 87, 207) !important;
+}
+.timeTabsListHolder .react-tabs__tab-panel{
+  min-height: 100vh;
+}
+.timeTabsListHolder .react-tabs__tab{
+  padding: 4px 10px;
+  border-radius: 0px !important;
+}
+.timeTabsListHolder .react-tabs__tab--selected {
+  border: 1px solid rgb(6, 87, 207) !important;
+  border-bottom: 0px !important;
+  /* background-color: #ff068c;
+  color: #fff; */
+}
+
 .error-summary-heading{
   background-color: #000;
   padding: 2px 10px;

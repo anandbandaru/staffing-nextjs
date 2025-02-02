@@ -15,7 +15,9 @@
       "version": "2.8",
       "date": "JAN 31 2024",
       "notes": [
-        "Realtime chat"
+        "Realtime chat",
+        "Hiding TODO bar for Employees",
+        "User management badges"
       ]
     },
     {
@@ -142,7 +144,7 @@
       ]
     }
   ],
-  "topTabs": ["Dashboard", "New", "Transactions", "Timesheets", "Files", "Todo", "Users", "Calendar", "Configuration"],
+  "topTabs": ["Dashboard", "New", "Transactions", "Timesheets", "Timesheet Entry", "Files", "Todo", "Users", "Calendar", "Configuration"],
   "newTabs": ["Owners", "Companies", "Ownerships", "Employees", "Vendors", "Clients", "Implementation Partners", "Job Types", "Expense Types", "File Types"],
   "transactionsTabs": ["Jobs", "Invoices", "Expenses", "Payroll"],
   "citizenIdTypes": [

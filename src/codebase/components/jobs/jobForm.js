@@ -355,7 +355,7 @@ function Job({ props, ID, operation }) {
                         notesRate: Yup.string().when(userType, {
                             is: 'ADMIN',
                             then: () => Yup.string()
-                                .required('Invoice frequency Required'),
+                                .required('Rate notes Required'),
                             otherwise: () => Yup.string().nullable()
                         }),
                     })}
