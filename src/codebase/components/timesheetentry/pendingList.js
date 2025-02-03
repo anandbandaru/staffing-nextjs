@@ -100,11 +100,11 @@ const PendingList = ({ employeeId }) => {
                 />
             </div>
 
-            <div className="flex flex-1 bg-kmcBG rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
+            <div className="flex flex-1 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
                 {data.data.length > 0 ? (
                     <>
-                        <Stack direction="column" spacing={1} className="w-[1200px] m-auto">
-                            <TimesheetEntryForm data={data.data} />
+                        <Stack direction="column" spacing={1} className="m-auto">
+                            <TimesheetEntryForm data={data.data} onFormSubmitSuccess={getTimesheets} />
                         </Stack>
                     </>
                 ) : (

@@ -4,13 +4,27 @@
 .titleDate{
     background-color: bisque;
     margin-bottom: 20px;
+    border-radius: 8px;
+    display: inline-block;
+    padding: 1px 5px;
 }
-.timeHoursItem{
+.weekday{
     padding: 10px 15px;
     color: #000;
     margin: 15px 15px 0px 0px;
     border-radius: 8px;
-    background-color: rgb(231, 226, 221);
+    background-color: rgb(230, 231, 221);
+    width: 120px !important;
+    height: 150px !important;
+}
+.weekendDay{
+    padding: 10px 15px;
+    color: #000;
+    margin: 15px 15px 0px 0px;
+    border-radius: 8px;
+    background-color: rgb(171, 189, 181);
+    width: 120px !important;
+    height: 150px !important;
 }
 .jobLevelPendingTSCounts{
     position: absolute;
