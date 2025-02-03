@@ -97,6 +97,11 @@ const SubmittedList = ({ employeeId }) => {
             </>
         );
     };
+    const CustomJobTypeRenderer = ({ value }) => (
+        <span className='rag-blue-bg badgeSpan'>
+            {value}
+        </span>
+    );
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         {
@@ -105,6 +110,7 @@ const SubmittedList = ({ employeeId }) => {
         { field: "Id", maxWidth: 50 },
         { field: "timesheetNumber", filter: true },
         { field: "jobTitle", filter: true },
+        { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
         { field: "clientName", filter: true },
         { field: "createdDate", headerName: 'Submitted Date', filter: true },
         { field: "startDate", filter: true },

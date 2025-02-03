@@ -214,10 +214,12 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                                                         </span>
                                                                     </TableCell>
                                                                     <TableCell className='bg-gray-100'>
-                                                                        {(value === true || value === 1) ? (
+                                                                        {(value === true || value === 1 && key !== "employeeID") ? (
                                                                             <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
                                                                         ) : (value === false || value === 0) ? (
                                                                             <span className="bg-green-500 text-white px-1 py-1 rounded">NO</span>
+                                                                        ) : (value === "Submitted") ? (
+                                                                            <span className="bg-orange-400 text-white px-1 py-1 rounded">{value}</span>
                                                                         ) : (
                                                                             value
                                                                         )}
