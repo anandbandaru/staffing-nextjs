@@ -12,6 +12,14 @@
   ],
   "releases": [
     {
+      "version": "3.0",
+      "date": "FEB 03 2024",
+      "notes": [
+        "My Timesheets module with List of pending timesheets for each JOB",
+        "Submission of timesheets"
+      ]
+    },
+    {
       "version": "2.8",
       "date": "JAN 31 2024",
       "notes": [

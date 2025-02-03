@@ -9,21 +9,21 @@
     padding: 1px 5px;
 }
 .weekday{
-    padding: 10px 15px;
+    padding: 5px 5px;
     color: #000;
     margin: 15px 15px 0px 0px;
     border-radius: 8px;
     background-color: rgb(230, 231, 221);
-    width: 120px !important;
+    width: 100px !important;
     height: 150px !important;
 }
 .weekendDay{
-    padding: 10px 15px;
+    padding: 5px 5px;
     color: #000;
     margin: 15px 15px 0px 0px;
     border-radius: 8px;
     background-color: rgb(171, 189, 181);
-    width: 120px !important;
+    width: 100px !important;
     height: 150px !important;
 }
 .jobLevelPendingTSCounts{

@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { useFormik, FormikProvider, Form } from 'formik';
 import * as Yup from 'yup';
-import { Grid, TextField, Typography, Button, Stack } from '@mui/material';
+import { Grid, TextField, Typography, Button, Stack, Chip } from '@mui/material';
 import { format, addDays, differenceInDays } from 'date-fns';
 import axios from 'axios';
 import TimesheetEntryMetadata from './timesheetentryMetadata';
 import { Context } from "../../context/context";
 import CustomSnackbar from "../snackbar/snackbar";
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 const validationSchema = Yup.object().shape({
     hours: Yup.array().of(
@@ -63,31 +64,31 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
             }));
 
             var finalAPI = APIPath + "/submittimesheet";
-            axios.post(finalAPI, {
-                employeeID: timesheet.employeeID,
-                jobID: timesheet.jobID,
-                entries: timesheetEntries,
-                userNotes: values.userNotes,
-                createdBy: userName
-            })
-                .then((resp) => {
-                    setSubmitting(false);
-                    setSubmitionCompleted(true);
-                    if (resp.data.STATUS === "FAIL") {
-                        setIsSubmitSuccess(false);
-                        showSnackbar('error', "Error saving Timesheet data");
-                    } else {
-                        setIsSubmitSuccess(true);
-                        showSnackbar('success', "Timesheet data saved");
-                        onFormSubmitSuccess();  // Call the callback function
-                    }
-                })
-                .catch(function (error) {
-                    setSubmitting(false);
-                    setIsSubmitSuccess(false);
-                    setSubmitionCompleted(true);
-                    showSnackbar('error', "Error saving Timesheet data");
-                });
+            // axios.post(finalAPI, {
+            //     employeeID: timesheet.employeeID,
+            //     jobID: timesheet.jobID,
+            //     entries: timesheetEntries,
+            //     userNotes: values.userNotes,
+            //     createdBy: userName
+            // })
+            //     .then((resp) => {
+            //         setSubmitting(false);
+            //         setSubmitionCompleted(true);
+            //         if (resp.data.STATUS === "FAIL") {
+            //             setIsSubmitSuccess(false);
+            //             showSnackbar('error', "Error saving Timesheet data");
+            //         } else {
+            //             setIsSubmitSuccess(true);
+            //             showSnackbar('success', "Timesheet data saved");
+            //             onFormSubmitSuccess();  // Call the callback function
+            //         }
+            //     })
+            //     .catch(function (error) {
+            //         setSubmitting(false);
+            //         setIsSubmitSuccess(false);
+            //         setSubmitionCompleted(true);
+            //         showSnackbar('error', "Error saving Timesheet data");
+            //     });
         }
     });
 
@@ -100,6 +101,23 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
         return day === 0 || day === 6 ? 'weekendDay' : 'weekday';
     };
     const totalHours = formik.values.hours.reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
+    const today = new Date();
+
+    const getValidationErrors = () => {
+        const errors = [];
+        for (const key in formik.errors) {
+            if (formik.errors.hasOwnProperty(key)) {
+                if (Array.isArray(formik.errors[key])) {
+                    formik.errors[key].forEach((error, index) => {
+                        errors.push(`Error in ${key}[${index + 1}]: ${error}`);
+                    });
+                } else {
+                    errors.push(`Error in ${key}: ${formik.errors[key]}`);
+                }
+            }
+        }
+        return errors;
+    };
 
     return (
         <FormikProvider value={formik}>
@@ -112,10 +130,19 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
             <Form className='w-full' style={{ maxWidth: `1300px`, margin: '0 auto' }}>
 
                 <div>
-                    <Stack direction="row" spacing={2} className='mt-2 mb-0'>
+                    <Stack direction="row" spacing={2} className='mt-0 mb-8'>
                         <Typography variant="h5" component="div">
-                            {timesheet.timesheetNumber}
+                            CURRENT DATE: <Chip label={today.toLocaleDateString()} color="primary" variant="outlined" />
                         </Typography>
+                        <Typography variant="h5" component="div">
+                            TIMESHEET ID: <Chip label={timesheet.timesheetNumber} color="primary" variant="outlined" />
+                        </Typography>
+                        <div className='badgeSpan rag-red-bg mb-4'
+                            style={{ display: 'flex', alignItems: 'center', color: 'text.secondary', fontSize: 16 }}>
+                            Days pending: {timesheet.daysPending}
+                        </div>
+                    </Stack>
+                    <Stack direction="row" spacing={2} className='mb-0'>
                         <TextField
                             size="small"
                             margin="normal"
@@ -135,28 +162,6 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                             disabled
                             value={timesheet.endDate}
                         />
-                        <TextField
-                            className='mr-4'
-                            size="small"
-                            margin="normal"
-                            id="totalHours"
-                            name="totalHours"
-                            label="Total Hours"
-                            disabled
-                            value={totalHours}
-                        />
-                        <div className='badgeSpan rag-red-bg mb-4'
-                            style={{ display: 'flex', alignItems: 'center', color: 'text.secondary', fontSize: 16 }}>
-                            Days pending: {timesheet.daysPending}
-                        </div>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={formik.handleSubmit}
-                            disabled={formik.isSubmitting || isSubmitSuccess}
-                        >
-                            Submit
-                        </Button>
                     </Stack>
                     <TimesheetEntryMetadata timesheet={timesheet} />
                 </div>
@@ -168,7 +173,7 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                                 {getDayOfWeek(addDays(new Date(timesheet.startDate), hourIndex))}
                             </div>
                             <div className='titleDate'>
-                                {format(addDays(new Date(timesheet.startDate), hourIndex), 'yyyy-MM-dd')}
+                                {format(addDays(new Date(timesheet.startDate), hourIndex), 'MM-dd-yyyy')}
                             </div>
                             <TextField
                                 label="Hours"
@@ -182,8 +187,13 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                                 type="number"
                                 inputProps={{ min: 1, max: 24 }}
                                 size="small"
-                                disabled={isSubmitSuccess}
+                                disabled={isSubmitSuccess || formik.isSubmitting}
                             />
+                            {getDayClass(addDays(new Date(timesheet.startDate), hourIndex)) === "weekendDay" && (
+                                <div className='weekendDayInfo'>
+                                    Enter 0 if not worked.
+                                </div>
+                            )}
                         </Grid>
                     ))}
                 </Grid>
@@ -197,8 +207,45 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                     value={formik.values.userNotes}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    disabled={isSubmitSuccess}
+                    disabled={isSubmitSuccess || formik.isSubmitting}
                 />
+                <Stack direction="row" spacing={2} className='mt-4 float-right'>
+
+                    <TextField
+                        className='mr-4'
+                        size="small"
+                        margin="normal"
+                        id="totalHours"
+                        name="totalHours"
+                        label="Total Hours"
+                        disabled
+                        value={totalHours}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={formik.handleSubmit}
+                        disabled={formik.isSubmitting || isSubmitSuccess}
+                    >
+                        Submit
+                    </Button>
+                    {formik.isSubmitting && <div className='spinner'></div>}
+                </Stack>
+                {getValidationErrors().length > 0 && (
+                    <Stack direction="row" spacing={2} className='mt-4'>
+                        <div className=" bg-red-500 my-4 p-2 text-white rounded-md float-left">
+                            <Typography variant="h6" component="div">
+                                Validation Errors:
+                            </Typography>
+                            <ul>
+                                {getValidationErrors().map((error, index) => (
+                                    <li key={index}><KeyboardArrowRightOutlinedIcon />{error}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </Stack>
+                )
+                }
             </Form>
         </FormikProvider>
     );

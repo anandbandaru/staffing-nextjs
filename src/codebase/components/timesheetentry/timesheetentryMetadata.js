@@ -46,11 +46,15 @@ const TimesheetEntryMetadata = ({ timesheet }) => {
                                     </TableRow>
                                     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell component="th" scope="row">Job Start Date</TableCell>
-                                        <TableCell align="right">{timesheet.jobStartDate}</TableCell>
+                                        <TableCell align="right">
+                                        <span className='badgeSpan rag-blue-bg'>{timesheet.jobStartDate}</span>
+                                        </TableCell>
                                     </TableRow>
                                     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell component="th" scope="row">Job End Date</TableCell>
-                                        <TableCell align="right">{timesheet.jobEndDate}</TableCell>
+                                        <TableCell align="right">
+                                        <span className='badgeSpan rag-blue-bg'>{timesheet.jobEndDate}</span>
+                                        </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>

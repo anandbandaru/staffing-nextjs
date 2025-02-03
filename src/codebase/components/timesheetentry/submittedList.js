@@ -6,7 +6,7 @@ import TimesheetEntryForm from './timesheetentryForm';
 import { Stack } from "@mui/material";
 import { Alert } from "@mui/material";
 
-const PendingList = ({ employeeId }) => {
+const SubmittedList = ({ employeeId }) => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
@@ -28,7 +28,7 @@ const PendingList = ({ employeeId }) => {
     };
 
     useEffect(() => {
-        console.log("PendingList: useEffect: employeeId: " + employeeId);
+        console.log("SubmittedList: useEffect: employeeId: " + employeeId);
         delaydMockLoading();
     }, [employeeId]);
 
@@ -49,7 +49,7 @@ const PendingList = ({ employeeId }) => {
         setData({ data: [] });
         setItemCount(0);
         setJobsCount(0);
-        let apiUrl = APIPath + "/getmypendingtimesheets/" + employeeId;
+        let apiUrl = APIPath + "/getmysubmittedtimesheets/" + employeeId;
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -65,7 +65,7 @@ const PendingList = ({ employeeId }) => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         } else {
-                            showSnackbar('success', "Pending Timesheets Data fetched");
+                            showSnackbar('success', "Submitted Timesheets Data fetched");
                             const uniqueJobIds = new Set(result.data.map(item => item.jobID));
                             setJobsCount(uniqueJobIds.size);
                         }
@@ -100,7 +100,7 @@ const PendingList = ({ employeeId }) => {
                     manualLoadData={manualLoadData}
                 />
             </div>
-            <Alert severity="info" className="my-4">Please access each Job tab and fill the hours to SUBMIt that entry. Ensure to submit all items. This tab displays all the <strong>Pending, Rejected & Sent Back</strong> timesheets.</Alert>
+            <Alert severity="info" className="my-4">This tab displays all the <strong>Submitted</strong> timesheets which are yet to be approved.</Alert>
             <div className="flex flex-1 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
                 {data.data.length > 0 ? (
                     <>
@@ -116,4 +116,4 @@ const PendingList = ({ employeeId }) => {
     );
 };
 
-export default PendingList;
+export default SubmittedList;

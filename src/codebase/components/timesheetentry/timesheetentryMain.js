@@ -8,6 +8,7 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import { Context } from "../../context/context";
 import CustomSnackbar from "../snackbar/snackbar";
 import { Alert } from "@mui/material";
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 const TimeSheetsMain = () => {
     const { APIPath, userEmployeeId, setUserEmployeeId, userName, userType } = useContext(Context);
@@ -85,14 +86,13 @@ const TimeSheetsMain = () => {
                             onSelect={(index) => setTabIndex(index)}>
                             <TabList className="subTabsListHolder">
                                 <Tab><TimerOutlinedIcon className="mr-1" />My Pending Timesheets</Tab>
-                                <Tab><CheckCircleOutlinedIcon className="mr-1" />My Previous Timesheets</Tab>
+                                <Tab><CheckOutlinedIcon className="mr-1" />My Submitted Timesheets</Tab>
+                                <Tab><CheckCircleOutlinedIcon className="mr-1" />My Approved Timesheets</Tab>
                             </TabList>
 
                             <TabPanel className="px-0">
                                 {userEmployeeId !== 0 ?
                                 <>
-                                <Alert severity="info" className="my-4">Please expand each section under each Job tab and fill the hours to SUBMIt that entry. Ensure to submit all items</Alert>
-
                                 <PendingList employeeId={userEmployeeId} />
                                 </>
                                     :
@@ -102,7 +102,10 @@ const TimeSheetsMain = () => {
                                 }
                             </TabPanel>
                             <TabPanel className="px-2">
-                                My Previous Timesheets
+                                My Submitted Timesheets
+                            </TabPanel>
+                            <TabPanel className="px-2">
+                                My Approved Timesheets
                             </TabPanel>
                         </Tabs>
                 </div>
