@@ -12,7 +12,8 @@ import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 import EmployeeGenericList from '../employees/employeeGList';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import JobRatesList from '../jobs/jobRatesList'
-import GenericDetailsSimple from './GenericDetailsSimple';
+import TimesheetAdminDataDetails from '../timesheetentry/adminDataDetails';
+import TimesheetCapturedHours from '../timesheetentry/capturedHours';
 
 function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber }) {
     const { APIPath, userType } = useContext(Context);
@@ -161,6 +162,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         </>
                                         )}
                                         {(moduleName === "MY_SUBMITTED_TIMESHEETS" && <>
+                                            <Tab>Captured Hours</Tab>
                                             <Tab>Status & Notes</Tab>
                                         </>
                                         )}
@@ -247,7 +249,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                     )}
                                     {(moduleName === "MY_SUBMITTED_TIMESHEETS" && <>
                                         <TabPanel className="px-2">
-                                            <GenericDetailsSimple ID={ID} operation="View" doLoading={true} moduleName="MY_SUBMITTED_TIMESHEETS_ADMIN_NOTES" />
+                                            <TimesheetCapturedHours timesheetId={ID} />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <TimesheetAdminDataDetails ID={ID} operation="View" doLoading={true} moduleName="MY_SUBMITTED_TIMESHEETS_ADMIN_NOTES" />
                                         </TabPanel>
                                     </>
                                     )}

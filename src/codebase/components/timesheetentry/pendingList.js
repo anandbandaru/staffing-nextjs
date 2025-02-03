@@ -28,7 +28,7 @@ const PendingList = ({ employeeId }) => {
     };
 
     useEffect(() => {
-        console.log("PendingList: useEffect: employeeId: " + employeeId);
+        // console.log("PendingList: useEffect: employeeId: " + employeeId);
         delaydMockLoading();
     }, [employeeId]);
 

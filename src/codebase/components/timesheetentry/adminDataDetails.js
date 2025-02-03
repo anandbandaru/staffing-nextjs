@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, InputAdornment } from '@mui/material'; // Added InputAdornment import
 import SearchIcon from '@mui/icons-material/Search'; // Added SearchIcon import
 
-function GenericDetailsSimple({ ID, operation, doLoading, moduleName }) {
+function TimesheetAdminDataDetails({ ID, operation, doLoading, moduleName }) {
     const { APIPath, userType } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
@@ -125,4 +125,4 @@ function GenericDetailsSimple({ ID, operation, doLoading, moduleName }) {
     );
 }
 
-export default GenericDetailsSimple;
+export default TimesheetAdminDataDetails;

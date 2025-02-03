@@ -35,3 +35,15 @@
     color: #fff !important;
     background-color: #ce344e !important;
 }
+.correctHoursText{
+    background-color: #39ce34 !important;
+    color: #fff !important;
+}
+.lessHoursText{
+    background-color: #ce344e !important;
+    color: #fff !important;
+}
+.moreHoursText{
+    background-color: #ce9834 !important;
+    color: #fff !important;
+}

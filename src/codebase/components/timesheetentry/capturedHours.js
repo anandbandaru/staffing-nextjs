@@ -6,15 +6,13 @@ import { Alert } from "@mui/material";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import GenericDetails from "../forms/GenericDetails";
 
-const SubmittedList = ({ employeeId }) => {
+const TimesheetCapturedHours = ({ timesheetId }) => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
-    const [jobsCount, setJobsCount] = useState(0);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -30,9 +28,9 @@ const SubmittedList = ({ employeeId }) => {
     };
 
     useEffect(() => {
-        // console.log("SubmittedList: useEffect: employeeId: " + employeeId);
+        console.log("TimesheetCapturedHours: useEffect: timesheetId: " + timesheetId);
         delaydMockLoading();
-    }, [employeeId]);
+    }, [timesheetId]);
 
     function manualLoadData() {
         setApiLoading(true);
@@ -50,8 +48,7 @@ const SubmittedList = ({ employeeId }) => {
     const getList = () => {
         setData({ data: [] });
         setItemCount(0);
-        setJobsCount(0);
-        let apiUrl = APIPath + "/getmysubmittedtimesheets/" + employeeId;
+        let apiUrl = APIPath + "/gettimesheethours/" + timesheetId;
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -67,14 +64,11 @@ const SubmittedList = ({ employeeId }) => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                             setItemCount(0);
-                            setJobsCount(0);
                         }
                         else {
                             setData(result);
                             setItemCount(result.total);
-                            const uniqueJobIds = new Set(result.data.map(item => item.jobID));
-                            setJobsCount(uniqueJobIds.size);
-                            showSnackbar('success', "Submitted Timesheets Data fetched");
+                            showSnackbar('success', "Captured Hours Data fetched");
                         }
                     }
                     setApiLoading(false);
@@ -83,52 +77,61 @@ const SubmittedList = ({ employeeId }) => {
                     setDataAPIError(error.toString());
                     setData({});
                     setItemCount(0);
-                    setJobsCount(0);
                     // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
     }
-
-    const CustomDetailsComponent = (props) => {
-        return (
-            <>
-                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="MY_SUBMITTED_TIMESHEETS" timesheetNumber={props.data.timesheetNumber} />
-            </>
-        );
+    
+    const getDayOfWeek = (date) => {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[new Date(date).getDay()];
     };
+
     const CustomJobTypeRenderer = ({ value }) => (
         <span className='rag-blue-bg badgeSpan'>
             {value}
         </span>
     );
-    const CustomHoursRenderer = ({ value }) => (
-        <span className='rag-gray-bg badgeSpan'>
-            {value}
-        </span>
-    );
+    const CustomDayRenderer = ({ value }) => {
+        const dayOfWeek = getDayOfWeek(value);
+        const isWeekend = dayOfWeek === 'Sunday' || dayOfWeek === 'Saturday';
+        const className = isWeekend ? 'weekendDay' : 'weekDay';
+    
+        return (
+            <span className={`${className} badgeSpan`}>
+                {dayOfWeek} - {value}
+            </span>
+        );
+    };
+    
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        {
-            field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
-        },
         { field: "Id", maxWidth: 50 },
-        { field: "timesheetNumber", filter: true },
-        { field: "jobTitle", filter: true },
-        { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
-        { field: "clientName", filter: true },
-        { field: "createdDate", headerName: 'Submitted Date', filter: true },
-        { field: "startDate", filter: true },
-        { field: "endDate", filter: true },
-        { field: "hours", filter: true, cellRenderer: CustomHoursRenderer },
+        { field: "timesheetId", headerName: 'Entry ID', maxWidth: 80 },
+        { field: "timesheetNumber", headerName: 'Timesheet ID' },
+        { field: "jobType", headerName: 'Timesheet Frequency', cellRenderer: CustomJobTypeRenderer },
+        { field: "day", filter: true, cellRenderer: CustomDayRenderer },
+        {
+            field: "hours", maxWidth: 80,
+            cellClassRules: {
+                'correctHoursText': params => params.value === 8,
+                'lessHoursText': params => params.value !== 8,
+                'moreHoursText': params => params.value > 8,
+            }
+        },
+        { field: "createdDate", maxWidth: 100 },
+        { field: "createdBy" },
+        { field: "modifiedDate" },
+        { field: "modifiedBy" },
     ]);
     const rowClassRules = {
         // apply red to Ford cars
         //'rag-red': params => params.data.firstName === "anand",
     };
     const pagination = true;
-    const paginationPageSize = 10;
-    const paginationPageSizeSelector = [5, 10, 20, 50];
+    const paginationPageSize = 20;
+    const paginationPageSizeSelector = [20, 30, 50];
     const autoSizeStrategy = {
         type: 'fitGridWidth',
         defaultMinWidth: 50
@@ -142,17 +145,6 @@ const SubmittedList = ({ employeeId }) => {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
-                <PendingListToolbar
-                    operation="Submitted"
-                    jobsCount={jobsCount}
-                    itemCount={itemCount}
-                    apiLoading={apiLoading}
-                    dataAPIError={dataAPIError}
-                    manualLoadData={manualLoadData}
-                />
-            </div>
-            <Alert severity="info" className="my-4">This tab displays all the <strong>Submitted</strong> timesheets which are yet to be approved.</Alert>
             <div className="flex flex-grow flex-1 rounded-md text-sm justify-between place-items-center space-x-2 ">
                 {data.data && data.data.length > 0 ? (
                     <div
@@ -170,11 +162,11 @@ const SubmittedList = ({ employeeId }) => {
                         />
                     </div>
                 ) : (
-                    <p>No submitted timesheets</p>
+                    <p>No captured hours</p>
                 )}
             </div>
         </>
     );
 };
 
-export default SubmittedList;
+export default TimesheetCapturedHours;
