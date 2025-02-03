@@ -9,6 +9,7 @@ import { Context } from "../../context/context";
 import CustomSnackbar from "../snackbar/snackbar";
 import { Alert } from "@mui/material";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import SubmittedList from "./submittedList";
 
 const TimeSheetsMain = () => {
     const { APIPath, userEmployeeId, setUserEmployeeId, userName, userType } = useContext(Context);
@@ -82,32 +83,40 @@ const TimeSheetsMain = () => {
 
             <div className="timeSheetMainHolder">
                 <div className="subTabsHolder">
-                        <Tabs selectedIndex={tabIndex}
-                            onSelect={(index) => setTabIndex(index)}>
-                            <TabList className="subTabsListHolder">
-                                <Tab><TimerOutlinedIcon className="mr-1" />My Pending Timesheets</Tab>
-                                <Tab><CheckOutlinedIcon className="mr-1" />My Submitted Timesheets</Tab>
-                                <Tab><CheckCircleOutlinedIcon className="mr-1" />My Approved Timesheets</Tab>
-                            </TabList>
+                    <Tabs selectedIndex={tabIndex}
+                        onSelect={(index) => setTabIndex(index)}>
+                        <TabList className="subTabsListHolder">
+                            <Tab><TimerOutlinedIcon className="mr-1" />My Pending Timesheets</Tab>
+                            <Tab><CheckOutlinedIcon className="mr-1" />My Submitted Timesheets</Tab>
+                            <Tab><CheckCircleOutlinedIcon className="mr-1" />My Approved Timesheets</Tab>
+                        </TabList>
 
-                            <TabPanel className="px-0">
-                                {userEmployeeId !== 0 ?
+                        <TabPanel className="px-0">
+                            {userEmployeeId !== 0 ?
                                 <>
-                                <PendingList employeeId={userEmployeeId} />
+                                    <PendingList employeeId={userEmployeeId} />
                                 </>
-                                    :
-                                    <>
+                                :
+                                <>
                                     <Alert severity="warning">You are not tagged as EMPLOYEE & do not have Employee ID in the system</Alert>
-                                    </>
-                                }
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                My Submitted Timesheets
-                            </TabPanel>
-                            <TabPanel className="px-2">
-                                My Approved Timesheets
-                            </TabPanel>
-                        </Tabs>
+                                </>
+                            }
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            {userEmployeeId !== 0 ?
+                                <>
+                                    <SubmittedList employeeId={userEmployeeId} />
+                                </>
+                                :
+                                <>
+                                    <Alert severity="warning">You are not tagged as EMPLOYEE & do not have Employee ID in the system</Alert>
+                                </>
+                            }
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            My Approved Timesheets
+                        </TabPanel>
+                    </Tabs>
                 </div>
             </div>
         </>

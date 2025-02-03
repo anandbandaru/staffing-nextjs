@@ -92,7 +92,7 @@ const PendingList = ({ employeeId }) => {
             />
             <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
                 <PendingListToolbar
-                    operation="Add"
+                    operation="Pending"
                     jobsCount={jobsCount}
                     itemCount={itemCount}
                     apiLoading={apiLoading}

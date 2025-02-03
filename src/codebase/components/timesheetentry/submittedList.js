@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/context";
 import PendingListToolbar from './pendingListToolbar';
 import CustomSnackbar from "../snackbar/snackbar";
-import TimesheetEntryForm from './timesheetentryForm';
-import { Stack } from "@mui/material";
 import { Alert } from "@mui/material";
+import { AgGridReact } from 'ag-grid-react';
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import GenericDetails from "../forms/GenericDetails";
 
 const SubmittedList = ({ employeeId }) => {
     const { APIPath } = useContext(Context);
@@ -41,11 +43,11 @@ const SubmittedList = ({ employeeId }) => {
         setApiLoading(true);
         setItemCount(0);
         setTimeout(() => {
-            getTimesheets();
+            getList();
         }, 1);
     }
 
-    const getTimesheets = () => {
+    const getList = () => {
         setData({ data: [] });
         setItemCount(0);
         setJobsCount(0);
@@ -54,20 +56,25 @@ const SubmittedList = ({ employeeId }) => {
             .then(response => response.json())
             .then(
                 (result) => {
+                    //// console.log(result);
                     if (result.error) {
+                        // console.log("RequestData:On error return: setting empty")
                         setData({});
                         setItemCount(0);
-                        setJobsCount(0);
-                    } else {
-                        setData(result);
-                        setItemCount(result.total);
+                    }
+                    else {
                         setDataAPIError(result.STATUS === "FAIL" ? "API Error" : "");
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
-                        } else {
-                            showSnackbar('success', "Submitted Timesheets Data fetched");
+                            setItemCount(0);
+                            setJobsCount(0);
+                        }
+                        else {
+                            setData(result);
+                            setItemCount(result.total);
                             const uniqueJobIds = new Set(result.data.map(item => item.jobID));
                             setJobsCount(uniqueJobIds.size);
+                            showSnackbar('success', "Submitted Timesheets Data fetched");
                         }
                     }
                     setApiLoading(false);
@@ -77,9 +84,43 @@ const SubmittedList = ({ employeeId }) => {
                     setData({});
                     setItemCount(0);
                     setJobsCount(0);
+                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
-            );
+            )
+    }
+
+    const CustomDetailsComponent = (props) => {
+        return (
+            <>
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="MY_SUBMITTED_TIMESHEETS" timesheetNumber={props.data.timesheetNumber} />
+            </>
+        );
+    };
+    // Column Definitions: Defines the columns to be displayed.
+    const [colDefs] = useState([
+        {
+            field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
+        },
+        { field: "Id", maxWidth: 50 },
+        { field: "timesheetNumber", filter: true },
+        { field: "jobTitle", filter: true },
+        { field: "clientName", filter: true },
+        { field: "createdDate", headerName: 'Submitted Date', filter: true },
+        { field: "startDate", filter: true },
+        { field: "endDate", filter: true },
+        { field: "hours", filter: true },
+    ]);
+    const rowClassRules = {
+        // apply red to Ford cars
+        //'rag-red': params => params.data.firstName === "anand",
+    };
+    const pagination = true;
+    const paginationPageSize = 10;
+    const paginationPageSizeSelector = [5, 10, 20, 50];
+    const autoSizeStrategy = {
+        type: 'fitGridWidth',
+        defaultMinWidth: 50
     };
 
     return (
@@ -92,7 +133,7 @@ const SubmittedList = ({ employeeId }) => {
             />
             <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
                 <PendingListToolbar
-                    operation="Add"
+                    operation="Submitted"
                     jobsCount={jobsCount}
                     itemCount={itemCount}
                     apiLoading={apiLoading}
@@ -101,15 +142,24 @@ const SubmittedList = ({ employeeId }) => {
                 />
             </div>
             <Alert severity="info" className="my-4">This tab displays all the <strong>Submitted</strong> timesheets which are yet to be approved.</Alert>
-            <div className="flex flex-1 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
-                {data.data.length > 0 ? (
-                    <>
-                        <Stack direction="column" spacing={1} className="m-auto">
-                            <TimesheetEntryForm data={data.data} onFormSubmitSuccess={getTimesheets} />
-                        </Stack>
-                    </>
+            <div className="flex flex-grow flex-1 rounded-md text-sm justify-between place-items-center space-x-2 ">
+                {data.data && data.data.length > 0 ? (
+                    <div
+                        className="ag-theme-quartz" // applying the Data Grid theme
+                        style={{ height: 500, width: '100%' }} // the Data Grid will fill the size of the parent container
+                    >
+                        <AgGridReact
+                            rowData={data.data}
+                            columnDefs={colDefs}
+                            pagination={pagination}
+                            paginationPageSize={paginationPageSize}
+                            paginationPageSizeSelector={paginationPageSizeSelector}
+                            rowClassRules={rowClassRules}
+                            autoSizeStrategy={autoSizeStrategy}
+                        />
+                    </div>
                 ) : (
-                    <p>No pending timesheets</p>
+                    <p>No submitted timesheets</p>
                 )}
             </div>
         </>

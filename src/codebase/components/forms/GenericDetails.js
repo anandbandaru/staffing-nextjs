@@ -12,8 +12,9 @@ import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 import EmployeeGenericList from '../employees/employeeGList';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import JobRatesList from '../jobs/jobRatesList'
+import GenericDetailsSimple from './GenericDetailsSimple';
 
-function GenericDetails({ ID, operation, doLoading, moduleName }) {
+function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber }) {
     const { APIPath, userType } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -60,6 +61,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                 return APIPath + "/gettododetails";
             case 'EXPENSES':
                 return APIPath + "/getexpensedetails";
+            case 'MY_SUBMITTED_TIMESHEETS':
+                return APIPath + "/getmysubmittedtimesheetdetails";
             default:
                 return '';
         }
@@ -95,7 +98,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
         }
     }, [ID]);
 
-    const highlightKeys = ['ID', 'DISABLED', 'IMPORTANT', 'COMPLETED', 'SSN', 'EIN', 'IS'];
+    const highlightKeys = ['ID', 'DISABLED', 'IMPORTANT', 'COMPLETED', 'SSN', 'EIN', 'IS', 'TIMESHEETNUMBER'];
 
     const filteredData = data.data.filter(item =>
         Object.entries(item).some(([key, value]) => {
@@ -117,7 +120,18 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
             <Dialog open={open} onClose={() => handleClose(false)} className="relative z-50 flex w-full">
                 <div className="fixed inset-1 w-full items-center justify-center p-20 bg-gray-700 bg-opacity-50 pt-20">
                     <DialogPanel className="space-y-4 bg-white p-1 px-2 border-gray-600 border-opacity-80 border-8 rounded-lg" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
-                        <DialogTitle className="font-bold text-lg">{operation} - {moduleName}: ID: {ID}</DialogTitle>
+                        <DialogTitle className="font-bold text-lg">
+                            {operation} 
+                            {timesheetNumber ?
+                                <>
+                                    - TIMESHEET ID: {timesheetNumber}
+                                </>
+                                :
+                                <>
+                                    - {moduleName}: ID: {ID}
+                                </>
+                            }
+                        </DialogTitle>
                         <IconButton
                             aria-label="close"
                             onClick={handleClose}
@@ -144,7 +158,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                         )}
                                         {((moduleName !== "FILETYPES" && moduleName !== "EXPENSETYPES" && moduleName !== "JOBTYPES") && <>
                                             <Tab>Documents</Tab>
-                                            <Tab>Relations</Tab>
+                                        </>
+                                        )}
+                                        {(moduleName === "MY_SUBMITTED_TIMESHEETS" && <>
+                                            <Tab>Status & Notes</Tab>
                                         </>
                                         )}
                                         {(moduleName === "EMPLOYEES" && <>
@@ -224,8 +241,11 @@ function GenericDetails({ ID, operation, doLoading, moduleName }) {
                                         <TabPanel className="px-2">
                                             <GenericFilesListSimple moduleId={ID} componentName={moduleName} />
                                         </TabPanel>
+                                    </>
+                                    )}
+                                    {(moduleName === "MY_SUBMITTED_TIMESHEETS" && <>
                                         <TabPanel className="px-2">
-                                            Relations
+                                            <GenericDetailsSimple ID={ID} operation="View" doLoading={true} moduleName="MY_SUBMITTED_TIMESHEETS_ADMIN_NOTES" />
                                         </TabPanel>
                                     </>
                                     )}

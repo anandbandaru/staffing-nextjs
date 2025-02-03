@@ -64,31 +64,33 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
             }));
 
             var finalAPI = APIPath + "/submittimesheet";
-            // axios.post(finalAPI, {
-            //     employeeID: timesheet.employeeID,
-            //     jobID: timesheet.jobID,
-            //     entries: timesheetEntries,
-            //     userNotes: values.userNotes,
-            //     createdBy: userName
-            // })
-            //     .then((resp) => {
-            //         setSubmitting(false);
-            //         setSubmitionCompleted(true);
-            //         if (resp.data.STATUS === "FAIL") {
-            //             setIsSubmitSuccess(false);
-            //             showSnackbar('error', "Error saving Timesheet data");
-            //         } else {
-            //             setIsSubmitSuccess(true);
-            //             showSnackbar('success', "Timesheet data saved");
-            //             onFormSubmitSuccess();  // Call the callback function
-            //         }
-            //     })
-            //     .catch(function (error) {
-            //         setSubmitting(false);
-            //         setIsSubmitSuccess(false);
-            //         setSubmitionCompleted(true);
-            //         showSnackbar('error', "Error saving Timesheet data");
-            //     });
+            axios.post(finalAPI, {
+                employeeID: timesheet.employeeID,
+                jobID: timesheet.jobID,
+                entries: timesheetEntries,
+                userNotes: values.userNotes,
+                createdBy: userName,
+                timesheetNumber: timesheet.timesheetNumber,
+                jobType: timesheet.jobType
+            })
+                .then((resp) => {
+                    setSubmitting(false);
+                    setSubmitionCompleted(true);
+                    if (resp.data.STATUS === "FAIL") {
+                        setIsSubmitSuccess(false);
+                        showSnackbar('error', "Error saving Timesheet data");
+                    } else {
+                        setIsSubmitSuccess(true);
+                        showSnackbar('success', "Timesheet data saved");
+                        onFormSubmitSuccess();  // Call the callback function
+                    }
+                })
+                .catch(function (error) {
+                    setSubmitting(false);
+                    setIsSubmitSuccess(false);
+                    setSubmitionCompleted(true);
+                    showSnackbar('error', "Error saving Timesheet data");
+                });
         }
     });
 
