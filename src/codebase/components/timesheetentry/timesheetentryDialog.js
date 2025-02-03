@@ -111,11 +111,8 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
             />
             <Form className='w-full' style={{ maxWidth: `1300px`, margin: '0 auto' }}>
 
-                <div className='badgeSpan rag-red-bg mb-4' sx={{ color: 'text.secondary', fontSize: 16 }}>
-                    Days pending: {timesheet.daysPending}
-                </div>
                 <div>
-                    <Stack direction="row" spacing={2} className='mt-8 mb-0'>
+                    <Stack direction="row" spacing={2} className='mt-2 mb-0'>
                         <Typography variant="h5" component="div">
                             {timesheet.timesheetNumber}
                         </Typography>
@@ -148,6 +145,10 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                             disabled
                             value={totalHours}
                         />
+                        <div className='badgeSpan rag-red-bg mb-4'
+                            style={{ display: 'flex', alignItems: 'center', color: 'text.secondary', fontSize: 16 }}>
+                            Days pending: {timesheet.daysPending}
+                        </div>
                         <Button
                             variant="contained"
                             color="primary"
