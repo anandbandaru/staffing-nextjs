@@ -243,7 +243,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                     )}
                                     {(moduleName !== "FILETYPES" && <>
                                         <TabPanel className="px-2">
-                                            <GenericFilesListSimple moduleId={ID} componentName={moduleName} />
+                                            <GenericFilesListSimple moduleId={ID} componentName={moduleName === "MY_SUBMITTED_TIMESHEETS" ? "TIMESHEETS" : moduleName} />
                                         </TabPanel>
                                     </>
                                     )}

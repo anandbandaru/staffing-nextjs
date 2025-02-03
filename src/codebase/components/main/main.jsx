@@ -20,7 +20,7 @@ import Realtime from "../realtime/realtime";
 
 const Main = () => {
 
-    const { results, isAPIError, refreshPage, todoOpen, setTodoOpen, userType } = useContext(Context);
+    const { results, isAPIError, refreshPage, todoOpen, setTodoOpen, userType, APIPath } = useContext(Context);
     useEffect(() => {
         if (results) {
             // setStateSnack(true);
@@ -165,7 +165,7 @@ const Main = () => {
                     variant="filled"
                     sx={{ width: '100%' }}
                 >
-                    API is not available. Check after some time.
+                    API is not available. Check after some time. {APIPath}
                 </Alert>
             </Snackbar>
         </div>

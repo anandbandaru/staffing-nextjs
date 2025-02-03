@@ -146,11 +146,14 @@ function VendorForm({ props, ID, operation }) {
                             setSubmitionCompleted(true);
                             if (resp.data.STATUS === "FAIL")
                                 showSnackbar('error', "Error saving Vendor data - " + resp.data.ERROR.MESSAGE);
-                            if (resp.data.ERROR.MESSAGE.includes("Violation of UNIQUE KEY constraint 'UQ_EIN'"))
-                                showSnackbar('error', "You tried inserting Duplicate EIN");
-                            else
-                                showSnackbar('success', "Vendor data saved");
-                            resetForm();
+                            else {
+                                if (resp.data.ERROR.MESSAGE.includes("Violation of UNIQUE KEY constraint 'UQ_EIN'"))
+                                    showSnackbar('error', "You tried inserting Duplicate EIN");
+                                else {
+                                    showSnackbar('success', "Vendor data saved");
+                                    resetForm();
+                                }
+                            }
                         })
                             .catch(function (error) {
                                 // console.log(error);

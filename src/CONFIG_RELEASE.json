@@ -16,7 +16,8 @@
       "date": "FEB 03 2024",
       "notes": [
         "My Timesheets module with List of pending timesheets for each JOB",
-        "Submission of timesheets"
+        "Submission of timesheets",
+        "Submitted Timesheets Tab with dialog to see details + Hours for each day"
       ]
     },
     {

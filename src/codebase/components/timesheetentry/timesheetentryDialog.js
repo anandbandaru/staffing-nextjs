@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import configData from "../../../CONFIG_RELEASE.json";
 import { useFormik, FormikProvider, Form } from 'formik';
 import * as Yup from 'yup';
 import { Grid, TextField, Typography, Button, Stack, Chip } from '@mui/material';
@@ -16,7 +17,8 @@ const validationSchema = Yup.object().shape({
             .max(24, 'Maximum 24 hours')
             .required('Hours are required')
     ),
-    userNotes: Yup.string()
+    userNotes: Yup.string().required('Notes are required'),
+    Cfile: Yup.string().required('Customer Approved timesheet Document is required')
 });
 
 const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
@@ -24,6 +26,7 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+    const [insertedTimesheetId, setInsertedTimesheetId] = useState(false);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -38,15 +41,26 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
         setSnackbarOpen(true);
     };
 
+    //FILE RELATED
+    const [fileC, setFileC] = useState(null);
+    const handleFileChangeC = (event) => {
+        setFileC(event.target.files[0]);
+    };
+    const [fileIPV, setFileIPV] = useState(null);
+    const handleFileChangeIPV = (event) => {
+        setFileIPV(event.target.files[0]);
+    };
+
     const formik = useFormik({
         initialValues: {
             hours: Array(differenceInDays(new Date(timesheet.endDate), new Date(timesheet.startDate)) + 1).fill(''),
             userNotes: ''
         },
         validationSchema,
-        onSubmit: (values, { setSubmitting }) => {
+        onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
             setSubmitionCompleted(false);
+            setIsSubmitSuccess(false);
             const totalHours = values.hours.reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
 
             if (timesheet.jobType === 'WEEKLY' && totalHours < 40) {
@@ -64,35 +78,72 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
             }));
 
             var finalAPI = APIPath + "/submittimesheet";
-            axios.post(finalAPI, {
-                employeeID: timesheet.employeeID,
-                jobID: timesheet.jobID,
-                entries: timesheetEntries,
-                userNotes: values.userNotes,
-                createdBy: userName,
-                timesheetNumber: timesheet.timesheetNumber,
-                jobType: timesheet.jobType
-            })
-                .then((resp) => {
-                    setSubmitting(false);
-                    setSubmitionCompleted(true);
-                    if (resp.data.STATUS === "FAIL") {
-                        setIsSubmitSuccess(false);
-                        showSnackbar('error', "Error saving Timesheet data");
-                    } else {
-                        setIsSubmitSuccess(true);
-                        showSnackbar('success', "Timesheet data saved");
-                        onFormSubmitSuccess();  // Call the callback function
-                    }
-                })
-                .catch(function (error) {
+            try {
+                const resp = await axios.post(finalAPI, {
+                    employeeID: timesheet.employeeID,
+                    jobID: timesheet.jobID,
+                    entries: timesheetEntries,
+                    userNotes: values.userNotes,
+                    createdBy: userName,
+                    timesheetNumber: timesheet.timesheetNumber,
+                    jobType: timesheet.jobType
+                });
+                if (resp.data.STATUS === "FAIL") {
                     setSubmitting(false);
                     setIsSubmitSuccess(false);
                     setSubmitionCompleted(true);
                     showSnackbar('error', "Error saving Timesheet data");
-                });
+                } else {
+                    setInsertedTimesheetId(resp.data.RELATED_ID);
+                    let fileNameC = "CLIENT_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber;
+                    let fileNameIPV = "IMP_VEN_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber;
+                    //alert("BEFORE INTERNAL FILE UPLOAD")
+                    await UploadTimesheetFiles(fileC, fileNameC, 'TIMESHEETS', resp.data.RELATED_ID, "Client Approved");
+                    if(fileIPV)
+                        await UploadTimesheetFiles(fileIPV, fileNameIPV, 'TIMESHEETS', resp.data.RELATED_ID, "Imp Partner/Vendor Approved");
+                    //alert(resp.data.RELATED_ID); // Execute the alert statement after the API call completes
+                    setIsSubmitSuccess(true);
+                    setSubmitting(false);
+                    setSubmitionCompleted(true);
+                    showSnackbar('success', "Timesheet data saved");
+                    onFormSubmitSuccess();
+                }
+            } catch (error) {
+                setSubmitting(false);
+                setIsSubmitSuccess(false);
+                setSubmitionCompleted(true);
+                showSnackbar('error', "Error saving Timesheet data");
+            }
         }
     });
+
+    const UploadTimesheetFiles = async (file, fileName, componentName, moduleId, type) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        const parentFolderId = configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid;
+        formData.append('parentfolderid', parentFolderId);
+        formData.append('title', fileName);
+        formData.append('createdBy', userName);
+        formData.append('notes', fileName);
+        formData.append('module', componentName);
+        formData.append('moduleId', moduleId);
+
+        try {
+            const resp = await axios.post(APIPath + '/uploadfile', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            if (resp.data.STATUS !== "SUCCESS") {
+                throw new Error("ERROR: " + resp.data.ERROR.MESSAGE);
+            } else {
+                showSnackbar('success', type + ' - File uploaded successfully');
+            }
+        } catch (error) {
+            showSnackbar('error', type + ' - Error while uploading: ' + error.message);
+        }
+    };
 
     const getDayOfWeek = (date) => {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -133,6 +184,9 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
 
                 <div>
                     <Stack direction="row" spacing={2} className='mt-0 mb-8'>
+                        <Typography variant="h5" component="div">
+                            EMPLOYEE NAME: <Chip label={timesheet.employeeName} color="primary" variant="outlined" />
+                        </Typography>
                         <Typography variant="h5" component="div">
                             CURRENT DATE: <Chip label={today.toLocaleDateString()} color="primary" variant="outlined" />
                         </Typography>
@@ -199,6 +253,45 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                         </Grid>
                     ))}
                 </Grid>
+                <Stack direction="row" spacing={2} className='mb-6'>
+                    <div className='bg-orange-200 px-6 w-[600px]'>Customer Approved Timesheet Document</div>
+                    <TextField
+                        className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
+                        type="file"
+                        size="small"
+                        margin="normal"
+                        fullWidth
+                        id="Cfile"
+                        name="Cfile"
+                        onChange={(event) => {
+                            formik.handleChange(event);
+                            handleFileChangeC(event);
+                        }}
+                        onBlur={formik.handleBlur}
+                        helperText={(formik.errors.Cfile && formik.touched.Cfile) && formik.errors.Cfile}
+                    />
+                </Stack>
+                <Stack direction="row" spacing={2} className='mb-6'>
+                    <div className='bg-gray-100 px-6 w-[600px]'>Implementation Partner \ Venfor Timesheet Document
+                        <br />
+                        <strong>OPTIONAL</strong>
+                    </div>
+                    <TextField
+                        className='bg-gray-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
+                        type="file"
+                        size="small"
+                        margin="normal"
+                        fullWidth
+                        id="IPVfile"
+                        name="IPVfile"
+                        onChange={(event) => {
+                            formik.handleChange(event);
+                            handleFileChangeIPV(event);
+                        }}
+                        onBlur={formik.handleBlur}
+                        helperText={(formik.errors.IPVfile && formik.touched.IPVfile) && formik.errors.IPVfile}
+                    />
+                </Stack>
                 <TextField
                     className='mt-4'
                     label="User Notes"
