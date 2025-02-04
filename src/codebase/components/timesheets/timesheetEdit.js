@@ -44,14 +44,15 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
         setApiLoading(true);
         setIsSubmitting(true);
         let apiUrl = APIPath + "/";
-        if (type === "APPROVED") {
-            apiUrl = APIPath + "/deleteexpense";
+        if (type === "APPROVE") {
+            apiUrl = APIPath + "/approvetimesheet";
         }
         else if (type === "REJECT") {
-            apiUrl = APIPath + "/deleteexpense";
+            apiUrl = APIPath + "/rejecttimesheet";
         }
-        else
-            apiUrl = APIPath + "/deleteexpense";
+        else if (type === "SENDBACK") {
+            apiUrl = APIPath + "/sendbacktimesheet";
+        }
         axios.post(apiUrl,
             {
                 timesheetId: ID,
