@@ -137,15 +137,15 @@ function TimesheetDetails({ ID, operation, doLoading }) {
                     </TableContainer>
 
                     <div >
-                        <VerticalTimeline>
+                        <VerticalTimeline layout='1-column-left'>
                             {dataAudit.data.map((entry, index) => (
                                 <VerticalTimelineElement
                                     key={index}
                                     date={entry.actionDate}
-                                    iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                                    iconStyle={{ background: '#ccc', color: '#000' }}
                                 >
                                     <h3 className="vertical-timeline-element-title">Event {index + 1}</h3>
-                                    <h4 className="vertical-timeline-element-subtitle">By: {entry.action}</h4>
+                                    <h4 className="vertical-timeline-element-subtitle">By: {entry.actionBy}</h4>
                                     <p>Action: {entry.action}</p>
                                 </VerticalTimelineElement>
                             ))}

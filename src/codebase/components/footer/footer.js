@@ -17,7 +17,7 @@ import axios from "axios";
 
 const Footer = ({ ipAddress, city, region, country_name }) => {
     const { tokenExpiry, refreshPage, isAPILoading, isAPIError, checkAPIAvailability,
-        APIType, APIVersion
+        APIType, APIVersion, userType
     } = useContext(Context);
     const [isTokenExpired, setIsTokenExpired] = useState(false);
     const [loginTime] = useState(Date.now());
@@ -172,6 +172,7 @@ const Footer = ({ ipAddress, city, region, country_name }) => {
                                 <>
                                     <Stack direction={"row"} spacing={2}>
                                         <Button size="small" variant="contained" color="success"
+                                            disabled={userType === "EMPLOYEE"}
                                             sx={{
                                                 padding: '0px 6px',
                                                 fontSize: '0.75rem',

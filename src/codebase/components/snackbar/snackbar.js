@@ -9,6 +9,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const CustomSnackbar = ({ open, handleClose, severity, message }) => {
+
     const toastConfig = {
         duration: 6000,
         position: 'top-right',
@@ -17,6 +18,7 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
 
     useEffect(() => {
         if (open) {
+            console.log(message);
             switch (severity) {
                 case 'success':
                     toast.success(message, toastConfig);
