@@ -10,7 +10,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Context } from "../../context/context";
 import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import Button from '@mui/material/Button';
-import GenericFileForm from '../forms/GenericFileForm';
 import axios from 'axios';
 import { TextField } from '@mui/material';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
@@ -21,17 +20,21 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
     const { APIPath, userName } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
-    //For dialog MUI
+
+    // For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
+
     const handleClose = () => {
         setOpen(false);
         manualLoadData();
     };
+
     const handleClickOpen = () => {
         setOpen(true);
     };
+
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         '& .MuiDialogContent-root': {
             padding: theme.spacing(2),
@@ -40,65 +43,62 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
             padding: theme.spacing(1),
         },
     }));
+
     const takeActionOnTimesheet = (type) => {
-        setApiLoading(true);
-        setIsSubmitting(true);
-        let apiUrl = APIPath + "/";
-        if (type === "APPROVE") {
-            apiUrl = APIPath + "/approvetimesheet";
-        }
-        else if (type === "REJECT") {
-            apiUrl = APIPath + "/rejecttimesheet";
-        }
-        else if (type === "SENDBACK") {
-            apiUrl = APIPath + "/sendbacktimesheet";
-        }
-        axios.post(apiUrl,
-            {
-                timesheetId: ID,
-                actionBy: userName,
-                notes: "",
-                action: type
-            },
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json',
-                }
-            },
-        )
-            .then(response => response.json())
-            .then(
-                (result) => {
-                    if (result.error) {
-                        showSnackbar('error', "Error occured while taking action on the timesheet");
-                    } else {
-                        if (result.STATUS === "FAIL") {
-                            showSnackbar('error', result.ERROR.MESSAGE);
-                        } else {
-                            showSnackbar('success', "Timesheet data modified.");
-                            manualLoadData();
-                        }
-                    }
-                    setApiLoading(false);
-                    setIsSubmitting(false);
+        if (window.confirm(`Are you sure you want to ${type.toLowerCase()} this timesheet?`)) {
+            setApiLoading(true);
+            setIsSubmitting(true);
+            let apiUrl = APIPath + "/";
+            if (type === "APPROVE") {
+                apiUrl = APIPath + "/approvetimesheet";
+            } else if (type === "REJECT") {
+                apiUrl = APIPath + "/rejecttimesheet";
+            } else if (type === "SENDBACK") {
+                apiUrl = APIPath + "/sendbacktimesheet";
+            }
+            axios.post(apiUrl,
+                {
+                    timesheetId: ID,
+                    actionBy: userName,
+                    notes: "",
+                    action: type
                 },
-                (error) => {
-                    setApiLoading(false);
-                    setIsSubmitting(false);
-                    showSnackbar('error', "Error occured while taking action on the timesheet");
-                }
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json',
+                    }
+                },
             )
+                .then(response => response.json())
+                .then(
+                    (result) => {
+                        if (result.error) {
+                            showSnackbar('error', "Error occurred while taking action " + type + " on the timesheet");
+                        } else {
+                            if (result.STATUS === "FAIL") {
+                                showSnackbar('error', result.ERROR.MESSAGE);
+                            } else {
+                                showSnackbar('success', "Timesheet data modified.");
+                                manualLoadData();
+                            }
+                        }
+                        setApiLoading(false);
+                        setIsSubmitting(false);
+                    },
+                    (error) => {
+                        setApiLoading(false);
+                        setIsSubmitting(false);
+                        showSnackbar('error', "Error occurred while taking action " + type + " on the timesheet");
+                    }
+                )
+        }
     }
 
     return (
         <>
             <Stack direction="row" spacing={1} className='float-right'>
-                <IconButton aria-label="Edit" title="Edit" color="primary" onClick={() => {
-                    // window.alert(ownerID);
-                    handleClickOpen();
-                }
-                }>
+                <IconButton aria-label="Edit" title="Edit" color="primary" onClick={handleClickOpen}>
                     <NewReleasesOutlinedIcon />
                 </IconButton>
             </Stack>
@@ -111,7 +111,7 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
                 open={open}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    TiMESHEET ID: {timesheetNumber}
+                    TIMESHEET ID: {timesheetNumber}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -126,7 +126,6 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-
                     <TextField
                         size="small"
                         margin="normal"
@@ -143,25 +142,19 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
                         <>
                             <Stack direction="row" spacing={3}>
                                 <Button color="success" variant="contained" type="submit"
-                                    onClick={() => {
-                                        takeActionOnTimesheet("APPROVE");
-                                    }}
+                                    onClick={() => takeActionOnTimesheet("APPROVE")}
                                     disabled={isSubmitting}>
                                     <CheckCircleOutlinedIcon className="mr-1" />
                                     Approve
                                 </Button>
                                 <Button color="error" variant="contained" type="submit"
-                                    onClick={() => {
-                                        takeActionOnTimesheet("REJECT");
-                                    }}
+                                    onClick={() => takeActionOnTimesheet("REJECT")}
                                     disabled={isSubmitting}>
                                     <ThumbDownAltOutlinedIcon className="mr-1" />
                                     Reject
                                 </Button>
                                 <Button color="warning" variant="contained" type="submit"
-                                    onClick={() => {
-                                        takeActionOnTimesheet("SENDBACK");
-                                    }}
+                                    onClick={() => takeActionOnTimesheet("SENDBACK")}
                                     disabled={isSubmitting}>
                                     <ReplyAllOutlinedIcon className="mr-1" />
                                     Send back
@@ -169,12 +162,9 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
                             </Stack>
                         </>
                     )}
-
                 </DialogContent>
             </BootstrapDialog>
-
         </>
-
     )
 }
 
