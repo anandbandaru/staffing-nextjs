@@ -12,7 +12,7 @@ import GenericFilesListSimple from '../forms/GenericFilesListSimple';
 import EmployeeGenericList from '../employees/employeeGList';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import JobRatesList from '../jobs/jobRatesList'
-import TimesheetAdminDataDetails from '../timesheetentry/adminDataDetails';
+import TimesheetDetails from '../timesheetentry/timesheetDetails';
 import TimesheetCapturedHours from '../timesheetentry/capturedHours';
 
 function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber }) {
@@ -62,8 +62,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                 return APIPath + "/gettododetails";
             case 'EXPENSES':
                 return APIPath + "/getexpensedetails";
-            case 'MY_SUBMITTED_TIMESHEETS':
-                return APIPath + "/getmysubmittedtimesheetdetails";
+            case 'MY_TIMESHEETS':
+                return APIPath + "/gettimesheetdetails";
             default:
                 return '';
         }
@@ -161,9 +161,9 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                             <Tab>Documents</Tab>
                                         </>
                                         )}
-                                        {(moduleName === "MY_SUBMITTED_TIMESHEETS" && <>
+                                        {(moduleName === "MY_TIMESHEETS" && <>
                                             <Tab>Captured Hours</Tab>
-                                            <Tab>Status & Notes</Tab>
+                                            <Tab>Status, Notes & Audit</Tab>
                                         </>
                                         )}
                                         {(moduleName === "EMPLOYEES" && <>
@@ -243,16 +243,16 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                     )}
                                     {(moduleName !== "FILETYPES" && <>
                                         <TabPanel className="px-2">
-                                            <GenericFilesListSimple moduleId={ID} componentName={moduleName === "MY_SUBMITTED_TIMESHEETS" ? "TIMESHEETS" : moduleName} />
+                                            <GenericFilesListSimple moduleId={ID} componentName={moduleName === "MY_TIMESHEETS" ? "TIMESHEETS" : moduleName} />
                                         </TabPanel>
                                     </>
                                     )}
-                                    {(moduleName === "MY_SUBMITTED_TIMESHEETS" && <>
+                                    {(moduleName === "MY_TIMESHEETS" && <>
                                         <TabPanel className="px-2">
                                             <TimesheetCapturedHours timesheetId={ID} />
                                         </TabPanel>
                                         <TabPanel className="px-2">
-                                            <TimesheetAdminDataDetails ID={ID} operation="View" doLoading={true} moduleName="MY_SUBMITTED_TIMESHEETS_ADMIN_NOTES" />
+                                            <TimesheetDetails ID={ID} operation="View" doLoading={true} />
                                         </TabPanel>
                                     </>
                                     )}

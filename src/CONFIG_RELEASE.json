@@ -17,7 +17,8 @@
       "notes": [
         "My Timesheets module with List of pending timesheets for each JOB",
         "Submission of timesheets",
-        "Submitted Timesheets Tab with dialog to see details + Hours for each day"
+        "Submitted Timesheets Tab with dialog to see details + Hours for each day",
+        "Timesheet Audit info in timeline"
       ]
     },
     {

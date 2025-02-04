@@ -9,7 +9,7 @@ import { Context } from "../../context/context";
 import CustomSnackbar from "../snackbar/snackbar";
 import { Alert } from "@mui/material";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import SubmittedList from "./submittedList";
+import EnteredList from "./enteredList";
 
 const TimeSheetsMain = () => {
     const { APIPath, userEmployeeId, setUserEmployeeId, userName, userType } = useContext(Context);
@@ -105,7 +105,7 @@ const TimeSheetsMain = () => {
                         <TabPanel className="px-2">
                             {userEmployeeId !== 0 ?
                                 <>
-                                    <SubmittedList employeeId={userEmployeeId} />
+                                    <EnteredList employeeId={userEmployeeId} status="Submitted" />
                                 </>
                                 :
                                 <>
@@ -114,7 +114,15 @@ const TimeSheetsMain = () => {
                             }
                         </TabPanel>
                         <TabPanel className="px-2">
-                            My Approved Timesheets
+                            {userEmployeeId !== 0 ?
+                                <>
+                                    <EnteredList employeeId={userEmployeeId} status="Approved" />
+                                </>
+                                :
+                                <>
+                                    <Alert severity="warning">You are not tagged as EMPLOYEE & do not have Employee ID in the system</Alert>
+                                </>
+                            }
                         </TabPanel>
                     </Tabs>
                 </div>

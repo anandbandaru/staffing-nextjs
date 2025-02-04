@@ -5,25 +5,19 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, InputAdornment } from '@mui/material'; // Added InputAdornment import
 import SearchIcon from '@mui/icons-material/Search'; // Added SearchIcon import
+import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
+import 'react-vertical-timeline-component/style.min.css';
 
-function TimesheetAdminDataDetails({ ID, operation, doLoading, moduleName }) {
+function TimesheetDetails({ ID, operation, doLoading }) {
     const { APIPath, userType } = useContext(Context);
     const [data, setData] = useState({ data: [] });
+    const [dataAudit, setDataAudit] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const getAPIEndpoint = () => {
-        switch (moduleName) {
-            case 'MY_SUBMITTED_TIMESHEETS_ADMIN_NOTES':
-                return APIPath + "/getmysubmittedtimesheetadmindetails";
-            default:
-                return '';
-        }
-    };
-
-    const getDetails = () => {
+    const getAdminDetails = () => {
         setApiLoading(true);
-        let apiUrl = getAPIEndpoint() + "/" + ID;
+        let apiUrl = APIPath + "/gettimesheetadmindetails" + "/" + ID;
         // console.log(apiUrl)
         fetch(apiUrl)
             .then(response => response.json())
@@ -42,11 +36,33 @@ function TimesheetAdminDataDetails({ ID, operation, doLoading, moduleName }) {
                 }
             );
     };
+    const getAuditDetails = () => {
+        setApiLoading(true);
+        let apiUrl = APIPath + "/gettimesheetauditdetails" + "/" + ID;
+        // console.log(apiUrl)
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    if (result.error) {
+                        setDataAudit({ data: [] });
+                    } else {
+                        setDataAudit(result);
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setDataAudit({ data: [] });
+                    setApiLoading(false);
+                }
+            );
+    };
 
     useEffect(() => {
         if (doLoading) {
             if (operation === "View" || operation === "Edit") {
-                getDetails();
+                getAdminDetails();
+                getAuditDetails();
             }
         }
     }, [ID]);
@@ -119,10 +135,27 @@ function TimesheetAdminDataDetails({ ID, operation, doLoading, moduleName }) {
                             </TableBody>
                         </Table>
                     </TableContainer>
+
+                    <div >
+                        <VerticalTimeline>
+                            {dataAudit.data.map((entry, index) => (
+                                <VerticalTimelineElement
+                                    key={index}
+                                    date={entry.actionDate}
+                                    iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+                                >
+                                    <h3 className="vertical-timeline-element-title">Event {index + 1}</h3>
+                                    <h4 className="vertical-timeline-element-subtitle">By: {entry.action}</h4>
+                                    <p>Action: {entry.action}</p>
+                                </VerticalTimelineElement>
+                            ))}
+                        </VerticalTimeline>
+                    </div>
                 </Box>
+
             )}
         </>
     );
 }
 
-export default TimesheetAdminDataDetails;
+export default TimesheetDetails;

@@ -99,7 +99,7 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                     let fileNameIPV = "IMP_VEN_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber;
                     //alert("BEFORE INTERNAL FILE UPLOAD")
                     await UploadTimesheetFiles(fileC, fileNameC, 'TIMESHEETS', resp.data.RELATED_ID, "Client Approved");
-                    if(fileIPV)
+                    if (fileIPV)
                         await UploadTimesheetFiles(fileIPV, fileNameIPV, 'TIMESHEETS', resp.data.RELATED_ID, "Imp Partner/Vendor Approved");
                     //alert(resp.data.RELATED_ID); // Execute the alert statement after the API call completes
                     setIsSubmitSuccess(true);
@@ -263,6 +263,7 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                         fullWidth
                         id="Cfile"
                         name="Cfile"
+                        disabled={isSubmitSuccess || formik.isSubmitting}
                         onChange={(event) => {
                             formik.handleChange(event);
                             handleFileChangeC(event);
@@ -284,6 +285,7 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                         fullWidth
                         id="IPVfile"
                         name="IPVfile"
+                        disabled={isSubmitSuccess || formik.isSubmitting}
                         onChange={(event) => {
                             formik.handleChange(event);
                             handleFileChangeIPV(event);

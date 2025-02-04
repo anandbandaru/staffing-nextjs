@@ -8,7 +8,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import GenericDetails from "../forms/GenericDetails";
 
-const SubmittedList = ({ employeeId }) => {
+const EnteredList = ({ employeeId, status }) => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
@@ -52,6 +52,13 @@ const SubmittedList = ({ employeeId }) => {
         setItemCount(0);
         setJobsCount(0);
         let apiUrl = APIPath + "/getmysubmittedtimesheets/" + employeeId;
+        if(status === "Submitted")
+        {
+            apiUrl = APIPath + "/getmysubmittedtimesheets/" + employeeId;
+        }
+        else{
+            apiUrl = APIPath + "/getmyapprovedtimesheets/" + employeeId;
+        }
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -93,7 +100,7 @@ const SubmittedList = ({ employeeId }) => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="MY_SUBMITTED_TIMESHEETS" timesheetNumber={props.data.timesheetNumber} />
+                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="MY_TIMESHEETS" timesheetNumber={props.data.timesheetNumber} />
             </>
         );
     };
@@ -104,6 +111,11 @@ const SubmittedList = ({ employeeId }) => {
     );
     const CustomHoursRenderer = ({ value }) => (
         <span className='rag-gray-bg badgeSpan'>
+            {value}
+        </span>
+    );
+    const CustomStatusRenderer = ({ value }) => (
+        <span className='rag-orange-bg badgeSpan'>
             {value}
         </span>
     );
@@ -121,6 +133,10 @@ const SubmittedList = ({ employeeId }) => {
         { field: "startDate", filter: true },
         { field: "endDate", filter: true },
         { field: "hours", filter: true, cellRenderer: CustomHoursRenderer },
+        {
+            field: "status", filter: true,
+            cellRenderer: CustomStatusRenderer
+        },
     ]);
     const rowClassRules = {
         // apply red to Ford cars
@@ -144,7 +160,7 @@ const SubmittedList = ({ employeeId }) => {
             />
             <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
                 <PendingListToolbar
-                    operation="Submitted"
+                    operation={status}
                     jobsCount={jobsCount}
                     itemCount={itemCount}
                     apiLoading={apiLoading}
@@ -152,7 +168,7 @@ const SubmittedList = ({ employeeId }) => {
                     manualLoadData={manualLoadData}
                 />
             </div>
-            <Alert severity="info" className="my-4">This tab displays all the <strong>Submitted</strong> timesheets which are yet to be approved.</Alert>
+            <Alert severity="info" className="my-4">This tab displays all the <strong>{status}</strong> timesheets.</Alert>
             <div className="flex flex-grow flex-1 rounded-md text-sm justify-between place-items-center space-x-2 ">
                 {data.data && data.data.length > 0 ? (
                     <div
@@ -170,11 +186,11 @@ const SubmittedList = ({ employeeId }) => {
                         />
                     </div>
                 ) : (
-                    <p>No submitted timesheets</p>
+                    <p>No {status} timesheets</p>
                 )}
             </div>
         </>
     );
 };
 
-export default SubmittedList;
+export default EnteredList;
