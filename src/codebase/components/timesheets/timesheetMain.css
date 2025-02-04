@@ -1,0 +1,49 @@
+.timeSheetMainHolder{
+    /* margin:4px; */
+}
+.titleDate{
+    background-color: bisque;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: inline-block;
+    padding: 1px 5px;
+}
+.weekday{
+    padding: 5px 5px;
+    color: #000;
+    margin: 15px 15px 0px 0px;
+    border-radius: 8px;
+    background-color: rgb(230, 231, 221);
+    width: 100px !important;
+    height: 150px !important;
+}
+.weekendDay{
+    padding: 5px 5px;
+    color: #000;
+    margin: 15px 15px 0px 0px;
+    border-radius: 8px;
+    background-color: rgb(171, 189, 181);
+    width: 100px !important;
+    height: 150px !important;
+}
+.jobLevelPendingTSCounts{
+    position: absolute;
+    right: -4px;
+    top: -6px;
+    padding: 0px 5px;
+    border-radius: 10px;
+    color: #fff !important;
+    background-color: #ce344e !important;
+}
+.correctHoursText{
+    background-color: #39ce34 !important;
+    color: #fff !important;
+}
+.lessHoursText{
+    background-color: #ce344e !important;
+    color: #fff !important;
+}
+.moreHoursText{
+    background-color: #ce9834 !important;
+    color: #fff !important;
+}

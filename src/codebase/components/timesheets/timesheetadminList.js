@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/context";
-import PendingListToolbar from './pendingListToolbar';
+// import PendingListToolbar from './pendingListToolbar';
 import CustomSnackbar from "../snackbar/snackbar";
 import { Alert } from "@mui/material";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import GenericDetails from "../forms/GenericDetails";
+import TimesheetEdit from "./timesheetEdit";
 
-const EnteredList = ({ employeeId, status }) => {
+const TimesheetAdminList = ({ employeeId, status }) => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
@@ -51,13 +52,13 @@ const EnteredList = ({ employeeId, status }) => {
         setData({ data: [] });
         setItemCount(0);
         setJobsCount(0);
-        let apiUrl = APIPath + "/getmysubmittedtimesheets/" + employeeId;
+        let apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeId;
         if(status === "Submitted")
         {
-            apiUrl = APIPath + "/getmysubmittedtimesheets/" + employeeId;
+            apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeId;
         }
-        else{
-            apiUrl = APIPath + "/getmyapprovedtimesheets/" + employeeId;
+        else if (status === "Approved"){
+            apiUrl = APIPath + "/getapprovedtimesheets/" + employeeId;
         }
         fetch(apiUrl)
             .then(response => response.json())
@@ -119,11 +120,15 @@ const EnteredList = ({ employeeId, status }) => {
             {value}
         </span>
     );
+    const CustomEditComponent = (props) => {
+        return (
+            <>
+                <TimesheetEdit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
+            </>
+        );
+    };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        {
-            field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
-        },
         { field: "Id", maxWidth: 50 },
         { field: "timesheetNumber", filter: true },
         { field: "jobTitle", filter: true },
@@ -137,6 +142,10 @@ const EnteredList = ({ employeeId, status }) => {
             field: "status", filter: true,
             cellRenderer: CustomStatusRenderer
         },
+        {
+            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 100, resizable: true
+        },
+        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
@@ -159,16 +168,15 @@ const EnteredList = ({ employeeId, status }) => {
                 message={snackbarMessage}
             />
             <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
-                <PendingListToolbar
+                {/* <PendingListToolbar
                     operation={status}
                     jobsCount={jobsCount}
                     itemCount={itemCount}
                     apiLoading={apiLoading}
                     dataAPIError={dataAPIError}
                     manualLoadData={manualLoadData}
-                />
+                /> */}
             </div>
-            <Alert severity="info" className="my-4">This tab displays all the <strong>{status}</strong> timesheets.</Alert>
             <div className="flex flex-grow flex-1 rounded-md text-sm justify-between place-items-center space-x-2 ">
                 {data.data && data.data.length > 0 ? (
                     <div
@@ -193,4 +201,4 @@ const EnteredList = ({ employeeId, status }) => {
     );
 };
 
-export default EnteredList;
+export default TimesheetAdminList;

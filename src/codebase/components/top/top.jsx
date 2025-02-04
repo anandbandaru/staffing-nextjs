@@ -49,7 +49,8 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import LanIcon from '@mui/icons-material/Lan';
-import TimeSheetsMain from "../timesheetentry/timesheetentryMain";
+import TimeSheetsEntryMain from "../timesheetentry/timesheetentryMain";
+import TimeSheetsMain from "../timesheets/timesheetMain";
 
 const Top = () => {
 
@@ -276,8 +277,8 @@ const Top = () => {
                                     {selectedTab === 'Dashboard' && <Dashboard />}
                                     {selectedTab === 'New' && <ModulesTop />}
                                     {selectedTab === 'Transactions' && <TransactionsTop />}
-                                    {selectedTab === 'Timesheets' && "Timesheets"}
-                                    {selectedTab === 'Timesheet Entry' && <TimeSheetsMain />}
+                                    {selectedTab === 'Timesheets' && <TimeSheetsMain /> }
+                                    {selectedTab === 'Timesheet Entry' && <TimeSheetsEntryMain />}
                                     {selectedTab === 'Files' && <FilesMain />}
                                     {selectedTab === 'Todo' && <TodosMain />}
                                     {selectedTab === 'Users' && <UsersMain />}
@@ -318,8 +319,8 @@ const Top = () => {
                                     {tabsToShow.includes('Dashboard') && <TabPanel className="px-2"><Dashboard /></TabPanel>}
                                     {tabsToShow.includes('New') && <TabPanel className="px-2"><ModulesTop /></TabPanel>}
                                     {tabsToShow.includes('Transactions') && <TabPanel className="px-2"><TransactionsTop /></TabPanel>}
-                                    {tabsToShow.includes('Timesheets') && <TabPanel className="px-2">Timesheets</TabPanel>}
-                                    {tabsToShow.includes('Timesheet Entry') && <TabPanel className="px-2"><TimeSheetsMain /></TabPanel>}
+                                    {tabsToShow.includes('Timesheets') && <TabPanel className="px-2"><TimeSheetsMain /></TabPanel>}
+                                    {tabsToShow.includes('Timesheet Entry') && <TabPanel className="px-2"><TimeSheetsEntryMain /></TabPanel>}
                                     {tabsToShow.includes('Files') && <TabPanel className="px-2"><FilesMain /></TabPanel>}
                                     {tabsToShow.includes('Todo') && <TabPanel className="px-2"><TodosMain /></TabPanel>}
                                     {tabsToShow.includes('Users') && <TabPanel className="px-2"><UsersMain /></TabPanel>}

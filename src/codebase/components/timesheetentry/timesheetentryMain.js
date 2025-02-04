@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import './timesheetentryMain.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import Box from '@mui/material/Box';
 import PendingList from './pendingList';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
@@ -9,9 +8,9 @@ import { Context } from "../../context/context";
 import CustomSnackbar from "../snackbar/snackbar";
 import { Alert } from "@mui/material";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import EnteredList from "./enteredList";
+import TimesheetEnteredList from "./timesheetenteredList";
 
-const TimeSheetsMain = () => {
+const TimeSheetsEntryMain = () => {
     const { APIPath, userEmployeeId, setUserEmployeeId, userName, userType } = useContext(Context);
     const [tabIndex, setTabIndex] = React.useState(0);
     const [apiLoading, setApiLoading] = useState(false);
@@ -105,7 +104,7 @@ const TimeSheetsMain = () => {
                         <TabPanel className="px-2">
                             {userEmployeeId !== 0 ?
                                 <>
-                                    <EnteredList employeeId={userEmployeeId} status="Submitted" />
+                                    <TimesheetEnteredList employeeId={userEmployeeId} status="Submitted" />
                                 </>
                                 :
                                 <>
@@ -116,7 +115,7 @@ const TimeSheetsMain = () => {
                         <TabPanel className="px-2">
                             {userEmployeeId !== 0 ?
                                 <>
-                                    <EnteredList employeeId={userEmployeeId} status="Approved" />
+                                    <TimesheetEnteredList employeeId={userEmployeeId} status="Approved" />
                                 </>
                                 :
                                 <>
@@ -131,4 +130,4 @@ const TimeSheetsMain = () => {
     )
 }
 
-export default TimeSheetsMain;
+export default TimeSheetsEntryMain;
