@@ -12,6 +12,8 @@ import Slide from '@mui/material/Slide';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TimesheetEntryMetadata from './timesheetentryMetadata';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 
 const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
     const [openDialog, setOpenDialog] = useState(false);
@@ -44,6 +46,19 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
 
     const uniqueJobNames = [...new Set(data.map(item => item.jobName))];
 
+    const getStatusClassName = (status) => {
+        switch (status) {
+            case 'Rejected':
+                return 'rag-red-bg badgeSpan';
+            case 'Pending':
+                return 'rag-orange-bg badgeSpan';
+            case 'SentBack':
+                return 'rag-yellow-bg badgeSpan';
+            default:
+                return 'badgeSpan';
+        }
+    };
+
     return (
         <Formik
             initialValues={{
@@ -70,9 +85,9 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                             const jobDetails = data.find(item => item.jobName === jobName);
                             return (
                                 <TabPanel key={tabIndex} className="w-full bg-slate-200">
-                                    
+
                                     <TimesheetEntryMetadata timesheet={jobDetails} />
-                                    
+
                                     <FieldArray name="timesheets">
                                         {({ remove, push }) => (
                                             <Box
@@ -92,14 +107,14 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                                                                     <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
                                                                         TIMESHEET ID
                                                                     </Typography>
-                                                                    <div className='badgeSpan rag-graylight-bg absolute left-2 bottom-4' sx={{ color: 'text.secondary', fontSize: 11 }}>
-                                                                        Days pending: {timesheet.daysPending}
+                                                                    <div className='badgeSpan rag-graylight-bg absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
+                                                                        {timesheet.daysPending}
                                                                     </div>
                                                                     <Typography variant="h5" component="div">
                                                                         {timesheet.timesheetNumber}
                                                                     </Typography>
                                                                     <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>
-                                                                        <span className='rag-red-bg badgeSpan'>{timesheet.status}</span>
+                                                                        <span className={getStatusClassName(timesheet.status)}>{timesheet.status}</span>
                                                                     </Typography>
                                                                     <Typography variant="body2">
                                                                         <span className=''>Start Date: {timesheet.startDate}</span>
@@ -107,15 +122,19 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                                                                         <span className=''>End Date: {timesheet.endDate}</span>
                                                                     </Typography>
                                                                 </CardContent>
-                                                                <div className='bg-purple-300 float-right m-2'>
-                                                                    <Button
-                                                                        size='small'
-                                                                        variant="contained"
-                                                                        color="primary"
+                                                                <div className='bg-blue-100 m-0'>
+                                                                    <IconButton aria-label="SUBMIT" title="SUBMIT" color="primary"
+                                                                        className='ml-2'
                                                                         onClick={() => handleOpenDialog(timesheet)}
                                                                     >
-                                                                        Open & Submit
-                                                                    </Button>
+                                                                        <ExitToAppOutlinedIcon />
+                                                                    </IconButton>
+                                                                    <IconButton aria-label="HISTORY" title="HISTORY" color="primary"
+                                                                        className='ml-2'
+                                                                        onClick={() => handleOpenDialog(timesheet)}
+                                                                    >
+                                                                        <HistoryOutlinedIcon />
+                                                                    </IconButton>
                                                                 </div>
                                                             </Card>
                                                         </div>

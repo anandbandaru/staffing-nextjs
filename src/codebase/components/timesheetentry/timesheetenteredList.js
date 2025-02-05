@@ -114,11 +114,29 @@ const TimesheetEnteredList = ({ employeeId, status }) => {
             {value}
         </span>
     );
-    const CustomStatusRenderer = ({ value }) => (
-        <span className='rag-orange-bg badgeSpan'>
-            {value}
-        </span>
-    );
+    
+    const CustomStatusRenderer = ({ value }) => {
+        let className = 'badgeSpan';    
+        switch (value) {
+            case 'Approved':
+                className += ' rag-green-bg';
+                break;
+            case 'Rejected':
+                className += ' rag-red-bg';
+                break;
+            case 'SentBack':
+                className += ' rag-yellow-bg';
+                break;
+            default:
+                className += ' rag-orange-bg';
+                break;
+        }    
+        return (
+            <span className={className}>
+                {value}
+            </span>
+        );
+    };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         {

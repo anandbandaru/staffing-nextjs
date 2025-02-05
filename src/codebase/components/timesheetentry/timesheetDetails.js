@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Context } from "../../context/context";
 import Stack from '@mui/material/Stack';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Box from '@mui/material/Box';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, InputAdornment } from '@mui/material'; // Added InputAdornment import
 import SearchIcon from '@mui/icons-material/Search'; // Added SearchIcon import

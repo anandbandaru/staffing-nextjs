@@ -8,6 +8,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import GenericDetails from "../forms/GenericDetails";
 import TimesheetEdit from "./timesheetEdit";
+import TimesheetAudit from "./timesheetAudit";
 
 const TimesheetAdminList = ({ employeeId, status }) => {
     const { APIPath } = useContext(Context);
@@ -53,11 +54,10 @@ const TimesheetAdminList = ({ employeeId, status }) => {
         setItemCount(0);
         setJobsCount(0);
         let apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeId;
-        if(status === "Submitted")
-        {
+        if (status === "Submitted") {
             apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeId;
         }
-        else if (status === "Approved"){
+        else if (status === "Approved") {
             apiUrl = APIPath + "/getapprovedtimesheets/" + employeeId;
         }
         fetch(apiUrl)
@@ -82,7 +82,7 @@ const TimesheetAdminList = ({ employeeId, status }) => {
                             setItemCount(result.total);
                             const uniqueJobIds = new Set(result.data.map(item => item.jobID));
                             setJobsCount(uniqueJobIds.size);
-                            showSnackbar('success', "Submitted Timesheets Data fetched");
+                            showSnackbar('success', status + " Timesheets Data fetched");
                         }
                     }
                     setApiLoading(false);
@@ -115,15 +115,39 @@ const TimesheetAdminList = ({ employeeId, status }) => {
             {value}
         </span>
     );
-    const CustomStatusRenderer = ({ value }) => (
-        <span className='rag-orange-bg badgeSpan'>
-            {value}
-        </span>
-    );
+    const CustomStatusRenderer = ({ value }) => {
+        let className = 'badgeSpan';
+        switch (value) {
+            case 'Approved':
+                className += ' rag-green-bg';
+                break;
+            case 'Rejected':
+                className += ' rag-red-bg';
+                break;
+            case 'SentBack':
+                className += ' rag-yellow-bg';
+                break;
+            default:
+                className += ' rag-orange-bg';
+                break;
+        }
+        return (
+            <span className={className}>
+                {value}
+            </span>
+        );
+    };
     const CustomEditComponent = (props) => {
         return (
             <>
                 <TimesheetEdit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
+            </>
+        );
+    };
+    const CustomAuditComponent = (props) => {
+        return (
+            <>
+                <TimesheetAudit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} operation="View" doLoading={true} />
             </>
         );
     };
@@ -143,9 +167,10 @@ const TimesheetAdminList = ({ employeeId, status }) => {
             cellRenderer: CustomStatusRenderer
         },
         {
-            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 100, resizable: true
+            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 90, resizable: true
         },
-        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
+        { field: "HISORY", cellRenderer: CustomAuditComponent, maxWidth: 100, resizable: false },
+        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 110, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
@@ -176,6 +201,10 @@ const TimesheetAdminList = ({ employeeId, status }) => {
                     dataAPIError={dataAPIError}
                     manualLoadData={manualLoadData}
                 /> */}
+                <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
+                    <span className="">Total {status} Timesheets:</span>
+                    <span className="font-bold text-sm ml-2">{itemCount}</span>
+                </div>
             </div>
             <div className="flex flex-grow flex-1 rounded-md text-sm justify-between place-items-center space-x-2 ">
                 {data.data && data.data.length > 0 ? (

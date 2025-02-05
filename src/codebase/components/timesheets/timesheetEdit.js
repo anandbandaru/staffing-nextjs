@@ -1,10 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
+import Popover from '@mui/material/Popover';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { Context } from "../../context/context";
@@ -18,31 +15,21 @@ import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
 
 function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath, userName } = useContext(Context);
-    const [open, setOpen] = React.useState(false);
-    const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [notes, setNotes] = useState('');
 
-    // For dialog MUI
-    const Transition = React.forwardRef(function Transition(props, ref) {
-        return <Slide direction="up" ref={ref} {...props} />;
-    });
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
     const handleClose = () => {
-        setOpen(false);
+        setAnchorEl(null);
         manualLoadData();
     };
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-        '& .MuiDialogContent-root': {
-            padding: theme.spacing(2),
-        },
-        '& .MuiDialogActions-root': {
-            padding: theme.spacing(1),
-        },
-    }));
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     const takeActionOnTimesheet = (type) => {
         if (window.confirm(`Are you sure you want to ${type.toLowerCase()} this timesheet?`)) {
@@ -60,7 +47,7 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
                 {
                     timesheetId: ID,
                     actionBy: userName,
-                    notes: "",
+                    notes: notes,
                     action: type
                 },
                 {
@@ -69,101 +56,99 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
                         'Content-Type': 'application/json',
                     }
                 },
-            )
-                .then(response => response.json())
-                .then(
-                    (result) => {
-                        if (result.error) {
-                            showSnackbar('error', "Error occurred while taking action " + type + " on the timesheet");
-                        } else {
-                            if (result.STATUS === "FAIL") {
-                                showSnackbar('error', result.ERROR.MESSAGE);
-                            } else {
-                                showSnackbar('success', "Timesheet data modified.");
-                                manualLoadData();
-                            }
-                        }
-                        setApiLoading(false);
-                        setIsSubmitting(false);
-                    },
-                    (error) => {
-                        setApiLoading(false);
-                        setIsSubmitting(false);
+            ).then(
+                (result) => {
+                    if (result.error) {
                         showSnackbar('error', "Error occurred while taking action " + type + " on the timesheet");
+                    } else {
+                        if (result.data.STATUS === "FAIL") {
+                            showSnackbar('error', result.data.ERROR.MESSAGE);
+                        } else {
+                            showSnackbar('success', "Timesheet data modified.");
+                            manualLoadData();
+                        }
                     }
-                )
+                    setApiLoading(false);
+                    setIsSubmitting(false);
+                },
+                (error) => {
+                    setApiLoading(false);
+                    setIsSubmitting(false);
+                    showSnackbar('error', "Error occurred while taking action " + type + " on the timesheet");
+                }
+            )
         }
     }
 
     return (
         <>
             <Stack direction="row" spacing={1} className='float-right'>
-                <IconButton aria-label="Edit" title="Edit" color="primary" onClick={handleClickOpen}>
+                <IconButton aria-label="Edit" title="Edit" color="primary" onClick={handleClick}>
                     <NewReleasesOutlinedIcon />
                 </IconButton>
             </Stack>
-            <BootstrapDialog
-                fullWidth
-                className=""
-                onClose={handleClose}
-                TransitionComponent={Transition}
-                aria-labelledby="customized-dialog-title"
+            <Popover
+                id={id}
                 open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
             >
-                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    TIMESHEET ID: {timesheetNumber}
-                </DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={handleClose}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <DialogContent dividers>
+                <div style={{ padding: '10px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h2 style={{ margin: 0 }}>TIMESHEET ID: {timesheetNumber}</h2>
+                        <IconButton aria-label="close" onClick={handleClose}>
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
                     <TextField
                         size="small"
                         margin="normal"
                         id="notes"
                         name="notes"
                         label="Notes"
-                        className='w-[550px]'
+                        className='w-[310px]'
                         multiline
                         rows={4}
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
                     />
                     {isSubmitting ? (
                         <div className="spinner"></div>
                     ) : (
-                        <>
-                            <Stack direction="row" spacing={3}>
-                                <Button color="success" variant="contained" type="submit"
-                                    onClick={() => takeActionOnTimesheet("APPROVE")}
-                                    disabled={isSubmitting}>
-                                    <CheckCircleOutlinedIcon className="mr-1" />
-                                    Approve
-                                </Button>
-                                <Button color="error" variant="contained" type="submit"
-                                    onClick={() => takeActionOnTimesheet("REJECT")}
-                                    disabled={isSubmitting}>
-                                    <ThumbDownAltOutlinedIcon className="mr-1" />
-                                    Reject
-                                </Button>
-                                <Button color="warning" variant="contained" type="submit"
-                                    onClick={() => takeActionOnTimesheet("SENDBACK")}
-                                    disabled={isSubmitting}>
-                                    <ReplyAllOutlinedIcon className="mr-1" />
-                                    Send back
-                                </Button>
-                            </Stack>
-                        </>
+                        <Stack direction="row" spacing={3}>
+                            <Button color="success" variant="contained" type="submit"
+                                size='small'
+                                onClick={() => takeActionOnTimesheet("APPROVE")}
+                                disabled={isSubmitting || !notes}>
+                                <CheckCircleOutlinedIcon className="mr-1" />
+                                Approve
+                            </Button>
+                            <Button color="error" variant="contained" type="submit"
+                                size='small'
+                                onClick={() => takeActionOnTimesheet("REJECT")}
+                                disabled={isSubmitting || !notes}>
+                                <ThumbDownAltOutlinedIcon className="mr-1" />
+                                Reject
+                            </Button>
+                            <Button color="warning" variant="contained" type="submit"
+                                size='small'
+                                onClick={() => takeActionOnTimesheet("SENDBACK")}
+                                disabled={isSubmitting || !notes}>
+                                <ReplyAllOutlinedIcon className="mr-1" />
+                                Send back
+                            </Button>
+                        </Stack>
                     )}
-                </DialogContent>
-            </BootstrapDialog>
+                </div>
+            </Popover>
         </>
     )
 }
