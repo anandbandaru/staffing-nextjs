@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import configData from "../../../CONFIG_RELEASE.json";
 import { useFormik, FormikProvider, Form } from 'formik';
 import * as Yup from 'yup';
@@ -188,6 +188,28 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
         }
         return errors;
     };
+
+    useEffect(() => {
+        if (operation === 'Edit' && existingId) {
+            const fetchHours = async () => {
+                try {
+                    const response = await axios.get(`${APIPath}/gettimesheethours/${existingId}`);
+                    const hoursData = response.data;
+                    const updatedHours = [...formik.values.hours];
+                    hoursData.forEach(({ day, hours }) => {
+                        const dateIndex = differenceInDays(new Date(day), new Date(timesheet.startDate));
+                        if (dateIndex >= 0 && dateIndex < updatedHours.length) {
+                            updatedHours[dateIndex] = hours;
+                        }
+                    });
+                    formik.setFieldValue('hours', updatedHours);
+                } catch (error) {
+                    showSnackbar('error', 'Error fetching hours data');
+                }
+            };
+            fetchHours();
+        }
+    }, [operation, existingId]);
 
     return (
         <FormikProvider value={formik}>
