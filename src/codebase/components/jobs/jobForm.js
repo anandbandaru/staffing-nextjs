@@ -241,7 +241,7 @@ function Job({ props, ID, operation }) {
 
     //FILE RELATED
     const [insertedJobId, setInsertedJobId] = useState(false);
-    
+
     const [fileMSA, setFileMSA] = useState(null);
     const handleFileChangeMSAfile = (event) => {
         setFileMSA(event.target.files[0]);
@@ -350,12 +350,20 @@ function Job({ props, ID, operation }) {
                                 setSubmitionCompleted(true);
                             } else {
                                 setInsertedJobId(resp.data.RELATED_ID);
-                                let fileNameMSA = "MSA:JOB:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
-                                let fileNamePO = "PO:JOB:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
-                                let fileNameINS = "INSURANCE:JOB:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
-                                await UploadJobFiles(fileMSA, fileNameMSA, 'JOBS', resp.data.RELATED_ID, "MSA");
-                                await UploadJobFiles(filePO, fileNamePO, 'JOBS', resp.data.RELATED_ID, "PO");
-                                await UploadJobFiles(fileINS, fileNameINS, 'JOBS', resp.data.RELATED_ID, "INSURANCE");
+
+                                let insertedID = resp.data.RELATED_ID;
+                                if(operation === "Edit")
+                                    insertedID = ID;
+
+                                let fileNameMSA = "MSA:JOB:" + insertedID + "_" + getCurrentDateTime();
+                                let fileNamePO = "PO:JOB:" + insertedID + "_" + getCurrentDateTime();
+                                let fileNameINS = "INSURANCE:JOB:" + insertedID + "_" + getCurrentDateTime();
+                                if (fileMSA)
+                                    await UploadJobFiles(fileMSA, fileNameMSA, 'JOBS', insertedID, "MSA");
+                                if (filePO)
+                                    await UploadJobFiles(filePO, fileNamePO, 'JOBS', insertedID, "PO");
+                                if (fileINS)
+                                    await UploadJobFiles(fileINS, fileNameINS, 'JOBS', insertedID, "INSURANCE");
 
                                 setSubmitting(false);
                                 setSubmitionCompleted(true);
@@ -422,9 +430,24 @@ function Job({ props, ID, operation }) {
                                 .required('Rate notes Required'),
                             otherwise: () => Yup.string().nullable()
                         }),
-                        MSAfile: Yup.string().required('MSA Document is required'),
-                        POfile: Yup.string().required('PO Document is required'),
-                        INSfile: Yup.string().required('Insurance Document is required'),
+                        MSAfile: Yup.string().when(operation, {
+                            is: 'Edit',
+                            then: () => Yup.string()
+                                .required('MSA Document is required'),
+                            otherwise: () => Yup.string().nullable()
+                        }),
+                        POfile: Yup.string().when(operation, {
+                            is: 'Edit',
+                            then: () => Yup.string()
+                                .required('PO Document is required'),
+                            otherwise: () => Yup.string().nullable()
+                        }),
+                        INSfile: Yup.string().when(operation, {
+                            is: 'Edit',
+                            then: () => Yup.string()
+                                .required('Insurance Document is required'),
+                            otherwise: () => Yup.string().nullable()
+                        }),
                     })}
                 >
                     {(props) => {
