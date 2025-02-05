@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
     Cfile: Yup.string().required('Customer Approved timesheet Document is required')
 });
 
-const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
+const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSuccess }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
@@ -208,6 +208,10 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                             style={{ display: 'flex', alignItems: 'center', color: 'text.secondary', fontSize: 16 }}>
                             Days pending: {timesheet.daysPending}
                         </div>
+                        <div className='badgeSpan rag-red-bg mb-4'
+                            style={{ display: 'flex', alignItems: 'center', color: 'text.secondary', fontSize: 16 }}>
+                            CURRENT STATUS: {timesheet.status}
+                        </div>
                     </Stack>
                     <Stack direction="row" spacing={2} className='mb-0'>
                         <TextField
@@ -229,6 +233,12 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                             disabled
                             value={timesheet.endDate}
                         />
+                        {existingId !== 0 &&
+                            (<div className='badgeSpan rag-yellow-bg mb-4'
+                                style={{ display: 'flex', alignItems: 'center', color: 'text.secondary', fontSize: 16 }}>
+                                Editing existing record
+                            </div>)
+                        }
                     </Stack>
                     <TimesheetEntryMetadata timesheet={timesheet} />
                 </div>
@@ -264,8 +274,10 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                         </Grid>
                     ))}
                 </Grid>
-                <Stack direction="row" spacing={2} className='mb-6'>
-                    <div className='bg-orange-200 px-6 w-[600px]'>Customer Approved Timesheet Document</div>
+                <Stack direction="row" spacing={1} className='mb-6'>
+                    <div className='bg-orange-200 px-6 w-[600px]'>Customer Approved Timesheet Document
+                        <br />
+                        <strong>MANDATORY</strong></div>
                     <TextField
                         className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
                         type="file"
@@ -283,7 +295,7 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                         helperText={(formik.errors.Cfile && formik.touched.Cfile) && formik.errors.Cfile}
                     />
                 </Stack>
-                <Stack direction="row" spacing={2} className='mb-6'>
+                <Stack direction="row" spacing={1} className='mb-6'>
                     <div className='bg-gray-100 px-6 w-[600px]'>Implementation Partner \ Venfor Timesheet Document
                         <br />
                         <strong>OPTIONAL</strong>

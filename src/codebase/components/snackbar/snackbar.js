@@ -18,7 +18,7 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
 
     useEffect(() => {
         if (open) {
-            console.log(message);
+            // console.log(message);
             switch (severity) {
                 case 'success':
                     toast.success(message, toastConfig);

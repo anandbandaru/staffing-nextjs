@@ -21,6 +21,7 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
 
     const handleOpenDialog = (timesheet) => {
         setSelectedTimesheet(timesheet);
+        console.log(timesheet);
         setOpenDialog(true);
     };
 
@@ -153,8 +154,8 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                             aria-labelledby="customized-dialog-title"
                             open={openDialog}
                         >
-                            <DialogTitle className="text-pink-600 w-[900]" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                                Timesheet: {selectedTimesheet.timesheetNumber}
+                            <DialogTitle className="text-pink-600 w-[900px]" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                                {selectedTimesheet.existingRecordId === 0 ? "SUBMIT" : "EDIT & SUBMIT"} Timesheet: {selectedTimesheet.timesheetNumber}
                             </DialogTitle>
                             <IconButton
                                 aria-label="close"
@@ -170,9 +171,11 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                             </IconButton>
                             <DialogContent dividers>
                                 <TimesheetEntryDialog
+                                    existingId={selectedTimesheet.existingRecordId}
                                     timesheet={selectedTimesheet}
                                     onClose={handleCloseDialog}
                                     onFormSubmitSuccess={onFormSubmitSuccess}
+                                    operation={selectedTimesheet.existingRecordId !== 0 ? "Edit" : "New"}
                                 />
                             </DialogContent>
                         </BootstrapDialog>
