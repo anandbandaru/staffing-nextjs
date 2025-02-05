@@ -12,8 +12,8 @@ import Slide from '@mui/material/Slide';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TimesheetEntryMetadata from './timesheetentryMetadata';
-import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import TimesheetAudit from '../timesheets/timesheetAudit';
 
 const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
     const [openDialog, setOpenDialog] = useState(false);
@@ -129,12 +129,8 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                                                                     >
                                                                         <ExitToAppOutlinedIcon />
                                                                     </IconButton>
-                                                                    <IconButton aria-label="HISTORY" title="HISTORY" color="primary"
-                                                                        className='ml-2'
-                                                                        onClick={() => handleOpenDialog(timesheet)}
-                                                                    >
-                                                                        <HistoryOutlinedIcon />
-                                                                    </IconButton>
+                                                                    <TimesheetAudit ID={timesheet.Id} timesheetNumber={timesheet.timesheetNumber} operation="View" doLoading={true} />
+                                                                    
                                                                 </div>
                                                             </Card>
                                                         </div>

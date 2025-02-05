@@ -72,7 +72,7 @@ function TimesheetAudit({ ID, operation, doLoading, timesheetNumber }) {
     return (
         <>
             <Stack direction="row" spacing={1} className='float-right'>
-                <IconButton aria-label="Edit" title="Edit" color="primary" onClick={handleClickOpen}>
+                <IconButton aria-label="History" title="History" color="secondary" onClick={handleClickOpen}>
                     <HistoryOutlinedIcon />
                 </IconButton>
             </Stack>

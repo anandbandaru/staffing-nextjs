@@ -22,10 +22,10 @@ function Job({ props, ID, operation }) {
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
     // Default width
-   const [formWidth, setFormWidth] = useState(700);
-   const handleSliderChange = (event, newValue) => {
-       setFormWidth(newValue);
-   };
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const [companiesData, setCompaniesData] = useState({ data: [] });
     const [companyId, setCompanyId] = useState('');
@@ -238,6 +238,63 @@ function Job({ props, ID, operation }) {
         }
     }, []);
 
+
+    //FILE RELATED
+    const [insertedJobId, setInsertedJobId] = useState(false);
+    
+    const [fileMSA, setFileMSA] = useState(null);
+    const handleFileChangeMSAfile = (event) => {
+        setFileMSA(event.target.files[0]);
+    };
+    const [filePO, setFilePO] = useState(null);
+    const handleFileChangePOfile = (event) => {
+        setFilePO(event.target.files[0]);
+    };
+    const [fileINS, setFileINS] = useState(null);
+    const handleFileChangeINSfile = (event) => {
+        setFileINS(event.target.files[0]);
+    };
+
+    const UploadJobFiles = async (file, fileName, componentName, moduleId, type) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        const parentFolderId = configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid;
+        formData.append('parentfolderid', parentFolderId);
+        formData.append('title', fileName);
+        formData.append('createdBy', userName);
+        formData.append('notes', fileName);
+        formData.append('module', componentName);
+        formData.append('moduleId', moduleId);
+
+        try {
+            const resp = await axios.post(APIPath + '/uploadfile', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            if (resp.data.STATUS !== "SUCCESS") {
+                throw new Error("ERROR: " + resp.data.ERROR.MESSAGE);
+            } else {
+                showSnackbar('success', type + ' - File uploaded successfully');
+            }
+        } catch (error) {
+            showSnackbar('error', type + ' - Error while uploading: ' + error.message);
+        }
+    };
+
+    function getCurrentDateTime() {
+        const now = new Date();
+
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        return `${month}-${day}-${year}-${hours}-${minutes}`;
+    }
+
     return (
         <>
             <CustomSnackbar
@@ -273,36 +330,43 @@ function Job({ props, ID, operation }) {
                         notesRate: name ? data.data[0].notesRate : '',
                         createdBy: userName,
                     }}
-                    onSubmit={(values, { setSubmitting, resetForm }) => {
+                    onSubmit={async (values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addjob";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updatejob";
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
-                        axios.post(finalAPI,
-                            values,
-                            {
+                        try {
+                            const resp = await axios.post(finalAPI, values, {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
                                 }
-                            },
-                        ).then((resp) => {
-                            setSubmitting(false);
-                            setSubmitionCompleted(true);
-                            if (resp.data.STATUS === "FAIL")
+                            });
+                            if (resp.data.STATUS === "FAIL") {
                                 showSnackbar('error', "Error saving Job data");
-                            else {
+                                setSubmitting(false);
+                                setSubmitionCompleted(true);
+                            } else {
+                                setInsertedJobId(resp.data.RELATED_ID);
+                                let fileNameMSA = "MSA:JOB:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
+                                let fileNamePO = "PO:JOB:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
+                                let fileNameINS = "INSURANCE:JOB:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
+                                await UploadJobFiles(fileMSA, fileNameMSA, 'JOBS', resp.data.RELATED_ID, "MSA");
+                                await UploadJobFiles(filePO, fileNamePO, 'JOBS', resp.data.RELATED_ID, "PO");
+                                await UploadJobFiles(fileINS, fileNameINS, 'JOBS', resp.data.RELATED_ID, "INSURANCE");
+
+                                setSubmitting(false);
+                                setSubmitionCompleted(true);
                                 showSnackbar('success', "Job data saved");
                                 resetForm();
                             }
-                        }).catch(function (error) {
+                        } catch (error) {
                             setSubmitting(false);
-                            // console.log(error);
                             setSubmitionCompleted(true);
                             showSnackbar('error', "Error saving Job data");
-                        });
+                        }
                     }}
 
                     validationSchema={Yup.object().shape({
@@ -358,6 +422,9 @@ function Job({ props, ID, operation }) {
                                 .required('Rate notes Required'),
                             otherwise: () => Yup.string().nullable()
                         }),
+                        MSAfile: Yup.string().required('MSA Document is required'),
+                        POfile: Yup.string().required('PO Document is required'),
+                        INSfile: Yup.string().required('Insurance Document is required'),
                     })}
                 >
                     {(props) => {
@@ -708,17 +775,76 @@ function Job({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.notes && touched.notes) && errors.notes}
                                 />
+                                <Stack direction="row" spacing={1} className='mb-6'>
+                                    <div className='bg-orange-200 px-2'>MSA Document</div>
+                                    <TextField
+                                        className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
+                                        type="file"
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="MSAfile"
+                                        name="MSAfile"
+                                        disabled={isSubmitting}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleFileChangeMSAfile(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.MSAfile && touched.MSAfile) && errors.MSAfile}
+                                    />
+                                </Stack>
+                                <Stack direction="row" spacing={1} className='mb-6'>
+                                    <div className='bg-orange-200 px-2'>PO Document</div>
+                                    <TextField
+                                        className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
+                                        type="file"
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="POfile"
+                                        name="POfile"
+                                        disabled={isSubmitting}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleFileChangePOfile(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.POfile && touched.POfile) && errors.POfile}
+                                    />
+                                </Stack>
+                                <Stack direction="row" spacing={1} className='mb-6'>
+                                    <div className='bg-orange-200 px-2'>Insurance Document</div>
+                                    <TextField
+                                        className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
+                                        type="file"
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="INSfile"
+                                        name="INSfile"
+                                        disabled={isSubmitting}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleFileChangeINSfile(event);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.INSfile && touched.INSfile) && errors.INSfile}
+                                    />
+                                </Stack>
 
-                                {Object.keys(errors).length > 0 && (
-                                    <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
-                                        <span className='error-summary-heading' >Validation Errors:</span>
-                                        <ul>
-                                            {Object.keys(errors).map((key) => (
-                                                <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
+                                {
+                                    Object.keys(errors).length > 0 && (
+                                        <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                            <span className='error-summary-heading' >Validation Errors:</span>
+                                            <ul>
+                                                {Object.keys(errors).map((key) => (
+                                                    <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )
+                                }
                                 <Stack direction="row" spacing={2} className='float-right'>
                                     {operation === "Edit" ? (
                                         isSubmitting ? (
@@ -754,7 +880,7 @@ function Job({ props, ID, operation }) {
                             </form>
                         );
                     }}
-                </Formik>
+                </Formik >
             }
 
         </>
