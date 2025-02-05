@@ -99,21 +99,26 @@ const TimeSheetsMain = () => {
                         <TabList className="subTabsListHolder">
                             <Tab><CheckCircleOutlinedIcon className="mr-1" />Approved Timesheets</Tab>
                             <Tab><CheckOutlinedIcon className="mr-1" />Pending Approval Timesheets</Tab>
+                            <Tab><CheckOutlinedIcon className="mr-1" />Sent Back Timesheets</Tab>
                             <Tab><TimerOutlinedIcon className="mr-1" />Yet to Submit Timesheets</Tab>
                         </TabList>
 
                         <TabPanel className="px-0">
                             <Alert severity="info" className="my-1">This tab displays all the <strong>Approved</strong> timesheets.</Alert>
-
                             {employeeId && (
                                 <TimesheetAdminList employeeId={employeeId} status="Approved" />
                             )}
                         </TabPanel>
                         <TabPanel className="px-2">
                             <Alert severity="info" className="my-1">This tab displays all the <strong>Pending Approval</strong> timesheets.</Alert>
-
                             {employeeId && (
                                 <TimesheetAdminList employeeId={employeeId} status="Submitted" />
+                            )}
+                        </TabPanel>
+                        <TabPanel className="px-2">
+                            <Alert severity="info" className="my-1">This tab displays all the <strong>Sent Back</strong> timesheets.</Alert>
+                            {employeeId && (
+                                <TimesheetAdminList employeeId={employeeId} status="SentBack" />
                             )}
                         </TabPanel>
                         <TabPanel className="px-2">

@@ -13,7 +13,7 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
 
-function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiLoading, showSnackbar }) {
+function TimesheetEdit({ ID, timesheetNumber, mode, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath, userName } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -138,13 +138,15 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
                                 <ThumbDownAltOutlinedIcon className="mr-1" />
                                 Reject
                             </Button> */}
-                            <Button color="warning" variant="contained" type="submit"
-                                size='small'
-                                onClick={() => takeActionOnTimesheet("SENDBACK")}
-                                disabled={isSubmitting || !notes}>
-                                <ReplyAllOutlinedIcon className="mr-1" />
-                                Send back
-                            </Button>
+                            {mode !== "SentBack" && (
+                                <Button color="warning" variant="contained" type="submit"
+                                    size='small'
+                                    onClick={() => takeActionOnTimesheet("SENDBACK")}
+                                    disabled={isSubmitting || !notes}>
+                                    <ReplyAllOutlinedIcon className="mr-1" />
+                                    Send back
+                                </Button>
+                            )}
                         </Stack>
                     )}
                 </div>

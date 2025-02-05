@@ -60,6 +60,9 @@ const TimesheetAdminList = ({ employeeId, status }) => {
         else if (status === "Approved") {
             apiUrl = APIPath + "/getapprovedtimesheets/" + employeeId;
         }
+        else if (status === "SentBack") {
+            apiUrl = APIPath + "/getsentbacktimesheets/" + employeeId;
+        }
         fetch(apiUrl)
             .then(response => response.json())
             .then(
@@ -140,7 +143,7 @@ const TimesheetAdminList = ({ employeeId, status }) => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <TimesheetEdit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
+                <TimesheetEdit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} mode={props.data.status} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
             </>
         );
     };
