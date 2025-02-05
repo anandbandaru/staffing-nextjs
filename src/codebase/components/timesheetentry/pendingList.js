@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/context";
 import PendingListToolbar from './pendingListToolbar';
 import CustomSnackbar from "../snackbar/snackbar";
-import TimesheetEntryForm from './timesheetentryForm';
+import TimesheetEntryForm from './pendingCards';
 import { Stack } from "@mui/material";
 import { Alert } from "@mui/material";
 
