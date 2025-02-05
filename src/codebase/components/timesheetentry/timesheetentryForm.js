@@ -129,8 +129,10 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                                                                     >
                                                                         <ExitToAppOutlinedIcon />
                                                                     </IconButton>
-                                                                    <TimesheetAudit ID={timesheet.Id} timesheetNumber={timesheet.timesheetNumber} operation="View" doLoading={true} />
-                                                                    
+                                                                    {timesheet.existingRecordId !== 0 && (
+                                                                        <TimesheetAudit ID={timesheet.existingRecordId} timesheetNumber={timesheet.timesheetNumber} operation="View" doLoading={true} />
+                                                                    )}
+
                                                                 </div>
                                                             </Card>
                                                         </div>

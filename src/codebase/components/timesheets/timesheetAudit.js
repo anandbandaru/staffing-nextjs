@@ -62,6 +62,10 @@ function TimesheetAudit({ ID, operation, doLoading, timesheetNumber }) {
             );
     };
     useEffect(() => {
+        console.log("TSA:" + ID);
+        console.log("TSA:" + operation);
+        console.log("TSA:" + doLoading);
+        console.log("TSA:" + timesheetNumber);
         if (doLoading) {
             if (operation === "View" || operation === "Edit") {
                 getAuditDetails();
