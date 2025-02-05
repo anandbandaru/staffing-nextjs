@@ -10,18 +10,7 @@ import { Context } from "../../context/context";
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-const validationSchema = Yup.object().shape({
-    hours: Yup.array().of(
-        Yup.number()
-            .min(0, 'Minimum 0 hour')
-            .max(24, 'Maximum 24 hours')
-            .required('Hours are required')
-    ),
-    userNotes: Yup.string().required('Notes are required'),
-    Cfile: Yup.string().required('Customer Approved timesheet Document is required')
-});
-
-const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSuccess }) => {
+const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSuccess, operation }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
@@ -40,6 +29,23 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
         setSnackbarMessage(message);
         setSnackbarOpen(true);
     };
+
+
+    const validationSchema = Yup.object().shape({
+        hours: Yup.array().of(
+            Yup.number()
+                .min(0, 'Minimum 0 hour')
+                .max(24, 'Maximum 24 hours')
+                .required('Hours are required')
+        ),
+        userNotes: Yup.string().required('Notes are required'),
+        Cfile: Yup.string().when(operation, {
+            is: 'Edit',
+            then: () => Yup.string()
+                .required('Customer Approved timesheet Document is required'),
+            otherwise: () => Yup.string().nullable()
+        }),
+    });
 
     //FILE RELATED
     const [fileC, setFileC] = useState(null);
@@ -277,7 +283,7 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                 <Stack direction="row" spacing={1} className='mb-6'>
                     <div className='bg-orange-200 px-6 w-[600px]'>Customer Approved Timesheet Document
                         <br />
-                        <strong>MANDATORY</strong></div>
+                        <strong>{operation === "New" ? "MANDATORY" : "OPTIONAL"}</strong></div>
                     <TextField
                         className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
                         type="file"
