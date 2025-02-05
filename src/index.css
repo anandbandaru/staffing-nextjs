@@ -366,6 +366,10 @@ form P.normal{
   color: #fff !important;
   background-color: #be3737 !important;
 }
+.rag-yellow-bg{
+  color: #fff !important;
+  background-color: #c2c50b !important;
+}
 .badgeSpan{
   padding: 0px 5px;
   border-radius: 10px;

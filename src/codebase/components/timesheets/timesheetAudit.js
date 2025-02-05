@@ -108,9 +108,9 @@ function TimesheetAudit({ ID, operation, doLoading, timesheetNumber }) {
                                     date={entry.actionDate}
                                     iconStyle={{ background: '#ccc', color: '#000' }}
                                 >
-                                    <h3 className="vertical-timeline-element-title">Event {index + 1}</h3>
-                                    <h4 className="vertical-timeline-element-subtitle">By: {entry.actionBy}</h4>
-                                    <p>Action: {entry.action}</p>
+                                    <h3 className="vertical-timeline-element-title ">Event {dataAudit.data.length - index}</h3>
+                                    <h4 className="vertical-timeline-element-subtitle bg-red-200">By: {entry.actionBy}</h4>
+                                    <p className='bg-yellow-100 p-2 rounded-md'>Action: {entry.action}</p>
                                 </VerticalTimelineElement>
                             ))}
                         </VerticalTimeline>

@@ -131,13 +131,13 @@ function TimesheetEdit({ ID, timesheetNumber, operation, manualLoadData, setApiL
                                 <CheckCircleOutlinedIcon className="mr-1" />
                                 Approve
                             </Button>
-                            <Button color="error" variant="contained" type="submit"
+                            {/* <Button color="error" variant="contained" type="submit"
                                 size='small'
                                 onClick={() => takeActionOnTimesheet("REJECT")}
                                 disabled={isSubmitting || !notes}>
                                 <ThumbDownAltOutlinedIcon className="mr-1" />
                                 Reject
-                            </Button>
+                            </Button> */}
                             <Button color="warning" variant="contained" type="submit"
                                 size='small'
                                 onClick={() => takeActionOnTimesheet("SENDBACK")}

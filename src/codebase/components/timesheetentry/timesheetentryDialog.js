@@ -50,6 +50,17 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
     const handleFileChangeIPV = (event) => {
         setFileIPV(event.target.files[0]);
     };
+    function getCurrentDateTime() {
+        const now = new Date();
+
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        return `${month}-${day}-${year}-${hours}-${minutes}`;
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -95,8 +106,8 @@ const TimesheetEntryDialog = ({ timesheet, onClose, onFormSubmitSuccess }) => {
                     showSnackbar('error', "Error saving Timesheet data");
                 } else {
                     setInsertedTimesheetId(resp.data.RELATED_ID);
-                    let fileNameC = "CLIENT_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber;
-                    let fileNameIPV = "IMP_VEN_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber;
+                    let fileNameC = "CLIENT_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber + getCurrentDateTime();
+                    let fileNameIPV = "IMP_VEN_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber + getCurrentDateTime();
                     //alert("BEFORE INTERNAL FILE UPLOAD")
                     await UploadTimesheetFiles(fileC, fileNameC, 'TIMESHEETS', resp.data.RELATED_ID, "Client Approved");
                     if (fileIPV)
