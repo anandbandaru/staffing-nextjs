@@ -164,6 +164,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         {(moduleName === "MY_TIMESHEETS" && <>
                                             <Tab>Captured Hours</Tab>
                                             <Tab>Status, Notes & Audit</Tab>
+                                            <Tab>Audit</Tab>
                                         </>
                                         )}
                                         {(moduleName === "EMPLOYEES" && <>
@@ -252,7 +253,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                             <TimesheetCapturedHours timesheetId={ID} />
                                         </TabPanel>
                                         <TabPanel className="px-2">
-                                            <TimesheetDetails ID={ID} operation="View" doLoading={true} />
+                                            <TimesheetDetails ID={ID} operation="View" doLoading={true}  type="STATUS_NOTES" />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <TimesheetDetails ID={ID} operation="View" doLoading={true} type="AUDIT" />
                                         </TabPanel>
                                     </>
                                     )}
