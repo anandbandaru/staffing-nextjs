@@ -122,8 +122,6 @@ const TimesheetCapturedHours = ({ timesheetId }) => {
         },
         { field: "createdDate", maxWidth: 100 },
         { field: "createdBy" },
-        { field: "modifiedDate" },
-        { field: "modifiedBy" },
     ]);
     const rowClassRules = {
         // apply red to Ford cars

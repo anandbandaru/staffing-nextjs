@@ -163,7 +163,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         )}
                                         {(moduleName === "MY_TIMESHEETS" && <>
                                             <Tab>Captured Hours</Tab>
-                                            <Tab>Status, Notes & Audit</Tab>
+                                            <Tab>Status, Notes</Tab>
                                             <Tab>Audit</Tab>
                                         </>
                                         )}
@@ -223,6 +223,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                                                             <span className="bg-green-500 text-white px-1 py-1 rounded">NO {value}</span>
                                                                         ) : (value === "Submitted") ? (
                                                                             <span className="bg-orange-400 text-white px-1 py-1 rounded">{value}</span>
+                                                                        ) : (value === "Approved") ? (
+                                                                            <span className="bg-green-500 text-white px-1 py-1 rounded">{value}</span>
+                                                                        ) : (value === "SentBack") ? (
+                                                                            <span className="bg-yellow-500 text-white px-1 py-1 rounded">{value}</span>
                                                                         ) : (
                                                                             value
                                                                         )}

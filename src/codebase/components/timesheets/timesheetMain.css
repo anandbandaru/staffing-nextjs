@@ -1,5 +1,6 @@
 .timeSheetMainHolder{
-    /* margin:4px; */
+     margin:1px;
+     margin-top: -15px;
 }
 .titleDate{
     background-color: bisque;
@@ -73,6 +74,12 @@
     border-radius: 4px;
     padding: 2px 10px;
     margin-bottom: 10px;
+}
+.vertical-timeline-element-subtitle2{
+    background: #ec8f8f;
+    border-radius: 4px;
+    padding: 2px 5px;
+    display: inline-block;
 }
 .vertical-timeline-element-content-arrow{
     border-right: 7px solid #8b2828;

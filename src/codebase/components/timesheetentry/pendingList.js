@@ -6,7 +6,7 @@ import TimesheetEntryForm from './timesheetentryForm';
 import { Stack } from "@mui/material";
 import { Alert } from "@mui/material";
 
-const PendingList = ({ employeeId }) => {
+const PendingList = ({ employeeId, mode }) => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
@@ -105,7 +105,7 @@ const PendingList = ({ employeeId }) => {
                 {data.data.length > 0 ? (
                     <>
                         <Stack direction="column" spacing={1} className="m-auto">
-                            <TimesheetEntryForm data={data.data} onFormSubmitSuccess={getTimesheets} />
+                            <TimesheetEntryForm data={data.data} onFormSubmitSuccess={getTimesheets} mode={mode} />
                         </Stack>
                     </>
                 ) : (

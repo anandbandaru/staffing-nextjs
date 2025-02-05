@@ -4,33 +4,19 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import { Context } from "../../context/context";
-import CustomSnackbar from "../snackbar/snackbar";
 import { Alert } from "@mui/material";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import TimesheetAdminList from "./timesheetadminList";
+import PendingList from "../timesheetentry/pendingList";
 
 const TimeSheetsMain = () => {
-    const { APIPath, userEmployeeId, setUserEmployeeId, userName, userType } = useContext(Context);
+    const { APIPath } = useContext(Context);
     const [tabIndex, setTabIndex] = React.useState(0);
     const [apiLoading, setApiLoading] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
     const [employeesData, setEmployeesData] = useState({ data: [] });
     const [employeeId, setEmployeeId] = useState('');
-
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
-    };
-
-    const showSnackbar = (severity, message) => {
-        setSnackbarSeverity(severity);
-        setSnackbarMessage(message);
-        setSnackbarOpen(true);
-    };
 
     const getEmployeesList = async () => {
         setApiLoading(true);
@@ -66,15 +52,7 @@ const TimeSheetsMain = () => {
 
     return (
         <>
-            <CustomSnackbar
-                open={snackbarOpen}
-                handleClose={handleSnackbarClose}
-                severity={snackbarSeverity}
-                message={snackbarMessage}
-            />
-
             <div className="timeSheetMainHolder">
-                <div className="subTabsHolder">
                     <TextField
                         size="small"
                         margin="normal"
@@ -83,6 +61,7 @@ const TimeSheetsMain = () => {
                         name="employeeId"
                         select
                         label="Employee Id"
+                        className="bg-yellow-400"
                         onChange={(event) => {
                             handleEmployeeIdChange(event);
                         }}
@@ -122,11 +101,13 @@ const TimeSheetsMain = () => {
                             )}
                         </TabPanel>
                         <TabPanel className="px-2">
-                            3
+                        <Alert severity="info" className="my-1">This tab displays all the <strong>Pending</strong> timesheets.</Alert>
+                            {employeeId && (
+                                <PendingList employeeId={employeeId} mode="View" />
+                            )}
                         </TabPanel>
                     </Tabs>
                 </div>
-            </div>
         </>
     )
 }

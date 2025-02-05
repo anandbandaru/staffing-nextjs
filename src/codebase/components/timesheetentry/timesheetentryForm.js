@@ -14,8 +14,10 @@ import CardContent from '@mui/material/CardContent';
 import TimesheetEntryMetadata from './timesheetentryMetadata';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import TimesheetAudit from '../timesheets/timesheetAudit';
+import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 
-const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
+const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedTimesheet, setSelectedTimesheet] = useState(null);
 
@@ -108,8 +110,11 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                                                                     <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
                                                                         TIMESHEET ID
                                                                     </Typography>
-                                                                    <div className='badgeSpan rag-graylight-bg absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
+                                                                    <div title="Pending days" className='badgeSpan rag-graylight-bg absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
                                                                         {timesheet.daysPending}
+                                                                    </div>
+                                                                    <div title="Mode" className='badgeSpan bg-orange-400 absolute right-2 bottom-3.5' sx={{ color: 'text.secondary', fontSize: 11 }}>
+                                                                        MODE: {mode}
                                                                     </div>
                                                                     <Typography variant="h5" component="div">
                                                                         {timesheet.timesheetNumber}
@@ -124,16 +129,33 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                                                                     </Typography>
                                                                 </CardContent>
                                                                 <div className='bg-blue-100 m-0'>
-                                                                    <IconButton aria-label="SUBMIT" title="SUBMIT" color="primary"
-                                                                        className='ml-2'
-                                                                        onClick={() => handleOpenDialog(timesheet)}
-                                                                    >
-                                                                        <ExitToAppOutlinedIcon />
-                                                                    </IconButton>
+                                                                    {mode === "Edit" && (
+                                                                        <IconButton aria-label="SUBMIT" title="SUBMIT" color="primary"
+                                                                            className='ml-2'
+                                                                            onClick={() => handleOpenDialog(timesheet)}
+                                                                        >
+                                                                            <ExitToAppOutlinedIcon />
+                                                                        </IconButton>
+                                                                    )}
                                                                     {timesheet.existingRecordId !== 0 && (
                                                                         <TimesheetAudit ID={timesheet.existingRecordId} timesheetNumber={timesheet.timesheetNumber} operation="View" doLoading={true} />
                                                                     )}
-
+                                                                    {mode === "View" && (
+                                                                        <>
+                                                                            <IconButton aria-label="VIEW" title="VIEW" color="primary"
+                                                                                className='ml-2'
+                                                                                onClick={() => handleOpenDialog(timesheet)}
+                                                                            >
+                                                                                <RemoveRedEyeOutlinedIcon />
+                                                                            </IconButton>
+                                                                            <IconButton aria-label="REMINDER" title="REMINDER" color="primary"
+                                                                                className='ml-2'
+                                                                                onClick={() => handleOpenDialog(timesheet)}
+                                                                            >
+                                                                                <NotificationsActiveOutlinedIcon />
+                                                                            </IconButton>
+                                                                        </>
+                                                                    )}
                                                                 </div>
                                                             </Card>
                                                         </div>
@@ -176,6 +198,7 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess }) => {
                                     onClose={handleCloseDialog}
                                     onFormSubmitSuccess={onFormSubmitSuccess}
                                     operation={selectedTimesheet.existingRecordId !== 0 ? "Edit" : "New"}
+                                    viewOnlyMode={mode === "View" ? 1 : 0}
                                 />
                             </DialogContent>
                         </BootstrapDialog>

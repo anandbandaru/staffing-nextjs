@@ -113,6 +113,7 @@ function TimesheetAudit({ ID, operation, doLoading, timesheetNumber }) {
                                 >
                                     <h3 className="vertical-timeline-element-title ">Event {dataAudit.data.length - index} on: {entry.actionDate}</h3>
                                     <h4 className="vertical-timeline-element-subtitle">By: {entry.actionBy}</h4>
+                                    <h4 className="vertical-timeline-element-subtitle2">Hours: {entry.hours}</h4>
                                     <div className='vertical-timeline-element-notes'>{entry.action}</div>
                                 </VerticalTimelineElement>
                             ))}

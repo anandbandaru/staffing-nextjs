@@ -81,7 +81,7 @@ const TimesheetEnteredList = ({ employeeId, status }) => {
                             setItemCount(result.total);
                             const uniqueJobIds = new Set(result.data.map(item => item.jobID));
                             setJobsCount(uniqueJobIds.size);
-                            showSnackbar('success', "Submitted Timesheets Data fetched");
+                            showSnackbar('success', status + " Timesheets Data fetched");
                         }
                     }
                     setApiLoading(false);

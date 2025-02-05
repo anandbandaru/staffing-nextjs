@@ -10,7 +10,7 @@ import { Context } from "../../context/context";
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSuccess, operation }) => {
+const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSuccess, operation, viewOnlyMode }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
@@ -194,7 +194,7 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
             const fetchHours = async () => {
                 try {
                     const response = await axios.get(`${APIPath}/gettimesheethours/${existingId}`);
-                    const hoursData = response.data;
+                    const hoursData = response.data.data;
                     const updatedHours = [...formik.values.hours];
                     hoursData.forEach(({ day, hours }) => {
                         const dateIndex = differenceInDays(new Date(day), new Date(timesheet.startDate));
@@ -205,6 +205,16 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                     formik.setFieldValue('hours', updatedHours);
                 } catch (error) {
                     showSnackbar('error', 'Error fetching hours data');
+                }
+
+                try {
+                    const response = await axios.get(`${APIPath}/gettimesheetadmindetails/${existingId}`);
+                    const existingNotes = response.data.data[0].userNotes;
+                    let updatednotes = [...formik.values.userNotes];
+                    updatednotes = existingNotes
+                    formik.setFieldValue('userNotes', updatednotes);
+                } catch (error) {
+                    showSnackbar('error', 'Error fetching User Notes data');
                 }
             };
             fetchHours();
@@ -220,7 +230,7 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                 message={snackbarMessage}
             />
             <Form className='w-full' style={{ maxWidth: `1300px`, margin: '0 auto' }}>
-
+                VIEW MODE: {viewOnlyMode}
                 <div>
                     <Stack direction="row" spacing={2} className='mt-0 mb-8'>
                         <Typography variant="h5" component="div">
@@ -302,83 +312,90 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                         </Grid>
                     ))}
                 </Grid>
-                <Stack direction="row" spacing={1} className='mb-6'>
-                    <div className='bg-orange-200 px-6 w-[600px]'>Customer Approved Timesheet Document
-                        <br />
-                        <strong>{operation === "New" ? "MANDATORY" : "OPTIONAL"}</strong></div>
-                    <TextField
-                        className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
-                        type="file"
-                        size="small"
-                        margin="normal"
-                        fullWidth
-                        id="Cfile"
-                        name="Cfile"
-                        disabled={isSubmitSuccess || formik.isSubmitting}
-                        onChange={(event) => {
-                            formik.handleChange(event);
-                            handleFileChangeC(event);
-                        }}
-                        onBlur={formik.handleBlur}
-                        helperText={(formik.errors.Cfile && formik.touched.Cfile) && formik.errors.Cfile}
-                    />
-                </Stack>
-                <Stack direction="row" spacing={1} className='mb-6'>
-                    <div className='bg-gray-100 px-6 w-[600px]'>Implementation Partner \ Venfor Timesheet Document
-                        <br />
-                        <strong>OPTIONAL</strong>
-                    </div>
-                    <TextField
-                        className='bg-gray-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
-                        type="file"
-                        size="small"
-                        margin="normal"
-                        fullWidth
-                        id="IPVfile"
-                        name="IPVfile"
-                        disabled={isSubmitSuccess || formik.isSubmitting}
-                        onChange={(event) => {
-                            formik.handleChange(event);
-                            handleFileChangeIPV(event);
-                        }}
-                        onBlur={formik.handleBlur}
-                        helperText={(formik.errors.IPVfile && formik.touched.IPVfile) && formik.errors.IPVfile}
-                    />
-                </Stack>
-                <TextField
-                    className='mt-4'
-                    label="User Notes"
-                    name="userNotes"
-                    multiline
-                    rows={2}
-                    fullWidth
-                    value={formik.values.userNotes}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    disabled={isSubmitSuccess || formik.isSubmitting}
-                />
-                <Stack direction="row" spacing={2} className='mt-4 float-right'>
 
-                    <TextField
-                        className='mr-4'
-                        size="small"
-                        margin="normal"
-                        id="totalHours"
-                        name="totalHours"
-                        label="Total Hours"
-                        disabled
-                        value={totalHours}
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={formik.handleSubmit}
-                        disabled={formik.isSubmitting || isSubmitSuccess}
-                    >
-                        Submit
-                    </Button>
-                    {formik.isSubmitting && <div className='spinner'></div>}
-                </Stack>
+                {!viewOnlyMode && (
+                    <>
+                        <Stack direction="row" spacing={1} className='mb-6'>
+                            <div className='bg-orange-200 px-6 w-[600px]'>Customer Approved Timesheet Document
+                                <br />
+                                <strong>{operation === "New" ? "MANDATORY" : "OPTIONAL"}</strong></div>
+                            <TextField
+                                className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
+                                type="file"
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="Cfile"
+                                name="Cfile"
+                                disabled={isSubmitSuccess || formik.isSubmitting}
+                                onChange={(event) => {
+                                    formik.handleChange(event);
+                                    handleFileChangeC(event);
+                                }}
+                                onBlur={formik.handleBlur}
+                                helperText={(formik.errors.Cfile && formik.touched.Cfile) && formik.errors.Cfile}
+                            />
+                        </Stack>
+
+                        <Stack direction="row" spacing={1} className='mb-6'>
+                            <div className='bg-gray-100 px-6 w-[600px]'>Implementation Partner \ Venfor Timesheet Document
+                                <br />
+                                <strong>OPTIONAL</strong>
+                            </div>
+                            <TextField
+                                className='bg-gray-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
+                                type="file"
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                id="IPVfile"
+                                name="IPVfile"
+                                disabled={isSubmitSuccess || formik.isSubmitting}
+                                onChange={(event) => {
+                                    formik.handleChange(event);
+                                    handleFileChangeIPV(event);
+                                }}
+                                onBlur={formik.handleBlur}
+                                helperText={(formik.errors.IPVfile && formik.touched.IPVfile) && formik.errors.IPVfile}
+                            />
+                        </Stack>
+                        <TextField
+                            className='mt-4'
+                            label="User Notes"
+                            name="userNotes"
+                            multiline
+                            rows={2}
+                            fullWidth
+                            value={formik.values.userNotes}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            disabled={isSubmitSuccess || formik.isSubmitting}
+                        />
+                    </>
+                )}
+                {!viewOnlyMode && (
+                    <Stack direction="row" spacing={2} className='mt-4 float-right'>
+                        <TextField
+                            className='mr-4'
+                            size="small"
+                            margin="normal"
+                            id="totalHours"
+                            name="totalHours"
+                            label="Total Hours"
+                            disabled
+                            value={totalHours}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={formik.handleSubmit}
+                            disabled={formik.isSubmitting || isSubmitSuccess}
+                        >
+                            Submit
+                        </Button>
+                        {formik.isSubmitting && <div className='spinner'></div>}
+                    </Stack>
+                )}
                 {getValidationErrors().length > 0 && (
                     <Stack direction="row" spacing={2} className='mt-4'>
                         <div className=" bg-red-500 my-4 p-2 text-white rounded-md float-left">

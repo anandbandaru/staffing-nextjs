@@ -126,7 +126,11 @@ function TimesheetDetails({ ID, operation, doLoading, type }) {
                                                     </TableCell>
                                                     <TableCell className='bg-gray-100'>
                                                         {(value === "Submitted") ? (
-                                                            <span className="bg-red-500 text-white px-1 py-1 rounded">YES</span>
+                                                            <span className="bg-red-500 text-white px-1 py-1 rounded">{value}</span>
+                                                        ) : (value === "Approved") ? (
+                                                            <span className="bg-green-500 text-white px-1 py-1 rounded">{value}</span>
+                                                        ) : (value === "SentBack") ? (
+                                                            <span className="bg-yellow-500 text-white px-1 py-1 rounded">{value}</span>
                                                         ) : (
                                                             value
                                                         )}
@@ -150,6 +154,7 @@ function TimesheetDetails({ ID, operation, doLoading, type }) {
                                     >
                                         <h3 className="vertical-timeline-element-title ">Event {dataAudit.data.length - index} on: {entry.actionDate}</h3>
                                         <h4 className="vertical-timeline-element-subtitle">By: {entry.actionBy}</h4>
+                                        <h4 className="vertical-timeline-element-subtitle2">Hours: {entry.hours}</h4>
                                         <div className='vertical-timeline-element-notes'>{entry.action}</div>
                                     </VerticalTimelineElement>
                                 ))}

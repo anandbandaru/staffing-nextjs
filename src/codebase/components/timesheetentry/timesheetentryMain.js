@@ -80,7 +80,7 @@ const TimeSheetsEntryMain = () => {
                 message={snackbarMessage}
             />
 
-            <div className="timeSheetMainHolder">
+            <div className="timeSheetEntryMainHolder">
                 <div className="subTabsHolder">
                     <Tabs selectedIndex={tabIndex}
                         onSelect={(index) => setTabIndex(index)}>
@@ -93,7 +93,7 @@ const TimeSheetsEntryMain = () => {
                         <TabPanel className="px-0">
                             {userEmployeeId !== 0 ?
                                 <>
-                                    <PendingList employeeId={userEmployeeId} />
+                                    <PendingList employeeId={userEmployeeId} mode="Edit" />
                                 </>
                                 :
                                 <>
