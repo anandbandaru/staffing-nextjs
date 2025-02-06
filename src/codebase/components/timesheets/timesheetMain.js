@@ -53,61 +53,75 @@ const TimeSheetsMain = () => {
     return (
         <>
             <div className="timeSheetMainHolder">
-                    <TextField
-                        size="small"
-                        margin="normal"
-                        fullWidth
-                        id="employeeId"
-                        name="employeeId"
-                        select
-                        label="Employee Id"
-                        className="bg-yellow-400"
-                        onChange={(event) => {
-                            handleEmployeeIdChange(event);
-                        }}
-                    >
-                        {employeesData.data.map((item, index) => (
-                            <MenuItem key={index} value={item.Id}>
-                                {item.Id} - {item.firstName} {item.lastName} - {item.employeeType}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                <TextField
+                    size="small"
+                    margin="normal"
+                    fullWidth
+                    id="employeeId"
+                    name="employeeId"
+                    select
+                    label="Employee Id"
+                    value={employeeId}
+                    className="bg-yellow-400"
+                    onChange={(event) => {
+                        handleEmployeeIdChange(event);
+                    }}
+                >
+                    {employeesData.data.map((item, index) => (
+                        <MenuItem key={index} value={item.Id}>
+                            {/* <div className="divTSEmplyeeHolder1"> */}
+                                <div>
+                                    Employee ID: {item.Id}
+                                </div>
+                                <div>
+                                    {item.firstName} {item.lastName}
+                                </div>
+                                <div>
+                                    ({item.employeeType})
+                                </div>
+                                <div>
+                                    (Personal Email: {item.personalEmail}) - (US Phone: {item.personalUSPhone}) - (Personal Phone: {item.personalPhone})
+                                </div>
+                            {/* </div> */}
+                        </MenuItem>
+                    ))}
+                </TextField>
 
-                    <Tabs selectedIndex={tabIndex}
-                        onSelect={(index) => setTabIndex(index)}>
-                        <TabList className="subTabsListHolder">
+                <Tabs selectedIndex={tabIndex}
+                    onSelect={(index) => setTabIndex(index)}>
+                    <TabList className="subTabsListHolder">
                         <Tab><TimerOutlinedIcon className="mr-1" />Yet to Submit Timesheets</Tab>
                         <Tab><CheckOutlinedIcon className="mr-1" />Sent Back Timesheets</Tab>
                         <Tab><CheckOutlinedIcon className="mr-1" />Pending Approval Timesheets</Tab>
-                            <Tab><CheckCircleOutlinedIcon className="mr-1" />Approved Timesheets</Tab>
-                        </TabList>
+                        <Tab><CheckCircleOutlinedIcon className="mr-1" />Approved Timesheets</Tab>
+                    </TabList>
 
-                        <TabPanel className="px-2">
+                    <TabPanel className="px-2">
                         <Alert severity="info" className="my-1">This tab displays all the <strong>Pending</strong> timesheets.</Alert>
-                            {employeeId && (
-                                <PendingList employeeId={employeeId} mode="View" />
-                            )}
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            <Alert severity="info" className="my-1">This tab displays all the <strong>Sent Back</strong> timesheets.</Alert>
-                            {employeeId && (
-                                <TimesheetAdminList employeeId={employeeId} status="SentBack" />
-                            )}
-                        </TabPanel>
-                        <TabPanel className="px-2">
-                            <Alert severity="info" className="my-1">This tab displays all the <strong>Pending Approval</strong> timesheets.</Alert>
-                            {employeeId && (
-                                <TimesheetAdminList employeeId={employeeId} status="Submitted" />
-                            )}
-                        </TabPanel>
-                        <TabPanel className="px-0">
-                            <Alert severity="info" className="my-1">This tab displays all the <strong>Approved</strong> timesheets.</Alert>
-                            {employeeId && (
-                                <TimesheetAdminList employeeId={employeeId} status="Approved" />
-                            )}
-                        </TabPanel>
-                    </Tabs>
-                </div>
+                        {employeeId && (
+                            <PendingList employeeId={employeeId} mode="View" />
+                        )}
+                    </TabPanel>
+                    <TabPanel className="px-2">
+                        <Alert severity="info" className="my-1">This tab displays all the <strong>Sent Back</strong> timesheets.</Alert>
+                        {employeeId && (
+                            <TimesheetAdminList employeeId={employeeId} status="SentBack" />
+                        )}
+                    </TabPanel>
+                    <TabPanel className="px-2">
+                        <Alert severity="info" className="my-1">This tab displays all the <strong>Pending Approval</strong> timesheets.</Alert>
+                        {employeeId && (
+                            <TimesheetAdminList employeeId={employeeId} status="Submitted" />
+                        )}
+                    </TabPanel>
+                    <TabPanel className="px-0">
+                        <Alert severity="info" className="my-1">This tab displays all the <strong>Approved</strong> timesheets.</Alert>
+                        {employeeId && (
+                            <TimesheetAdminList employeeId={employeeId} status="Approved" />
+                        )}
+                    </TabPanel>
+                </Tabs>
+            </div>
         </>
     )
 }
