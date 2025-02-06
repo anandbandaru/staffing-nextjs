@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { Context } from "../../context/context";
 import { Formik, FieldArray } from 'formik';
 import { Button, Typography, Box, Dialog, DialogTitle, DialogContent } from '@mui/material';
@@ -19,11 +19,13 @@ import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsAc
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
 import axios from 'axios';
+import emailjs from 'emailjs-com';
 
 const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
     const { APIPath, userName } = useContext(Context);
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedTimesheet, setSelectedTimesheet] = useState(null);
+    const form = useRef();
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -51,41 +53,91 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
         setSelectedTimesheet(null);
     };
 
-    const sendReminder = (tn, teid, tjn) => {
+    const sendReminder = (tn, eid, tf, tt, tjn) => {
         console.log(tn);
-        console.log(teid);
+        console.log(eid);
+        console.log(tf);
+        console.log(tt);
         console.log(tjn);
 
-        let apiUrl = APIPath + "/sendemail";
-        axios.post(apiUrl,
-            {
-                timesheetNumber: tn,
-                jobName: tjn,
-                employeeId: teid,
-                actionBy: userName
-            },
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json',
-                }
-            },
-        ).then(
-            (result) => {
-                if (result.error) {
-                    showSnackbar('error', "Error sending email to user");
-                } else {
-                    if (result.data.STATUS === "FAIL") {
-                        showSnackbar('error', result.data.ERROR.MESSAGE);
-                    } else {
-                        showSnackbar('success', "Reminder email sent.");
-                    }
-                }
-            },
-            (error) => {
-                showSnackbar('error', "CATCH: Error sending email to user");
-            }
-        )
+        // Create a virtual form element
+        const form = document.createElement('form');
+
+        // Create and append input elements to the form
+        const subjectInput = document.createElement('input');
+        subjectInput.setAttribute('type', 'hidden');
+        subjectInput.setAttribute('name', 'user_email');
+        subjectInput.setAttribute('value', 'anand.bandaru@gmail.com');
+        form.appendChild(subjectInput);
+
+        const i_tn = document.createElement('input');
+        i_tn.setAttribute('type', 'hidden');
+        i_tn.setAttribute('name', 'tn');
+        i_tn.setAttribute('value', tn);
+        form.appendChild(i_tn);
+
+        const i_eid = document.createElement('input');
+        i_eid.setAttribute('type', 'hidden');
+        i_eid.setAttribute('name', 'eid');
+        i_eid.setAttribute('value', eid);
+        form.appendChild(i_eid);
+
+        const i_tf = document.createElement('input');
+        i_tf.setAttribute('type', 'hidden');
+        i_tf.setAttribute('name', 'tf');
+        i_tf.setAttribute('value', tf);
+        form.appendChild(i_tf);
+
+        const i_tt = document.createElement('input');
+        i_tt.setAttribute('type', 'hidden');
+        i_tt.setAttribute('name', 'tt');
+        i_tt.setAttribute('value', tt);
+        form.appendChild(i_tt);
+
+        const i_tjn = document.createElement('input');
+        i_tjn.setAttribute('type', 'hidden');
+        i_tjn.setAttribute('name', 'tjn');
+        i_tjn.setAttribute('value', tjn);
+        form.appendChild(i_tjn);
+
+        emailjs.sendForm('service_68p81qk', 'template_ekt8k16', form, 'r6Fya2Opl9134qi3r')
+        .then((result) => {
+            showSnackbar('success', "Reminder email sent.");
+            console.log("sendReminder");
+        }, (error) => {
+            showSnackbar('error', "Error sending email to user");
+        });
+
+        // let apiUrl = APIPath + "/sendemail";
+        // axios.post(apiUrl,
+        //     {
+        //         timesheetNumber: tn,
+        //         jobName: tjn,
+        //         employeeId: teid,
+        //         actionBy: userName
+        //     },
+        //     {
+        //         headers: {
+        //             'Access-Control-Allow-Origin': '*',
+        //             'Content-Type': 'application/json',
+        //         }
+        //     },
+        // ).then(
+        //     (result) => {
+        //         if (result.error) {
+        //             showSnackbar('error', "Error sending email to user");
+        //         } else {
+        //             if (result.data.STATUS === "FAIL") {
+        //                 showSnackbar('error', result.data.ERROR.MESSAGE);
+        //             } else {
+        //                 showSnackbar('success', "Reminder email sent.");
+        //             }
+        //         }
+        //     },
+        //     (error) => {
+        //         showSnackbar('error', "CATCH: Error sending email to user");
+        //     }
+        // )
     };
 
     //For dialog MUI
@@ -212,7 +264,7 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                                                                 <IconButton aria-label="REMINDER" title="REMINDER" color="primary"
                                                                                     className='ml-2'
                                                                                     onClick={() =>
-                                                                                        sendReminder(timesheet.timesheetNumber, timesheet.employeeID, timesheet.jobName)
+                                                                                        sendReminder(timesheet.timesheetNumber, timesheet.employeeID, timesheet.startDate, timesheet.endDate, timesheet.jobName)
                                                                                     }
                                                                                 >
                                                                                     <NotificationsActiveOutlinedIcon />
