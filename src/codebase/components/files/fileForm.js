@@ -86,6 +86,7 @@ function FileForm({ props, ID, operation }) {
                     axios.post(APIPath + '/uploadfile', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
+                            'ngrok-skip-browser-warning': 'true',
                         },
                     }).then((resp) => {
                         setSubmitionCompleted(true);

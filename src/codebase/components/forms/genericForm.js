@@ -24,14 +24,18 @@ function GenericForm({ entity, entityID, operation, fields, validationSchema, ap
     const [apiLoadingError, setApiLoadingError] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     // Default width
-   const [formWidth, setFormWidth] = useState(700);
-   const handleSliderChange = (event, newValue) => {
-       setFormWidth(newValue);
-   };
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const getEntityDetails = () => {
         let apiUrl = `${APIPath}${apiEndpoints.getDetails}/${entityID}`;
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -79,6 +83,7 @@ function GenericForm({ entity, entityID, operation, fields, validationSchema, ap
                             headers: {
                                 'Access-Control-Allow-Origin': '*',
                                 'Content-Type': 'application/json',
+                                'ngrok-skip-browser-warning': 'true',
                             }
                         }).then((resp) => {
                             setSubmitionCompleted(true);

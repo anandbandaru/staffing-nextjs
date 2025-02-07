@@ -74,7 +74,11 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
         setApiLoading(true);
         let apiUrl = getAPIEndpoint() + "/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -123,7 +127,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                 <div className="fixed inset-1 w-full items-center justify-center p-20 bg-gray-700 bg-opacity-50 pt-20">
                     <DialogPanel className="space-y-4 bg-white p-1 px-2 border-gray-600 border-opacity-80 border-8 rounded-lg" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
                         <DialogTitle className="font-bold text-lg">
-                            {operation} 
+                            {operation}
                             {timesheetNumber ?
                                 <>
                                     - TIMESHEET ID: {timesheetNumber}
@@ -259,7 +263,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                             <TimesheetCapturedHours timesheetId={ID} />
                                         </TabPanel>
                                         <TabPanel className="px-2">
-                                            <TimesheetDetails ID={ID} operation="View" doLoading={true}  type="STATUS_NOTES" />
+                                            <TimesheetDetails ID={ID} operation="View" doLoading={true} type="STATUS_NOTES" />
                                         </TabPanel>
                                         <TabPanel className="px-2">
                                             <TimesheetDetails ID={ID} operation="View" doLoading={true} type="AUDIT" />
