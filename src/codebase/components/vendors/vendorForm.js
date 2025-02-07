@@ -144,6 +144,8 @@ function VendorForm({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
+                                    'User-Agent': 'MyApp/0.0.1'
                                 }
                             },
                         ).then((resp) => {

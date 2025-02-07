@@ -40,7 +40,11 @@ function TodoForm({ props, ID, operation }) {
     const getDetails = () => {
         let apiUrl = APIPath + "/gettododetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+                'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+            }})
             .then(response => response.json())
             .then(
                 (result) => {
@@ -103,6 +107,7 @@ function TodoForm({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
                                 }
                             },
                         ).then((resp) => {

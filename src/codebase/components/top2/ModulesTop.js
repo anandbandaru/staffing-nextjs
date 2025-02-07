@@ -61,7 +61,11 @@ const ModulesTop = ({ module }) => {
     //PERMISSIONS
     useEffect(() => {
         if (userType !== 'ADMIN') {
-            axios.get(APIPath + `/getnewpermissions/${userName}`)
+            axios.get(APIPath + `/getnewpermissions/${userName}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                }
+            })
                 .then(response => {
                     if (response.data.STATUS === "FAIL") {
                         showSnackbar('error', "New tabs Permissions failure");

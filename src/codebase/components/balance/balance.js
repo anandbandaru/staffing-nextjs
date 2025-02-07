@@ -29,7 +29,11 @@ const Balance = () => {
     const fetchBalance = async () => {
         setApiLoading(true);
         try {
-            const response = await fetch(`${APIPath}/getbalance`);
+            const response = await fetch(`${APIPath}/getbalance`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                    'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+                }});
             const result = await response.json();
             if (result.error) {
                 setUsd(0);

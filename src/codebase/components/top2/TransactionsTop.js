@@ -56,7 +56,11 @@ const TransactionsTop = ({ module }) => {
     useEffect(() => {
         if (userType !== 'ADMIN') {
             setIsAPILoading(true);
-            axios.get(APIPath + `/gettransactionspermissions/${userName}`)
+            axios.get(APIPath + `/gettransactionspermissions/${userName}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                }
+            })
                 .then(response => {
                     if (response.data.STATUS === "FAIL") {
                         showSnackbar('error', "Transactions tabs Permissions failure");
