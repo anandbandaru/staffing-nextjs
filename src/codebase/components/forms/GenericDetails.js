@@ -14,6 +14,7 @@ import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import JobRatesList from '../jobs/jobRatesList'
 import TimesheetDetails from '../timesheetentry/timesheetDetails';
 import TimesheetCapturedHours from '../timesheetentry/capturedHours';
+import TimesheetReminders from '../timesheets/timesheetReminders';
 
 function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber }) {
     const { APIPath, userType } = useContext(Context);
@@ -165,6 +166,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                             <Tab>Captured Hours</Tab>
                                             <Tab>Status, Notes</Tab>
                                             <Tab>Audit</Tab>
+                                            <Tab>Reminders</Tab>
                                         </>
                                         )}
                                         {(moduleName === "EMPLOYEES" && <>
@@ -261,6 +263,9 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         </TabPanel>
                                         <TabPanel className="px-2">
                                             <TimesheetDetails ID={ID} operation="View" doLoading={true} type="AUDIT" />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <TimesheetReminders timesheetNumber={timesheetNumber} />
                                         </TabPanel>
                                     </>
                                     )}

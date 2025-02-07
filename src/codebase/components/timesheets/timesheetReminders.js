@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 
-function TimesheetReminders({ timesheetNumber }) {
+function TimesheetReminders({ timesheetNumber, viewType }) {
     const { APIPath, userName } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
     const [data, setData] = useState('');
@@ -55,39 +55,60 @@ function TimesheetReminders({ timesheetNumber }) {
 
     return (
         <>
-            <Stack direction="row" spacing={1} className=''>
-                <IconButton aria-label="PAST REMINDERS" title="PAST REMINDERS" color="primary" onClick={handleClick}>
-                    <NotificationsActiveOutlinedIcon />
-                </IconButton>
-            </Stack>
-            <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-            >
-                <div style={{ padding: '10px' }}>
-                    <div className='reminderHistoryTitle'>Past Reminders:</div>
-                    {data && data.data.length > 0 ?
-                        data.data.map((item, index) => (
-                            <div key={index} value={item.Id} className='reminderHistoryRow'>
-                                {item.reminderSentDate} - {item.reminderSentBy}
-                            </div>
-                        )) :
-                        <>
-                            No reminders sent in the past
-                        </>
-                    }
-                </div>
-            </Popover>
+            {viewType === "POP" ?
+                <>
+                    <Stack direction="row" spacing={1} className=''>
+                        <IconButton aria-label="PAST REMINDERS" title="PAST REMINDERS" color="primary" onClick={handleClick}>
+                            <NotificationsActiveOutlinedIcon />
+                        </IconButton>
+                    </Stack>
+                    <Popover
+                        id={id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                    >
+                        <div style={{ padding: '10px' }}>
+                            <div className='reminderHistoryTitle'>Past Reminders:</div>
+                            {data && data.data.length > 0 ?
+                                data.data.map((item, index) => (
+                                    <div key={index} value={item.Id} className='reminderHistoryRow'>
+                                        {item.reminderSentDate} - {item.reminderSentBy}
+                                    </div>
+                                )) :
+                                <>
+                                    No reminders sent in the past
+                                </>
+                            }
+                        </div>
+                    </Popover>
+                </>
+                :
+                <>
+                    <div style={{ padding: '10px' }}>
+                        <div className='reminderHistoryTitle'>Past Reminders:</div>
+                        {data && data.data.length > 0 ?
+                            data.data.map((item, index) => (
+                                <div key={index} value={item.Id} className='reminderHistoryRow'>
+                                    {item.reminderSentDate} - {item.reminderSentBy}
+                                </div>
+                            )) :
+                            <>
+                                No reminders sent in the past
+                            </>
+                        }
+                    </div>
+                </>
+            }
+
         </>
     )
 }

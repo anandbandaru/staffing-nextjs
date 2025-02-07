@@ -282,7 +282,7 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                                                                 >
                                                                                     <NotificationAddIcon />
                                                                                 </IconButton>
-                                                                                <TimesheetReminders timesheetNumber={timesheet.timesheetNumber} />
+                                                                                <TimesheetReminders timesheetNumber={timesheet.timesheetNumber} viewType="POP" />
                                                                             </>
                                                                         )}
                                                                     </div>
