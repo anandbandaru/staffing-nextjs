@@ -11,7 +11,11 @@ const EmployeesReport = () => {
 
     const fetchData = async () => {
         setApiLoading(true);
-        axios.get(APIPath + "/getemployees").then((response) => {
+        axios.get(APIPath + "/getemployees", {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        }).then((response) => {
             setApiLoading(false);
             const employeesData = response.data.data;
             // Process data to count disabled and active users

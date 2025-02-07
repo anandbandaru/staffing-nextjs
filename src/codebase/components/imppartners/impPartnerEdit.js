@@ -59,6 +59,7 @@ function ImpPartnerEdit({ ID, operation, manualLoadData, setApiLoading, showSnac
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
                 }
             },
         ).then((resp) => {

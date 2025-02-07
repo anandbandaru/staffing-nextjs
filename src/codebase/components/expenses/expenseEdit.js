@@ -58,6 +58,7 @@ function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
                 }
             },
         ).then((resp) => {

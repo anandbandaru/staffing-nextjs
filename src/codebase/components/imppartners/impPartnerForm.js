@@ -21,10 +21,10 @@ function ImpPartnerForm({ props, ID, operation }) {
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(true);
     // Default width
-   const [formWidth, setFormWidth] = useState(700);
-   const handleSliderChange = (event, newValue) => {
-       setFormWidth(newValue);
-   };
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -41,7 +41,11 @@ function ImpPartnerForm({ props, ID, operation }) {
     const getDetails = () => {
         let apiUrl = APIPath + "/getimplementationpartnerdetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -106,6 +110,7 @@ function ImpPartnerForm({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
                                 }
                             },
                         ).then((resp) => {
@@ -114,7 +119,7 @@ function ImpPartnerForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Implementation Partner data");
                             else
                                 showSnackbar('success', "Implementation Partner data saved");
-                                resetForm();
+                            resetForm();
                         })
                             .catch(function (error) {
                                 // console.log(error);

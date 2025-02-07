@@ -39,7 +39,11 @@ function EmployeeGenericList({ employeeID, formType }) {
     const getDetails = () => {
         setApiLoading(true);
         let apiUrl = APIPath + getApiUrl() + employeeID;
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {

@@ -59,8 +59,7 @@ function ClientEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
-                    'ngrok-skip-browser-warning': 'true',
-                    'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+                    'ngrok-skip-browser-warning': 'true'
                 }
             },
         ).then((resp) => {

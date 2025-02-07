@@ -85,7 +85,11 @@ const Dashboard = () => {
             // console.log("FINAL DASH ENDPOINTS: " + endpoints)
             const responses = await Promise.all(
                 endpoints.map(
-                    endpoint => axios.get(APIPath + endpoint)
+                    endpoint => axios.get(APIPath + endpoint, {
+                        headers: {
+                            'ngrok-skip-browser-warning': 'true',
+                        }
+                    })
                         .then((res) => {
                             if (res.data.STATUS === "FAIL") {
                                 setDashboardAPIError(res.data.ERROR.MESSAGE);

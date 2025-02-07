@@ -46,7 +46,11 @@ function EmployeeForm({ props, ID, operation }) {
         setApiLoading(true);
         let apiUrl = APIPath + "/getemployeedetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 async (result) => {
@@ -74,7 +78,11 @@ function EmployeeForm({ props, ID, operation }) {
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/masterdata/filetypes"
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -99,7 +107,11 @@ function EmployeeForm({ props, ID, operation }) {
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -185,6 +197,7 @@ function EmployeeForm({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
                                 }
                             },
                         ).then((resp) => {

@@ -49,7 +49,11 @@ const ClientList = () => {
     const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getclients"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {

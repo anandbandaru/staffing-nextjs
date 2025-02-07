@@ -59,7 +59,11 @@ function Job({ props, ID, operation }) {
         setData({});
         let apiUrl = APIPath + "/getjobdetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 async (result) => {
@@ -90,7 +94,11 @@ function Job({ props, ID, operation }) {
         setApiLoading(true);
         setCompaniesData({ data: [] });
         let apiUrl = APIPath + "/getcompanies"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -118,7 +126,11 @@ function Job({ props, ID, operation }) {
         setApiLoading(true);
         setVendorsData({ data: [] });
         let apiUrl = APIPath + "/getvendors"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -146,7 +158,11 @@ function Job({ props, ID, operation }) {
         setApiLoading(true);
         setIPsData({ data: [] });
         let apiUrl = APIPath + "/getimplementationpartners"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -174,7 +190,11 @@ function Job({ props, ID, operation }) {
         setApiLoading(true);
         setClientsData({ data: [] });
         let apiUrl = APIPath + "/getclients"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -201,7 +221,11 @@ function Job({ props, ID, operation }) {
         setApiLoading(true);
         setEmployeesData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -270,6 +294,7 @@ function Job({ props, ID, operation }) {
             const resp = await axios.post(APIPath + '/uploadfile', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'ngrok-skip-browser-warning': 'true',
                 },
             });
 
@@ -342,6 +367,7 @@ function Job({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
                                 }
                             });
                             if (resp.data.STATUS === "FAIL") {
@@ -352,7 +378,7 @@ function Job({ props, ID, operation }) {
                                 setInsertedJobId(resp.data.RELATED_ID);
 
                                 let insertedID = resp.data.RELATED_ID;
-                                if(operation === "Edit")
+                                if (operation === "Edit")
                                     insertedID = ID;
 
                                 let fileNameMSA = "MSA:JOB:" + insertedID + "_" + getCurrentDateTime();

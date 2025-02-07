@@ -21,7 +21,7 @@ function ExpenseTypeEdit({ ID, operation, manualLoadData, setApiLoading, showSna
         return <Slide direction="up" ref={ref} {...props} />;
     });
     const handleClose = (event, reason) => {
-        if (reason && reason === "backdropClick") 
+        if (reason && reason === "backdropClick")
             return;
         setOpen(false);
         manualLoadData();
@@ -48,12 +48,13 @@ function ExpenseTypeEdit({ ID, operation, manualLoadData, setApiLoading, showSna
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
                 }
             },
         ).then((resp) => {
             setApiLoading(false);
             manualLoadData();
-            if(resp.data.ERROR.MESSAGE.includes("The DELETE statement conflicted with the REFERENCE constraint"))
+            if (resp.data.ERROR.MESSAGE.includes("The DELETE statement conflicted with the REFERENCE constraint"))
                 showSnackbar('warning', "Cannot delete Item due to child rows");
             else
                 showSnackbar('success', "Item deleted.");

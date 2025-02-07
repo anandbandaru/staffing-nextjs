@@ -43,8 +43,7 @@ function ClientForm({ props, ID, operation }) {
         // console.log(apiUrl)
         fetch(apiUrl, {
             headers: {
-                'ngrok-skip-browser-warning': 'true',
-                'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+                'ngrok-skip-browser-warning': 'true'
             }})
             .then(response => response.json())
             .then(
@@ -110,8 +109,7 @@ function ClientForm({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
-                                    'ngrok-skip-browser-warning': 'true',
-                                    'User-Agent': 'MyApp/0.0.1'
+                                    'ngrok-skip-browser-warning': 'true'
                                 }
                             },
                         ).then((resp) => {

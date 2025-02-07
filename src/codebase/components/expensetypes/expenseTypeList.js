@@ -48,7 +48,11 @@ const ExpenseTypeList = () => {
     const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getexpensetypes"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -65,7 +69,7 @@ const ExpenseTypeList = () => {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
-                        else{
+                        else {
                             showSnackbar('success', "Expense Types Data loaded");
                         }
                     }

@@ -50,7 +50,11 @@ const EmployeesList = () => {
     const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -157,8 +161,8 @@ const EmployeesList = () => {
         defaultMinWidth: 50
     };
     const gridOptions = {
-      enableCellTextSelection: true,
-      ensureDomOrder: true,
+        enableCellTextSelection: true,
+        ensureDomOrder: true,
     };
 
     return (

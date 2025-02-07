@@ -48,7 +48,11 @@ const ImpPartnerList = () => {
     const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getimplementationpartners"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
