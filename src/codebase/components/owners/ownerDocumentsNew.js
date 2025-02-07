@@ -62,6 +62,7 @@ const OwnerDocumentsNew = () => {
             axios.post(APIPath + '/uploadfile', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'ngrok-skip-browser-warning': 'true',
                 },
             }).then((resp) => {
                 showSnackbar('success', `File uploaded successfully: ${resp.data.FILE_PATH}`);

@@ -23,10 +23,10 @@ function OwnerForm({ props, ID, operation }) {
     const [firstName, setFirstName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
     // Default width
-   const [formWidth, setFormWidth] = useState(700);
-   const handleSliderChange = (event, newValue) => {
-       setFormWidth(newValue);
-   };
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -45,7 +45,11 @@ function OwnerForm({ props, ID, operation }) {
         setApiLoading(true);
         let apiUrl = APIPath + "/getownerdetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -72,7 +76,11 @@ function OwnerForm({ props, ID, operation }) {
         setApiLoading(true);
         setFileTypesData({ data: [] });
         let apiUrl = APIPath + "/masterdata/filetypes"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -143,6 +151,7 @@ function OwnerForm({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
                                 }
                             },
                         ).then((resp) => {
@@ -152,7 +161,7 @@ function OwnerForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Owner data");
                             else
                                 showSnackbar('success', "Owner data saved");
-                                resetForm();
+                            resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             // console.log(error);

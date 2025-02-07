@@ -60,6 +60,7 @@ function OwnerEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar 
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
                 }
             },
         ).then((resp) => {

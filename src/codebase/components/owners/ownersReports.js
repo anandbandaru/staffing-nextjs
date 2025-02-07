@@ -11,7 +11,11 @@ const OwnersReport = () => {
 
     const fetchData = async () => {
         setApiLoading(true);
-        axios.get(APIPath + "/getowners").then((response) => {
+        axios.get(APIPath + "/getowners", {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        }).then((response) => {
             setApiLoading(false);
             const ownersData = response.data.data;
             // Process data to count disabled and active users
