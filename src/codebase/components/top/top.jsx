@@ -184,7 +184,12 @@ const Top = () => {
     const [permissions, setPermissions] = useState([]);
     useEffect(() => {
         if (userType !== 'ADMIN') {
-            axios.get(APIPath + `/gettoppermissions/${userName}`)
+            // axios.get(APIPath + `/gettoppermissions/${userName}`)
+            axios.get(APIPath + `/gettoppermissions/${userName}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                    'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+                }})
                 .then(response => {
                     if (response.data.STATUS === "FAIL") {
                         showSnackbar('error', "Top tabs Permissions failure");
