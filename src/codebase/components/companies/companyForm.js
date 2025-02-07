@@ -66,7 +66,11 @@ function CompanyForm({ props, ID, operation }) {
     const getDetails = () => {
         let apiUrl = APIPath + "/getcompanydetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -143,6 +147,7 @@ function CompanyForm({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
                                 }
                             },
                         ).then((resp) => {
