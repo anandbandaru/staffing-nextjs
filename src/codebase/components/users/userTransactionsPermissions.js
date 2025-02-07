@@ -33,7 +33,11 @@ const UserTransactionsPermissions = ({ users }) => {
     const handleUserChange = (event) => {
         // console.log("User selected: " + event.target.value)
         setSelectedUser(event.target.value);
-        axios.get(APIPath + `/gettransactionspermissions/${event.target.value}`)
+        axios.get(APIPath + `/gettransactionspermissions/${event.target.value}`, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+                'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+            }})
             .then(response => {
                 if (response.data.STATUS === "FAIL")
                     showSnackbar('info', "Transactions tabs Permissions failure");

@@ -93,7 +93,11 @@ const UserList = () => {
         setApiLoading(true);
         const updatedUsers = await Promise.all(users.map(async (user) => {
             try {
-                const response = await axios.get(APIPath + `/getlogindetails/${user.userPrincipalName.replace('_outlook.com', '@outlook.com')}`);
+                const response = await axios.get(APIPath + `/getlogindetails/${user.userPrincipalName.replace('_outlook.com', '@outlook.com')}`, {
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true',
+                        'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+                    }});
                 if (response.data.data[0] && response.data.data[0].loginCount !== undefined && response.data.data[0].lastLoginDate !== undefined) {
                     showSnackbar('success', "Users Login data fetched");
                     return { ...user, loginCount: response.data.data[0].loginCount, lastLoginDate: response.data.data[0].lastLoginDate };

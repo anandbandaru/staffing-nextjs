@@ -65,7 +65,11 @@ function VendorForm({ props, ID, operation }) {
     const getDetails = () => {
         let apiUrl = APIPath + "/getvendordetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+                'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+            }})
             .then(response => response.json())
             .then(
                 (result) => {
