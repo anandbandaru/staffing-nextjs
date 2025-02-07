@@ -59,7 +59,13 @@ const ContextProvider = (props) => {
         try {
             setAPIPath(flaskAPI_Availability);
             // console.log(flaskAPI_Availability);
-            const response = await fetch(flaskAPI_Availability);
+            // const response = await fetch(flaskAPI_Availability);
+            const response = await fetch(flaskAPI_Availability, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                    'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
+                }
+            });            
             const data = await response.json();
             setAPIAvailabilityResponse(data);
             setAPIText("<span class='APIAvailabilityCheckSuccess'>API working as expected.</span>"
