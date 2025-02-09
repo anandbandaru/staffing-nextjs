@@ -36,8 +36,8 @@ const UserNewPermissions = ({ users }) => {
         axios.get(APIPath + `/getnewpermissions/${event.target.value}`, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
-                'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
-            }})
+            }
+        })
             .then(response => {
                 if (response.data.STATUS === "FAIL")
                     showSnackbar('info', "New tabs Permissions failure");
@@ -62,7 +62,11 @@ const UserNewPermissions = ({ users }) => {
     const handleSave = () => {
         setIsSubmitting(true);
         const tabsToSave = selectedTabs.join(',');
-        axios.post(APIPath + '/updatenewpermissions', { userId: selectedUser, tabs: tabsToSave })
+        axios.post(APIPath + '/updatenewpermissions', {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        }, { userId: selectedUser, tabs: tabsToSave })
             .then(response => {
                 if (response.data.STATUS === "FAIL")
                     showSnackbar('error', "New tabs Permissions save failure");

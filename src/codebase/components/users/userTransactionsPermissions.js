@@ -36,8 +36,8 @@ const UserTransactionsPermissions = ({ users }) => {
         axios.get(APIPath + `/gettransactionspermissions/${event.target.value}`, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
-                'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
-            }})
+            }
+        })
             .then(response => {
                 if (response.data.STATUS === "FAIL")
                     showSnackbar('info', "Transactions tabs Permissions failure");
@@ -62,7 +62,11 @@ const UserTransactionsPermissions = ({ users }) => {
     const handleSave = () => {
         setIsSubmitting(true);
         const tabsToSave = selectedTabs.join(',');
-        axios.post(APIPath + '/updatetransactionspermissions', { userId: selectedUser, tabs: tabsToSave })
+        axios.post(APIPath + '/updatetransactionspermissions', {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        }, { userId: selectedUser, tabs: tabsToSave })
             .then(response => {
                 if (response.data.STATUS === "FAIL")
                     showSnackbar('error', "Transactions tabs Permissions save failure");

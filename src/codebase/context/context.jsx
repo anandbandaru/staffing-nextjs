@@ -63,9 +63,8 @@ const ContextProvider = (props) => {
             const response = await fetch(flaskAPI_Availability, {
                 headers: {
                     'ngrok-skip-browser-warning': 'true',
-                    'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
                 }
-            });            
+            });
             const data = await response.json();
             setAPIAvailabilityResponse(data);
             setAPIText("<span class='APIAvailabilityCheckSuccess'>API working as expected.</span>"
@@ -237,6 +236,10 @@ const ContextProvider = (props) => {
     const createGDriveFolder = async (parentId, folderName) => {
         try {
             const response = await axios.post(APIPath + '/createfolder', {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                }
+            }, {
                 parentfolderid: parentId,
                 folderName: folderName,
             });

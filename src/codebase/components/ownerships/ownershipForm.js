@@ -26,16 +26,20 @@ function OwnershipForm({ props, ID, operation }) {
     const [apiLoading, setApiLoading] = useState(true);
     const [maxOwingPercentage, setMaxOwingPercentage] = useState(100);
     // Default width
-   const [formWidth, setFormWidth] = useState(700);
-   const handleSliderChange = (event, newValue) => {
-       setFormWidth(newValue);
-   };
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const getDetails = () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getownershipdetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 async (result) => {
@@ -64,7 +68,11 @@ function OwnershipForm({ props, ID, operation }) {
         setApiLoading(true);
         setCompaniesData({ data: [] });
         let apiUrl = APIPath + "/getcompanies"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -89,7 +97,11 @@ function OwnershipForm({ props, ID, operation }) {
         setApiLoading(true);
         setOwnersData({ data: [] });
         let apiUrl = APIPath + "/getowners"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -113,7 +125,11 @@ function OwnershipForm({ props, ID, operation }) {
     const getRemainingPercentage = (companyId) => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getremainingpercentage/" + companyId;
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -198,6 +214,7 @@ function OwnershipForm({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
                                 }
                             },
                         ).then((resp) => {
@@ -207,7 +224,7 @@ function OwnershipForm({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Ownership data");
                             else
                                 showSnackbar('success', "Ownership data saved");
-                                resetForm();
+                            resetForm();
                         })
                             .catch(function (error) {
                                 // console.log(error);

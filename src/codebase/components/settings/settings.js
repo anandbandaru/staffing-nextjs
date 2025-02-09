@@ -82,7 +82,6 @@ const Settings = () => {
                     endpoints.map(endpoint => axios.get(APIPath + endpoint, {
                         headers: {
                             'ngrok-skip-browser-warning': 'true',
-                            'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
                         }}).catch(() => ({ data: { total: 0 } })))
                 );
 

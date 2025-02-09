@@ -21,10 +21,10 @@ function JobType({ props, ID, operation }) {
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
     // Default width
-   const [formWidth, setFormWidth] = useState(700);
-   const handleSliderChange = (event, newValue) => {
-       setFormWidth(newValue);
-   };
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -42,7 +42,11 @@ function JobType({ props, ID, operation }) {
         setApiLoading(true);
         let apiUrl = APIPath + "/getjobtypedetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -106,6 +110,7 @@ function JobType({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true',
                                 }
                             },
                         ).then((resp) => {
@@ -115,7 +120,7 @@ function JobType({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Job Types data");
                             else
                                 showSnackbar('success', "Job Types data saved");
-                                resetForm();
+                            resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             // console.log(error);

@@ -59,6 +59,7 @@ function OwnershipEdit({ ID, operation, manualLoadData, setApiLoading, showSnack
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
                 }
             },
         ).then((resp) => {

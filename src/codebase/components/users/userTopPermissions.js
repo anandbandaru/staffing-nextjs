@@ -36,8 +36,8 @@ const UserTopPermissions = ({ users }) => {
         axios.get(APIPath + `/gettoppermissions/${event.target.value}`, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
-                'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
-            }})
+            }
+        })
             .then(response => {
                 if (response.data.STATUS === "FAIL")
                     showSnackbar('info', "Top tabs Permissions failure");
@@ -62,7 +62,11 @@ const UserTopPermissions = ({ users }) => {
     const handleSave = () => {
         setIsSubmitting(true);
         const tabsToSave = selectedTabs.join(',');
-        axios.post(APIPath + '/updatetoppermissions', { userId: selectedUser, tabs: tabsToSave })
+        axios.post(APIPath + '/updatetoppermissions', {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        }, { userId: selectedUser, tabs: tabsToSave })
             .then(response => {
                 if (response.data.STATUS === "FAIL")
                     showSnackbar('error', "Top tabs Permissions save failure");

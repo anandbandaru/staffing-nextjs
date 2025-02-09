@@ -49,7 +49,6 @@ function TodoEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
                     'ngrok-skip-browser-warning': 'true',
-                    'User-Agent': 'MyApp/0.0.1' // Optional: Custom User Agent
                 }
             },
         ).then((resp) => {
