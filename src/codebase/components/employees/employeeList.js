@@ -147,6 +147,7 @@ const EmployeesList = () => {
             cellRenderer: CustomEmployeeTypeRenderer
         },
         { field: "applicationEmail", filter: true, editable: true, },
+        { field: "VisaType", headerName: "Visa", filter: true, maxWidth: 80 },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 170, resizable: true }
     ]);
     const rowClassRules = {

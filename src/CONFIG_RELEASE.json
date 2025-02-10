@@ -168,6 +168,9 @@
   "nonCitizenIdTypes": [
     {
       "name": "STATE ID \\ DL"
+    },    
+    {
+      "name": "I94"
     }
   ],
   "currencyTypes": [

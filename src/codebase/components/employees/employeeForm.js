@@ -60,7 +60,7 @@ function EmployeeForm({ props, ID, operation }) {
                     }
                     else {
                         setFirstName(result.data[0].firstName);
-                        await getFileTypesList();
+                        // await getFileTypesList();
                         await getManagersList();
                         setData(result);
                     }
@@ -73,35 +73,35 @@ function EmployeeForm({ props, ID, operation }) {
                 }
             )
     }
-    const getFileTypesList = async () => {
-        setApiLoading(true);
-        setFileTypesData({ data: [] });
-        let apiUrl = APIPath + "/masterdata/filetypes"
-        // console.log(apiUrl)
-        fetch(apiUrl, {
-            headers: {
-                'ngrok-skip-browser-warning': 'true',
-            }
-        })
-            .then(response => response.json())
-            .then(
-                (result) => {
-                    if (result.error) {
-                        // console.log("RequestData:On error return: setting empty")
-                        setFileTypesData({});
-                    }
-                    else {
-                        setFileTypesData(result);
-                    }
-                    setApiLoading(false);
-                },
-                (error) => {
-                    setFileTypesData({});
-                    // console.log("RequestData:On JUST error: API call failed")
-                    setApiLoading(false);
-                }
-            )
-    }
+    // const getFileTypesList = async () => {
+    //     setApiLoading(true);
+    //     setFileTypesData({ data: [] });
+    //     let apiUrl = APIPath + "/masterdata/filetypes"
+    //     // console.log(apiUrl)
+    //     fetch(apiUrl, {
+    //         headers: {
+    //             'ngrok-skip-browser-warning': 'true',
+    //         }
+    //     })
+    //         .then(response => response.json())
+    //         .then(
+    //             (result) => {
+    //                 if (result.error) {
+    //                     // console.log("RequestData:On error return: setting empty")
+    //                     setFileTypesData({});
+    //                 }
+    //                 else {
+    //                     setFileTypesData(result);
+    //                 }
+    //                 setApiLoading(false);
+    //             },
+    //             (error) => {
+    //                 setFileTypesData({});
+    //                 // console.log("RequestData:On JUST error: API call failed")
+    //                 setApiLoading(false);
+    //             }
+    //         )
+    // }
     const getManagersList = async () => {
         setApiLoading(true);
         setFileTypesData({ data: [] });
@@ -136,7 +136,7 @@ function EmployeeForm({ props, ID, operation }) {
             getDetails();
         }
         if (operation === "New") {
-            getFileTypesList();
+            // getFileTypesList();
             getManagersList();
         }
     }, []);
@@ -171,9 +171,9 @@ function EmployeeForm({ props, ID, operation }) {
                         OFF_DaughterOf: firstName ? data.data[0].OFF_DaughterOf : '',
                         OFF_WifeOf: firstName ? data.data[0].OFF_WifeOf : '',
                         OFF_ManagerID: firstName ? data.data[0].OFF_ManagerID : '',
-                        IDType: firstName ? data.data[0].IDType : '',
-                        IDNumber: firstName ? data.data[0].IDNumber : '',
-                        SSN: firstName ? data.data[0].SSN : '',
+                        VisaType: firstName ? data.data[0].VisaType : '',
+                        // IDNumber: firstName ? data.data[0].IDNumber : '',
+                        // SSN: firstName ? data.data[0].SSN : '',
                         notes: firstName ? data.data[0].notes : '',
                         disabled: firstName ? data.data[0].disabled : false,
                         isCitizen: firstName ? data.data[0].isCitizen : '0',
@@ -295,15 +295,15 @@ function EmployeeForm({ props, ID, operation }) {
                             then: () => Yup.string()
                                 .required("OFF_ManagerID Required")
                         }),
-                        IDType: Yup.string()
-                            .required('IDType Required'),
-                        IDNumber: Yup.string()
-                            .required('IDNumber Required'),
-                        SSN: Yup.string().when("employeeType", {
-                            is: 'ONSHORE',
-                            then: () => Yup.string()
-                                .required("SSN Required")
-                        }),
+                        VisaType: Yup.string()
+                            .required('Visa Type Required'),
+                        // IDNumber: Yup.string()
+                        //     .required('IDNumber Required'),
+                        // SSN: Yup.string().when("employeeType", {
+                        //     is: 'ONSHORE',
+                        //     then: () => Yup.string()
+                        //         .required("SSN Required")
+                        // }),
                         address: Yup.string()
                             .required('address Required'),
                     })}
@@ -448,6 +448,7 @@ function EmployeeForm({ props, ID, operation }) {
                                             value={values.isCitizen}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
+                                            defaultValue="Yes"
                                             helperText={(errors.isCitizen && touched.isCitizen) && errors.isCitizen}
                                         >
                                             <MenuItem value="0">
@@ -460,73 +461,83 @@ function EmployeeForm({ props, ID, operation }) {
 
                                         {(values.isCitizen === '1' || values.employeeType === 'ONSHORE') && (
                                             <Stack direction="row" spacing={2} className='mt-2'>
-                                                <TextField
-                                                    size="small"
-                                                    margin="normal"
-                                                    fullWidth
-                                                    id="citizenIDType"
-                                                    name="citizenIDType"
-                                                    select
-                                                    label="Citizen ID Type"
-                                                    value={values.citizenIDType}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    helperText={(errors.citizenIDType && touched.citizenIDType) && errors.citizenIDType}
-                                                >
-                                                    {configData.citizenIdTypes.map((item, index) => (
-                                                        <MenuItem key={index} value={item.name}>
-                                                            {item.name}
-                                                        </MenuItem>
-                                                    ))}
-                                                </TextField>
-                                                <TextField
-                                                    size="small"
-                                                    margin="normal"
-                                                    fullWidth
-                                                    id="citizenIDNumber"
-                                                    name="citizenIDNumber"
-                                                    label="Citizen ID Number"
-                                                    value={values.citizenIDNumber}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    helperText={(errors.citizenIDNumber && touched.citizenIDNumber) && errors.citizenIDNumber}
-                                                />
+                                                {(values.isCitizen !== '0') && (
+                                                    <>
+                                                        <TextField
+                                                            size="small"
+                                                            margin="normal"
+                                                            fullWidth
+                                                            id="citizenIDType"
+                                                            name="citizenIDType"
+                                                            select
+                                                            label="Citizen ID Type"
+                                                            value={values.citizenIDType}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            helperText={(errors.citizenIDType && touched.citizenIDType) && errors.citizenIDType}
+                                                        >
+                                                            {configData.citizenIdTypes.map((item, index) => (
+                                                                <MenuItem key={index} value={item.name}>
+                                                                    {item.name}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </TextField>
+                                                        <TextField
+                                                            size="small"
+                                                            margin="normal"
+                                                            fullWidth
+                                                            id="citizenIDNumber"
+                                                            name="citizenIDNumber"
+                                                            label="Citizen ID Number"
+                                                            value={values.citizenIDNumber}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            helperText={(errors.citizenIDNumber && touched.citizenIDNumber) && errors.citizenIDNumber}
+                                                        />
+                                                    </>
+                                                )}
                                             </Stack>
                                         )}
 
                                         {(values.isCitizen === '0' || values.employeeType === 'ONSHORE') && (
                                             <Stack direction="row" spacing={2} className='mt-6'>
-                                                <TextField
-                                                    size="small"
-                                                    margin="normal"
-                                                    fullWidth
-                                                    id="nonCitizenIDType"
-                                                    name="nonCitizenIDType"
-                                                    select
-                                                    label="Non-Citizen ID Type"
-                                                    value={values.nonCitizenIDType}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    helperText={(errors.nonCitizenIDType && touched.nonCitizenIDType) && errors.nonCitizenIDType}
-                                                >
-                                                    {configData.nonCitizenIdTypes.map((item, index) => (
-                                                        <MenuItem key={index} value={item.name}>
-                                                            {item.name}
-                                                        </MenuItem>
-                                                    ))}
-                                                </TextField>
-                                                <TextField
-                                                    size="small"
-                                                    margin="normal"
-                                                    fullWidth
-                                                    id="nonCitizenIDNumber"
-                                                    name="nonCitizenIDNumber"
-                                                    label="Non-Citizen ID Number"
-                                                    value={values.nonCitizenIDNumber}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    helperText={(errors.nonCitizenIDNumber && touched.nonCitizenIDNumber) && errors.nonCitizenIDNumber}
-                                                />
+                                                {(values.isCitizen !== '1') && (
+                                                    <>
+                                                        <TextField
+                                                            size="small"
+                                                            margin="normal"
+                                                            fullWidth
+                                                            id="nonCitizenIDType"
+                                                            name="nonCitizenIDType"
+                                                            select
+                                                            label="Non-Citizen ID Type"
+                                                            value={values.nonCitizenIDType}
+                                                            disabled={values.isCitizen === '1'}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            helperText={(errors.nonCitizenIDType && touched.nonCitizenIDType) && errors.nonCitizenIDType}
+                                                        >
+                                                            {configData.nonCitizenIdTypes.map((item, index) => (
+                                                                <MenuItem key={index} value={item.name}>
+                                                                    {item.name}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </TextField>
+                                                        <TextField
+                                                            size="small"
+                                                            margin="normal"
+                                                            fullWidth
+                                                            id="nonCitizenIDNumber"
+                                                            name="nonCitizenIDNumber"
+                                                            label="Non-Citizen ID Number"
+                                                            value={values.nonCitizenIDNumber}
+                                                            disabled={values.isCitizen === '1'}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            helperText={(errors.nonCitizenIDNumber && touched.nonCitizenIDNumber) && errors.nonCitizenIDNumber}
+                                                        />
+                                                    </>
+                                                )}
                                             </Stack>
                                         )}
                                     </div>
@@ -640,23 +651,23 @@ function EmployeeForm({ props, ID, operation }) {
                                         size="small"
                                         margin="normal"
                                         fullWidth
-                                        id="IDType"
-                                        name="IDType"
+                                        id="VisaType"
+                                        name="VisaType"
                                         select
-                                        label="ID Type"
-                                        defaultValue="12"
-                                        value={values.IDType}
+                                        label="Visa Type"
+                                        defaultValue="H1"
+                                        value={values.VisaType}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        helperText={(errors.IDType && touched.IDType) && errors.IDType}
+                                        helperText={(errors.VisaType && touched.VisaType) && errors.VisaType}
                                     >
-                                        {fileTypesData.data.map((item, index) => (
-                                            <MenuItem key={index} value={item.Id}>
+                                        {configData.visaTypes.map((item, index) => (
+                                            <MenuItem key={index} value={item.name}>
                                                 {item.name}
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                    <TextField
+                                    {/* <TextField
                                         size="small"
                                         margin="normal"
                                         fullWidth
@@ -667,9 +678,9 @@ function EmployeeForm({ props, ID, operation }) {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         helperText={(errors.IDNumber && touched.IDNumber) && errors.IDNumber}
-                                    />
+                                    /> */}
                                 </Stack>
-                                {values.employeeType === 'ONSHORE' && (
+                                {/* {values.employeeType === 'ONSHORE' && (
                                     <TextField
                                         size="small"
                                         margin="normal"
@@ -682,7 +693,7 @@ function EmployeeForm({ props, ID, operation }) {
                                         onBlur={handleBlur}
                                         helperText={(errors.SSN && touched.SSN) && errors.SSN}
                                     />
-                                )}
+                                )} */}
                                 <TextField
                                     size="small"
                                     margin="normal"
