@@ -19,7 +19,6 @@ import { Button, Link } from '@mui/material';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import { AgCharts } from 'ag-charts-react';
 
 const UserList = () => {
     const { accessToken, APIPath } = useContext(Context);
@@ -130,41 +129,6 @@ const UserList = () => {
         } catch (error) {
             // console.log("ERROR: fetching login details:", error);
         }
-    };
-
-    const chartOptions = {
-        data: data.map(user => ({ user: user.displayName, loginCount: user.loginCount })),
-        series: [{
-            type: 'bar',
-            xKey: 'user',
-            yKey: 'loginCount',
-        }],
-        axes: [
-            {
-                type: 'category',
-                position: 'bottom',
-                title: { text: 'Users' },
-            },
-            {
-                type: 'number',
-                position: 'left',
-                title: { text: 'Login Count' },
-            },
-        ],
-        background: {
-            fill: '#ccc',
-        },
-        title: {
-            text: 'Login Counts',
-        },
-        overlays: {
-            loading: {
-                renderer: () => 'LOADING...',
-            },
-            noData: {
-                renderer: () => 'NO DATA'
-            },
-        },
     };
 
     const iconMap = {
@@ -285,11 +249,6 @@ const UserList = () => {
                             autoSizeStrategy={autoSizeStrategy}
                             enableCellTextSelection={true}
                         />
-                        <div className="py-4">
-                            <AgCharts options={chartOptions}
-                                style={{ width: "100%", height: "400px" }}
-                            />
-                        </div>
                     </>
                 }
             </div>
