@@ -62,11 +62,14 @@ const UserTransactionsPermissions = ({ users }) => {
     const handleSave = () => {
         setIsSubmitting(true);
         const tabsToSave = selectedTabs.join(',');
-        axios.post(APIPath + '/updatetransactionspermissions', {
-            headers: {
-                'ngrok-skip-browser-warning': 'true',
-            }
-        }, { userId: selectedUser, tabs: tabsToSave })
+        axios.post(
+            APIPath + '/updatetoppermissions',
+            { userId: selectedUser, tabs: tabsToSave },
+            {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                }
+            })
             .then(response => {
                 if (response.data.STATUS === "FAIL")
                     showSnackbar('error', "Transactions tabs Permissions save failure");
