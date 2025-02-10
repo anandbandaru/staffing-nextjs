@@ -106,8 +106,8 @@ const UserTopPermissions = ({ users }) => {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            <Paper elevation={3} className="p-4">
-                <div className='text-lg'>
+            <Paper elevation={2} className="p-4">
+                <div className='text-lg topPermissionsHolder'>
                     TOP tabs Permissions
                 </div>
                 <div className="mt-4 ">
@@ -124,14 +124,16 @@ const UserTopPermissions = ({ users }) => {
                             value={selectedUser}
                             onChange={handleUserChange}
                         >
-                            {users.filter(user => user.jobTitle !== 'ADMIN').map((item, index) => (
-                                <MenuItem key={index} value={item.userPrincipalName}>
-                                    <span className={`mr-3 ${classMap[item.jobTitle] || classMap.DEFAULT}`}>
-                                        {item.jobTitle}
-                                    </span>
-                                    {item.userPrincipalName}
-                                </MenuItem>
-                            ))}
+                            {users
+                                .filter(user => user.jobTitle !== 'ADMIN' && user.jobTitle !== 'EMPLOYEE')
+                                .map((item, index) => (
+                                    <MenuItem key={index} value={item.userPrincipalName}>
+                                        <span className={`mr-3 ${classMap[item.jobTitle] || classMap.DEFAULT}`}>
+                                            {item.jobTitle}
+                                        </span>
+                                        {item.userPrincipalName}
+                                    </MenuItem>
+                                ))}
                         </TextField>
                         <Autocomplete
                             className='text-sm'

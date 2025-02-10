@@ -87,7 +87,7 @@ const TimeSheetsEntryMain = () => {
                         <TabList className="subTabsListHolder">
                             <Tab><TimerOutlinedIcon className="mr-1" />My Pending Timesheets</Tab>
                             <Tab><CheckOutlinedIcon className="mr-1" />My Submitted Timesheets</Tab>
-                            <Tab><CheckCircleOutlinedIcon className="mr-1" />My Approved Timesheets</Tab>
+                            {/* <Tab><CheckCircleOutlinedIcon className="mr-1" />My Approved Timesheets</Tab> */}
                         </TabList>
 
                         <TabPanel className="px-0">
@@ -112,7 +112,7 @@ const TimeSheetsEntryMain = () => {
                                 </>
                             }
                         </TabPanel>
-                        <TabPanel className="px-2">
+                        {/* <TabPanel className="px-2">
                             {userEmployeeId !== 0 ?
                                 <>
                                     <TimesheetEnteredList employeeId={userEmployeeId} status="Approved" />
@@ -122,7 +122,7 @@ const TimeSheetsEntryMain = () => {
                                     <Alert severity="warning">You are not tagged as EMPLOYEE & do not have Employee ID in the system</Alert>
                                 </>
                             }
-                        </TabPanel>
+                        </TabPanel> */}
                     </Tabs>
                 </div>
             </div>
