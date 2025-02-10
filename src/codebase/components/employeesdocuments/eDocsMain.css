@@ -1,5 +1,6 @@
 .sectionName{
     font-weight: bold;
+    margin-left: 20px;
 }
 .sectionCode{
     position: absolute;
@@ -8,9 +9,34 @@
     background-color: bisque;
     padding: 0px 5px;
 }
+.sectionStatus{
+    position: absolute;
+    bottom:2px;
+    right: 20px;
+    background-color: rgb(206, 54, 16);
+    padding: 0px 5px;
+}
 .sectionsDivider{
     font-size: 20px;
     font-weight: bold;
     margin:20px 0px;
     border-bottom: 2px solid #ccc;
+}
+.section-paper.green {
+    background-color: green;
+    color: white;
+}
+.completed-icon {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    color: green;
+    width: 16px;
+}
+.waiting-icon{
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    color: red;
+    width: 16px;
 }
