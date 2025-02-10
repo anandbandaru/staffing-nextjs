@@ -204,15 +204,15 @@ function EmployeeForm({ props, ID, operation }) {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
                             if (resp.data.STATUS === "FAIL")
-                                showSnackbar('error', "Error saving Owner data");
+                                showSnackbar('error', "Error saving Employee data");
                             else
-                                showSnackbar('success', "Owner data saved");
+                                showSnackbar('success', "Employee data saved");
                             resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             // console.log(error);
                             setSubmitionCompleted(true);
-                            showSnackbar('error', "Error saving Owner data");
+                            showSnackbar('error', "Error saving Employee data");
                         });
                     }}
                     validationSchema={Yup.object().shape({
