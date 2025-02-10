@@ -9,6 +9,8 @@ import CustomSnackbar from "../snackbar/snackbar";
 import { Alert } from "@mui/material";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import TimesheetEnteredList from "./timesheetenteredList";
+import EmployeeDocumentsMain from "../employeesdocuments/eDocsMain";
+import BackupIcon from '@mui/icons-material/Backup';
 
 const TimeSheetsEntryMain = () => {
     const { APIPath, userEmployeeId, setUserEmployeeId, userName, userType } = useContext(Context);
@@ -85,11 +87,23 @@ const TimeSheetsEntryMain = () => {
                     <Tabs selectedIndex={tabIndex}
                         onSelect={(index) => setTabIndex(index)}>
                         <TabList className="subTabsListHolder">
+                            <Tab><BackupIcon className="mr-1" />Document Upload</Tab>
                             <Tab><TimerOutlinedIcon className="mr-1" />My Pending Timesheets</Tab>
                             <Tab><CheckOutlinedIcon className="mr-1" />My Submitted Timesheets</Tab>
                             {/* <Tab><CheckCircleOutlinedIcon className="mr-1" />My Approved Timesheets</Tab> */}
                         </TabList>
 
+                        <TabPanel className="px-0">
+                            {userEmployeeId !== 0 ?
+                                <>
+                                    <EmployeeDocumentsMain />
+                                </>
+                                :
+                                <>
+                                    <Alert severity="warning">You are not tagged as EMPLOYEE & do not have Employee ID in the system</Alert>
+                                </>
+                            }
+                        </TabPanel>
                         <TabPanel className="px-0">
                             {userEmployeeId !== 0 ?
                                 <>

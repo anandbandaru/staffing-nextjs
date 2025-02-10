@@ -1,0 +1,10 @@
+.sectionName{
+    font-weight: bold;
+}
+.sectionCode{
+    position: absolute;
+    top:2px;
+    right: 2px;
+    background-color: bisque;
+    padding: 0px 5px;
+}

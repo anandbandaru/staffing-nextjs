@@ -1,7 +1,7 @@
 .balanceHolder{
     position: fixed;
     right: 0px;
-    bottom: 0px;
+    bottom: -2px;
     cursor: pointer;
     background-color: #b91027;
     border-radius: 2px;
@@ -18,5 +18,5 @@
     color:#FFF !important;
 }
 .balanceHolderFull{
-    right: 00px;
+    right: 0px;
 }

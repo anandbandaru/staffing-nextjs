@@ -154,9 +154,36 @@
       ]
     }
   ],
-  "topTabs": ["Dashboard", "New", "Transactions", "Timesheets", "Timesheet Entry", "Files", "Todo", "Users", "Calendar", "Configuration"],
-  "newTabs": ["Owners", "Companies", "Ownerships", "Employees", "Vendors", "Clients", "Implementation Partners", "Job Types", "Expense Types", "File Types"],
-  "transactionsTabs": ["Jobs", "Invoices", "Expenses", "Payroll"],
+  "topTabs": [
+    "Dashboard",
+    "New",
+    "Transactions",
+    "Timesheets",
+    "Timesheet Entry",
+    "Files",
+    "Todo",
+    "Users",
+    "Calendar",
+    "Configuration"
+  ],
+  "newTabs": [
+    "Owners",
+    "Companies",
+    "Ownerships",
+    "Employees",
+    "Vendors",
+    "Clients",
+    "Implementation Partners",
+    "Job Types",
+    "Expense Types",
+    "File Types"
+  ],
+  "transactionsTabs": [
+    "Jobs",
+    "Invoices",
+    "Expenses",
+    "Payroll"
+  ],
   "citizenIdTypes": [
     {
       "name": "I94"
@@ -168,7 +195,7 @@
   "nonCitizenIdTypes": [
     {
       "name": "STATE ID \\ DL"
-    },    
+    },
     {
       "name": "I94"
     }
@@ -287,6 +314,24 @@
     {
       "name": "CITIZEN"
     }
+  ],
+  "employeeDocumentSections": [
+    { "name": "US ID / DL", "code": "US_ID_DL" },
+    { "name": "SSN", "code": "SSN" },
+    { "name": "Passport", "code": "PASSPORT" },
+    { "name": "I94", "code": "I94" },
+    { "name": "All I20s", "code": "ALL_I20S" },
+    { "name": "I20", "code": "I20" },
+    { "name": "OPT cards/H4 cards", "code": "OPT_H4_CARDS" },
+    { "name": "Under Graduation Certificates", "code": "UNDER_GRAD_CERT" },
+    { "name": "Graduation Certificates", "code": "GRAD_CERT" },
+    { "name": "10th & Intermediate", "code": "10TH_INTERMEDIATE" },
+    { "name": "I-9 Form", "code": "I9_FORM" },
+    { "name": "Consent Agreement", "code": "CONSENT_AGREEMENT" },
+    { "name": "W-4 Form", "code": "W4_FORM" },
+    { "name": "ADP Form", "code": "ADP_FORM" },
+    { "name": "Work Permit", "code": "WORK_PERMIT" },
+    { "name": "Additional Documents", "code": "ADDITIONAL_DOCS" }
   ],
   "GOOGLEDRIVE_FOLDERS": [
     {
