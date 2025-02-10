@@ -63,7 +63,7 @@ const UserTransactionsPermissions = ({ users }) => {
         setIsSubmitting(true);
         const tabsToSave = selectedTabs.join(',');
         axios.post(
-            APIPath + '/updatetoppermissions',
+            APIPath + '/updatetransactionspermissions',
             { userId: selectedUser, tabs: tabsToSave },
             {
                 headers: {
