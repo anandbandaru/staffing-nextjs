@@ -18,9 +18,9 @@ const I94UploadComponent = () => <div className='bg-yellow-200'>I94 Upload  Comp
 
 const EmployeeDocumentsMain = () => {
     const { APIPath, userName, userEmployeeId } = useContext(Context);
-    const [tabIndex, setTabIndex] = useState(0);
     const [visaType, setVisaType] = useState('');
     const [sections, setSections] = useState([]);
+    const [otherSections, setOtherSections] = useState([]);
     const [open, setOpen] = useState(false);
     const [apiLoading, setApiLoading] = useState(false);  // Add this line);
     const [selectedSection, setSelectedSection] = useState(null);
@@ -55,9 +55,11 @@ const EmployeeDocumentsMain = () => {
         const fetchData = async () => {
             await getDetails();
             const availableSections = configData.employeeDocumentSections;
+            const availableOtherSections = configData.employeeDocumentOtherSections;
             const filteredSections = availableSections;
             //.filter(section => section !== visaType);
             setSections(filteredSections);
+            setOtherSections(availableOtherSections);
         };
         fetchData();
     }, [visaType]);
@@ -81,9 +83,40 @@ const EmployeeDocumentsMain = () => {
     return (
         <div className="ownerMainHolder">
             <div className="subTabsHolder">
+                <div className='sectionsDivider'>
+                    Default sections
+                </div>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <Grid container spacing={1}>
                         {sections.map((section, index) => (
+                            <Grid item xs={12} sm={3} md={6} lg={3} key={index}>
+                                <Paper elevation={3} className="section-paper my-0 p-2 relative">
+                                    <div className='sectionName mb-10'>{section.name}</div>
+                                    <div className='sectionCode'>{section.code}</div>
+                                    <Button variant="contained" onClick={() => handleOpen(section.code)}>Upload</Button>
+                                    <Modal
+                                        open={open}
+                                        onClose={handleClose}
+                                        aria-labelledby="modal-title"
+                                        aria-describedby="modal-description"
+                                    >
+                                        <Box>
+                                            <h2 id="modal-title">Upload {section.name} Document</h2>
+                                            {SelectedComponent && <SelectedComponent />}
+                                            <Button onClick={handleClose}>Close</Button>
+                                        </Box>
+                                    </Modal>
+                                </Paper>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+                <div className='sectionsDivider'>
+                    Other sections
+                </div>
+                <Box className="mt-10" sx={{ width: '100%', typography: 'body1' }}>
+                    <Grid container spacing={1}>
+                        {otherSections.map((section, index) => (
                             <Grid item xs={12} sm={3} md={6} lg={3} key={index}>
                                 <Paper elevation={3} className="section-paper my-0 p-2 relative">
                                     <div className='sectionName mb-10'>{section.name}</div>

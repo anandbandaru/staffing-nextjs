@@ -8,3 +8,9 @@
     background-color: bisque;
     padding: 0px 5px;
 }
+.sectionsDivider{
+    font-size: 20px;
+    font-weight: bold;
+    margin:20px 0px;
+    border-bottom: 2px solid #ccc;
+}
