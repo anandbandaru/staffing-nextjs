@@ -19,14 +19,14 @@
 .sectionsDivider{
     font-size: 20px;
     font-weight: bold;
-    margin:20px 0px;
+    margin:10px 0px;
     border-bottom: 2px solid #ccc;
 }
 .section-paper.green {
     background-color: green;
     color: white;
 }
-.completed-icon {
+/* .completed-icon {
     position: absolute;
     left: 4px;
     top: 4px;
@@ -39,4 +39,21 @@
     top: 4px;
     color: red;
     width: 16px;
+} */
+
+.completed-icon, .waiting-icon {
+    vertical-align: middle;
+}
+
+.completed-icon {
+    color: green;
+}
+
+.waiting-icon {
+    color: orange;
+}
+
+.sectionDate {
+    font-size: 0.9em;
+    color: gray;
 }
