@@ -16,13 +16,8 @@ import TableRow from '@mui/material/TableRow';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
 import { Stack } from '@mui/material';
+import SSN_Upload from './SSN_Upload';
 
-// Example components for different sections
-const SSNUploadComponent = () => <div className='bg-yellow-200'>SSN Upload Component</div>;
-const PassportUploadComponent = () => <div className='bg-yellow-200'>Passport Upload Component</div>;
-const W4UploadComponent = () => <div className='bg-yellow-200'>W4 Upload Component</div>;
-const I20UploadComponent = () => <div className='bg-yellow-200'>I20 Upload Component</div>;
-const I94UploadComponent = () => <div className='bg-yellow-200'>I94 Upload Component</div>;
 
 const EmployeeDocumentsMain = () => {
     const { APIPath, userName, userEmployeeId } = useContext(Context);
@@ -34,6 +29,14 @@ const EmployeeDocumentsMain = () => {
     const [selectedSection, setSelectedSection] = useState(null);
     const [documentStatus, setDocumentStatus] = useState({});
     const [documentDates, setDocumentDates] = useState({});
+
+
+    // Example components for different sections
+    const SSNUploadComponent = () => <div className='bg-yellow-200'><SSN_Upload userEmployeeId={userEmployeeId} /></div>;
+    const PassportUploadComponent = () => <div className='bg-yellow-200'>Passport Upload Component</div>;
+    const W4UploadComponent = () => <div className='bg-yellow-200'>W4 Upload Component</div>;
+    const I20UploadComponent = () => <div className='bg-yellow-200'>I20 Upload Component</div>;
+    const I94UploadComponent = () => <div className='bg-yellow-200'>I94 Upload Component</div>;
 
     const getDetails = async () => {
         setApiLoading(true);
@@ -138,9 +141,9 @@ const EmployeeDocumentsMain = () => {
                         <Table size="small">
                             <TableHead>
                                 <TableRow>
-                                <TableCell sx={{ width: 70 }}>Status</TableCell>
+                                    <TableCell sx={{ width: 70 }}>Status</TableCell>
                                     <TableCell>Name</TableCell>
-                                    {/* <TableCell>Code</TableCell> */}
+                                    <TableCell>Fields</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -155,12 +158,9 @@ const EmployeeDocumentsMain = () => {
                                             )}
                                         </TableCell>
                                         <TableCell>{section.name}</TableCell>
-                                        {/* <TableCell>{section.code}</TableCell> */}
-                                        {/* <TableCell>
-                                            {documentDates[section.code] && (
-                                                <div className='sectionDate'>{documentDates[section.code]}</div>
-                                            )}
-                                        </TableCell> */}
+                                        <TableCell>
+                                            {React.createElement(sectionComponents[section.code] || (() => <div>No Component</div>))}
+                                        </TableCell>
                                         <TableCell>
                                             <Stack direction="row" spacing={2}>
                                                 <Button size='small' variant="contained" onClick={() => handleOpen(section.code)}>Upload</Button>
@@ -185,8 +185,7 @@ const EmployeeDocumentsMain = () => {
                                 <TableRow>
                                     <TableCell sx={{ width: 70 }}>Status</TableCell>
                                     <TableCell>Name</TableCell>
-                                    {/* <TableCell>Code</TableCell> */}
-                                    {/* <TableCell>Created Date</TableCell> */}
+                                    <TableCell>Fields</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -201,12 +200,9 @@ const EmployeeDocumentsMain = () => {
                                             )}
                                         </TableCell>
                                         <TableCell>{section.name}</TableCell>
-                                        {/* <TableCell>{section.code}</TableCell> */}
-                                        {/* <TableCell>
-                                            {documentDates[section.code] && (
-                                                <div className='sectionDate'>{documentDates[section.code]}</div>
-                                            )}
-                                        </TableCell> */}
+                                        <TableCell>
+                                            {React.createElement(sectionComponents[section.code] || (() => <div>No Component</div>))}
+                                        </TableCell>
                                         <TableCell>
                                             <Stack direction="row" spacing={2}>
                                                 <Button size='small' variant="contained" onClick={() => handleOpen(section.code)}>Upload</Button>
