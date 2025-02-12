@@ -145,12 +145,12 @@ function OPT_H4_CARDS_Upload({ userEmployeeId, operation, code }) {
                             if (file)
                             {
                                 let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":FRONT:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
-                                await UploadJobFiles(file, fileName, 'EMPLOYEES', resp.data.RELATED_ID);
+                                await UploadJobFiles(file, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID);
                             }
                             if (fileBack)
                             {
                                 let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":BACK:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
-                                await UploadJobFiles(fileBack, fileName, 'EMPLOYEES', resp.data.RELATED_ID);
+                                await UploadJobFiles(fileBack, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID);
                             }
                             showSnackbar('success', "Data saved");
                             resetForm();

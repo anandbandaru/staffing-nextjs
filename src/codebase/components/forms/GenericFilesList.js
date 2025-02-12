@@ -28,6 +28,9 @@ function GenericFilesList({ ID, moduleId, componentName }) {
     const getListOfFiles = () => {
         setApiLoading(true);
         let apiUrl = `${APIPath}/getfilesformoduleid/${componentName}/${moduleId}`;
+        if (componentName === "EMPLOYEE_DOCUMENTS") {
+            apiUrl = `${APIPath}/getallemployeedocuments/${ID}`;
+        }
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',

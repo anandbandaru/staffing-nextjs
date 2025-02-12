@@ -141,7 +141,7 @@ function I94_Upload({ userEmployeeId, operation, code }) {
                         } else {
                             let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
                             if (file)
-                                await UploadJobFiles(file, fileName, 'EMPLOYEES', resp.data.RELATED_ID);
+                                await UploadJobFiles(file, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID);
                             showSnackbar('success', "Data saved");
                             resetForm();
                         }
