@@ -175,9 +175,9 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         )}
                                         {(moduleName === "EMPLOYEES" && <>
                                             <Tab>Dependents</Tab>
-                                            <Tab>Passports</Tab>
+                                            {/* <Tab>Passports</Tab>
                                             <Tab>Visas</Tab>
-                                            <Tab>I94s</Tab>
+                                            <Tab>I94s</Tab> */}
                                         </>
                                         )}
                                     </TabList>
@@ -277,7 +277,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         <TabPanel className="px-2">
                                             <EmployeeGenericList formType={'Dependent'} employeeID={ID} />
                                         </TabPanel>
-                                        <TabPanel className="px-2">
+                                        {/* <TabPanel className="px-2">
                                             <EmployeeGenericList formType={'Passport'} employeeID={ID} />
                                         </TabPanel>
                                         <TabPanel className="px-2">
@@ -285,7 +285,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         </TabPanel>
                                         <TabPanel className="px-2">
                                             <EmployeeGenericList formType={'I94'} employeeID={ID} />
-                                        </TabPanel>
+                                        </TabPanel> */}
                                     </>
                                     )}
                                 </Tabs>

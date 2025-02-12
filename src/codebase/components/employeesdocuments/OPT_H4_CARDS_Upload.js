@@ -11,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
+function OPT_H4_CARDS_Upload({ userEmployeeId, operation, code }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
@@ -32,8 +32,12 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
     //FILE RELATED
 
     const [file, setFile] = useState(null);
+    const [fileBack, setFileBack] = useState(null);
     const handleFileChangefile = (event) => {
         setFile(event.target.files[0]);
+    };
+    const handleFileChangefileBack = (event) => {
+        setFileBack(event.target.files[0]);
     };
     const UploadJobFiles = async (file, fileName, componentName, moduleId) => {
         const formData = new FormData();
@@ -90,10 +94,14 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                     employeeId: userEmployeeId,
                     createdBy: userName,
                     code: code,
-                    US_ID_DL_IDNumber: '',
-                    US_ID_DL_ExpiryDate: '',
-                    US_ID_DL_Done: 1,
-                    //NULLS HERE       
+                    OPT_H4_CARDS_IDNumber: '',
+                    OPT_H4_CARDS_StartDate: '',
+                    OPT_H4_CARDS_EndDate: '',
+                    OPT_H4_CARDS_Done: 1,
+                    //NULLS HERE  
+                    US_ID_DL_IDNumber: null,
+                    US_ID_DL_ExpiryDate: null,
+                    US_ID_DL_Done: null,
                     SSN_IDNumber: null,
                     SSN_Done: null,
                     PASSPORT_IDNumber: null,
@@ -105,10 +113,6 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                     I94_Done: null,
                     ALL_I20S_SevisNumber: null,
                     ALL_I20S_Done: null,
-                    OPT_H4_CARDS_IDNumber: null,
-                    OPT_H4_CARDS_StartDate: null,
-                    OPT_H4_CARDS_EndDate: null,
-                    OPT_H4_CARDS_Done: null,
                     UNDER_GRAD_CERT_Done: null,
                     GRAD_CERT_Done: null,
                     TENTH_INTERMEDIATE_Done: null,
@@ -138,9 +142,16 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
                         } else {
-                            let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
                             if (file)
+                            {
+                                let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":FRONT:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
                                 await UploadJobFiles(file, fileName, 'EMPLOYEES', resp.data.RELATED_ID);
+                            }
+                            if (fileBack)
+                            {
+                                let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":BACK:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
+                                await UploadJobFiles(fileBack, fileName, 'EMPLOYEES', resp.data.RELATED_ID);
+                            }
                             showSnackbar('success', "Data saved");
                             resetForm();
                         }
@@ -152,11 +163,14 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                 }}
 
                 validationSchema={Yup.object().shape({
-                    US_ID_DL_IDNumber: Yup.string()
-                        .required(code + ' Number Required'),
-                    US_ID_DL_ExpiryDate: Yup.string()
-                        .required(code + ' Expiry Date Required'),
-                    file: Yup.string().required(code + ' Document is required'),
+                    OPT_H4_CARDS_IDNumber: Yup.string()
+                        .required('Card Number Required'),
+                    OPT_H4_CARDS_StartDate: Yup.string()
+                        .required(' Start Date Required'),
+                    OPT_H4_CARDS_EndDate: Yup.string()
+                        .required(' End Date Required'),
+                    file: Yup.string().required('Front side Document is required'),
+                    fileBack: Yup.string().required('Back side Document is required'),
                 })
                 }
             >
@@ -178,31 +192,48 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                                 size="small"
                                 margin="normal"
                                 fullWidth
-                                id="US_ID_DL_IDNumber"
-                                name="US_ID_DL_IDNumber"
-                                label="US ID \ DL ID Number"
-                                value={values.US_ID_DL_IDNumber}
+                                id="OPT_H4_CARDS_IDNumber"
+                                name="OPT_H4_CARDS_IDNumber"
+                                label="OPT \ H4 CARD Number"
+                                value={values.OPT_H4_CARDS_IDNumber}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                helperText={(errors.US_ID_DL_IDNumber && touched.US_ID_DL_IDNumber) && errors.US_ID_DL_IDNumber}
+                                helperText={(errors.OPT_H4_CARDS_IDNumber && touched.OPT_H4_CARDS_IDNumber) && errors.OPT_H4_CARDS_IDNumber}
                             />
                             <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-                                <div className='flex-1'>Expiry Date:</div>
+                                <div className='flex-1'>Start Date:</div>
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
                                     className='flex-1'
-                                    id="US_ID_DL_ExpiryDate"
-                                    name="US_ID_DL_ExpiryDate"
+                                    id="OPT_H4_CARDS_StartDate"
+                                    name="OPT_H4_CARDS_StartDate"
                                     type="date"
-                                    value={values.US_ID_DL_ExpiryDate}
+                                    value={values.OPT_H4_CARDS_StartDate}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.US_ID_DL_ExpiryDate && touched.US_ID_DL_ExpiryDate) && errors.US_ID_DL_ExpiryDate}
+                                    helperText={(errors.OPT_H4_CARDS_StartDate && touched.OPT_H4_CARDS_StartDate) && errors.OPT_H4_CARDS_StartDate}
+                                />
+                            </Stack>
+                            <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+                                <div className='flex-1'>End Date:</div>
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    className='flex-1'
+                                    id="OPT_H4_CARDS_EndDate"
+                                    name="OPT_H4_CARDS_EndDate"
+                                    type="date"
+                                    value={values.OPT_H4_CARDS_EndDate}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.OPT_H4_CARDS_EndDate && touched.OPT_H4_CARDS_EndDate) && errors.OPT_H4_CARDS_EndDate}
                                 />
                             </Stack>
                             <Stack direction="row" spacing={1} className='mt-6'>
+                                <div>Front side</div>
                                 <TextField
                                     className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
                                     type="file"
@@ -218,6 +249,25 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                                     }}
                                     onBlur={handleBlur}
                                     helperText={(errors.file && touched.file) && errors.file}
+                                />
+                            </Stack>
+                            <Stack direction="row" spacing={1} className='mt-6'>
+                                <div>Back side</div>
+                                <TextField
+                                    className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
+                                    type="file"
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="fileBack"
+                                    name="fileBack"
+                                    disabled={isSubmitting}
+                                    onChange={(event) => {
+                                        handleChange(event);
+                                        handleFileChangefileBack(event);
+                                    }}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.fileBack && touched.fileBack) && errors.fileBack}
                                 />
                             </Stack>
                             {Object.keys(errors).length > 0 && (
@@ -257,4 +307,4 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
     );
 }
 
-export default US_ID_DL_Upload;
+export default OPT_H4_CARDS_Upload;

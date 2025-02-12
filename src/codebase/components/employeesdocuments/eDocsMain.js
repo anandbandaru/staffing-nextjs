@@ -13,7 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
-import { Stack } from '@mui/material';
+import { Link, Stack } from '@mui/material';
 import SSN_Upload from './SSN_Upload';
 import EmployeeMetadata from '../employees/employeeMetadata';
 import Slide from '@mui/material/Slide';
@@ -23,16 +23,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
+import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import US_ID_DL_Upload from './US_ID_DL_Upload';
 import PASSPORT_Upload from './PASSPORT_Upload';
 import EmployeeGAddForm from '../employees/employeeGAddForm';
 import EmployeeGenericList from '../employees/employeeGList';
+import EmployeeDocumentsGenericList from './eDocsGList';
+import I94_Upload from './I94_Upload';
+import ALL_I20S_Upload from './ALL_I20S_Upload';
+import OPT_H4_CARDS_Upload from './OPT_H4_CARDS_Upload'
 
 const EmployeeDocumentsMain = () => {
-    const { APIPath, userName, userEmployeeId } = useContext(Context);
+    const { APIPath, userEmployeeId } = useContext(Context);
     const [visaType, setVisaType] = useState('');
     const [sections, setSections] = useState([]);
-    const [otherSections, setOtherSections] = useState([]);
     const [open, setOpen] = useState(false);
     const [openView, setOpenView] = useState(false);
     const [apiLoading, setApiLoading] = useState(false);
@@ -41,23 +46,21 @@ const EmployeeDocumentsMain = () => {
     const [employeeData, setEmployeeData] = useState({});
 
     // Example components for different sections
-    const US_ID_DLUploadComponent = () => <div><US_ID_DL_Upload userEmployeeId={userEmployeeId} operation="NEW" code="US_ID_DL" /></div>;
-    const SSNUploadComponent = () => <div><SSN_Upload userEmployeeId={userEmployeeId} operation="NEW" code="SSN" /></div>;
+    const UsIdDlUploadComponent = () => <div><US_ID_DL_Upload userEmployeeId={userEmployeeId} operation="NEW" code="US_ID_DL" /></div>;
+    const SsnUploadComponent = () => <div><SSN_Upload userEmployeeId={userEmployeeId} operation="NEW" code="SSN" /></div>;
     const PassportUploadComponent = () => <div><PASSPORT_Upload userEmployeeId={userEmployeeId} operation="NEW" code="PASSPORT" /></div>;
-    const I94UploadComponent = () => <div>I94 Upload Component</div>;
-    const ALL_I20SUploadComponent = () => <div>ALL_I20SUploadComponent Upload Component</div>;
-    const I20UploadComponent = () => <div>I20UploadComponent Upload Component</div>;
-    const W4UploadComponent = () => <div>W4 Upload Component</div>;
-    const OPT_H4_CARDSUploadComponent = () => <div>OPT_H4_CARDSUploadComponent Upload Component</div>;
-    const UNDER_GRAD_CERTUploadComponent = () => <div>UNDER_GRAD_CERTUploadComponent Upload Component</div>;
-    const GRAD_CERTUploadComponent = () => <div>GRAD_CERTUploadComponent Upload Component</div>;
-    const TENTH_INTERMEDIATEUploadComponent = () => <div>TENTH_INTERMEDIATEUploadComponent Upload Component</div>;
-    const WORK_PERMITUploadComponent = () => <div>WORK_PERMITUploadComponent Upload Component</div>;
-    const I9_FORMUploadComponent = () => <div>I9_FORMUploadComponent Upload Component</div>;
-    const CONSENT_AGREEMENTUploadComponent = () => <div>CONSENT_AGREEMENTUploadComponent Upload Component</div>;
-    const W4_FORMUploadComponent = () => <div>W4_FORMUploadComponent Upload Component</div>;
-    const ADP_FORMUploadComponent = () => <div>ADP_FORMUploadComponent Upload Component</div>;
-    const ADDITIONAL_DOCSUploadComponent = () => <div>ADDITIONAL_DOCSUploadComponent Upload Component</div>;
+    const I94UploadComponent = () => <div><I94_Upload userEmployeeId={userEmployeeId} operation="NEW" code="I94" /></div>;
+    const AllI20sUploadComponent = () => <div><ALL_I20S_Upload userEmployeeId={userEmployeeId} operation="NEW" code="ALL_I20S" /></div>;
+    const OptH4CardsUploadComponent = () => <div><OPT_H4_CARDS_Upload userEmployeeId={userEmployeeId} operation="NEW" code="OPT_H4_CARDS" /></div>;
+    const UnderGradCertUploadComponent = () => <div>UNDER_GRAD_CERTUploadComponent Upload Component</div>;
+    const GradCertUploadComponent = () => <div>GRAD_CERTUploadComponent Upload Component</div>;
+    const TenthIntermediateUploadComponent = () => <div>TENTH_INTERMEDIATEUploadComponent Upload Component</div>;
+    const WorkPermitUploadComponent = () => <div>WORK_PERMITUploadComponent Upload Component</div>;
+    const I9FormUploadComponent = () => <div>I9_FORMUploadComponent Upload Component</div>;
+    const ConsentAgreementUploadComponent = () => <div>CONSENT_AGREEMENTUploadComponent Upload Component</div>;
+    const W4FormUploadComponent = () => <div>W4_FORMUploadComponent Upload Component</div>;
+    const AdpFormUploadComponent = () => <div>ADP_FORMUploadComponent Upload Component</div>;
+    const AdditionalDocsUploadComponent = () => <div>ADDITIONAL_DOCSUploadComponent Upload Component</div>;
 
     const getDetails = async () => {
         setApiLoading(true);
@@ -124,22 +127,18 @@ const EmployeeDocumentsMain = () => {
     const manualLoadData = async () => {
         await getEmployeeDocuments();
         const availableSections = configData.employeeDocumentSections;
-        const availableOtherSections = configData.employeeDocumentOtherSections;
         const filteredSections = availableSections;
         //.filter(section => section !== visaType);
         setSections(filteredSections);
-        setOtherSections(availableOtherSections);
     }
 
     const fetchData = async () => {
         await getDetails();
         await getEmployeeDocuments();
         const availableSections = configData.employeeDocumentSections;
-        const availableOtherSections = configData.employeeDocumentOtherSections;
         const filteredSections = availableSections;
         //.filter(section => section !== visaType);
         setSections(filteredSections);
-        setOtherSections(availableOtherSections);
     };
 
     useEffect(() => {
@@ -147,23 +146,21 @@ const EmployeeDocumentsMain = () => {
     }, [visaType]);
 
     const sectionComponents = {
-        US_ID_DL: US_ID_DLUploadComponent,
-        SSN: SSNUploadComponent,
+        US_ID_DL: UsIdDlUploadComponent,
+        SSN: SsnUploadComponent,
         PASSPORT: PassportUploadComponent,
         I94: I94UploadComponent,
-        ALL_I20S: ALL_I20SUploadComponent,
-        I20: I20UploadComponent,
-        W4: W4UploadComponent,
-        OPT_H4_CARDS: OPT_H4_CARDSUploadComponent,
-        UNDER_GRAD_CERT: UNDER_GRAD_CERTUploadComponent,
-        GRAD_CERT: GRAD_CERTUploadComponent,
-        TENTH_INTERMEDIATE: TENTH_INTERMEDIATEUploadComponent,
-        WORK_PERMIT: WORK_PERMITUploadComponent,
-        I9_FORM: I9_FORMUploadComponent,
-        CONSENT_AGREEMENT: CONSENT_AGREEMENTUploadComponent,
-        W4_FORM: W4_FORMUploadComponent,
-        ADP_FORM: ADP_FORMUploadComponent,
-        ADDITIONAL_DOCS: ADDITIONAL_DOCSUploadComponent,
+        ALL_I20S: AllI20sUploadComponent,
+        OPT_H4_CARDS: OptH4CardsUploadComponent,
+        UNDER_GRAD_CERT: UnderGradCertUploadComponent,
+        GRAD_CERT: GradCertUploadComponent,
+        TENTH_INTERMEDIATE: TenthIntermediateUploadComponent,
+        WORK_PERMIT: WorkPermitUploadComponent,
+        I9_FORM: I9FormUploadComponent,
+        CONSENT_AGREEMENT: ConsentAgreementUploadComponent,
+        W4_FORM: W4FormUploadComponent,
+        ADP_FORM: AdpFormUploadComponent,
+        ADDITIONAL_DOCS: AdditionalDocsUploadComponent,
     }
     const SelectedComponent = selectedSection ? sectionComponents[selectedSection] : null;
 
@@ -236,6 +233,7 @@ const EmployeeDocumentsMain = () => {
                                 <TableRow>
                                     <TableCell sx={{ width: 70 }}>Status</TableCell>
                                     <TableCell>Name</TableCell>
+                                    <TableCell>Reference</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -250,6 +248,25 @@ const EmployeeDocumentsMain = () => {
                                             )}
                                         </TableCell>
                                         <TableCell>{section.name}</TableCell>
+                                        <TableCell>
+                                            {section.refer && (
+                                                <Link
+                                                    href={section.refer}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    underline="none"
+                                                >
+                                                    <Button
+                                                        size='small'
+                                                        variant="outlined"
+                                                        color="secondary"
+                                                        startIcon={<InsertLinkOutlinedIcon />}
+                                                    >
+                                                        Download here
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </TableCell>
                                         {/* <TableCell>
                                             {React.createElement(sectionComponents[section.code] || (() => <div>No Component</div>))}
                                         </TableCell> */}
@@ -264,12 +281,18 @@ const EmployeeDocumentsMain = () => {
                                     </TableRow>
                                 ))}
                                 <TableRow>
-                                    <TableCell sx={{ width: 70 }}></TableCell>
+                                    <TableCell sx={{ width: 70 }}>
+                                        <SupervisorAccountOutlinedIcon className='mr-2' />
+                                    </TableCell>
                                     <TableCell>Dependents Information</TableCell>
                                     <TableCell>
                                         <Stack direction="row" spacing={2}>
+                                            <Button size='small' variant="outlined" onClick={() => handleMenuItemClickView('Dependent')}>View</Button>
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Stack direction="row" spacing={2}>
                                             <Button size='small' variant="contained" onClick={() => handleMenuItemClick('Dependent')} >Add</Button>
-                                            <Button size='small' variant="outlined"  onClick={() => handleMenuItemClickView('Dependent')}>View</Button>
                                         </Stack>
                                     </TableCell>
                                 </TableRow>
@@ -306,6 +329,7 @@ const EmployeeDocumentsMain = () => {
                 </DialogContent>
             </BootstrapDialog>
 
+            {/* VIEW */}
             <BootstrapDialog
                 onClose={handleCloseView}
                 TransitionComponent={Transition}
@@ -328,7 +352,7 @@ const EmployeeDocumentsMain = () => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    {/* {SelectedComponent && <SelectedComponent code={selectedSection} />} */}
+                    <EmployeeDocumentsGenericList code={selectedSection} employeeID={userEmployeeId} />
                 </DialogContent>
             </BootstrapDialog>
 
@@ -360,6 +384,7 @@ const EmployeeDocumentsMain = () => {
                     <EmployeeGAddForm formType={formType} employeeID={userEmployeeId} />
                 </DialogContent>
             </BootstrapDialog>
+
             {/* DEPENDENT VIEW */}
             <BootstrapDialog
                 fullScreen

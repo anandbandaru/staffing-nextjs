@@ -321,16 +321,15 @@
     { "name": "Passport", "code": "PASSPORT" },
     { "name": "I94", "code": "I94" },
     { "name": "All I20s", "code": "ALL_I20S" },
-    { "name": "I20", "code": "I20" },
     { "name": "OPT cards/H4 cards", "code": "OPT_H4_CARDS" },
     { "name": "Under Graduation Certificates", "code": "UNDER_GRAD_CERT" },
     { "name": "Graduation Certificates", "code": "GRAD_CERT" },
     { "name": "10th & Intermediate", "code": "TENTH_INTERMEDIATE" },
     { "name": "Work Permit", "code": "WORK_PERMIT" },
-    { "name": "I-9 Form", "code": "I9_FORM" },
-    { "name": "Consent Agreement", "code": "CONSENT_AGREEMENT" },
-    { "name": "W-4 Form", "code": "W4_FORM" },
-    { "name": "ADP Form", "code": "ADP_FORM" },
+    { "name": "I-9 Form", "code": "I9_FORM", "refer": "https://www.uscis.gov/sites/default/files/document/forms/i-9.pdf" },
+    { "name": "Consent Agreement", "code": "CONSENT_AGREEMENT", "refer": ""},
+    { "name": "W-4 Form", "code": "W4_FORM", "refer": "https://www.irs.gov/pub/irs-pdf/fw4.pdf" },
+    { "name": "ADP Form", "code": "ADP_FORM", "refer": "" },
     { "name": "Additional Documents", "code": "ADDITIONAL_DOCS" }
   ],
   "GOOGLEDRIVE_FOLDERS": [
@@ -381,6 +380,10 @@
     {
       "folderid": "1fcGR_UZBrhILRtXHHFPTN4d08RQ1vKq3",
       "foldername": "VENDORS"
+    },
+    {
+      "folderid": "1claKXec2KwO6lDWbUOvFshT-GD55hr3m",
+      "foldername": "EMPLOYEE_DOCUMENTS"
     }
   ]
 }

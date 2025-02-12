@@ -11,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
+function ALL_I20S_Upload({ userEmployeeId, operation, code }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
@@ -90,10 +90,12 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                     employeeId: userEmployeeId,
                     createdBy: userName,
                     code: code,
-                    US_ID_DL_IDNumber: '',
-                    US_ID_DL_ExpiryDate: '',
-                    US_ID_DL_Done: 1,
-                    //NULLS HERE       
+                    ALL_I20S_SevisNumber: '',
+                    ALL_I20S_Done: 1,
+                    //NULLS HERE
+                    US_ID_DL_IDNumber: null,
+                    US_ID_DL_ExpiryDate: null,
+                    US_ID_DL_Done: null,
                     SSN_IDNumber: null,
                     SSN_Done: null,
                     PASSPORT_IDNumber: null,
@@ -103,8 +105,6 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                     I94_IDNumber: null,
                     I94_ExpiryDate: null,
                     I94_Done: null,
-                    ALL_I20S_SevisNumber: null,
-                    ALL_I20S_Done: null,
                     OPT_H4_CARDS_IDNumber: null,
                     OPT_H4_CARDS_StartDate: null,
                     OPT_H4_CARDS_EndDate: null,
@@ -152,10 +152,8 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                 }}
 
                 validationSchema={Yup.object().shape({
-                    US_ID_DL_IDNumber: Yup.string()
-                        .required(code + ' Number Required'),
-                    US_ID_DL_ExpiryDate: Yup.string()
-                        .required(code + ' Expiry Date Required'),
+                    ALL_I20S_SevisNumber: Yup.string()
+                        .required('Sevis Number Required'),
                     file: Yup.string().required(code + ' Document is required'),
                 })
                 }
@@ -178,30 +176,14 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                                 size="small"
                                 margin="normal"
                                 fullWidth
-                                id="US_ID_DL_IDNumber"
-                                name="US_ID_DL_IDNumber"
-                                label="US ID \ DL ID Number"
-                                value={values.US_ID_DL_IDNumber}
+                                id="ALL_I20S_SevisNumber"
+                                name="ALL_I20S_SevisNumber"
+                                label="Sevis Number"
+                                value={values.ALL_I20S_SevisNumber}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                helperText={(errors.US_ID_DL_IDNumber && touched.US_ID_DL_IDNumber) && errors.US_ID_DL_IDNumber}
+                                helperText={(errors.ALL_I20S_SevisNumber && touched.ALL_I20S_SevisNumber) && errors.ALL_I20S_SevisNumber}
                             />
-                            <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-                                <div className='flex-1'>Expiry Date:</div>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    className='flex-1'
-                                    id="US_ID_DL_ExpiryDate"
-                                    name="US_ID_DL_ExpiryDate"
-                                    type="date"
-                                    value={values.US_ID_DL_ExpiryDate}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.US_ID_DL_ExpiryDate && touched.US_ID_DL_ExpiryDate) && errors.US_ID_DL_ExpiryDate}
-                                />
-                            </Stack>
                             <Stack direction="row" spacing={1} className='mt-6'>
                                 <TextField
                                     className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
@@ -257,4 +239,4 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
     );
 }
 
-export default US_ID_DL_Upload;
+export default ALL_I20S_Upload;

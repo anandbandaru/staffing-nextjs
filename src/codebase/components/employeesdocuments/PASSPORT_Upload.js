@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { Context } from "../../context/context";
 import configData from "../../../CONFIG_RELEASE.json";
 import Button from '@mui/material/Button';
@@ -30,7 +30,6 @@ function PASSPORT_Upload({ userEmployeeId, operation, code }) {
     };
 
     //FILE RELATED
-    const [insertedEDocId, setInsertedEDocId] = useState(false);
 
     const [file, setFile] = useState(null);
     const handleFileChangefile = (event) => {
@@ -139,7 +138,6 @@ function PASSPORT_Upload({ userEmployeeId, operation, code }) {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
                         } else {
-                            setInsertedEDocId(resp.data.RELATED_ID);
                             let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
                             if (file)
                                 await UploadJobFiles(file, fileName, 'EMPLOYEES', resp.data.RELATED_ID);

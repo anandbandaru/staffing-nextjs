@@ -10,8 +10,9 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import { Alert } from '@mui/material';
 
-function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
+function I94_Upload({ userEmployeeId, operation, code }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
@@ -90,9 +91,9 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                     employeeId: userEmployeeId,
                     createdBy: userName,
                     code: code,
-                    US_ID_DL_IDNumber: '',
-                    US_ID_DL_ExpiryDate: '',
-                    US_ID_DL_Done: 1,
+                    I94_IDNumber: '',
+                    I94_ExpiryDate: '',
+                    I94_Done: 1,
                     //NULLS HERE       
                     SSN_IDNumber: null,
                     SSN_Done: null,
@@ -100,9 +101,9 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                     PASSPORT_IssueDate: null,
                     PASSPORT_ExpiryDate: null,
                     PASSPORT_Done: null,
-                    I94_IDNumber: null,
-                    I94_ExpiryDate: null,
-                    I94_Done: null,
+                    US_ID_DL_IDNumber: null,
+                    US_ID_DL_ExpiryDate: null,
+                    US_ID_DL_Done: null,
                     ALL_I20S_SevisNumber: null,
                     ALL_I20S_Done: null,
                     OPT_H4_CARDS_IDNumber: null,
@@ -152,9 +153,9 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                 }}
 
                 validationSchema={Yup.object().shape({
-                    US_ID_DL_IDNumber: Yup.string()
+                    I94_IDNumber: Yup.string()
                         .required(code + ' Number Required'),
-                    US_ID_DL_ExpiryDate: Yup.string()
+                    I94_ExpiryDate: Yup.string()
                         .required(code + ' Expiry Date Required'),
                     file: Yup.string().required(code + ' Document is required'),
                 })
@@ -178,14 +179,15 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                                 size="small"
                                 margin="normal"
                                 fullWidth
-                                id="US_ID_DL_IDNumber"
-                                name="US_ID_DL_IDNumber"
-                                label="US ID \ DL ID Number"
-                                value={values.US_ID_DL_IDNumber}
+                                id="I94_IDNumber"
+                                name="I94_IDNumber"
+                                label="I94 Number"
+                                value={values.I94_IDNumber}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                helperText={(errors.US_ID_DL_IDNumber && touched.US_ID_DL_IDNumber) && errors.US_ID_DL_IDNumber}
+                                helperText={(errors.I94_IDNumber && touched.I94_IDNumber) && errors.I94_IDNumber}
                             />
+                            <Alert severity="info">If you are <strong>F1</strong>, please use your passport expiry date.</Alert>
                             <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
                                 <div className='flex-1'>Expiry Date:</div>
                                 <TextField
@@ -193,13 +195,13 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                                     margin="normal"
                                     fullWidth
                                     className='flex-1'
-                                    id="US_ID_DL_ExpiryDate"
-                                    name="US_ID_DL_ExpiryDate"
+                                    id="I94_ExpiryDate"
+                                    name="I94_ExpiryDate"
                                     type="date"
-                                    value={values.US_ID_DL_ExpiryDate}
+                                    value={values.I94_ExpiryDate}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.US_ID_DL_ExpiryDate && touched.US_ID_DL_ExpiryDate) && errors.US_ID_DL_ExpiryDate}
+                                    helperText={(errors.I94_ExpiryDate && touched.I94_ExpiryDate) && errors.I94_ExpiryDate}
                                 />
                             </Stack>
                             <Stack direction="row" spacing={1} className='mt-6'>
@@ -257,4 +259,4 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
     );
 }
 
-export default US_ID_DL_Upload;
+export default I94_Upload;
