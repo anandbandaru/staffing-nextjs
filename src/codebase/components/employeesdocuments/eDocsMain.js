@@ -24,6 +24,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import US_ID_DL_Upload from './US_ID_DL_Upload';
+import PASSPORT_Upload from './PASSPORT_Upload';
 
 const EmployeeDocumentsMain = () => {
     const { APIPath, userName, userEmployeeId } = useContext(Context);
@@ -40,10 +41,21 @@ const EmployeeDocumentsMain = () => {
     // Example components for different sections
     const US_ID_DLUploadComponent = () => <div><US_ID_DL_Upload userEmployeeId={userEmployeeId} operation="NEW" code="US_ID_DL" /></div>;
     const SSNUploadComponent = () => <div><SSN_Upload userEmployeeId={userEmployeeId} operation="NEW" code="SSN" /></div>;
-    const PassportUploadComponent = () => <div>Passport Upload Component</div>;
-    const W4UploadComponent = () => <div>W4 Upload Component</div>;
-    const I20UploadComponent = () => <div>I20 Upload Component</div>;
+    const PassportUploadComponent = () => <div><PASSPORT_Upload userEmployeeId={userEmployeeId} operation="NEW" code="PASSPORT" /></div>;
     const I94UploadComponent = () => <div>I94 Upload Component</div>;
+    const ALL_I20SUploadComponent = () => <div>ALL_I20SUploadComponent Upload Component</div>;
+    const I20UploadComponent = () => <div>I20UploadComponent Upload Component</div>;
+    const W4UploadComponent = () => <div>W4 Upload Component</div>;
+    const OPT_H4_CARDSUploadComponent = () => <div>OPT_H4_CARDSUploadComponent Upload Component</div>;
+    const UNDER_GRAD_CERTUploadComponent = () => <div>UNDER_GRAD_CERTUploadComponent Upload Component</div>;
+    const GRAD_CERTUploadComponent = () => <div>GRAD_CERTUploadComponent Upload Component</div>;
+    const TENTH_INTERMEDIATEUploadComponent = () => <div>TENTH_INTERMEDIATEUploadComponent Upload Component</div>;
+    const WORK_PERMITUploadComponent = () => <div>WORK_PERMITUploadComponent Upload Component</div>;
+    const I9_FORMUploadComponent = () => <div>I9_FORMUploadComponent Upload Component</div>;
+    const CONSENT_AGREEMENTUploadComponent = () => <div>CONSENT_AGREEMENTUploadComponent Upload Component</div>;
+    const W4_FORMUploadComponent = () => <div>W4_FORMUploadComponent Upload Component</div>;
+    const ADP_FORMUploadComponent = () => <div>ADP_FORMUploadComponent Upload Component</div>;
+    const ADDITIONAL_DOCSUploadComponent = () => <div>ADDITIONAL_DOCSUploadComponent Upload Component</div>;
 
     const getDetails = async () => {
         setApiLoading(true);
@@ -136,10 +148,20 @@ const EmployeeDocumentsMain = () => {
         US_ID_DL: US_ID_DLUploadComponent,
         SSN: SSNUploadComponent,
         PASSPORT: PassportUploadComponent,
-        W4: W4UploadComponent,
-        I20: I20UploadComponent,
         I94: I94UploadComponent,
-        // Add other mappings here
+        ALL_I20S: ALL_I20SUploadComponent,
+        I20: I20UploadComponent,
+        W4: W4UploadComponent,
+        OPT_H4_CARDS: OPT_H4_CARDSUploadComponent,
+        UNDER_GRAD_CERT: UNDER_GRAD_CERTUploadComponent,
+        GRAD_CERT: GRAD_CERTUploadComponent,
+        TENTH_INTERMEDIATE: TENTH_INTERMEDIATEUploadComponent,
+        WORK_PERMIT: WORK_PERMITUploadComponent,
+        I9_FORM: I9_FORMUploadComponent,
+        CONSENT_AGREEMENT: CONSENT_AGREEMENTUploadComponent,
+        W4_FORM: W4_FORMUploadComponent,
+        ADP_FORM: ADP_FORMUploadComponent,
+        ADDITIONAL_DOCS: ADDITIONAL_DOCSUploadComponent,
     }
     const SelectedComponent = selectedSection ? sectionComponents[selectedSection] : null;
 
@@ -180,7 +202,7 @@ const EmployeeDocumentsMain = () => {
             <div className="subTabsHolder">
                 <EmployeeMetadata employee={employeeData} />
                 <div className='sectionsDivider'>
-                    Default sections
+                    Required Documents/Information
                 </div>
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <TableContainer component={Paper}>
@@ -194,47 +216,6 @@ const EmployeeDocumentsMain = () => {
                             </TableHead>
                             <TableBody>
                                 {sections.map((section, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell sx={{ width: 70 }}>
-                                            {documentStatus[section.code] ? (
-                                                <CheckCircleIcon className="completed-icon" />
-                                            ) : (
-                                                <DoNotDisturbOnOutlinedIcon className="waiting-icon" />
-                                            )}
-                                        </TableCell>
-                                        <TableCell>{section.name}</TableCell>
-                                        {/* <TableCell>
-                                            {React.createElement(sectionComponents[section.code] || (() => <div>No Component</div>))}
-                                        </TableCell> */}
-                                        <TableCell>
-                                            <Stack direction="row" spacing={2}>
-                                                <Button size='small' variant="contained" onClick={() => handleClickOpen(section.code)}>Upload</Button>
-                                                {documentStatus[section.code] && (
-                                                    <Button size='small' variant="outlined" onClick={() => handleClickOpenView(section.code)}>View</Button>
-                                                )}
-                                            </Stack>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Box>
-                <div className='sectionsDivider'>
-                    Other sections
-                </div>
-                <Box className="mt-10" sx={{ width: '100%', typography: 'body1' }}>
-                    <TableContainer component={Paper}>
-                        <Table size="small">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell sx={{ width: 70 }}>Status</TableCell>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Actions</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {otherSections.map((section, index) => (
                                     <TableRow key={index}>
                                         <TableCell sx={{ width: 70 }}>
                                             {documentStatus[section.code] ? (

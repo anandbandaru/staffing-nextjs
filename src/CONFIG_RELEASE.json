@@ -325,10 +325,8 @@
     { "name": "OPT cards/H4 cards", "code": "OPT_H4_CARDS" },
     { "name": "Under Graduation Certificates", "code": "UNDER_GRAD_CERT" },
     { "name": "Graduation Certificates", "code": "GRAD_CERT" },
-    { "name": "10th & Intermediate", "code": "TENTH_INTERMEDIATE_Done" },
-    { "name": "Work Permit", "code": "WORK_PERMIT" }
-  ],
-  "employeeDocumentOtherSections": [
+    { "name": "10th & Intermediate", "code": "TENTH_INTERMEDIATE" },
+    { "name": "Work Permit", "code": "WORK_PERMIT" },
     { "name": "I-9 Form", "code": "I9_FORM" },
     { "name": "Consent Agreement", "code": "CONSENT_AGREEMENT" },
     { "name": "W-4 Form", "code": "W4_FORM" },
