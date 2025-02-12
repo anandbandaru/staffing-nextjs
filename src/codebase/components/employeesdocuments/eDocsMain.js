@@ -25,6 +25,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import US_ID_DL_Upload from './US_ID_DL_Upload';
 import PASSPORT_Upload from './PASSPORT_Upload';
+import EmployeeGAddForm from '../employees/employeeGAddForm';
+import EmployeeGenericList from '../employees/employeeGList';
 
 const EmployeeDocumentsMain = () => {
     const { APIPath, userName, userEmployeeId } = useContext(Context);
@@ -197,6 +199,29 @@ const EmployeeDocumentsMain = () => {
         },
     }));
 
+    //DEPENDENTS
+    const [formType, setFormType] = React.useState('');
+    const [openGenericForm, setOpenGenericForm] = React.useState(false);
+    const [openGenericFormView, setOpenGenericFormView] = React.useState(false);
+    const handleMenuItemClick = (type) => {
+        setFormType(type);
+        setOpenGenericForm(true);
+    };
+    const handleCloseGenericForm = (event, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
+        setOpenGenericForm(false);
+    };
+    const handleMenuItemClickView = (type) => {
+        setFormType(type);
+        setOpenGenericFormView(true);
+    };
+    const handleCloseGenericFormView = (event, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
+        setOpenGenericFormView(false);
+    };
+
     return (
         <div className="ownerMainHolder">
             <div className="subTabsHolder">
@@ -238,6 +263,16 @@ const EmployeeDocumentsMain = () => {
                                         </TableCell>
                                     </TableRow>
                                 ))}
+                                <TableRow>
+                                    <TableCell sx={{ width: 70 }}></TableCell>
+                                    <TableCell>Dependents Information</TableCell>
+                                    <TableCell>
+                                        <Stack direction="row" spacing={2}>
+                                            <Button size='small' variant="contained" onClick={() => handleMenuItemClick('Dependent')} >Add</Button>
+                                            <Button size='small' variant="outlined"  onClick={() => handleMenuItemClickView('Dependent')}>View</Button>
+                                        </Stack>
+                                    </TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -294,6 +329,63 @@ const EmployeeDocumentsMain = () => {
                 </IconButton>
                 <DialogContent dividers>
                     {/* {SelectedComponent && <SelectedComponent code={selectedSection} />} */}
+                </DialogContent>
+            </BootstrapDialog>
+
+            {/* DEPENDENT ADD */}
+            <BootstrapDialog
+                fullScreen
+                className="myFullScreenDialog"
+                onClose={handleCloseGenericForm}
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={openGenericForm}
+            >
+                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    {formType}: Employee: ID: {userEmployeeId}
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleCloseGenericForm}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
+                    <EmployeeGAddForm formType={formType} employeeID={userEmployeeId} />
+                </DialogContent>
+            </BootstrapDialog>
+            {/* DEPENDENT VIEW */}
+            <BootstrapDialog
+                fullScreen
+                className="myFullScreenDialog"
+                onClose={handleCloseGenericFormView}
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={openGenericFormView}
+            >
+                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    {formType}: Employee: ID: {userEmployeeId}
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleCloseGenericFormView}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
+                    <EmployeeGenericList formType={formType} employeeID={userEmployeeId} />
                 </DialogContent>
             </BootstrapDialog>
         </div>
