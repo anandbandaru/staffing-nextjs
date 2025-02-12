@@ -140,7 +140,7 @@ function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
                             setSubmitionCompleted(true);
                         } else {
                             setInsertedEDocId(resp.data.RELATED_ID);
-                            let fileName = "EMPLOYEE_DOCS:" + code + ":" + userEmployeeId + ":" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
+                            let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
                             if (file)
                                 await UploadJobFiles(file, fileName, 'EMPLOYEES', resp.data.RELATED_ID);
                             showSnackbar('success', "Data saved");
