@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Context } from "../../context/context";
 import configData from "../../../CONFIG_RELEASE.json";
-import axios from 'axios';
 import './eDocsMain.css';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,7 +15,15 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
 import { Stack } from '@mui/material';
 import SSN_Upload from './SSN_Upload';
-
+import EmployeeMetadata from '../employees/employeeMetadata';
+import Slide from '@mui/material/Slide';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import US_ID_DL_Upload from './US_ID_DL_Upload';
 
 const EmployeeDocumentsMain = () => {
     const { APIPath, userName, userEmployeeId } = useContext(Context);
@@ -25,18 +31,19 @@ const EmployeeDocumentsMain = () => {
     const [sections, setSections] = useState([]);
     const [otherSections, setOtherSections] = useState([]);
     const [open, setOpen] = useState(false);
+    const [openView, setOpenView] = useState(false);
     const [apiLoading, setApiLoading] = useState(false);
     const [selectedSection, setSelectedSection] = useState(null);
     const [documentStatus, setDocumentStatus] = useState({});
-    const [documentDates, setDocumentDates] = useState({});
-
+    const [employeeData, setEmployeeData] = useState({});
 
     // Example components for different sections
-    const SSNUploadComponent = () => <div className='bg-yellow-200'><SSN_Upload userEmployeeId={userEmployeeId} /></div>;
-    const PassportUploadComponent = () => <div className='bg-yellow-200'>Passport Upload Component</div>;
-    const W4UploadComponent = () => <div className='bg-yellow-200'>W4 Upload Component</div>;
-    const I20UploadComponent = () => <div className='bg-yellow-200'>I20 Upload Component</div>;
-    const I94UploadComponent = () => <div className='bg-yellow-200'>I94 Upload Component</div>;
+    const US_ID_DLUploadComponent = () => <div><US_ID_DL_Upload userEmployeeId={userEmployeeId} operation="NEW" code="US_ID_DL" /></div>;
+    const SSNUploadComponent = () => <div><SSN_Upload userEmployeeId={userEmployeeId} operation="NEW" code="SSN" /></div>;
+    const PassportUploadComponent = () => <div>Passport Upload Component</div>;
+    const W4UploadComponent = () => <div>W4 Upload Component</div>;
+    const I20UploadComponent = () => <div>I20 Upload Component</div>;
+    const I94UploadComponent = () => <div>I94 Upload Component</div>;
 
     const getDetails = async () => {
         setApiLoading(true);
@@ -53,6 +60,7 @@ const EmployeeDocumentsMain = () => {
                         setVisaType('');
                     } else {
                         setVisaType(result.data[0].VisaType);
+                        setEmployeeData(result.data[0]);
                     }
                     setApiLoading(false);
                 },
@@ -78,18 +86,17 @@ const EmployeeDocumentsMain = () => {
                         // Handle error
                     } else {
                         const status = {};
-                        const dates = {};
                         result.data.forEach(doc => {
                             Object.keys(doc).forEach(key => {
                                 if (key.endsWith('_Done')) {
                                     const code = key.replace('_Done', '');
-                                    status[code] = doc[key];
-                                    dates[code] = doc.createdDate;
+                                    if (doc[key]) {
+                                        status[code] = doc[key];
+                                    }
                                 }
                             });
                         });
-                        setDocumentStatus(status);
-                        setDocumentDates(dates);
+                        setDocumentStatus(prevStatus => ({ ...prevStatus, ...status }));
                     }
                     setApiLoading(false);
                 },
@@ -100,27 +107,33 @@ const EmployeeDocumentsMain = () => {
             )
     }
 
+    const manualLoadData = async () => {
+        await getEmployeeDocuments();
+        const availableSections = configData.employeeDocumentSections;
+        const availableOtherSections = configData.employeeDocumentOtherSections;
+        const filteredSections = availableSections;
+        //.filter(section => section !== visaType);
+        setSections(filteredSections);
+        setOtherSections(availableOtherSections);
+    }
+
+    const fetchData = async () => {
+        await getDetails();
+        await getEmployeeDocuments();
+        const availableSections = configData.employeeDocumentSections;
+        const availableOtherSections = configData.employeeDocumentOtherSections;
+        const filteredSections = availableSections;
+        //.filter(section => section !== visaType);
+        setSections(filteredSections);
+        setOtherSections(availableOtherSections);
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            await getDetails();
-            await getEmployeeDocuments();
-            const availableSections = configData.employeeDocumentSections;
-            const availableOtherSections = configData.employeeDocumentOtherSections;
-            const filteredSections = availableSections;
-            //.filter(section => section !== visaType);
-            setSections(filteredSections);
-            setOtherSections(availableOtherSections);
-        };
         fetchData();
     }, [visaType]);
 
-    const handleOpen = (sectionCode) => {
-        setSelectedSection(sectionCode);
-        setOpen(true);
-    };
-    const handleClose = () => setOpen(false);
-
     const sectionComponents = {
+        US_ID_DL: US_ID_DLUploadComponent,
         SSN: SSNUploadComponent,
         PASSPORT: PassportUploadComponent,
         W4: W4UploadComponent,
@@ -130,9 +143,42 @@ const EmployeeDocumentsMain = () => {
     }
     const SelectedComponent = selectedSection ? sectionComponents[selectedSection] : null;
 
+    //For dialog MUI
+    const Transition = React.forwardRef(function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+    });
+    const handleClose = (event, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
+        setOpen(false);
+        manualLoadData();
+    };
+    const handleClickOpen = (sectionCode) => {
+        setSelectedSection(sectionCode);
+        setOpen(true);
+    };
+    const handleCloseView = (event, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
+        setOpenView(false);
+    };
+    const handleClickOpenView = (sectionCode) => {
+        setSelectedSection(sectionCode);
+        setOpenView(true);
+    };
+    const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+        '& .MuiDialogContent-root': {
+            padding: theme.spacing(2),
+        },
+        '& .MuiDialogActions-root': {
+            padding: theme.spacing(1),
+        },
+    }));
+
     return (
         <div className="ownerMainHolder">
             <div className="subTabsHolder">
+                <EmployeeMetadata employee={employeeData} />
                 <div className='sectionsDivider'>
                     Default sections
                 </div>
@@ -143,7 +189,6 @@ const EmployeeDocumentsMain = () => {
                                 <TableRow>
                                     <TableCell sx={{ width: 70 }}>Status</TableCell>
                                     <TableCell>Name</TableCell>
-                                    <TableCell>Fields</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -158,14 +203,14 @@ const EmployeeDocumentsMain = () => {
                                             )}
                                         </TableCell>
                                         <TableCell>{section.name}</TableCell>
-                                        <TableCell>
+                                        {/* <TableCell>
                                             {React.createElement(sectionComponents[section.code] || (() => <div>No Component</div>))}
-                                        </TableCell>
+                                        </TableCell> */}
                                         <TableCell>
                                             <Stack direction="row" spacing={2}>
-                                                <Button size='small' variant="contained" onClick={() => handleOpen(section.code)}>Upload</Button>
+                                                <Button size='small' variant="contained" onClick={() => handleClickOpen(section.code)}>Upload</Button>
                                                 {documentStatus[section.code] && (
-                                                    <Button size='small' variant="outlined">View</Button>
+                                                    <Button size='small' variant="outlined" onClick={() => handleClickOpenView(section.code)}>View</Button>
                                                 )}
                                             </Stack>
                                         </TableCell>
@@ -185,7 +230,6 @@ const EmployeeDocumentsMain = () => {
                                 <TableRow>
                                     <TableCell sx={{ width: 70 }}>Status</TableCell>
                                     <TableCell>Name</TableCell>
-                                    <TableCell>Fields</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -200,14 +244,14 @@ const EmployeeDocumentsMain = () => {
                                             )}
                                         </TableCell>
                                         <TableCell>{section.name}</TableCell>
-                                        <TableCell>
+                                        {/* <TableCell>
                                             {React.createElement(sectionComponents[section.code] || (() => <div>No Component</div>))}
-                                        </TableCell>
+                                        </TableCell> */}
                                         <TableCell>
                                             <Stack direction="row" spacing={2}>
-                                                <Button size='small' variant="contained" onClick={() => handleOpen(section.code)}>Upload</Button>
+                                                <Button size='small' variant="contained" onClick={() => handleClickOpen(section.code)}>Upload</Button>
                                                 {documentStatus[section.code] && (
-                                                    <Button size='small' variant="outlined">View</Button>
+                                                    <Button size='small' variant="outlined" onClick={() => handleClickOpenView(section.code)}>View</Button>
                                                 )}
                                             </Stack>
                                         </TableCell>
@@ -218,18 +262,59 @@ const EmployeeDocumentsMain = () => {
                     </TableContainer>
                 </Box>
             </div>
-            <Modal
-                open={open}
+
+            <BootstrapDialog
+                className="myFullScreenDialog"
                 onClose={handleClose}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={open}
             >
-                <Box>
-                    <h2 id="modal-title">Upload {selectedSection && sections.find(section => section.code === selectedSection).name} Document</h2>
-                    {SelectedComponent && <SelectedComponent />}
-                    <Button onClick={handleClose}>Close</Button>
-                </Box>
-            </Modal>
+                <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    Upload {selectedSection && sections.find(section => section.code === selectedSection).name} Document
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
+                    {SelectedComponent && <SelectedComponent code={selectedSection} />}
+                </DialogContent>
+            </BootstrapDialog>
+
+            <BootstrapDialog
+                onClose={handleCloseView}
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={openView}
+            >
+                <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    View {selectedSection && sections.find(section => section.code === selectedSection).name} Document
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleCloseView}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
+                    {/* {SelectedComponent && <SelectedComponent code={selectedSection} />} */}
+                </DialogContent>
+            </BootstrapDialog>
         </div>
     );
 };

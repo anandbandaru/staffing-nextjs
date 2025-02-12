@@ -11,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-function SSN_Upload({ userEmployeeId, operation, code }) {
+function US_ID_DL_Upload({ userEmployeeId, operation, code }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
@@ -91,12 +91,12 @@ function SSN_Upload({ userEmployeeId, operation, code }) {
                     employeeId: userEmployeeId,
                     createdBy: userName,
                     code: code,
-                    SSN_IDNumber: '',
-                    SSN_Done: 1,
-                    //NULLS HERE                    
-                    US_ID_DL_IDNumber: null,
-                    US_ID_DL_ExpiryDate: null,
-                    US_ID_DL_Done: null,
+                    US_ID_DL_IDNumber: '',
+                    US_ID_DL_ExpiryDate: '',
+                    US_ID_DL_Done: 1,
+                    //NULLS HERE       
+                    SSN_IDNumber: null,
+                    SSN_Done: null,
                     PASSPORT_IDNumber: null,
                     PASSPORT_IssueDate: null,
                     PASSPORT_ExpiryDate: null,
@@ -154,8 +154,10 @@ function SSN_Upload({ userEmployeeId, operation, code }) {
                 }}
 
                 validationSchema={Yup.object().shape({
-                    SSN_IDNumber: Yup.string()
+                    US_ID_DL_IDNumber: Yup.string()
                         .required(code + ' Number Required'),
+                    US_ID_DL_ExpiryDate: Yup.string()
+                        .required(code + ' Expiry Date Required'),
                     file: Yup.string().required(code + ' Document is required'),
                 })
                 }
@@ -178,14 +180,30 @@ function SSN_Upload({ userEmployeeId, operation, code }) {
                                 size="small"
                                 margin="normal"
                                 fullWidth
-                                id="SSN_IDNumber"
-                                name="SSN_IDNumber"
-                                label="SSN Number"
-                                value={values.SSN_IDNumber}
+                                id="US_ID_DL_IDNumber"
+                                name="US_ID_DL_IDNumber"
+                                label="US ID \ DL ID Number"
+                                value={values.US_ID_DL_IDNumber}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                helperText={(errors.SSN_IDNumber && touched.SSN_IDNumber) && errors.SSN_IDNumber}
+                                helperText={(errors.US_ID_DL_IDNumber && touched.US_ID_DL_IDNumber) && errors.US_ID_DL_IDNumber}
                             />
+                            <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+                                <div className='flex-1'>Expiry Date:</div>
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    className='flex-1'
+                                    id="US_ID_DL_ExpiryDate"
+                                    name="US_ID_DL_ExpiryDate"
+                                    type="date"
+                                    value={values.US_ID_DL_ExpiryDate}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.US_ID_DL_ExpiryDate && touched.US_ID_DL_ExpiryDate) && errors.US_ID_DL_ExpiryDate}
+                                />
+                            </Stack>
                             <Stack direction="row" spacing={1} className='mt-6'>
                                 <TextField
                                     className='bg-orange-100 text-white py-2 px-4 rounded-md hover:bg-blue-200 fileUploadControl'
@@ -241,4 +259,4 @@ function SSN_Upload({ userEmployeeId, operation, code }) {
     );
 }
 
-export default SSN_Upload;
+export default US_ID_DL_Upload;
