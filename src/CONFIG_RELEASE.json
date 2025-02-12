@@ -327,9 +327,9 @@
     { "name": "10th & Intermediate", "code": "TENTH_INTERMEDIATE" },
     { "name": "Work Permit", "code": "WORK_PERMIT" },
     { "name": "I-9 Form", "code": "I9_FORM", "refer": "https://www.uscis.gov/sites/default/files/document/forms/i-9.pdf" },
-    { "name": "Consent Agreement", "code": "CONSENT_AGREEMENT", "refer": ""},
+    { "name": "Consent Agreement", "code": "CONSENT_AGREEMENT", "refer": "https://www.google.com/"},
     { "name": "W-4 Form", "code": "W4_FORM", "refer": "https://www.irs.gov/pub/irs-pdf/fw4.pdf" },
-    { "name": "ADP Form", "code": "ADP_FORM", "refer": "" },
+    { "name": "ADP Form", "code": "ADP_FORM", "refer": "https://www.google.com/" },
     { "name": "Additional Documents", "code": "ADDITIONAL_DOCS" }
   ],
   "GOOGLEDRIVE_FOLDERS": [
