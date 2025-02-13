@@ -33,6 +33,9 @@ import EmployeeDocumentsGenericList from './eDocsGList';
 import I94_Upload from './I94_Upload';
 import ALL_I20S_Upload from './ALL_I20S_Upload';
 import OPT_H4_CARDS_Upload from './OPT_H4_CARDS_Upload'
+import UNDER_GRAD_CERT_Upload from './UNDER_GRAD_CERT_Upload';
+import GRAD_CERT_Upload from './GRAD_CERT_Upload';
+import TENTH_INTERMEDIATE_Upload from './TENTH_INTERMEDIATE_Upload';
 
 const EmployeeDocumentsMain = () => {
     const { APIPath, userEmployeeId } = useContext(Context);
@@ -52,9 +55,9 @@ const EmployeeDocumentsMain = () => {
     const I94UploadComponent = () => <div><I94_Upload userEmployeeId={userEmployeeId} operation="NEW" code="I94" /></div>;
     const AllI20sUploadComponent = () => <div><ALL_I20S_Upload userEmployeeId={userEmployeeId} operation="NEW" code="ALL_I20S" /></div>;
     const OptH4CardsUploadComponent = () => <div><OPT_H4_CARDS_Upload userEmployeeId={userEmployeeId} operation="NEW" code="OPT_H4_CARDS" /></div>;
-    const UnderGradCertUploadComponent = () => <div>UNDER_GRAD_CERTUploadComponent Upload Component</div>;
-    const GradCertUploadComponent = () => <div>GRAD_CERTUploadComponent Upload Component</div>;
-    const TenthIntermediateUploadComponent = () => <div>TENTH_INTERMEDIATEUploadComponent Upload Component</div>;
+    const UnderGradCertUploadComponent = () => <div><UNDER_GRAD_CERT_Upload  userEmployeeId={userEmployeeId} operation="NEW" code="UNDER_GRAD_CERT" /></div>;
+    const GradCertUploadComponent = () => <div><GRAD_CERT_Upload userEmployeeId={userEmployeeId} operation="NEW" code="GRAD_CERT" /> </div>;
+    const TenthIntermediateUploadComponent = () => <div><TENTH_INTERMEDIATE_Upload userEmployeeId={userEmployeeId} operation="NEW" code="TENTH_INTERMEDIATE"/></div>;
     const WorkPermitUploadComponent = () => <div>WORK_PERMITUploadComponent Upload Component</div>;
     const I9FormUploadComponent = () => <div>I9_FORMUploadComponent Upload Component</div>;
     const ConsentAgreementUploadComponent = () => <div>CONSENT_AGREEMENTUploadComponent Upload Component</div>;
