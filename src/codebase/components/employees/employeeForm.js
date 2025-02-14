@@ -203,11 +203,13 @@ function EmployeeForm({ props, ID, operation }) {
                         ).then((resp) => {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
-                            if (resp.data.STATUS === "FAIL")
+                            if (resp.data.STATUS === "FAIL") {
                                 showSnackbar('error', "Error saving Employee data");
-                            else
+                            }
+                            else {
                                 showSnackbar('success', "Employee data saved");
-                            resetForm();
+                                resetForm();
+                            }
                         }).catch(function (error) {
                             setSubmitting(false);
                             // console.log(error);

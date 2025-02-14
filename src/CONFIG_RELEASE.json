@@ -16,7 +16,9 @@
       "date": "FEB 14 2024",
       "notes": [
         "Ability to E-Verify an Employee",
-        "Disabling Version updates for non ADMINS"
+        "Disabling Version updates for non ADMINS",
+        "FIX - Add new employee",
+        "FIX - Listing screen for pending timesheets for Employee View"
       ]
     },
     {
