@@ -115,7 +115,7 @@ const ContextProvider = (props) => {
                 }
             });
 
-            const jobTitle = response.data.jobTitle;
+            const jobTitle = response.data.jobTitle === "" ? "EMPLOYEE" : response.data.jobTitle;
             setUserType(jobTitle);
 
         } catch (error) {
@@ -138,7 +138,7 @@ const ContextProvider = (props) => {
                         }
                     });
 
-                    const jobTitle = response.data.jobTitle;
+                    const jobTitle = response.data.jobTitle === "" ? "EMPLOYEE" : response.data.jobTitle;
                     setUserType(jobTitle);
                 } catch (tokenError) {
                     // console.log("Token acquisition failed:", tokenError);
