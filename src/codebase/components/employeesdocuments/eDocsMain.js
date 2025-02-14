@@ -48,22 +48,6 @@ const EmployeeDocumentsMain = () => {
     const [documentStatus, setDocumentStatus] = useState({});
     const [employeeData, setEmployeeData] = useState({});
 
-    // Example components for different sections
-    const UsIdDlUploadComponent = () => <div><US_ID_DL_Upload userEmployeeId={userEmployeeId} operation="NEW" code="US_ID_DL" /></div>;
-    const SsnUploadComponent = () => <div><SSN_Upload userEmployeeId={userEmployeeId} operation="NEW" code="SSN" /></div>;
-    const PassportUploadComponent = () => <div><PASSPORT_Upload userEmployeeId={userEmployeeId} operation="NEW" code="PASSPORT" /></div>;
-    const I94UploadComponent = () => <div><I94_Upload userEmployeeId={userEmployeeId} operation="NEW" code="I94" /></div>;
-    const AllI20sUploadComponent = () => <div><ALL_I20S_Upload userEmployeeId={userEmployeeId} operation="NEW" code="ALL_I20S" /></div>;
-    const OptH4CardsUploadComponent = () => <div><OPT_H4_CARDS_Upload userEmployeeId={userEmployeeId} operation="NEW" code="OPT_H4_CARDS" /></div>;
-    const UnderGradCertUploadComponent = () => <div><UNDER_GRAD_CERT_Upload  userEmployeeId={userEmployeeId} operation="NEW" code="UNDER_GRAD_CERT" /></div>;
-    const GradCertUploadComponent = () => <div><GRAD_CERT_Upload userEmployeeId={userEmployeeId} operation="NEW" code="GRAD_CERT" /> </div>;
-    const TenthIntermediateUploadComponent = () => <div><TENTH_INTERMEDIATE_Upload userEmployeeId={userEmployeeId} operation="NEW" code="TENTH_INTERMEDIATE"/></div>;
-    const WorkPermitUploadComponent = () => <div>WORK_PERMITUploadComponent Upload Component</div>;
-    const I9FormUploadComponent = () => <div>I9_FORMUploadComponent Upload Component</div>;
-    const ConsentAgreementUploadComponent = () => <div>CONSENT_AGREEMENTUploadComponent Upload Component</div>;
-    const W4FormUploadComponent = () => <div>W4_FORMUploadComponent Upload Component</div>;
-    const AdpFormUploadComponent = () => <div>ADP_FORMUploadComponent Upload Component</div>;
-    const AdditionalDocsUploadComponent = () => <div>ADDITIONAL_DOCSUploadComponent Upload Component</div>;
 
     const getDetails = async () => {
         setApiLoading(true);
@@ -148,24 +132,31 @@ const EmployeeDocumentsMain = () => {
         fetchData();
     }, [visaType]);
 
-    const sectionComponents = {
-        US_ID_DL: UsIdDlUploadComponent,
-        SSN: SsnUploadComponent,
-        PASSPORT: PassportUploadComponent,
-        I94: I94UploadComponent,
-        ALL_I20S: AllI20sUploadComponent,
-        OPT_H4_CARDS: OptH4CardsUploadComponent,
-        UNDER_GRAD_CERT: UnderGradCertUploadComponent,
-        GRAD_CERT: GradCertUploadComponent,
-        TENTH_INTERMEDIATE: TenthIntermediateUploadComponent,
-        WORK_PERMIT: WorkPermitUploadComponent,
-        I9_FORM: I9FormUploadComponent,
-        CONSENT_AGREEMENT: ConsentAgreementUploadComponent,
-        W4_FORM: W4FormUploadComponent,
-        ADP_FORM: AdpFormUploadComponent,
-        ADDITIONAL_DOCS: AdditionalDocsUploadComponent,
-    }
-    const SelectedComponent = selectedSection ? sectionComponents[selectedSection] : null;
+    const UploadComponent = ({ code }) => {
+        const components = {
+            US_ID_DL: US_ID_DL_Upload,
+            SSN: SSN_Upload,
+            PASSPORT: PASSPORT_Upload,
+            I94: I94_Upload,
+            ALL_I20S: ALL_I20S_Upload,
+            OPT_H4_CARDS: OPT_H4_CARDS_Upload,
+            UNDER_GRAD_CERT: UNDER_GRAD_CERT_Upload,
+            GRAD_CERT: GRAD_CERT_Upload,
+            TENTH_INTERMEDIATE: TENTH_INTERMEDIATE_Upload,
+            WORK_PERMIT: null,
+            I9_FORM: null,
+            CONSENT_AGREEMENT: null,
+            W4_FORM: null,
+            ADP_FORM: null,
+            ADDITIONAL_DOCS: null,
+        };
+    
+        const Component = components[code] || (() => <div>No Component</div>);
+    
+        return <Component userEmployeeId={userEmployeeId} operation="NEW" code={code} />;
+    };
+    // const SelectedComponent = selectedSection ? sectionComponents[selectedSection] : null;
+    const SelectedComponent = selectedSection ? () => <UploadComponent code={selectedSection} /> : null;
 
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
