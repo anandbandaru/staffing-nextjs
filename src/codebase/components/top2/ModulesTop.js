@@ -23,8 +23,7 @@ import CustomSnackbar from "../snackbar/snackbar";
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-
-import { Select, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import { MenuItem } from '@mui/material';
 
 
 const ModulesTop = ({ module }) => {

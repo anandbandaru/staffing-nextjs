@@ -22,7 +22,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 const TransactionsTop = ({ module }) => {
-    const { userType, APIPath, userName, isAPILoading, setIsAPILoading } = useContext(Context);
+    const { userType, APIPath, userName, setIsAPILoading } = useContext(Context);
     const [permissions, setPermissions] = useState([]);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getDatabase, ref, onValue, set, get } from 'firebase/database';
-import { database } from '../../../firebase';
+import { getDatabase, ref, onValue } from 'firebase/database';
 import './realtime.css';
-import { Stack } from '@mui/material';
 import CustomSnackbar from "../snackbar/snackbar";
-import Chip from '@mui/material/Chip';
 
 const RealtimeUserUpdate = () => {
     const [dataUser, setDataUser] = useState(0);

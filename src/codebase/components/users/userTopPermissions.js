@@ -3,13 +3,9 @@ import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
-import { Stack, MenuItem, Chip, Button, Paper, Autocomplete } from '@mui/material';
+import { Stack, MenuItem, Button, Paper, Autocomplete } from '@mui/material';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import SupervisedUserCircleOutlinedIcon from '@mui/icons-material/SupervisedUserCircleOutlined';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import AttributionOutlinedIcon from '@mui/icons-material/AttributionOutlined';
 
 const UserTopPermissions = ({ users }) => {
     const { APIPath } = useContext(Context);
@@ -82,13 +78,6 @@ const UserTopPermissions = ({ users }) => {
                 setIsSubmitting(false);
                 showSnackbar('error', "Top tabs Permissions save failure");
             });
-    };
-    const iconMap = {
-        ADMIN: <AdminPanelSettingsOutlinedIcon />,
-        COHOST: <SupervisedUserCircleOutlinedIcon />,
-        OPERATOR: <PersonOutlinedIcon />,
-        DEFAULT: <AttributionOutlinedIcon />,
-        EMPLOYEE: <AttributionOutlinedIcon />,
     };
     const classMap = {
         ADMIN: 'rag-green-bg badgeSpan',

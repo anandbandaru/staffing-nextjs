@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/context";
-// import PendingListToolbar from './pendingListToolbar';
 import CustomSnackbar from "../snackbar/snackbar";
-import { Alert } from "@mui/material";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -14,7 +12,6 @@ const TimesheetAdminList = ({ employeeId, status }) => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
-    const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
     const [jobsCount, setJobsCount] = useState(0);
 
@@ -74,7 +71,6 @@ const TimesheetAdminList = ({ employeeId, status }) => {
                         setItemCount(0);
                     }
                     else {
-                        setDataAPIError(result.STATUS === "FAIL" ? "API Error" : "");
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                             setItemCount(0);
@@ -91,7 +87,6 @@ const TimesheetAdminList = ({ employeeId, status }) => {
                     setApiLoading(false);
                 },
                 (error) => {
-                    setDataAPIError(error.toString());
                     setData({});
                     setItemCount(0);
                     setJobsCount(0);

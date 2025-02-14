@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { getDatabase, ref, onValue, set, get } from 'firebase/database';
-import { database } from '../../../firebase';
+import { getDatabase, ref, onValue } from 'firebase/database';
 import './realtime.css';
 import { Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
 const RealtimeCount = () => {
     const [dataCount, setDataCount] = useState(0);
-    const [blink, setBlink] = useState(false);
 
     useEffect(() => {
         const dbRef = ref(getDatabase(), '/count');

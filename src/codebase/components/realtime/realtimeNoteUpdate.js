@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getDatabase, ref, onValue, set, get } from 'firebase/database';
-import { database } from '../../../firebase';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
 import './realtime.css';
 import { Stack } from '@mui/material';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';

@@ -13,7 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
-import { Chip, Link, Stack } from '@mui/material';
+import { Link, Stack } from '@mui/material';
 import SSN_Upload from './SSN_Upload';
 import EmployeeMetadata from '../employees/employeeMetadata';
 import Slide from '@mui/material/Slide';
@@ -221,97 +221,104 @@ const EmployeeDocumentsMain = () => {
 
     return (
         <div className="ownerMainHolder">
-            <div className="subTabsHolder">
-                <EmployeeMetadata employee={employeeData} />
-                <div className='sectionsDivider'>
-                    Required Documents/Information
-                </div>
-                <Box sx={{ width: '100%', typography: 'body1' }}>
-                    <TableContainer component={Paper}>
-                        <Table size="small">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell sx={{ width: 70 }}>Status</TableCell>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Info</TableCell>
-                                    <TableCell>Reference</TableCell>
-                                    <TableCell>Actions</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {sections.map((section, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell sx={{ width: 70 }}>
-                                            {documentStatus[section.code] ? (
-                                                <CheckCircleIcon className="completed-icon" />
-                                            ) : (
-                                                <DoNotDisturbOnOutlinedIcon className="waiting-icon" />
-                                            )}
-                                        </TableCell>
-                                        <TableCell>
-                                            {section.name}
-                                        </TableCell>
-                                        <TableCell>
-                                            {section.info && (
-                                                <span className='badgeSpan rag-blue-bg'>
-                                                    {section.info}
-                                                </span>
-                                            )}
-                                        </TableCell>
-                                        <TableCell>
-                                            {section.refer && (
-                                                <Link
-                                                    href={section.refer}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    underline="none"
-                                                >
-                                                    <Button
-                                                        size='small'
-                                                        variant="outlined"
-                                                        color="secondary"
-                                                        startIcon={<InsertLinkOutlinedIcon />}
-                                                    >
-                                                        Download first
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                        </TableCell>
-                                        {/* <TableCell>
+            {apiLoading ? <>
+                <div className='spinner'></div>
+            </> :
+                <>
+                    <div className="subTabsHolder">
+                        <EmployeeMetadata employee={employeeData} />
+                        <div className='sectionsDivider'>
+                            Required Documents/Information
+                        </div>
+                        <Box sx={{ width: '100%', typography: 'body1' }}>
+                            <TableContainer component={Paper}>
+                                <Table size="small">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell sx={{ width: 70 }}>Status</TableCell>
+                                            <TableCell>Name</TableCell>
+                                            <TableCell>Info</TableCell>
+                                            <TableCell>Reference</TableCell>
+                                            <TableCell>Actions</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {sections.map((section, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell sx={{ width: 70 }}>
+                                                    {documentStatus[section.code] ? (
+                                                        <CheckCircleIcon className="completed-icon" />
+                                                    ) : (
+                                                        <DoNotDisturbOnOutlinedIcon className="waiting-icon" />
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {section.name}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {section.info && (
+                                                        <span className='badgeSpan rag-blue-bg'>
+                                                            {section.info}
+                                                        </span>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {section.refer && (
+                                                        <Link
+                                                            href={section.refer}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            underline="none"
+                                                        >
+                                                            <Button
+                                                                size='small'
+                                                                variant="outlined"
+                                                                color="secondary"
+                                                                startIcon={<InsertLinkOutlinedIcon />}
+                                                            >
+                                                                Download first
+                                                            </Button>
+                                                        </Link>
+                                                    )}
+                                                </TableCell>
+                                                {/* <TableCell>
                                             {React.createElement(sectionComponents[section.code] || (() => <div>No Component</div>))}
                                         </TableCell> */}
-                                        <TableCell>
-                                            <Stack direction="row" spacing={2}>
-                                                <Button size='small' variant="contained" onClick={() => handleClickOpen(section.code)}>Upload</Button>
-                                                {documentStatus[section.code] && (
-                                                    <Button size='small' variant="outlined" onClick={() => handleClickOpenView(section.code)}>View</Button>
-                                                )}
-                                            </Stack>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                                <TableRow>
-                                    <TableCell sx={{ width: 70 }}>
-                                        <SupervisorAccountOutlinedIcon className='mr-2' />
-                                    </TableCell>
-                                    <TableCell>Dependents Information</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell>
-                                        <Stack direction="row" spacing={2}>
-                                            <Button size='small' variant="outlined" onClick={() => handleMenuItemClickView('Dependent')}>View</Button>
-                                        </Stack>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Stack direction="row" spacing={2}>
-                                            <Button size='small' variant="contained" onClick={() => handleMenuItemClick('Dependent')} >Add</Button>
-                                        </Stack>
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Box>
-            </div>
+                                                <TableCell>
+                                                    <Stack direction="row" spacing={2}>
+                                                        <Button size='small' variant="contained" onClick={() => handleClickOpen(section.code)}>Upload</Button>
+                                                        {documentStatus[section.code] && (
+                                                            <Button size='small' variant="outlined" onClick={() => handleClickOpenView(section.code)}>View</Button>
+                                                        )}
+                                                    </Stack>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                        <TableRow>
+                                            <TableCell sx={{ width: 70 }}>
+                                                <SupervisorAccountOutlinedIcon className='mr-2' />
+                                            </TableCell>
+                                            <TableCell>Dependents Information</TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell>
+                                                <Stack direction="row" spacing={2}>
+                                                    <Button size='small' variant="outlined" onClick={() => handleMenuItemClickView('Dependent')}>View</Button>
+                                                </Stack>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Stack direction="row" spacing={2}>
+                                                    <Button size='small' variant="contained" onClick={() => handleMenuItemClick('Dependent')} >Add</Button>
+                                                </Stack>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Box>
+                    </div>
+                </>
+            }
+
 
             <BootstrapDialog
                 className="myFullScreenDialog"
