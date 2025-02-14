@@ -228,7 +228,7 @@ const Top = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [userType]);
 
     const allTabs = [
         { name: 'Dashboard', icon: <AppsIcon className="mr-1" fontSize="small" /> },
