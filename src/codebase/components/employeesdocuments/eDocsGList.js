@@ -71,25 +71,59 @@ function EmployeeDocumentsGenericList({ employeeID, code }) {
                             <table className="min-w-full bg-white border border-gray-200 text-left">
                                 <thead>
                                     <tr>
+                                        <th className="py-2 px-4 border-b">TYPE</th>
                                         <th className="py-2 px-4 border-b">File</th>
+                                        {code === 'US_ID_DL' && (
+                                            <>
+                                                <th className="py-2 px-4 border-b">ID Number</th>
+                                                <th className="py-2 px-4 border-b">Expiry Date</th>
+                                            </>
+                                        )}
                                         {code === 'SSN' && (
                                             <>
                                                 <th className="py-2 px-4 border-b">SSN</th>
                                             </>
                                         )}
+                                        {code === 'ALL_I20S' && (
+                                            <>
+                                                <th className="py-2 px-4 border-b">SevisNumber</th>
+                                            </>
+                                        )}
+                                        {code === 'OPT_H4_CARDS' && (
+                                            <>
+                                                <th className="py-2 px-4 border-b">ID Number</th>
+                                                <th className="py-2 px-4 border-b">Start Date</th>
+                                                <th className="py-2 px-4 border-b">End Date</th>
+                                            </>
+                                        )}
                                         {code === 'I94' && (
                                             <>
-                                                <th className="py-2 px-4 border-b">I94 Number</th>
-                                                <th className="py-2 px-4 border-b">I94 Expiry Date</th>
+                                                <th className="py-2 px-4 border-b">Number</th>
+                                                <th className="py-2 px-4 border-b">Expiry Date</th>
+                                            </>
+                                        )}
+                                        {code === 'PASSPORT' && (
+                                            <>
+                                                <th className="py-2 px-4 border-b">ID Number</th>
+                                                <th className="py-2 px-4 border-b">Issue Date</th>
+                                                <th className="py-2 px-4 border-b">Expiry Date</th>
+                                            </>
+                                        )}
+                                        {code === 'WORK_PERMIT' && (
+                                            <>
+                                            <th className="py-2 px-4 border-b">Type</th>
+                                            <th className="py-2 px-4 border-b">Expiry Date</th>
                                             </>
                                         )}
                                         <th className="py-2 px-4 border-b">Created By</th>
                                         <th className="py-2 px-4 border-b">Created Date</th>
+                                        <th className="py-2 px-4 border-b">Notes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {data.data.map(item => (
                                         <tr key={item.Id}>
+                                            <td className="py-2 px-4 border-b border-r">{item.code}</td>
                                             <td className="py-2 px-4 border-b border-r">
                                                 <Link className='float-right'
                                                     href={item.gDriveLink}
@@ -107,19 +141,51 @@ function EmployeeDocumentsGenericList({ employeeID, code }) {
                                                     </Button>
                                                 </Link>
                                             </td>
+                                            {code === 'US_ID_DL' && (
+                                                <>
+                                                    <td className="py-2 px-4 border-b border-r">{item.US_ID_DL_IDNumber}</td>
+                                                    <td className="py-2 px-4 border-b border-r">{item.US_ID_DL_ExpiryDate}</td>
+                                                </>
+                                            )}
                                             {code === 'SSN' && (
                                                 <>
                                                     <td className="py-2 px-4 border-b border-r">{item.SSN_IDNumber}</td>
                                                 </>
                                             )}
+                                            {code === 'ALL_I20S' && (
+                                                <>
+                                                    <td className="py-2 px-4 border-b border-r">{item.ALL_I20S_SevisNumber}</td>
+                                                </>
+                                            )}
+                                            {code === 'OPT_H4_CARDS' && (
+                                                <>
+                                                    <td className="py-2 px-4 border-b border-r">{item.OPT_H4_CARDS_IDNumber}</td>
+                                                    <td className="py-2 px-4 border-b border-r">{item.OPT_H4_CARDS_StartDate}</td>
+                                                    <td className="py-2 px-4 border-b border-r">{item.OPT_H4_CARDS_EndDate}</td>
+                                                </>
+                                            )}
                                             {code === 'I94' && (
                                                 <>
-                                                    <td className="py-2 px-4 border-b border-r">{item.i94Number}</td>
-                                                    <td className="py-2 px-4 border-b border-r">{item.i94ExpiryDate}</td>
+                                                    <td className="py-2 px-4 border-b border-r">{item.I94_IDNumber}</td>
+                                                    <td className="py-2 px-4 border-b border-r">{item.I94_ExpiryDate}</td>
+                                                </>
+                                            )}
+                                            {code === 'PASSPORT' && (
+                                                <>
+                                                <td className="py-2 px-4 border-b border-r">{item.PASSPORT_IDNumber}</td>
+                                                <td className="py-2 px-4 border-b border-r">{item.PASSPORT_IssueDate}</td>
+                                                <td className="py-2 px-4 border-b border-r">{item.PASSPORT_ExpiryDate}</td>
+                                                </>
+                                            )}
+                                            {code === 'WORK_PERMIT' && (
+                                                <>
+                                                    <td className="py-2 px-4 border-b border-r">{item.WORK_PERMIT_Type}</td>
+                                                    <td className="py-2 px-4 border-b border-r">{item.WORK_PERMIT_ExpiryDate}</td>
                                                 </>
                                             )}
                                             <td className="py-2 px-4 border-b border-r">{item.createdBy}</td>
                                             <td className="py-2 px-4 border-b border-r">{item.createdDate}</td>
+                                            <td className="py-2 px-4 border-b border-r">{item.notes}</td>
                                         </tr>
                                     ))}
                                 </tbody>

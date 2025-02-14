@@ -378,6 +378,8 @@ const EmployeeDocumentsMain = () => {
 
             {/* VIEW */}
             <BootstrapDialog
+                fullScreen
+                className="myFullScreenDialog"
                 onClose={handleCloseView}
                 TransitionComponent={Transition}
                 aria-labelledby="customized-dialog-title"
