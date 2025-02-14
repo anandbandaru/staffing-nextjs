@@ -15,6 +15,8 @@ import JobRatesList from '../jobs/jobRatesList'
 import TimesheetDetails from '../timesheetentry/timesheetDetails';
 import TimesheetCapturedHours from '../timesheetentry/capturedHours';
 import TimesheetReminders from '../timesheets/timesheetReminders';
+import EmployeeDocumentsAdminChecklist from '../employeesdocuments/eDocsAdminList';
+import EmployeeJobsMetadata from '../employees/employeeJobsMetadata';
 
 function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber }) {
     const { APIPath, userType } = useContext(Context);
@@ -175,6 +177,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         )}
                                         {(moduleName === "EMPLOYEES" && <>
                                             <Tab>Dependents</Tab>
+                                            <Tab>Jobs</Tab>
                                             <Tab>Employee Documents</Tab>
                                             {/* <Tab>Visas</Tab>
                                             <Tab>I94s</Tab> */}
@@ -278,6 +281,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                             <EmployeeGenericList formType={'Dependent'} employeeID={ID} />
                                         </TabPanel>
                                         <TabPanel className="px-2">
+                                            <EmployeeJobsMetadata userEmployeeId={ID} />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <EmployeeDocumentsAdminChecklist userEmployeeId={ID} />
                                             <GenericFilesListSimple moduleId={ID} componentName="EMPLOYEE_DOCUMENTS" />
                                         </TabPanel>
                                         {/* <TabPanel className="px-2">

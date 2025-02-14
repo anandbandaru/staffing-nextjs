@@ -27,18 +27,18 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
                     toast.error(message, toastConfig);
                     break;
                 case 'info':
-                    toast.custom(<Alert severity={severity} sx={{ width: '50%' }}>
+                    toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
                         {message}
                     </Alert>);
                     break;
                 case 'warning':
-                    toast.custom(<Alert severity={severity} sx={{ width: '50%' }}>
+                    toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
                         {message}
                     </Alert>);
                     break;
                 case 'admin':
                     toast.custom(
-                        <Alert severity={severity} sx={{ width: '50%' }}>
+                        <Alert severity={severity} sx={{ width: '30%' }}>
                             <NotificationsActiveOutlinedIcon />
                             {message}
                         </Alert>);

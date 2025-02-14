@@ -21,13 +21,16 @@ import { Context } from "../../context/context";
 import axios from 'axios';
 import GenericFileForm from '../forms/GenericFileForm';
 import EmployeeGAddForm from './employeeGAddForm';
+import E_VERIFY_Upload from '../employeesdocuments/E_VERIFY_Upload';
 
 function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [openDocuments, setOpenDocuments] = React.useState(false);
     const [openGenericForm, setOpenGenericForm] = React.useState(false);
+    const [openEDocForm, setOpenEDocForm] = React.useState(false);
     const [formType, setFormType] = React.useState('');
+    const [eDocType, setEDocType] = React.useState('');
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleMenuOpen = (event) => {
@@ -73,6 +76,17 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
         if (reason && reason === "backdropClick")
             return;
         setOpenGenericForm(false);
+    };
+
+    const handleOpenEDocForm = (type) => {
+        setEDocType(type);
+        setOpenEDocForm(true);
+        handleMenuClose();
+    };
+    const handleCloseEDocForm = (event, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
+        setOpenEDocForm(false);
     };
 
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -126,7 +140,7 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
                 onClose={handleMenuClose}
             >
                 <MenuItem
-                // onClick={() => handleMenuItemClick('Passport')}
+                    onClick={() => handleOpenEDocForm('E_VERIFY')}
                 >
                     <BadgeOutlinedIcon className='mr-2' /> E-Verify
                 </MenuItem>
@@ -254,6 +268,34 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
                 </IconButton>
                 <DialogContent dividers>
                     <EmployeeGAddForm formType={formType} employeeID={ID} />
+                </DialogContent>
+            </BootstrapDialog>
+
+            {/* E DOCUMENTS */}
+            <BootstrapDialog
+                className="myFullScreenDialog"
+                onClose={handleCloseEDocForm}
+                TransitionComponent={Transition}
+                aria-labelledby="customized-dialog-title"
+                open={openEDocForm}
+            >
+                <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                    E-Verify: Employee: ID: {ID}
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleCloseEDocForm}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
+                    <E_VERIFY_Upload userEmployeeId={ID} code={eDocType} manualLoadData={manualLoadData} />
                 </DialogContent>
             </BootstrapDialog>
         </>

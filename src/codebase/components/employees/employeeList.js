@@ -8,6 +8,8 @@ import EmployeesListToolbar from './employeesListToolbar'
 import GenericDetails from "../forms/GenericDetails";
 import EmployeeEdit from "./employeeEdit";
 import CustomSnackbar from "../snackbar/snackbar";
+import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
+import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 
 const EmployeesList = () => {
     const { APIPath } = useContext(Context);
@@ -110,6 +112,11 @@ const EmployeesList = () => {
             {(value === null || !value) ? "NO" : "YES"}
         </span>
     );
+    const CustomEVerifyRenderer = ({ value }) => (
+        <span className={(value === null || !value) ? 'text-red-600' : 'text-green-600'}>
+            {(value === null || !value) ? <NewReleasesOutlinedIcon  fontSize="small" /> : <VerifiedOutlinedIcon fontSize="small" /> }
+        </span>
+    );
     const CustomEmployeeTypeRenderer = ({ value }) => (
         <span className={(value === 'OFFSHORE') ? 'rag-gray-bg badgeSpan' : 'rag-blue-bg badgeSpan'}>
             {value}
@@ -130,6 +137,10 @@ const EmployeesList = () => {
             // },
             cellRenderer: CustomDisabledRenderer
         },
+        {
+            field: "E_VERIFY_Done", filter: true, maxWidth: 100,
+            cellRenderer: CustomEVerifyRenderer
+        },
         { field: "firstName", filter: true, maxWidth: 200 },
         { field: "lastName", filter: true, maxWidth: 200 },
         {
@@ -140,10 +151,10 @@ const EmployeesList = () => {
             },
             cellRenderer: CustomEmailRenderer
         },
-        { field: "personalPhone", filter: true, maxWidth: 150 },
-        { field: "personalUSPhone", filter: true, maxWidth: 150 },
+        { field: "personalPhone", headerName: "P Phone", filter: true, maxWidth: 150 },
+        { field: "personalUSPhone", headerName: "P US Phone", filter: true, maxWidth: 150 },
         {
-            field: "employeeType", filter: true, maxWidth: 150,
+            field: "employeeType", headerName: "Type", filter: true, maxWidth: 150,
             cellRenderer: CustomEmployeeTypeRenderer
         },
         { field: "applicationEmail", filter: true, editable: true, },
