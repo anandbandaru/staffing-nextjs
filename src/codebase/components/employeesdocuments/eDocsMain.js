@@ -13,7 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
-import { Link, Stack } from '@mui/material';
+import { Chip, Link, Stack } from '@mui/material';
 import SSN_Upload from './SSN_Upload';
 import EmployeeMetadata from '../employees/employeeMetadata';
 import Slide from '@mui/material/Slide';
@@ -36,6 +36,12 @@ import OPT_H4_CARDS_Upload from './OPT_H4_CARDS_Upload'
 import UNDER_GRAD_CERT_Upload from './UNDER_GRAD_CERT_Upload';
 import GRAD_CERT_Upload from './GRAD_CERT_Upload';
 import TENTH_INTERMEDIATE_Upload from './TENTH_INTERMEDIATE_Upload';
+import I9_FORM_Upload from './I9_FORM_Upload';
+import CONSENT_AGREEMENT_Upload from './CONSENT_AGREEMENT_Upload';
+import W4_FORM_Upload from './W4_FORM_Upload';
+import ADP_FORM_Upload from './ADP_FORM_Upload';
+import WORK_PERMIT_Upload from './WORK_PERMIT_Upload';
+import ADDITIONAL_DOCS_Upload from './ADDITIONAL_DOCS_Upload';
 
 const EmployeeDocumentsMain = () => {
     const { APIPath, userEmployeeId } = useContext(Context);
@@ -143,16 +149,16 @@ const EmployeeDocumentsMain = () => {
             UNDER_GRAD_CERT: UNDER_GRAD_CERT_Upload,
             GRAD_CERT: GRAD_CERT_Upload,
             TENTH_INTERMEDIATE: TENTH_INTERMEDIATE_Upload,
-            WORK_PERMIT: null,
-            I9_FORM: null,
-            CONSENT_AGREEMENT: null,
-            W4_FORM: null,
-            ADP_FORM: null,
-            ADDITIONAL_DOCS: null,
+            WORK_PERMIT: WORK_PERMIT_Upload,
+            I9_FORM: I9_FORM_Upload,
+            CONSENT_AGREEMENT: CONSENT_AGREEMENT_Upload,
+            W4_FORM: W4_FORM_Upload,
+            ADP_FORM: ADP_FORM_Upload,
+            ADDITIONAL_DOCS: ADDITIONAL_DOCS_Upload,
         };
-    
+
         const Component = components[code] || (() => <div>No Component</div>);
-    
+
         return <Component userEmployeeId={userEmployeeId} operation="NEW" code={code} />;
     };
     // const SelectedComponent = selectedSection ? sectionComponents[selectedSection] : null;
@@ -227,6 +233,7 @@ const EmployeeDocumentsMain = () => {
                                 <TableRow>
                                     <TableCell sx={{ width: 70 }}>Status</TableCell>
                                     <TableCell>Name</TableCell>
+                                    <TableCell>Info</TableCell>
                                     <TableCell>Reference</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
@@ -241,7 +248,16 @@ const EmployeeDocumentsMain = () => {
                                                 <DoNotDisturbOnOutlinedIcon className="waiting-icon" />
                                             )}
                                         </TableCell>
-                                        <TableCell>{section.name}</TableCell>
+                                        <TableCell>
+                                            {section.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {section.info && (
+                                                <span className='badgeSpan rag-blue-bg'>
+                                                    {section.info}
+                                                </span>
+                                            )}
+                                        </TableCell>
                                         <TableCell>
                                             {section.refer && (
                                                 <Link
@@ -256,7 +272,7 @@ const EmployeeDocumentsMain = () => {
                                                         color="secondary"
                                                         startIcon={<InsertLinkOutlinedIcon />}
                                                     >
-                                                        Download here
+                                                        Download first
                                                     </Button>
                                                 </Link>
                                             )}
@@ -279,6 +295,7 @@ const EmployeeDocumentsMain = () => {
                                         <SupervisorAccountOutlinedIcon className='mr-2' />
                                     </TableCell>
                                     <TableCell>Dependents Information</TableCell>
+                                    <TableCell></TableCell>
                                     <TableCell>
                                         <Stack direction="row" spacing={2}>
                                             <Button size='small' variant="outlined" onClick={() => handleMenuItemClickView('Dependent')}>View</Button>

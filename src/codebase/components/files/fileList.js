@@ -105,13 +105,13 @@ const FileList = () => {
     const [colDefs] = useState([
         { field: "Id", maxWidth: 50 },
         { field: "module", filter: true },
-        { field: "moduleId", },
+        { field: "moduleId", maxWidth: 100 },
         { field: "title", filter: true },
         { field: "createdDate", filter: true },
         { field: "notes", },
         {
             field: "gDriveLink",
-            cellRenderer: CustomLinkRenderer
+            cellRenderer: CustomLinkRenderer, maxWidth: 100
         },
     ]);
     const rowClassRules = {
