@@ -12,6 +12,13 @@
   ],
   "releases": [
     {
+      "version": "3.2",
+      "date": "FEB 14 2024",
+      "notes": [
+        "Ability to E-Verify an Employee"
+      ]
+    },
+    {
       "version": "3.1",
       "date": "FEB 13 2024",
       "notes": [
