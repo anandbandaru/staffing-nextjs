@@ -12,6 +12,15 @@
   ],
   "releases": [
     {
+      "version": "3.1",
+      "date": "FEB 13 2024",
+      "notes": [
+        "New Employee Landing page with documents section",
+        "Employee can update dependents",
+        "No Submitted timesheets tab for employees"
+      ]
+    },
+    {
       "version": "3.0",
       "date": "FEB 03 2024",
       "notes": [
