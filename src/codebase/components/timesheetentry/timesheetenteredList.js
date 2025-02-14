@@ -59,7 +59,11 @@ const TimesheetEnteredList = ({ employeeId, status }) => {
         else{
             apiUrl = APIPath + "/getmyapprovedtimesheets/" + employeeId;
         }
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {

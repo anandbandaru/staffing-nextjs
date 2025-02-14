@@ -21,10 +21,10 @@ function Expense({ props, ID, operation }) {
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
     // Default width
-   const [formWidth, setFormWidth] = useState(700);
-   const handleSliderChange = (event, newValue) => {
-       setFormWidth(newValue);
-   };
+    const [formWidth, setFormWidth] = useState(700);
+    const handleSliderChange = (event, newValue) => {
+        setFormWidth(newValue);
+    };
 
     const [expenseTypesData, setExpenseTypesData] = useState({ data: [] });
     const [expenseTypeId, setExpenseTypeId] = useState('');
@@ -52,7 +52,11 @@ function Expense({ props, ID, operation }) {
         setData({});
         let apiUrl = APIPath + "/getexpensedetails/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 async (result) => {
@@ -82,7 +86,11 @@ function Expense({ props, ID, operation }) {
         setApiLoading(true);
         setExpenseTypesData({ data: [] });
         let apiUrl = APIPath + "/getexpensetypes"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 async (result) => {
@@ -110,7 +118,11 @@ function Expense({ props, ID, operation }) {
         setApiLoading(true);
         setCompaniesData({ data: [] });
         let apiUrl = APIPath + "/getcompanies"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 async (result) => {
@@ -138,7 +150,11 @@ function Expense({ props, ID, operation }) {
         setApiLoading(true);
         setEmployeesData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 async (result) => {
@@ -212,6 +228,7 @@ function Expense({ props, ID, operation }) {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
                                     'Content-Type': 'application/json',
+                                    'ngrok-skip-browser-warning': 'true'
                                 }
                             },
                         ).then((resp) => {
@@ -221,7 +238,7 @@ function Expense({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Expense data");
                             else
                                 showSnackbar('success', "Expense data saved");
-                                resetForm();
+                            resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
                             // console.log(error);

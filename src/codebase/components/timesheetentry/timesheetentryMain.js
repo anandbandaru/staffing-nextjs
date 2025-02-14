@@ -34,7 +34,11 @@ const TimeSheetsEntryMain = () => {
     const getemployeeidbyapplicationemail = () => {
         setUserEmployeeId(0);
         let apiUrl = APIPath + "/getemployeeidbyapplicationemail/" + userName;
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {

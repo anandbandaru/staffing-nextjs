@@ -22,7 +22,11 @@ const TimeSheetsMain = () => {
         setApiLoading(true);
         setEmployeesData({ data: [] });
         let apiUrl = APIPath + "/getemployees"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 async (result) => {

@@ -50,7 +50,11 @@ const PendingList = ({ employeeId, mode }) => {
         setItemCount(0);
         setJobsCount(0);
         let apiUrl = APIPath + "/getmypendingtimesheets/" + employeeId;
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {

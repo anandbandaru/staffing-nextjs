@@ -49,7 +49,11 @@ const TimesheetCapturedHours = ({ timesheetId }) => {
         setData({ data: [] });
         setItemCount(0);
         let apiUrl = APIPath + "/gettimesheethours/" + timesheetId;
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {

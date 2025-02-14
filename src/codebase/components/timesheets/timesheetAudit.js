@@ -44,7 +44,11 @@ function TimesheetAudit({ ID, operation, doLoading, timesheetNumber }) {
         setApiLoading(true);
         let apiUrl = APIPath + "/gettimesheetauditdetails" + "/" + ID;
         // console.log(apiUrl)
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {

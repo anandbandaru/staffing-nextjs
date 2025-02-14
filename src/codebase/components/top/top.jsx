@@ -156,10 +156,14 @@ const Top = () => {
         // console.log("LOCAL VERSION:" + storedVersion)
         // console.log("ONLINE VERSION:" + currentVersion)
         if (storedVersion !== currentVersion) {
-            setOpenVersionDialog(true);
+            //Showing changes dialog only when non employee
+            if(userType !== "EMPLOYEE")
+            {
+                setOpenVersionDialog(true);
+            }
             localStorage.setItem('appVersion', currentVersion);
         }
-    }, [userName]);
+    }, [userName, userType]);
     //this ensure to show the above dialog is no DS are given by API
     useEffect(() => {
         // console.log("SHOW LOADING:" + isAPILoading)

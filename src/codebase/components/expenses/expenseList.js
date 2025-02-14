@@ -49,7 +49,11 @@ const ExpenseList = () => {
     const getList = () => {
         setData({ data: [] });
         let apiUrl = APIPath + "/getexpenses"
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
             .then(response => response.json())
             .then(
                 (result) => {
@@ -111,8 +115,8 @@ const ExpenseList = () => {
                 {props.data.category === 'Company' ?
                     <span className="rag-blue-bg badgeSpan">{props.value}</span> :
                     props.data.category === 'Employee' ?
-                    <span className="rag-gray-bg badgeSpan">{props.value}</span> :
-                    <span className="rag-red-bg badgeSpan">{props.value}</span>
+                        <span className="rag-gray-bg badgeSpan">{props.value}</span> :
+                        <span className="rag-red-bg badgeSpan">{props.value}</span>
                 }
             </>
         );

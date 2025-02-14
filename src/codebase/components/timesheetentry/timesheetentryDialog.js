@@ -97,6 +97,10 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
             var finalAPI = APIPath + "/submittimesheet";
             try {
                 const resp = await axios.post(finalAPI, {
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true',
+                    }
+                }, {
                     employeeID: timesheet.employeeID,
                     jobID: timesheet.jobID,
                     entries: timesheetEntries,
@@ -149,6 +153,7 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
             const resp = await axios.post(APIPath + '/uploadfile', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'ngrok-skip-browser-warning': 'true'
                 },
             });
 
@@ -193,7 +198,11 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
         if (operation === 'Edit' && existingId) {
             const fetchHours = async () => {
                 try {
-                    const response = await axios.get(`${APIPath}/gettimesheethours/${existingId}`);
+                    const response = await axios.get(`${APIPath}/gettimesheethours/${existingId}`, {
+                        headers: {
+                            'ngrok-skip-browser-warning': 'true',
+                        }
+                    });
                     const hoursData = response.data.data;
                     const updatedHours = [...formik.values.hours];
                     hoursData.forEach(({ day, hours }) => {
@@ -208,7 +217,11 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                 }
 
                 try {
-                    const response = await axios.get(`${APIPath}/gettimesheetadmindetails/${existingId}`);
+                    const response = await axios.get(`${APIPath}/gettimesheetadmindetails/${existingId}`, {
+                        headers: {
+                            'ngrok-skip-browser-warning': 'true',
+                        }
+                    });
                     const existingNotes = response.data.data[0].userNotes;
                     let updatednotes = [...formik.values.userNotes];
                     updatednotes = existingNotes
