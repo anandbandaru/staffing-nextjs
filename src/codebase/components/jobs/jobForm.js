@@ -636,7 +636,7 @@ function Job({ props, ID, operation }) {
                                     helperText={(errors.jobName && touched.jobName) && errors.jobName}
                                 />
 
-                                {userType === "ADMIN" && (
+                                {(userType === "ADMIN" || userType === "OPERATOR") && (
                                     <div className='bg-blue-100 p-2 py-2 overflow-x-scroll'>
                                         <Tabs>
                                             <TabList className="formTabsListHolder">
