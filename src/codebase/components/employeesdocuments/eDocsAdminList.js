@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { Context } from "../../context/context";
 import configData from "../../../CONFIG_RELEASE.json";
 import './eDocsMain.css';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,27 +12,15 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
-import { Link, Stack } from '@mui/material';
-import SSN_Upload from './SSN_Upload';
-import EmployeeMetadata from '../employees/employeeMetadata';
-import Slide from '@mui/material/Slide';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
-import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 
 const EmployeeDocumentsAdminChecklist = ({ userEmployeeId }) => {
     const { APIPath } = useContext(Context);
-    const [visaType, setVisaType] = useState('');
     const [sections, setSections] = useState([]);
-    const [open, setOpen] = useState(false);
-    const [openView, setOpenView] = useState(false);
     const [apiLoading, setApiLoading] = useState(false);
-    const [selectedSection, setSelectedSection] = useState(null);
     const [documentStatus, setDocumentStatus] = useState({});
 
     //GET EMPLOYEE DOCS DETAILS
-    const getEmployeeDocuments = async () => {
+    const getEmployeeDocuments = useCallback(async () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getemployeedocuments/" + userEmployeeId;
         fetch(apiUrl, {
@@ -63,23 +50,21 @@ const EmployeeDocumentsAdminChecklist = ({ userEmployeeId }) => {
                     setApiLoading(false);
                 },
                 (error) => {
-                    setVisaType('');
                     setApiLoading(false);
                 }
             )
-    }
+    }, [APIPath, userEmployeeId]);
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         await getEmployeeDocuments();
         const availableSections = configData.employeeDocumentSections;
         const filteredSections = availableSections;
-        //.filter(section => section !== visaType);
         setSections(filteredSections);
-    };
+    }, [getEmployeeDocuments]);
 
     useEffect(() => {
         fetchData();
-    }, [visaType]);
+    }, [fetchData]);
 
 
     return (

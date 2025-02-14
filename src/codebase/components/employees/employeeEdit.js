@@ -13,9 +13,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import BackupIcon from '@mui/icons-material/Backup';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
-import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
-import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
-import AirplanemodeActiveOutlinedIcon from '@mui/icons-material/AirplanemodeActiveOutlined';
+// import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
+// import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
+// import AirplanemodeActiveOutlinedIcon from '@mui/icons-material/AirplanemodeActiveOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Context } from "../../context/context";
 import axios from 'axios';
@@ -139,9 +139,7 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
             >
-                <MenuItem
-                    onClick={() => handleOpenEDocForm('E_VERIFY')}
-                >
+                <MenuItem onClick={() => handleOpenEDocForm('E_VERIFY')}>
                     <BadgeOutlinedIcon className='mr-2' /> E-Verify
                 </MenuItem>
                 <MenuItem onClick={handleClickOpenDocuments}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import toast, { Toaster } from 'react-hot-toast';
@@ -10,11 +10,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const CustomSnackbar = ({ open, handleClose, severity, message }) => {
 
-    const toastConfig = {
+    const toastConfig = useMemo(() => ({
         duration: 6000,
         position: 'top-right',
         removeDelay: 1000,
-    };
+    }), []);
 
     useEffect(() => {
         if (open) {
@@ -48,7 +48,7 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
                     break;
             }
         }
-    }, [open]);
+    }, [open, message, severity, toastConfig]);
 
     return (
         <>
