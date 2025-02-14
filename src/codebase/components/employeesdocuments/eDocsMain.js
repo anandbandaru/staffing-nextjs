@@ -42,6 +42,7 @@ import W4_FORM_Upload from './W4_FORM_Upload';
 import ADP_FORM_Upload from './ADP_FORM_Upload';
 import WORK_PERMIT_Upload from './WORK_PERMIT_Upload';
 import ADDITIONAL_DOCS_Upload from './ADDITIONAL_DOCS_Upload';
+import EmployeeJobsMetadata from '../employees/employeeJobsMetadata';
 
 const EmployeeDocumentsMain = () => {
     const { APIPath, userEmployeeId } = useContext(Context);
@@ -53,8 +54,9 @@ const EmployeeDocumentsMain = () => {
     const [selectedSection, setSelectedSection] = useState(null);
     const [documentStatus, setDocumentStatus] = useState({});
     const [employeeData, setEmployeeData] = useState({});
+    const [employeeJobsData, setEmployeeJobsData] = useState({});
 
-
+    //GET EMPLOYEE DETAILS
     const getDetails = async () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/getemployeedetails/" + userEmployeeId;
@@ -76,6 +78,31 @@ const EmployeeDocumentsMain = () => {
                 },
                 (error) => {
                     setVisaType('');
+                    setApiLoading(false);
+                }
+            )
+    }
+    //GET EMPLOYEE JOB DETAILS
+    const getJobDetails = async () => {
+        setApiLoading(true);
+        let apiUrl = APIPath + "/getemployeejobs/" + userEmployeeId;
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
+            .then(response => response.json())
+            .then(
+                async (result) => {
+                    if (result.error) {
+                        setEmployeeJobsData({});
+                    } else {
+                        setEmployeeJobsData(result.data);
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setEmployeeJobsData({});
                     setApiLoading(false);
                 }
             )
@@ -127,6 +154,7 @@ const EmployeeDocumentsMain = () => {
 
     const fetchData = async () => {
         await getDetails();
+        await getJobDetails();
         await getEmployeeDocuments();
         const availableSections = configData.employeeDocumentSections;
         const filteredSections = availableSections;
@@ -159,10 +187,10 @@ const EmployeeDocumentsMain = () => {
 
         const Component = components[code] || (() => <div>No Component</div>);
 
-        return <Component userEmployeeId={userEmployeeId} operation="NEW" code={code} />;
+        return <Component userEmployeeId={userEmployeeId} operation="NEW" code={code} setOpen={setOpen} manualLoadData={manualLoadData} />;
     };
     // const SelectedComponent = selectedSection ? sectionComponents[selectedSection] : null;
-    const SelectedComponent = selectedSection ? () => <UploadComponent code={selectedSection} /> : null;
+    const SelectedComponent = selectedSection ? () => <UploadComponent code={selectedSection} setOpen={setOpen} /> : null;
 
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -227,6 +255,7 @@ const EmployeeDocumentsMain = () => {
                 <>
                     <div className="subTabsHolder">
                         <EmployeeMetadata employee={employeeData} />
+                        <EmployeeJobsMetadata employeeJobs={employeeJobsData} />
                         <div className='sectionsDivider'>
                             Required Documents/Information
                         </div>
@@ -343,7 +372,7 @@ const EmployeeDocumentsMain = () => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    {SelectedComponent && <SelectedComponent code={selectedSection} />}
+                    {SelectedComponent && <SelectedComponent code={selectedSection} setOpen={setOpen} manualLoadData={manualLoadData} />}
                 </DialogContent>
             </BootstrapDialog>
 

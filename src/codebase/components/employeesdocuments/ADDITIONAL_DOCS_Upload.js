@@ -13,7 +13,7 @@ import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRig
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import { Link } from '@mui/material';
 
-function ADDITIONAL_DOCS_Upload({ userEmployeeId, operation, code }) {
+function ADDITIONAL_DOCS_Upload({ userEmployeeId, operation, code, setOpen, manualLoadData }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
@@ -149,6 +149,8 @@ function ADDITIONAL_DOCS_Upload({ userEmployeeId, operation, code }) {
                             showSnackbar('success', "Data saved");
                             resetForm();
                             fileInputRef.current.value = null;
+                            // setOpen(false);
+                            manualLoadData();
                         }
                     } catch (error) {
                         setSubmitting(false);
