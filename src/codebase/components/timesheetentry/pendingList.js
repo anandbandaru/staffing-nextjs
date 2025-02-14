@@ -63,15 +63,23 @@ const PendingList = ({ employeeId, mode }) => {
                         setItemCount(0);
                         setJobsCount(0);
                     } else {
-                        setData(result);
-                        setItemCount(result.total);
                         setDataAPIError(result.STATUS === "FAIL" ? "API Error" : "");
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         } else {
-                            showSnackbar('success', "Pending Timesheets Data fetched");
-                            const uniqueJobIds = new Set(result.data.map(item => item.jobID));
-                            setJobsCount(uniqueJobIds.size);
+                            if(result.data[0].applicationEmail === null)
+                            {
+                                setData({data: []});
+                                setItemCount(0);
+                                showSnackbar('error', "No Pending Timesheets Data present in the system");
+                            }
+                            else{
+                                setData(result);
+                                setItemCount(result.total);
+                                const uniqueJobIds = new Set(result.data.map(item => item.jobID));
+                                setJobsCount(uniqueJobIds.size);
+                                showSnackbar('success', "Pending Timesheets Data fetched");
+                            }
                         }
                     }
                     setApiLoading(false);

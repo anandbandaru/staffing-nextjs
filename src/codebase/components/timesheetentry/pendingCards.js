@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from 'react';
 import { Context } from "../../context/context";
 import { Formik, FieldArray } from 'formik';
-import { Button, Typography, Box, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Button, Typography, Box, Dialog, DialogTitle, DialogContent, Alert } from '@mui/material';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import TimesheetEntryDialog from './timesheetentryDialog';
@@ -182,165 +182,173 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            <Formik
-                initialValues={{
-                    timesheets: data.map(item => ({
-                        ...item,
-                        hours: Array(differenceInDays(new Date(item.endDate), new Date(item.startDate)) + 1).fill('')
-                    }))
-                }}
-                onSubmit={(values) => {
-                    // Handle form submission
-                }}
-            >
-                {formik => (
-                    <Box className='w-[1200px] md:w-[1000px] sm:w-[700px] m-0'>
-                        <Tabs className='mt-4 rounded-md '>
-                            <TabList className="timeTabsListHolder">
-                                {uniqueJobNames.map((jobName, index) => (
-                                    <Tab key={index}>
-                                        JOB: {jobName}
-                                    </Tab>
-                                ))}
-                            </TabList>
-                            {uniqueJobNames.map((jobName, tabIndex) => {
-                                const jobDetails = data.find(item => item.jobName === jobName);
-                                return (
-                                    <TabPanel key={tabIndex} className="w-full bg-slate-200">
+            {data.length === 0 ?
+                <>
+                    <Alert severity="info" className="my-4">No Pending Timesheet data present. Check if Jobs are assigned to the employee</Alert>
+                </>
+                :
+                <>
+                    <Formik
+                        initialValues={{
+                            timesheets: data.map(item => ({
+                                ...item,
+                                hours: Array(differenceInDays(new Date(item.endDate), new Date(item.startDate)) + 1).fill('')
+                            }))
+                        }}
+                        onSubmit={(values) => {
+                            // Handle form submission
+                        }}
+                    >
+                        {formik => (
+                            <Box className='w-[1200px] md:w-[1000px] sm:w-[700px] m-0'>
+                                <Tabs className='mt-4 rounded-md '>
+                                    <TabList className="timeTabsListHolder">
+                                        {uniqueJobNames.map((jobName, index) => (
+                                            <Tab key={index}>
+                                                JOB: {jobName}
+                                            </Tab>
+                                        ))}
+                                    </TabList>
+                                    {uniqueJobNames.map((jobName, tabIndex) => {
+                                        const jobDetails = data.find(item => item.jobName === jobName);
+                                        return (
+                                            <TabPanel key={tabIndex} className="w-full bg-slate-200">
 
-                                        <TimesheetEntryMetadata timesheet={jobDetails} />
+                                                <TimesheetEntryMetadata timesheet={jobDetails} />
 
-                                        <FieldArray name="timesheets">
-                                            {({ remove, push }) => (
-                                                <Box
-                                                    className='p-4'
-                                                    sx={{
-                                                        display: 'grid',
-                                                        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                                                        gap: 1,
-                                                    }}
-                                                >
-                                                    {formik.values.timesheets
-                                                        .filter(timesheet => timesheet.jobName === jobName)
-                                                        .map((timesheet, index) => (
-                                                            <div key={index} className='bg-slate-100 relative'>
-                                                                <Card variant="outlined">
-                                                                    <CardContent key={index} className='bg-slate-100'>
-                                                                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                                                                            TIMESHEET ID
-                                                                        </Typography>
-                                                                        <div title="Pending days" className='badgeSpan rag-graylight-bg absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
-                                                                            {timesheet.daysPending}
-                                                                        </div>
-                                                                        <div title="Mode" className='badgeSpan bg-orange-400 absolute right-2 bottom-3.5' sx={{ color: 'text.secondary', fontSize: 11 }}>
-                                                                            MODE: {mode}
-                                                                        </div>
-                                                                        <Typography variant="h5" component="div">
-                                                                            {timesheet.timesheetNumber}
-                                                                        </Typography>
-                                                                        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>
-                                                                            <span className={getStatusClassName(timesheet.status)}>{timesheet.status}</span>
-                                                                        </Typography>
-                                                                        <Typography variant="body2">
-                                                                            <span className=''>Start Date: {timesheet.startDate}</span>
-                                                                            <br />
-                                                                            <span className=''>End Date: {timesheet.endDate}</span>
-                                                                        </Typography>
-                                                                    </CardContent>
-                                                                    <div className='bg-blue-100 m-0'>
-                                                                        {mode === "Edit" && (
-                                                                            // <IconButton aria-label="SUBMIT" title="SUBMIT" color="primary"
-                                                                            //     className='ml-2'
-                                                                            //     onClick={() => handleOpenDialog(timesheet)}
-                                                                            // >
-                                                                            //     <ExitToAppOutlinedIcon />
-                                                                            // </IconButton>
-                                                                            <Button
-                                                                                color="primary" className='ml-2'
-                                                                                onClick={() => handleOpenDialog(timesheet)}
-                                                                            >
-                                                                                SUBMIT
-                                                                            </Button>
-                                                                        )}
-                                                                        {timesheet.existingRecordId !== 0 && (
-                                                                            <TimesheetAudit ID={timesheet.existingRecordId} timesheetNumber={timesheet.timesheetNumber} operation="View" doLoading={true} />
-                                                                        )}
-                                                                        {mode === "View" && (
-                                                                            <>
-                                                                                <IconButton aria-label="VIEW" title="VIEW" color="primary"
-                                                                                    className='ml-2'
-                                                                                    onClick={() => handleOpenDialog(timesheet)}
-                                                                                >
-                                                                                    <RemoveRedEyeOutlinedIcon />
-                                                                                </IconButton>
-                                                                                <IconButton aria-label="REMINDER" title="REMINDER" color="primary"
-                                                                                    className='ml-2'
-                                                                                    onClick={() =>
-                                                                                        sendReminder(timesheet.timesheetNumber,
-                                                                                            timesheet.employeeID,
-                                                                                            timesheet.startDate,
-                                                                                            timesheet.endDate,
-                                                                                            timesheet.jobName,
-                                                                                            timesheet.personalEmail,
-                                                                                            timesheet.applicationEmail
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    <NotificationAddIcon />
-                                                                                </IconButton>
-                                                                                <TimesheetReminders timesheetNumber={timesheet.timesheetNumber} viewType="POP" />
-                                                                            </>
-                                                                        )}
+                                                <FieldArray name="timesheets">
+                                                    {({ remove, push }) => (
+                                                        <Box
+                                                            className='p-4'
+                                                            sx={{
+                                                                display: 'grid',
+                                                                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                                                                gap: 1,
+                                                            }}
+                                                        >
+                                                            {formik.values.timesheets
+                                                                .filter(timesheet => timesheet.jobName === jobName)
+                                                                .map((timesheet, index) => (
+                                                                    <div key={index} className='bg-slate-100 relative'>
+                                                                        <Card variant="outlined">
+                                                                            <CardContent key={index} className='bg-slate-100'>
+                                                                                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                                                                                    TIMESHEET ID
+                                                                                </Typography>
+                                                                                <div title="Pending days" className='badgeSpan rag-graylight-bg absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
+                                                                                    {timesheet.daysPending}
+                                                                                </div>
+                                                                                <div title="Mode" className='badgeSpan bg-orange-400 absolute right-2 bottom-3.5' sx={{ color: 'text.secondary', fontSize: 11 }}>
+                                                                                    MODE: {mode}
+                                                                                </div>
+                                                                                <Typography variant="h5" component="div">
+                                                                                    {timesheet.timesheetNumber}
+                                                                                </Typography>
+                                                                                <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>
+                                                                                    <span className={getStatusClassName(timesheet.status)}>{timesheet.status}</span>
+                                                                                </Typography>
+                                                                                <Typography variant="body2">
+                                                                                    <span className=''>Start Date: {timesheet.startDate}</span>
+                                                                                    <br />
+                                                                                    <span className=''>End Date: {timesheet.endDate}</span>
+                                                                                </Typography>
+                                                                            </CardContent>
+                                                                            <div className='bg-blue-100 m-0'>
+                                                                                {mode === "Edit" && (
+                                                                                    // <IconButton aria-label="SUBMIT" title="SUBMIT" color="primary"
+                                                                                    //     className='ml-2'
+                                                                                    //     onClick={() => handleOpenDialog(timesheet)}
+                                                                                    // >
+                                                                                    //     <ExitToAppOutlinedIcon />
+                                                                                    // </IconButton>
+                                                                                    <Button
+                                                                                        color="primary" className='ml-2'
+                                                                                        onClick={() => handleOpenDialog(timesheet)}
+                                                                                    >
+                                                                                        SUBMIT
+                                                                                    </Button>
+                                                                                )}
+                                                                                {timesheet.existingRecordId !== 0 && (
+                                                                                    <TimesheetAudit ID={timesheet.existingRecordId} timesheetNumber={timesheet.timesheetNumber} operation="View" doLoading={true} />
+                                                                                )}
+                                                                                {mode === "View" && (
+                                                                                    <>
+                                                                                        <IconButton aria-label="VIEW" title="VIEW" color="primary"
+                                                                                            className='ml-2'
+                                                                                            onClick={() => handleOpenDialog(timesheet)}
+                                                                                        >
+                                                                                            <RemoveRedEyeOutlinedIcon />
+                                                                                        </IconButton>
+                                                                                        <IconButton aria-label="REMINDER" title="REMINDER" color="primary"
+                                                                                            className='ml-2'
+                                                                                            onClick={() =>
+                                                                                                sendReminder(timesheet.timesheetNumber,
+                                                                                                    timesheet.employeeID,
+                                                                                                    timesheet.startDate,
+                                                                                                    timesheet.endDate,
+                                                                                                    timesheet.jobName,
+                                                                                                    timesheet.personalEmail,
+                                                                                                    timesheet.applicationEmail
+                                                                                                )
+                                                                                            }
+                                                                                        >
+                                                                                            <NotificationAddIcon />
+                                                                                        </IconButton>
+                                                                                        <TimesheetReminders timesheetNumber={timesheet.timesheetNumber} viewType="POP" />
+                                                                                    </>
+                                                                                )}
+                                                                            </div>
+                                                                        </Card>
                                                                     </div>
-                                                                </Card>
-                                                            </div>
-                                                        ))}
-                                                </Box>
-                                            )}
-                                        </FieldArray>
-                                    </TabPanel>
-                                );
-                            })}
-                        </Tabs>
-                        {selectedTimesheet && (
-                            <BootstrapDialog
-                                fullScreen
-                                className="myFullScreenDialog"
-                                onClose={handleCloseDialog}
-                                TransitionComponent={Transition}
-                                aria-labelledby="customized-dialog-title"
-                                open={openDialog}
-                            >
-                                <DialogTitle className="text-pink-600 w-[900px]" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                                    {selectedTimesheet.existingRecordId === 0 ? "SUBMIT" : "EDIT & SUBMIT"} Timesheet: {selectedTimesheet.timesheetNumber}
-                                </DialogTitle>
-                                <IconButton
-                                    aria-label="close"
-                                    onClick={handleCloseDialog}
-                                    sx={{
-                                        position: 'absolute',
-                                        right: 8,
-                                        top: 8,
-                                        color: (theme) => theme.palette.grey[500],
-                                    }}
-                                >
-                                    <CloseIcon />
-                                </IconButton>
-                                <DialogContent dividers>
-                                    <TimesheetEntryDialog
-                                        existingId={selectedTimesheet.existingRecordId}
-                                        timesheet={selectedTimesheet}
+                                                                ))}
+                                                        </Box>
+                                                    )}
+                                                </FieldArray>
+                                            </TabPanel>
+                                        );
+                                    })}
+                                </Tabs>
+                                {selectedTimesheet && (
+                                    <BootstrapDialog
+                                        fullScreen
+                                        className="myFullScreenDialog"
                                         onClose={handleCloseDialog}
-                                        onFormSubmitSuccess={onFormSubmitSuccess}
-                                        operation={selectedTimesheet.existingRecordId !== 0 ? "Edit" : "New"}
-                                        viewOnlyMode={mode === "View" ? 1 : 0}
-                                    />
-                                </DialogContent>
-                            </BootstrapDialog>
+                                        TransitionComponent={Transition}
+                                        aria-labelledby="customized-dialog-title"
+                                        open={openDialog}
+                                    >
+                                        <DialogTitle className="text-pink-600 w-[900px]" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
+                                            {selectedTimesheet.existingRecordId === 0 ? "SUBMIT" : "EDIT & SUBMIT"} Timesheet: {selectedTimesheet.timesheetNumber}
+                                        </DialogTitle>
+                                        <IconButton
+                                            aria-label="close"
+                                            onClick={handleCloseDialog}
+                                            sx={{
+                                                position: 'absolute',
+                                                right: 8,
+                                                top: 8,
+                                                color: (theme) => theme.palette.grey[500],
+                                            }}
+                                        >
+                                            <CloseIcon />
+                                        </IconButton>
+                                        <DialogContent dividers>
+                                            <TimesheetEntryDialog
+                                                existingId={selectedTimesheet.existingRecordId}
+                                                timesheet={selectedTimesheet}
+                                                onClose={handleCloseDialog}
+                                                onFormSubmitSuccess={onFormSubmitSuccess}
+                                                operation={selectedTimesheet.existingRecordId !== 0 ? "Edit" : "New"}
+                                                viewOnlyMode={mode === "View" ? 1 : 0}
+                                            />
+                                        </DialogContent>
+                                    </BootstrapDialog>
+                                )}
+                            </Box>
                         )}
-                    </Box>
-                )}
-            </Formik>
+                    </Formik>
+                </>
+            }
         </>
     );
 };
