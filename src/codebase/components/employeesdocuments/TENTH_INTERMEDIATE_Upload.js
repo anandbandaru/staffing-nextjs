@@ -17,6 +17,7 @@ function TENTH_INTERMEDIATE_Upload({ userEmployeeId, operation, code }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
+    const fileInputRef = useRef(null);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -145,6 +146,7 @@ function TENTH_INTERMEDIATE_Upload({ userEmployeeId, operation, code }) {
                                 await UploadJobFiles(file, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID);
                             showSnackbar('success', "Data saved");
                             resetForm();
+                            fileInputRef.current.value = null;
                         }
                     } catch (error) {
                         setSubmitting(false);
@@ -175,7 +177,7 @@ function TENTH_INTERMEDIATE_Upload({ userEmployeeId, operation, code }) {
 
                             <div className='flex-1'>Combine all your PDF documents into one before uploading:</div>
                             <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-                            <div className='flex-1'>Helpfule tools:</div>
+                                <div className='flex-1'>Helpfule tools:</div>
                                 <Link
                                     href="https://tinywow.com/pdf/merge"
                                     target="_blank"
@@ -223,6 +225,7 @@ function TENTH_INTERMEDIATE_Upload({ userEmployeeId, operation, code }) {
                                     }}
                                     onBlur={handleBlur}
                                     helperText={(errors.file && touched.file) && errors.file}
+                                    inputRef={fileInputRef}
                                 />
                             </Stack>
                             {Object.keys(errors).length > 0 && (

@@ -15,6 +15,7 @@ function SSN_Upload({ userEmployeeId, operation, code }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
+    const fileInputRef = useRef(null);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -143,6 +144,7 @@ function SSN_Upload({ userEmployeeId, operation, code }) {
                                 await UploadJobFiles(file, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID);
                             showSnackbar('success', "Data saved");
                             resetForm();
+                            fileInputRef.current.value = null;
                         }
                     } catch (error) {
                         setSubmitting(false);
@@ -200,6 +202,7 @@ function SSN_Upload({ userEmployeeId, operation, code }) {
                                     }}
                                     onBlur={handleBlur}
                                     helperText={(errors.file && touched.file) && errors.file}
+                                    inputRef={fileInputRef}
                                 />
                             </Stack>
                             {Object.keys(errors).length > 0 && (

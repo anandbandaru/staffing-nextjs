@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { getDatabase, ref, onValue, set, get } from 'firebase/database';
+import { database } from '../../../firebase';
 import './realtime.css';
 import { Stack } from '@mui/material';
 import { Context } from "../../context/context";
@@ -69,7 +70,7 @@ const Realtime = () => {
 
         // Update the count value only once
         const updateUser = async () => {
-            (await get(dbRef)).val();
+            const currentUser = (await get(dbRef)).val();
             set(dbRef, "AUTH GOING ON..........");
             setTimeout(() => set(dbRef, userName), 10000);
             

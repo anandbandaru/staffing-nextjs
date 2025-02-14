@@ -148,7 +148,7 @@ const EmployeesList = () => {
         },
         { field: "applicationEmail", filter: true, editable: true, },
         { field: "VisaType", headerName: "Visa", filter: true, maxWidth: 80 },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 170, resizable: true }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

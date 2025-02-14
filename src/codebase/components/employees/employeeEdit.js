@@ -125,10 +125,18 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={() => handleMenuItemClick('Passport')}>
-                    <BadgeOutlinedIcon className='mr-2' /> Passports
+                <MenuItem
+                // onClick={() => handleMenuItemClick('Passport')}
+                >
+                    <BadgeOutlinedIcon className='mr-2' /> E-Verify
                 </MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick('Visa')}>
+                <MenuItem onClick={handleClickOpenDocuments}>
+                    <BackupIcon className='mr-2' /> Upload Documents
+                </MenuItem>
+                <MenuItem onClick={handleClickOpen}>
+                    <EditIcon className='mr-2' /> Edit
+                </MenuItem>
+                {/* <MenuItem onClick={() => handleMenuItemClick('Visa')}>
                     <PublicOutlinedIcon className='mr-2' /> Visas
                 </MenuItem>
                 <MenuItem onClick={() => handleMenuItemClick('Dependent')}>
@@ -136,14 +144,14 @@ function EmployeeEdit({ ID, operation, manualLoadData, setApiLoading, showSnackb
                 </MenuItem>
                 <MenuItem onClick={() => handleMenuItemClick('I94')}>
                     <AirplanemodeActiveOutlinedIcon className='mr-2' /> I94
-                </MenuItem>
+                </MenuItem> */}
             </Menu>
-            <IconButton aria-label="Upload Documents" title="Upload Documents" color="primary" onClick={handleClickOpenDocuments}>
+            {/* <IconButton aria-label="Upload Documents" title="Upload Documents" color="primary" onClick={handleClickOpenDocuments}>
                 <BackupIcon />
-            </IconButton>
-            <IconButton aria-label="Edit" title="Edit" color="primary" onClick={handleClickOpen}>
+            </IconButton> */}
+            {/* <IconButton aria-label="Edit" title="Edit" color="primary" onClick={handleClickOpen}>
                 <EditIcon />
-            </IconButton>
+            </IconButton> */}
             <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
                 const proceed = window.confirm("This will delete all child table rows, including:\n- Visas\n- Passports\n- I94\n- Dependants\nDo you want to proceed?");
                 if (proceed) {

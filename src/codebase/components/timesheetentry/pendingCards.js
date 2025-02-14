@@ -249,12 +249,18 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                                                     </CardContent>
                                                                     <div className='bg-blue-100 m-0'>
                                                                         {mode === "Edit" && (
-                                                                            <IconButton aria-label="SUBMIT" title="SUBMIT" color="primary"
-                                                                                className='ml-2'
+                                                                            // <IconButton aria-label="SUBMIT" title="SUBMIT" color="primary"
+                                                                            //     className='ml-2'
+                                                                            //     onClick={() => handleOpenDialog(timesheet)}
+                                                                            // >
+                                                                            //     <ExitToAppOutlinedIcon />
+                                                                            // </IconButton>
+                                                                            <Button
+                                                                                color="primary" className='ml-2'
                                                                                 onClick={() => handleOpenDialog(timesheet)}
                                                                             >
-                                                                                <ExitToAppOutlinedIcon />
-                                                                            </IconButton>
+                                                                                SUBMIT
+                                                                            </Button>
                                                                         )}
                                                                         {timesheet.existingRecordId !== 0 && (
                                                                             <TimesheetAudit ID={timesheet.existingRecordId} timesheetNumber={timesheet.timesheetNumber} operation="View" doLoading={true} />

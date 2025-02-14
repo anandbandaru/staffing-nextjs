@@ -15,6 +15,8 @@ function OPT_H4_CARDS_Upload({ userEmployeeId, operation, code }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
+    const fileInputRef = useRef(null);
+    const fileBackInputRef = useRef(null);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -39,14 +41,14 @@ function OPT_H4_CARDS_Upload({ userEmployeeId, operation, code }) {
     const handleFileChangefileBack = (event) => {
         setFileBack(event.target.files[0]);
     };
-    const UploadJobFiles = async (file, fileName, componentName, moduleId) => {
+    const UploadJobFiles = async (file, fileName, componentName, moduleId, note) => {
         const formData = new FormData();
         formData.append('file', file);
         const parentFolderId = configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid;
         formData.append('parentfolderid', parentFolderId);
         formData.append('title', fileName);
         formData.append('createdBy', userName);
-        formData.append('notes', code);
+        formData.append('notes', note + "::" + code);
         formData.append('module', componentName);
         formData.append('moduleId', moduleId);
 
@@ -142,18 +144,18 @@ function OPT_H4_CARDS_Upload({ userEmployeeId, operation, code }) {
                             setSubmitting(false);
                             setSubmitionCompleted(true);
                         } else {
-                            if (file)
-                            {
+                            if (file) {
                                 let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":FRONT:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
-                                await UploadJobFiles(file, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID);
+                                await UploadJobFiles(file, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID, "FRONT");
                             }
-                            if (fileBack)
-                            {
+                            if (fileBack) {
                                 let fileName = "EMPLOYEE_DOCS_" + userEmployeeId + "_" + code + ":BACK:" + resp.data.RELATED_ID + "_" + getCurrentDateTime();
-                                await UploadJobFiles(fileBack, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID);
+                                await UploadJobFiles(fileBack, fileName, 'EMPLOYEE_DOCUMENTS', resp.data.RELATED_ID, "BACK");
                             }
                             showSnackbar('success', "Data saved");
                             resetForm();
+                            fileInputRef.current.value = null;
+                            fileBackInputRef.current.value = null;
                         }
                     } catch (error) {
                         setSubmitting(false);
@@ -249,6 +251,7 @@ function OPT_H4_CARDS_Upload({ userEmployeeId, operation, code }) {
                                     }}
                                     onBlur={handleBlur}
                                     helperText={(errors.file && touched.file) && errors.file}
+                                    inputRef={fileInputRef}
                                 />
                             </Stack>
                             <Stack direction="row" spacing={1} className='mt-6'>
@@ -268,6 +271,7 @@ function OPT_H4_CARDS_Upload({ userEmployeeId, operation, code }) {
                                     }}
                                     onBlur={handleBlur}
                                     helperText={(errors.fileBack && touched.fileBack) && errors.fileBack}
+                                    inputRef={fileBackInputRef}
                                 />
                             </Stack>
                             {Object.keys(errors).length > 0 && (
