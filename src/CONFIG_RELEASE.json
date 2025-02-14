@@ -18,7 +18,8 @@
         "Ability to E-Verify an Employee",
         "Disabling Version updates for non ADMINS",
         "FIX - Add new employee",
-        "FIX - Listing screen for pending timesheets for Employee View"
+        "FIX - Listing screen for pending timesheets for Employee View",
+        "Jobrate for operator as well"
       ]
     },
     {
