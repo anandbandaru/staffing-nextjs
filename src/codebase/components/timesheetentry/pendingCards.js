@@ -318,7 +318,7 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                         open={openDialog}
                                     >
                                         <DialogTitle className="text-pink-600 w-[900px]" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                                            {selectedTimesheet.existingRecordId === 0 ? "SUBMIT" : "EDIT & SUBMIT"} Timesheet: {selectedTimesheet.timesheetNumber}
+                                            (JOB: {selectedTimesheet.jobName}) - {selectedTimesheet.existingRecordId === 0 ? "SUBMIT" : "EDIT & SUBMIT"} Timesheet: {selectedTimesheet.timesheetNumber}
                                         </DialogTitle>
                                         <IconButton
                                             aria-label="close"

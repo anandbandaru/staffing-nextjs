@@ -44,7 +44,7 @@ const TimesheetEntryMetadata = ({ timesheet }) => {
                                             <span className='badgeSpan rag-blue-bg'>{timesheet.jobType}</span>
                                         </TableCell>
                                     </TableRow>
-                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                    {/* <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell component="th" scope="row">Job Start Date</TableCell>
                                         <TableCell align="right">
                                         <span className='badgeSpan rag-blue-bg'>{timesheet.jobStartDate}</span>
@@ -55,7 +55,7 @@ const TimesheetEntryMetadata = ({ timesheet }) => {
                                         <TableCell align="right">
                                         <span className='badgeSpan rag-blue-bg'>{timesheet.jobEndDate}</span>
                                         </TableCell>
-                                    </TableRow>
+                                    </TableRow> */}
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -77,14 +77,14 @@ const TimesheetEntryMetadata = ({ timesheet }) => {
                                         <TableCell component="th" scope="row">Client</TableCell>
                                         <TableCell align="right">{timesheet.clientName}</TableCell>
                                     </TableRow>
-                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                    {/* <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell component="th" scope="row">Implementation Partner</TableCell>
                                         <TableCell align="right">{timesheet.implementationPartnerName}</TableCell>
                                     </TableRow>
                                     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell component="th" scope="row">Vendor</TableCell>
                                         <TableCell align="right">{timesheet.vendorName}</TableCell>
-                                    </TableRow>
+                                    </TableRow> */}
                                 </TableBody>
                             </Table>
                         </TableContainer>

@@ -97,10 +97,6 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
             var finalAPI = APIPath + "/submittimesheet";
             try {
                 const resp = await axios.post(finalAPI, {
-                    headers: {
-                        'ngrok-skip-browser-warning': 'true',
-                    }
-                }, {
                     employeeID: timesheet.employeeID,
                     jobID: timesheet.jobID,
                     entries: timesheetEntries,
@@ -108,6 +104,10 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                     createdBy: userName,
                     timesheetNumber: timesheet.timesheetNumber,
                     jobType: timesheet.jobType
+                }, {
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true',
+                    }
                 });
                 if (resp.data.STATUS === "FAIL") {
                     setSubmitting(false);

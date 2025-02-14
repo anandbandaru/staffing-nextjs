@@ -263,7 +263,13 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                     )}
                                     {(moduleName === "MY_TIMESHEETS" && <>
                                         <TabPanel className="px-2">
-                                            <TimesheetCapturedHours timesheetId={ID} />
+                                            <Stack direction="column" spacing={1}>
+                                                <div className='divTotalHours'>
+                                                    TOTAL HOURS: {filteredData[0].hours}
+                                                </div>
+                                                <GenericFilesListSimple moduleId={ID} componentName={moduleName === "MY_TIMESHEETS" ? "TIMESHEETS" : moduleName} />
+                                                <TimesheetCapturedHours timesheetId={ID} />
+                                            </Stack>
                                         </TabPanel>
                                         <TabPanel className="px-2">
                                             <TimesheetDetails ID={ID} operation="View" doLoading={true} type="STATUS_NOTES" />
