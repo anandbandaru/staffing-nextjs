@@ -157,7 +157,7 @@ const Top = () => {
         // console.log("ONLINE VERSION:" + currentVersion)
         if (storedVersion !== currentVersion) {
             //Showing changes dialog only when non employee
-            if(userType !== "EMPLOYEE")
+            if(userType === "ADMIN")
             {
                 setOpenVersionDialog(true);
             }

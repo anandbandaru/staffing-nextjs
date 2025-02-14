@@ -15,7 +15,8 @@
       "version": "3.2",
       "date": "FEB 14 2024",
       "notes": [
-        "Ability to E-Verify an Employee"
+        "Ability to E-Verify an Employee",
+        "Disabling Version updates for non ADMINS"
       ]
     },
     {
