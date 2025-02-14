@@ -242,7 +242,12 @@ const Top = () => {
         { name: 'Calendar', icon: <CalendarMonthOutlinedIcon className="mr-1" fontSize="small" /> },
         { name: 'Configuration', icon: <SettingsEthernetIcon className="mr-1" fontSize="small" /> }
     ];
-    const tabsToShow = userType === 'ADMIN' ? allTabs.map(tab => tab.name) : permissions;
+    let tabsToShow = userType === 'ADMIN' ? allTabs.map(tab => tab.name) : permissions;
+    //SETTING DEFAULT TAB to T-ENTRY
+    if(userType === "EMPLOYEE" || userType === "")
+    {
+        tabsToShow = ["Timesheet Entry"];
+    }
 
     return (
         <div className="topHolder px-0">
