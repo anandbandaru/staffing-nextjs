@@ -14,7 +14,7 @@ import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import JobRatesList from '../jobs/jobRatesList'
 import TimesheetDetails from '../timesheetentry/timesheetDetails';
 import TimesheetCapturedHours from '../timesheetentry/capturedHours';
-import TimesheetReminders from '../timesheets/timesheetReminders';
+import TimesheetReminders from '../timesheets/timesheetReminderHistory';
 import EmployeeDocumentsAdminChecklist from '../employeesdocuments/eDocsAdminList';
 import EmployeeJobsMetadata from '../employees/employeeJobsMetadata';
 

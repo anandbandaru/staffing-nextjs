@@ -21,7 +21,7 @@ import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CustomSnackbar from "../snackbar/snackbar";
 import axios from 'axios';
 import emailjs from 'emailjs-com';
-import TimesheetReminders from '../timesheets/timesheetReminders';
+import TimesheetReminderHistory from '../timesheets/timesheetReminderHistory';
 
 const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
     const { APIPath, userName } = useContext(Context);
@@ -294,7 +294,7 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                                                                         >
                                                                                             <NotificationAddIcon />
                                                                                         </IconButton>
-                                                                                        <TimesheetReminders timesheetNumber={timesheet.timesheetNumber} viewType="POP" />
+                                                                                        <TimesheetReminderHistory timesheetNumber={timesheet.timesheetNumber} viewType="POP" />
                                                                                     </>
                                                                                 )}
                                                                             </div>

@@ -2,15 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
-import { styled } from '@mui/material/styles';
-import CloseIcon from '@mui/icons-material/Close';
 import { Context } from "../../context/context";
-import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
-import Button from '@mui/material/Button';
 import axios from 'axios';
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 
-function TimesheetReminders({ timesheetNumber, viewType }) {
+function TimesheetReminderHistory({ timesheetNumber, viewType }) {
     const { APIPath, userName } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
     const [data, setData] = useState('');
@@ -113,4 +109,4 @@ function TimesheetReminders({ timesheetNumber, viewType }) {
     )
 }
 
-export default TimesheetReminders;
+export default TimesheetReminderHistory;

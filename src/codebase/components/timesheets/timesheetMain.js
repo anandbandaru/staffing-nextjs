@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import TimesheetAdminList from "./timesheetadminList";
 import PendingList from "../timesheetentry/pendingList";
+import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 
 const TimeSheetsMain = () => {
     const { APIPath } = useContext(Context);
@@ -56,70 +57,137 @@ const TimeSheetsMain = () => {
 
     return (
         <>
-            <div className="timeSheetMainHolder">
-                <TextField
-                    size="small"
-                    margin="normal"
-                    fullWidth
-                    id="employeeId"
-                    name="employeeId"
-                    select
-                    label="Employee Id"
-                    value={employeeId}
-                    className="bg-yellow-400"
-                    onChange={(event) => {
-                        handleEmployeeIdChange(event);
-                    }}
-                >
-                    {employeesData.data.map((item, index) => (
-                        <MenuItem key={index} value={item.Id}>
-                            {/* <div className="divTSEmplyeeHolder1"> */}
-                                <div>
-                                    Employee ID: {item.Id}
-                                </div>
-                                <div>
-                                    {item.firstName} {item.lastName}
-                                </div>
-                                <div>
-                                    ({item.employeeType})
-                                </div>
-                                <div>
-                                    (Personal Email: {item.personalEmail}) - (US Phone: {item.personalUSPhone}) - (Personal Phone: {item.personalPhone})
-                                </div>
-                            {/* </div> */}
-                        </MenuItem>
-                    ))}
-                </TextField>
+            <div className="timeSheetMainHolder pt-6">
 
                 <Tabs selectedIndex={tabIndex}
                     onSelect={(index) => setTabIndex(index)}>
                     <TabList className="subTabsListHolder">
                         <Tab><TimerOutlinedIcon className="mr-1" />Yet to Submit Timesheets</Tab>
+                        <Tab><NotificationAddIcon className="mr-1" />Timesheets Reminders</Tab>
                         <Tab><CheckOutlinedIcon className="mr-1" />Sent Back Timesheets</Tab>
                         <Tab><CheckOutlinedIcon className="mr-1" />Pending Approval Timesheets</Tab>
                         <Tab><CheckCircleOutlinedIcon className="mr-1" />Approved Timesheets</Tab>
                     </TabList>
 
-                    <TabPanel className="px-2">
-                        <Alert severity="info" className="my-1">This tab displays all the <strong>Pending</strong> timesheets.</Alert>
+                    <TabPanel className="px-0">
+                        <Alert severity="info" className="my-0">This tab displays all the <strong>Pending</strong> timesheets.</Alert>
+                        <TextField
+                            size="small"
+                            margin="normal"
+                            fullWidth
+                            id="employeeId"
+                            name="employeeId"
+                            select
+                            label="Employee Id"
+                            value={employeeId}
+                            className="bg-yellow-400"
+                            onChange={(event) => {
+                                handleEmployeeIdChange(event);
+                            }}
+                        >
+                            {employeesData.data.map((item, index) => (
+                                <MenuItem key={index} value={item.Id}>
+                                    {/* <div className="divTSEmplyeeHolder1"> */}
+                                    <div>
+                                        Employee ID: {item.Id} - {item.firstName} {item.lastName} - ({item.employeeType}) - (Personal Email: {item.personalEmail}) - (US Phone: {item.personalUSPhone}) - (Personal Phone: {item.personalPhone})
+                                    </div>
+                                    {/* </div> */}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         {employeeId && (
                             <PendingList employeeId={employeeId} mode="View" />
                         )}
                     </TabPanel>
-                    <TabPanel className="px-2">
-                        <Alert severity="info" className="my-1">This tab displays all the <strong>Sent Back</strong> timesheets.</Alert>
+                    <TabPanel className="px-0">
+                        <Alert severity="info" className="my-0">This tab displays all the <strong>Pending</strong> timesheets for which you can send reminders.</Alert>                        
+                    </TabPanel>
+                    <TabPanel className="px-0">
+                        <Alert severity="info" className="my-0">This tab displays all the <strong>Sent Back</strong> timesheets.</Alert>
+                        <TextField
+                            size="small"
+                            margin="normal"
+                            fullWidth
+                            id="employeeId"
+                            name="employeeId"
+                            select
+                            label="Employee Id"
+                            value={employeeId}
+                            className="bg-yellow-400"
+                            onChange={(event) => {
+                                handleEmployeeIdChange(event);
+                            }}
+                        >
+                            {employeesData.data.map((item, index) => (
+                                <MenuItem key={index} value={item.Id}>
+                                    {/* <div className="divTSEmplyeeHolder1"> */}
+                                    <div>
+                                        Employee ID: {item.Id} - {item.firstName} {item.lastName} - ({item.employeeType}) - (Personal Email: {item.personalEmail}) - (US Phone: {item.personalUSPhone}) - (Personal Phone: {item.personalPhone})
+                                    </div>
+                                    {/* </div> */}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         {employeeId && (
                             <TimesheetAdminList employeeId={employeeId} status="SentBack" />
                         )}
                     </TabPanel>
-                    <TabPanel className="px-2">
-                        <Alert severity="info" className="my-1">This tab displays all the <strong>Pending Approval</strong> timesheets.</Alert>
+                    <TabPanel className="px-0">
+                        <Alert severity="info" className="my-0">This tab displays all the <strong>Pending Approval</strong> timesheets.</Alert>
+                        <TextField
+                            size="small"
+                            margin="normal"
+                            fullWidth
+                            id="employeeId"
+                            name="employeeId"
+                            select
+                            label="Employee Id"
+                            value={employeeId}
+                            className="bg-yellow-400"
+                            onChange={(event) => {
+                                handleEmployeeIdChange(event);
+                            }}
+                        >
+                            {employeesData.data.map((item, index) => (
+                                <MenuItem key={index} value={item.Id}>
+                                    {/* <div className="divTSEmplyeeHolder1"> */}
+                                    <div>
+                                        Employee ID: {item.Id} - {item.firstName} {item.lastName} - ({item.employeeType}) - (Personal Email: {item.personalEmail}) - (US Phone: {item.personalUSPhone}) - (Personal Phone: {item.personalPhone})
+                                    </div>
+                                    {/* </div> */}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         {employeeId && (
                             <TimesheetAdminList employeeId={employeeId} status="Submitted" />
                         )}
                     </TabPanel>
                     <TabPanel className="px-0">
-                        <Alert severity="info" className="my-1">This tab displays all the <strong>Approved</strong> timesheets.</Alert>
+                        <Alert severity="info" className="my-0">This tab displays all the <strong>Approved</strong> timesheets.</Alert>
+                        <TextField
+                            size="small"
+                            margin="normal"
+                            fullWidth
+                            id="employeeId"
+                            name="employeeId"
+                            select
+                            label="Employee Id"
+                            value={employeeId}
+                            className="bg-yellow-400"
+                            onChange={(event) => {
+                                handleEmployeeIdChange(event);
+                            }}
+                        >
+                            {employeesData.data.map((item, index) => (
+                                <MenuItem key={index} value={item.Id}>
+                                    {/* <div className="divTSEmplyeeHolder1"> */}
+                                    <div>
+                                        Employee ID: {item.Id} - {item.firstName} {item.lastName} - ({item.employeeType}) - (Personal Email: {item.personalEmail}) - (US Phone: {item.personalUSPhone}) - (Personal Phone: {item.personalPhone})
+                                    </div>
+                                    {/* </div> */}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         {employeeId && (
                             <TimesheetAdminList employeeId={employeeId} status="Approved" />
                         )}
