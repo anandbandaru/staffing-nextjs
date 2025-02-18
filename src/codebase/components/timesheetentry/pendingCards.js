@@ -168,7 +168,7 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
             case 'Pending':
                 return 'rag-orange-bg badgeSpan';
             case 'SentBack':
-                return 'rag-yellow-bg badgeSpan';
+                return 'rag-red-bg badgeSpan';
             default:
                 return 'badgeSpan';
         }
@@ -238,7 +238,7 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                                                                 <div title="Pending days" className='badgeSpan rag-graylight-bg absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
                                                                                     {timesheet.daysPending}
                                                                                 </div>
-                                                                                <div title="Mode" className='badgeSpan bg-orange-400 absolute right-2 bottom-3.5' sx={{ color: 'text.secondary', fontSize: 11 }}>
+                                                                                <div title="Mode" className='badgeSpan bg-orange-400 modeDivContainer' sx={{ color: 'text.secondary', fontSize: 11 }}>
                                                                                     MODE: {mode}
                                                                                 </div>
                                                                                 <Typography variant="h5" component="div">

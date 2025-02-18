@@ -23,7 +23,7 @@ const ToDo = () => {
     const [itemCountActive, setItemCountActive] = useState(0);
     const [itemCountCompleted, setItemCountCompleted] = useState(0);
     const {
-        APIPath, refreshTodos, setRefreshTodos,
+        APIPath, refreshTodos, setRefreshTodos, userType,
         userName } = useContext(Context);
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -120,7 +120,6 @@ const ToDo = () => {
     };
 
     const completeTodo = async (id) => {
-
         axios.post(APIPath + `/todos/complete/${id}/${userName}`,
             {
                 headers: {
@@ -137,6 +136,25 @@ const ToDo = () => {
             .catch(function (error) {
                 // console.log(error);
                 showSnackbar('error', 'Error completing To do' + error);
+            });
+    };
+    const closeTodo = async (id) => {
+        axios.post(APIPath + `/todos/close/${id}/${userName}`,
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
+                }
+            },
+        ).then((resp) => {
+            fetchTodos("Active");
+            showSnackbar('success', "To Do is closed");
+            fetchTodos("Closed");
+        })
+            .catch(function (error) {
+                // console.log(error);
+                showSnackbar('error', 'Error closing To do' + error);
             });
     };
 
@@ -181,10 +199,10 @@ const ToDo = () => {
                                 <NotificationsActiveIcon />
                                 <span className="todoCounts">0</span>
                             </Tab>
-                            <Tab label="Chat" title="Chat" >
+                            {/* <Tab label="Chat" title="Chat" >
                                 <MarkUnreadChatAltOutlinedIcon color="error" />
                                 <span className="todoCounts">0</span>
-                            </Tab>
+                            </Tab> */}
                         </TabList>
                         <TabPanel className="px-0">
                             <div className="h-screen overflow-y-auto pb-56">
@@ -204,12 +222,23 @@ const ToDo = () => {
                                                 </div>
                                             </CardContent>
                                             <CardActions>
-                                                <Stack spacing={1} direction="row" className="">
+                                                <Stack spacing={0.5} direction="row" className="justify-center items-center">
+                                                    <div>COMPLETE: </div>
                                                     <Checkbox
                                                         checked={todo.completed}
                                                         disabled={todo.completed}
                                                         onChange={() => completeTodo(todo.Id)}
                                                     />
+                                                    {userType === "ADMIN" && (
+                                                        <>
+                                                            <div>CLOSE: </div>
+                                                            <Checkbox
+                                                                checked={todo.completedAdmin}
+                                                                disabled={todo.completedAdmin}
+                                                                onChange={() => closeTodo(todo.Id)}
+                                                            />
+                                                        </>
+                                                    )}
                                                     <IconButton
                                                         aria-label="more"
                                                         aria-controls="todo-menu"
@@ -243,12 +272,7 @@ const ToDo = () => {
                                                 </div>
                                             </CardContent>
                                             <CardActions>
-                                                <Stack spacing={1} direction="row" className="">
-                                                    <Checkbox
-                                                        checked={todo.completed}
-                                                        disabled={todo.completed}
-                                                        onChange={() => completeTodo(todo.Id)}
-                                                    />
+                                                <Stack spacing={1} direction="row" className="">                                                    
                                                     <IconButton
                                                         aria-label="more"
                                                         aria-controls="todo-menu"
@@ -267,10 +291,10 @@ const ToDo = () => {
                         <TabPanel className="px-0">
                             Actions from DB entries will be listed here
                         </TabPanel>
-                        <TabPanel className="px-0">
+                        {/* <TabPanel className="px-0">
                             Realtime chat messages
                             <RealtimeChatUpdate />
-                        </TabPanel>
+                        </TabPanel> */}
 
                         <Menu className="todoItem"
                             id="todo-menu"
@@ -285,6 +309,12 @@ const ToDo = () => {
                                 selectedTodo.completed && [
                                     <MenuItem key="completedBy">Completed by: {selectedTodo.completedBy}</MenuItem>,
                                     <MenuItem key="completedDate">Completed on: {new Date(selectedTodo.completedDate).toLocaleString()}</MenuItem>
+                                ]
+                            ]}
+                            {selectedTodo && [
+                                selectedTodo.completedAdmin && [
+                                    <MenuItem key="completedByAdmin">Closed by: {selectedTodo.completedByAdmin}</MenuItem>,
+                                    <MenuItem key="completedDateAdmin">Closed on: {new Date(selectedTodo.completedDateAdmin).toLocaleString()}</MenuItem>
                                 ]
                             ]}
                         </Menu>

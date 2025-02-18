@@ -116,7 +116,7 @@ const TodoList = () => {
         },
         { field: "Id", maxWidth: 50 },
         { field: "title", filter: true },
-        { field: "createdDate", filter: true },
+        { field: "createdDate", filter: true, maxWidth: 100 },
         {
             field: "completed", filter: false,
             // cellClassRules: {
@@ -124,19 +124,28 @@ const TodoList = () => {
             //     'rag-red': params => params.value === null || params.value === false,
             //     'rag-green': params => params.value === true,
             // },
-            cellRenderer: CustomCompletedRenderer
+            cellRenderer: CustomCompletedRenderer, maxWidth: 100
         },
         { field: "completedBy", filter: true },
         { field: "completedDate", filter: true },
         {
-            field: "important", filter: false,
+            field: "important", headerName: "Imp", filter: false,
             cellClassRules: {
                 // apply green to electric cars
                 'rag-green': params => params.value === null || params.value === false,
                 'rag-red': params => params.value === true,
             },
-            cellRenderer: CustomImportantRenderer
+            cellRenderer: CustomImportantRenderer, maxWidth: 70
         },
+        {
+            field: "completedAdmin", headerName: "Closed", filter: false,
+            cellRenderer: CustomCompletedRenderer, maxWidth: 100
+        },
+        {
+            field: "completedByAdmin", headerName: "Closed By", filter: false,
+            cellRenderer: CustomCompletedRenderer, maxWidth: 100
+        },
+        { field: "completedAdminDate", headerName: "Closed Date", filter: true },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
     ]);
     const rowClassRules = {

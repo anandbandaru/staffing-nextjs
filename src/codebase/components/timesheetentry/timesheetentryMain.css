@@ -47,3 +47,8 @@
     background-color: #ce9834 !important;
     color: #fff !important;
 }
+.modeDivContainer{
+    position: absolute;
+    bottom: 40px;
+    right: 4px;
+}

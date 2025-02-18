@@ -12,6 +12,13 @@
   ],
   "releases": [
     {
+      "version": "3.3",
+      "date": "FEB 17 2024",
+      "notes": [
+        "Close action on Todos with only Admin's action"
+      ]
+    },
+    {
       "version": "3.2",
       "date": "FEB 14 2024",
       "notes": [
