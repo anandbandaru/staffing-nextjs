@@ -12,8 +12,9 @@ import { TextField } from '@mui/material';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined';
 import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
+import emailjs from 'emailjs-com';
 
-function TimesheetEdit({ ID, timesheetNumber, mode, operation, manualLoadData, setApiLoading, showSnackbar }) {
+function TimesheetAction({ ID, timesheetNumber, mode, operation, manualLoadData, setApiLoading, showSnackbar, employeeID, startDate, endDate, jobName, personalEmail, applicationEmail }) {
     const { APIPath, userName } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,6 +65,15 @@ function TimesheetEdit({ ID, timesheetNumber, mode, operation, manualLoadData, s
                         if (result.data.STATUS === "FAIL") {
                             showSnackbar('error', result.data.ERROR.MESSAGE);
                         } else {
+                            if (type === "SENDBACK") {
+                                sendSentBackEmail(timesheetNumber,
+                                    employeeID,
+                                    startDate,
+                                    endDate,
+                                    jobName,
+                                    personalEmail,
+                                    applicationEmail);
+                            }
                             showSnackbar('success', "Timesheet data modified.");
                             manualLoadData();
                         }
@@ -79,6 +89,70 @@ function TimesheetEdit({ ID, timesheetNumber, mode, operation, manualLoadData, s
             )
         }
     }
+
+    const sendSentBackEmail = (tn, eid, tf, tt, tjn, pemail) => {
+        console.log(tn);
+        console.log(eid);
+        console.log(tf);
+        console.log(tt);
+        console.log(tjn);
+        console.log(pemail);
+        console.log(notes);
+
+        // Create a virtual form element
+        const form = document.createElement('form');
+
+        // Create and append input elements to the form
+        const subjectInput = document.createElement('input');
+        subjectInput.setAttribute('type', 'hidden');
+        subjectInput.setAttribute('name', 'user_email');
+        subjectInput.setAttribute('value', pemail);
+        form.appendChild(subjectInput);
+
+        const i_tn = document.createElement('input');
+        i_tn.setAttribute('type', 'hidden');
+        i_tn.setAttribute('name', 'tn');
+        i_tn.setAttribute('value', tn);
+        form.appendChild(i_tn);
+
+        const i_eid = document.createElement('input');
+        i_eid.setAttribute('type', 'hidden');
+        i_eid.setAttribute('name', 'eid');
+        i_eid.setAttribute('value', eid);
+        form.appendChild(i_eid);
+
+        const i_tf = document.createElement('input');
+        i_tf.setAttribute('type', 'hidden');
+        i_tf.setAttribute('name', 'tf');
+        i_tf.setAttribute('value', tf);
+        form.appendChild(i_tf);
+
+        const i_tt = document.createElement('input');
+        i_tt.setAttribute('type', 'hidden');
+        i_tt.setAttribute('name', 'tt');
+        i_tt.setAttribute('value', tt);
+        form.appendChild(i_tt);
+
+        const i_tjn = document.createElement('input');
+        i_tjn.setAttribute('type', 'hidden');
+        i_tjn.setAttribute('name', 'tjn');
+        i_tjn.setAttribute('value', tjn);
+        form.appendChild(i_tjn);
+
+        const i_tjnotes = document.createElement('input');
+        i_tjnotes.setAttribute('type', 'hidden');
+        i_tjnotes.setAttribute('name', 'comments');
+        i_tjnotes.setAttribute('value', notes);
+        form.appendChild(i_tjnotes);
+
+        //USING VSK.REMINDERS@OUTLOOK.COM
+        emailjs.sendForm('service_9xt4dl9', 'template_7wygkr8', form, 'yj3Z8ada370vJfD3p')
+            .then((result) => {
+                showSnackbar('success', "Sent Back email sent to: " + pemail);
+            }, (error) => {
+                showSnackbar('error', "Error sending Sent Back email to user");
+            });
+    };
 
     return (
         <>
@@ -155,4 +229,4 @@ function TimesheetEdit({ ID, timesheetNumber, mode, operation, manualLoadData, s
     )
 }
 
-export default TimesheetEdit;
+export default TimesheetAction;

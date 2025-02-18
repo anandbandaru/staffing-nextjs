@@ -5,7 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import GenericDetails from "../forms/GenericDetails";
-import TimesheetEdit from "./timesheetEdit";
+import TimesheetAction from "./timesheetAction";
 import TimesheetAudit from "./timesheetAudit";
 
 const TimesheetAdminList = ({ employeeId, status }) => {
@@ -142,7 +142,19 @@ const TimesheetAdminList = ({ employeeId, status }) => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <TimesheetEdit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} mode={props.data.status} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
+                <TimesheetAction ID={props.data.Id} 
+                timesheetNumber={props.data.timesheetNumber} 
+                mode={props.data.status} operation="Edit" 
+                manualLoadData={manualLoadData} 
+                setApiLoading={setApiLoading} 
+                showSnackbar={showSnackbar} 
+                employeeID={props.data.employeeID} 
+                startDate={props.data.startDate} 
+                endDate={props.data.endDate} 
+                jobName={props.data.jobName} 
+                personalEmail={props.data.personalEmail} 
+                applicationEmail={props.data.applicationEmail} 
+                />
             </>
         );
     };
@@ -156,6 +168,7 @@ const TimesheetAdminList = ({ employeeId, status }) => {
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "Id", maxWidth: 50 },
+        { field: "employeeID", maxWidth: 50 },
         { field: "timesheetNumber", filter: true },
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
