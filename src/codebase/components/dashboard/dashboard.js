@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Context } from "../../context/context";
 import './dashboard.css';
 import axios from 'axios';
@@ -139,6 +139,10 @@ const Dashboard = () => {
             </CardContent>
         </Card >
     );
+
+    useEffect(() => {
+        loadDashboardElements();
+    }, []);
 
     return (
         <>
