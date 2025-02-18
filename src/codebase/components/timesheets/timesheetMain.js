@@ -12,6 +12,7 @@ import TimesheetAdminList from "./timesheetadminList";
 import PendingList from "../timesheetentry/pendingList";
 import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
+import TimesheetRemindersList from "./timesheetRemindersList";
 
 const TimeSheetsMain = () => {
     const { APIPath } = useContext(Context);
@@ -102,6 +103,7 @@ const TimeSheetsMain = () => {
                     </TabPanel>
                     <TabPanel className="px-0">
                         <Alert severity="info" className="my-0">This tab displays all the <strong>Pending</strong> timesheets for which you can send reminders.</Alert>
+                        <TimesheetRemindersList />
                     </TabPanel>
                     <TabPanel className="px-0">
                         <Alert severity="info" className="my-0">This tab displays all the <strong>Sent Back</strong> timesheets.</Alert>

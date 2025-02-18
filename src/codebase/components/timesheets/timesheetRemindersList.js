@@ -7,13 +7,16 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import GenericDetails from "../forms/GenericDetails";
 import TimesheetEdit from "./timesheetEdit";
 import TimesheetAudit from "./timesheetAudit";
+import PendingListToolbar from "../timesheetentry/pendingListToolbar";
+import TimesheetEditReminders from "./timesheetEditReminders";
 
-const TimesheetRemindersList = ({ employeeId, status }) => {
+const TimesheetRemindersList = () => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [itemCount, setItemCount] = useState(0);
     const [jobsCount, setJobsCount] = useState(0);
+    const [employeesCount, setEmployeesCount] = useState(0);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -29,9 +32,8 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
     };
 
     useEffect(() => {
-        // console.log("SubmittedList: useEffect: employeeId: " + employeeId);
         delaydMockLoading();
-    }, [employeeId]);
+    }, []);
 
     function manualLoadData() {
         setApiLoading(true);
@@ -50,16 +52,8 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
         setData({ data: [] });
         setItemCount(0);
         setJobsCount(0);
-        let apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeId;
-        if (status === "Submitted") {
-            apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeId;
-        }
-        else if (status === "Approved") {
-            apiUrl = APIPath + "/getapprovedtimesheets/" + employeeId;
-        }
-        else if (status === "SentBack") {
-            apiUrl = APIPath + "/getsentbacktimesheets/" + employeeId;
-        }
+        setEmployeesCount(0);
+        let apiUrl = APIPath + "/getallpendingtimesheets";
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -73,19 +67,24 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
                         // console.log("RequestData:On error return: setting empty")
                         setData({});
                         setItemCount(0);
+                        setJobsCount(0);
+                        setEmployeesCount(0);
                     }
                     else {
                         if (result.STATUS === "FAIL") {
                             showSnackbar('error', result.ERROR.MESSAGE);
                             setItemCount(0);
                             setJobsCount(0);
+                            setEmployeesCount(0);
                         }
                         else {
                             setData(result);
                             setItemCount(result.total);
                             const uniqueJobIds = new Set(result.data.map(item => item.jobID));
                             setJobsCount(uniqueJobIds.size);
-                            showSnackbar('success', status + " Timesheets Data fetched");
+                            const uniqueEmployeeIds = new Set(result.data.map(item => item.employeeID));
+                            setEmployeesCount(uniqueEmployeeIds.size);
+                            showSnackbar('success', " Timesheets Data fetched");
                         }
                     }
                     setApiLoading(false);
@@ -94,6 +93,7 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
                     setData({});
                     setItemCount(0);
                     setJobsCount(0);
+                    setEmployeesCount(0);
                     // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
@@ -130,14 +130,22 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <TimesheetEdit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} mode={props.data.status} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} />
+                {/* <TimesheetEdit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} mode={props.data.status} operation="Edit" manualLoadData={manualLoadData} setApiLoading={setApiLoading} showSnackbar={showSnackbar} /> */}
+                <TimesheetEditReminders 
+                employeeID={props.data.employeeID} 
+                startDate={props.data.startDate} 
+                endDate={props.data.endDate} 
+                jobName={props.data.jobName} 
+                personalEmail={props.data.personalEmail} 
+                applicationEmail={props.data.applicationEmail} 
+                timesheetNumber={props.data.timesheetNumber} 
+                manualLoadData={manualLoadData} showSnackbar={showSnackbar} />
             </>
         );
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "Id", maxWidth: 50 },
-        { field: "employeeId", maxWidth: 100 },
+        { field: "employee" },
         { field: "timesheetNumber", filter: true },
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
@@ -171,18 +179,18 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
                 message={snackbarMessage}
             />
             <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
-                {/* <PendingListToolbar
-                    operation={status}
+                <PendingListToolbar
                     jobsCount={jobsCount}
                     itemCount={itemCount}
                     apiLoading={apiLoading}
-                    dataAPIError={dataAPIError}
+                    dataAPIError={""}
                     manualLoadData={manualLoadData}
-                /> */}
-                <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
-                    <span className="">Total {status} Timesheets:</span>
+                    employeesCount={employeesCount}
+                />
+                {/* <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
+                    <span className="">Total Timesheets:</span>
                     <span className="font-bold text-sm ml-2">{itemCount}</span>
-                </div>
+                </div> */}
             </div>
             <div className="flex flex-grow flex-1 rounded-md text-sm justify-between place-items-center space-x-2 ">
                 {data.data && data.data.length > 0 ? (
@@ -201,7 +209,7 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
                         />
                     </div>
                 ) : (
-                    <p>No {status} timesheets</p>
+                    <p>No timesheets</p>
                 )}
             </div>
         </>

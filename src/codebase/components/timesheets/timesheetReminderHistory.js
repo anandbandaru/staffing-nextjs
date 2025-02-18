@@ -25,6 +25,7 @@ function TimesheetReminderHistory({ timesheetNumber, viewType }) {
 
     useEffect(() => {
         getReminders();
+        console.log(timesheetNumber)
     }, [timesheetNumber]);
 
     const getReminders = () => {
