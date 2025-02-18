@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import TimesheetAdminList from "./timesheetadminList";
 import PendingList from "../timesheetentry/pendingList";
 import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
+import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
 
 const TimeSheetsMain = () => {
     const { APIPath } = useContext(Context);
@@ -62,11 +63,11 @@ const TimeSheetsMain = () => {
                 <Tabs selectedIndex={tabIndex}
                     onSelect={(index) => setTabIndex(index)}>
                     <TabList className="subTabsListHolder">
-                        <Tab><TimerOutlinedIcon className="mr-1" />Yet to Submit Timesheets</Tab>
-                        <Tab><NotificationAddIcon className="mr-1" />Timesheets Reminders</Tab>
-                        <Tab><CheckOutlinedIcon className="mr-1" />Sent Back Timesheets</Tab>
-                        <Tab><CheckOutlinedIcon className="mr-1" />Pending Approval Timesheets</Tab>
-                        <Tab><CheckCircleOutlinedIcon className="mr-1" />Approved Timesheets</Tab>
+                        <Tab><TimerOutlinedIcon className="mr-1" />Yet to Submit</Tab>
+                        <Tab><NotificationAddIcon className="mr-1" />Reminders</Tab>
+                        <Tab><ReplyAllOutlinedIcon className="mr-1" />Sent Back</Tab>
+                        <Tab><CheckOutlinedIcon className="mr-1" />Pending Approval</Tab>
+                        <Tab><CheckCircleOutlinedIcon className="mr-1" />Approved</Tab>
                     </TabList>
 
                     <TabPanel className="px-0">
@@ -100,7 +101,7 @@ const TimeSheetsMain = () => {
                         )}
                     </TabPanel>
                     <TabPanel className="px-0">
-                        <Alert severity="info" className="my-0">This tab displays all the <strong>Pending</strong> timesheets for which you can send reminders.</Alert>                        
+                        <Alert severity="info" className="my-0">This tab displays all the <strong>Pending</strong> timesheets for which you can send reminders.</Alert>
                     </TabPanel>
                     <TabPanel className="px-0">
                         <Alert severity="info" className="my-0">This tab displays all the <strong>Sent Back</strong> timesheets.</Alert>

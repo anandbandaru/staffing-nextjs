@@ -127,7 +127,7 @@ const TimesheetAdminList = ({ employeeId, status }) => {
                 className += ' rag-red-bg';
                 break;
             case 'SentBack':
-                className += ' rag-yellow-bg';
+                className += ' rag-red-bg';
                 break;
             default:
                 className += ' rag-orange-bg';

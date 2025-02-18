@@ -100,20 +100,8 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
             )
     }
 
-    const CustomDetailsComponent = (props) => {
-        return (
-            <>
-                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="MY_TIMESHEETS" timesheetNumber={props.data.timesheetNumber} />
-            </>
-        );
-    };
     const CustomJobTypeRenderer = ({ value }) => (
         <span className='rag-blue-bg badgeSpan'>
-            {value}
-        </span>
-    );
-    const CustomHoursRenderer = ({ value }) => (
-        <span className='rag-gray-bg badgeSpan'>
             {value}
         </span>
     );
@@ -146,13 +134,6 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
             </>
         );
     };
-    const CustomAuditComponent = (props) => {
-        return (
-            <>
-                <TimesheetAudit ID={props.data.Id} timesheetNumber={props.data.timesheetNumber} operation="View" doLoading={true} />
-            </>
-        );
-    };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "Id", maxWidth: 50 },
@@ -161,7 +142,6 @@ const TimesheetRemindersList = ({ employeeId, status }) => {
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
         { field: "clientName", filter: true },
-        { field: "createdDate", headerName: 'Submitted Date', filter: true },
         { field: "startDate", filter: true },
         { field: "endDate", filter: true },
         {
