@@ -395,7 +395,9 @@ function Job({ props, ID, operation }) {
                                 setSubmitting(false);
                                 setSubmitionCompleted(true);
                                 showSnackbar('success', "Job data saved");
-                                resetForm();
+                                if (operation !== "Edit") {
+                                    resetForm();
+                                }
                             }
                         } catch (error) {
                             setSubmitting(false);
