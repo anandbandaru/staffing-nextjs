@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import { Context } from "../../context/context";
-import { Alert } from "@mui/material";
+import { Alert, Stack } from "@mui/material";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
@@ -211,6 +211,7 @@ const TimeSheetsMain = () => {
                     </TabPanel>
                     <TabPanel className="px-0">
                         <Alert severity="info" className="my-0">This tab displays all the <strong>Approved</strong> timesheets.</Alert>
+                        
                         <TextField
                             size="small"
                             margin="normal"

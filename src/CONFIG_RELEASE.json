@@ -12,6 +12,13 @@
   ],
   "releases": [
     {
+      "version": "3.4",
+      "date": "FEB 19 2024",
+      "notes": [
+        "Payment terms in Jobs"
+      ]
+    },
+    {
       "version": "3.3",
       "date": "FEB 17 2024",
       "notes": [

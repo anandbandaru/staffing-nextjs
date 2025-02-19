@@ -354,6 +354,7 @@ function Job({ props, ID, operation }) {
                         notes: name ? data.data[0].notes : '',
                         notesRate: name ? data.data[0].notesRate : '',
                         createdBy: userName,
+                        paymentTerms: name ? data.data[0].paymentTerms : 0,
                     }}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addjob";
@@ -450,6 +451,8 @@ function Job({ props, ID, operation }) {
                             .required('Invoice frequency Required'),
                         notes: Yup.string()
                             .required('notes Required'),
+                        paymentTerms: Yup.string()
+                            .required('payment Terms Required'),
                         notesRate: Yup.string().when(userType, {
                             is: 'ADMIN',
                             then: () => Yup.string()
@@ -641,7 +644,7 @@ function Job({ props, ID, operation }) {
                                         <Tabs>
                                             <TabList className="formTabsListHolder">
                                                 <Tab>Current Rate</Tab>
-                                                {operation !== "New" && (
+                                                {(operation !== "New" && userType === "ADMIN") && (
                                                     <Tab>Historical Rates</Tab>
                                                 )}
                                             </TabList>
@@ -659,32 +662,34 @@ function Job({ props, ID, operation }) {
                                                     onBlur={handleBlur}
                                                     helperText={(errors.rate && touched.rate) && errors.rate}
                                                 />
-                                                <Stack direction="row" spacing={2} className='mt-4'>
-                                                    <TextField
-                                                        size="small"
-                                                        margin="normal"
-                                                        fullWidth
-                                                        id="deductionPercentage"
-                                                        name="deductionPercentage"
-                                                        label="Deduction Percentage"
-                                                        value={values.deductionPercentage}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        helperText={(errors.deductionPercentage && touched.deductionPercentage) && errors.deductionPercentage}
-                                                    />
-                                                    <TextField
-                                                        size="small"
-                                                        margin="normal"
-                                                        fullWidth
-                                                        id="deductionFlat"
-                                                        name="deductionFlat"
-                                                        label="Deduction Flat (make this zero if above % is entered)"
-                                                        value={values.deductionFlat}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        helperText={(errors.deductionFlat && touched.deductionFlat) && errors.deductionFlat}
-                                                    />
-                                                </Stack>
+                                                {userType === "ADMIN" && (
+                                                    <Stack direction="row" spacing={2} className='mt-4'>
+                                                        <TextField
+                                                            size="small"
+                                                            margin="normal"
+                                                            fullWidth
+                                                            id="deductionPercentage"
+                                                            name="deductionPercentage"
+                                                            label="Deduction Percentage"
+                                                            value={values.deductionPercentage}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            helperText={(errors.deductionPercentage && touched.deductionPercentage) && errors.deductionPercentage}
+                                                        />
+                                                        <TextField
+                                                            size="small"
+                                                            margin="normal"
+                                                            fullWidth
+                                                            id="deductionFlat"
+                                                            name="deductionFlat"
+                                                            label="Deduction Flat (make this zero if above % is entered)"
+                                                            value={values.deductionFlat}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            helperText={(errors.deductionFlat && touched.deductionFlat) && errors.deductionFlat}
+                                                        />
+                                                    </Stack>
+                                                )}
                                                 <TextField
                                                     size="small"
                                                     margin="normal"
@@ -700,7 +705,7 @@ function Job({ props, ID, operation }) {
                                                     helperText={(errors.notesRate && touched.notesRate) && errors.notesRate}
                                                 />
                                             </TabPanel>
-                                            {operation !== "New" && (
+                                            {(operation !== "New" && userType === "ADMIN") && (
                                                 <TabPanel className="px-2 py-1">
                                                     <JobRatesList ratesDate={data ? data.RATES : []} />
                                                 </TabPanel>
@@ -823,6 +828,18 @@ function Job({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     helperText={(errors.notes && touched.notes) && errors.notes}
+                                />
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="paymentTerms"
+                                    name="paymentTerms"
+                                    label="Payment Terms"
+                                    value={values.paymentTerms}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.paymentTerms && touched.paymentTerms) && errors.paymentTerms}
                                 />
                                 <Stack direction="row" spacing={1} className='mb-6'>
                                     <div className='bg-orange-200 px-2'>MSA Document</div>
