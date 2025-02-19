@@ -107,11 +107,29 @@ const TimesheetAdminList = ({ employeeId, status }) => {
             </>
         );
     };
-    const CustomJobTypeRenderer = ({ value }) => (
-        <span className='rag-blue-bg badgeSpan'>
-            {value}
-        </span>
-    );
+    
+    const CustomJobTypeRenderer = ({ value }) => {
+        let className = 'badgeSpan';
+        switch (value) {
+            case 'WEEKLY':
+                className += ' rag-green-bg';
+                break;
+            case 'MONTHLY':
+                className += ' rag-red-bg';
+                break;
+            case 'BIWEEKLY':
+                className += ' rag-red-bg';
+                break;
+            default:
+                className += ' rag-orange-bg';
+                break;
+        }
+        return (
+            <span className={className}>
+                {value}
+            </span>
+        );
+    };
     const CustomHoursRenderer = ({ value }) => (
         <span className='rag-gray-bg badgeSpan'>
             {value}

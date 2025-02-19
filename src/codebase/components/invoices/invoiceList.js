@@ -48,7 +48,7 @@ const InvoiceList = () => {
 
     const getList = () => {
         setData({ data: [] });
-        let apiUrl = APIPath + "/getinvoices"
+        let apiUrl = APIPath + "/getallpendinginvoices"
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -88,7 +88,7 @@ const InvoiceList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="EXPENSES" />
+                {/* <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="MY_TIMESHEETS" timesheetNumber={props.data.timesheetNumber} /> */}
             </>
         );
     };
@@ -99,43 +99,79 @@ const InvoiceList = () => {
             </>
         );
     };
-    const CustomAmountComponent = (props) => {
+    
+    const CustomJobTypeRenderer = ({ value }) => {
+        let className = 'badgeSpan';
+        switch (value) {
+            case 'WEEKLY':
+                className += ' rag-green-bg';
+                break;
+            case 'MONTHLY':
+                className += ' rag-red-bg';
+                break;
+            case 'BIWEEKLY':
+                className += ' rag-red-bg';
+                break;
+            default:
+                className += ' rag-orange-bg';
+                break;
+        }
         return (
-            <>
-                {props.data.currencyType === 'USD' ?
-                    <span className="rag-blue-bg badgeSpan">$ </span> :
-                    <span className="rag-gray-bg badgeSpan">₹ </span>
-                }<span className="ml-4">{props.data.currencyType} {props.value}</span>
-            </>
+            <span className={className}>
+                {value}
+            </span>
         );
     };
-    const CustomCategoryComponent = (props) => {
+    const CustomHoursRenderer = ({ value }) => (
+        <span className='rag-gray-bg badgeSpan'>
+            {value}
+        </span>
+    );
+    const CustomStatusRenderer = ({ value }) => {
+        let className = 'badgeSpan';
+        switch (value) {
+            case 'Approved':
+                className += ' rag-green-bg';
+                break;
+            case 'Rejected':
+                className += ' rag-red-bg';
+                break;
+            case 'SentBack':
+                className += ' rag-red-bg';
+                break;
+            default:
+                className += ' rag-orange-bg';
+                break;
+        }
         return (
-            <>
-                {props.data.category === 'Company' ?
-                    <span className="rag-blue-bg badgeSpan">{props.value}</span> :
-                    props.data.category === 'Employee' ?
-                        <span className="rag-gray-bg badgeSpan">{props.value}</span> :
-                        <span className="rag-red-bg badgeSpan">{props.value}</span>
-                }
-            </>
+            <span className={className}>
+                {value}
+            </span>
         );
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        {
-            field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
-        },
         { field: "Id", maxWidth: 50 },
-        { field: "expenseTypeId", filter: true },
+        { field: "employeeID", headerName: 'E ID', maxWidth: 50 },
+        { field: "invoiceNumber", filter: true },
+        { field: "jobID", headerName: 'J ID', filter: true, maxWidth: 90 },
+        { field: "jobTitle", filter: true },
+        { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
+        // { field: "jobStartDate", filter: true },
+        // { field: "jobEndDate", filter: true },
+        { field: "clientName", filter: true },
+        { field: "invoiceDate", filter: true },
+        { field: "startDate", filter: true },
+        { field: "endDate", filter: true },
+        { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer },
         {
-            field: "amount", filter: true, cellRenderer: CustomAmountComponent
+            field: "status", filter: true,
+            cellRenderer: CustomStatusRenderer
         },
-        { field: "category", filter: true, cellRenderer: CustomCategoryComponent },
-        { field: "companyName", filter: true },
-        { field: "employeeName", filter: true },
-        { field: "createdDate", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false }
+        {
+            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 90, resizable: true
+        },
+        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 110, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
