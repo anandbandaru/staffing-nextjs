@@ -13,6 +13,9 @@ import PendingList from "../timesheetentry/pendingList";
 import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 import ReplyAllOutlinedIcon from '@mui/icons-material/ReplyAllOutlined';
 import TimesheetRemindersList from "./timesheetRemindersList";
+import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
 
 const TimeSheetsMain = () => {
     const { APIPath } = useContext(Context);
@@ -57,18 +60,59 @@ const TimeSheetsMain = () => {
         getEmployeesList();
     }, []);
 
+    // BURGER MENU
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedTabDD, setSelectedTabDD] = useState(0);
+    const handleMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = (tabIndex) => {
+        setAnchorEl(null);
+        if (tabIndex !== undefined) {
+            setSelectedTabDD(tabIndex);
+        }
+    };
+
+    const allTabs = [
+        { name: 'Yet to Submit', icon: <TimerOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Reminders', icon: <NotificationAddIcon className="mr-1" fontSize="small" /> },
+        { name: 'Sent Back', icon: <ReplyAllOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Pending Approval', icon: <CheckOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Approved', icon: <CheckCircleOutlinedIcon className="mr-1" fontSize="small" /> }
+    ];
+
     return (
         <>
             <div className="timeSheetMainHolder pt-6">
 
-                <Tabs selectedIndex={tabIndex}
-                    onSelect={(index) => setTabIndex(index)}>
-                    <TabList className="subTabsListHolder">
-                        <Tab><TimerOutlinedIcon className="mr-1" />Yet to Submit</Tab>
-                        <Tab><NotificationAddIcon className="mr-1" />Reminders</Tab>
-                        <Tab><ReplyAllOutlinedIcon className="mr-1" />Sent Back</Tab>
-                        <Tab><CheckOutlinedIcon className="mr-1" />Pending Approval</Tab>
-                        <Tab><CheckCircleOutlinedIcon className="mr-1" />Approved</Tab>
+                <Tabs selectedIndex={selectedTabDD}
+                    onSelect={(index) => setSelectedTabDD(index)}>
+                    <TabList className="top2TabsListHolder">
+                        <span className="top2TabsMenu bg-top2Tab pb-2 pt-1 text-white">
+                            <IconButton
+                                size="small"
+                                color="inherit"
+                                aria-label="menu"
+                                onClick={handleMenuClick}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={() => handleMenuClose()}
+                            >
+                                {allTabs.map((tab, index) => (
+                                    <MenuItem key={tab.name} onClick={() => handleMenuClose(index)}>
+                                        {tab.icon}{tab.name}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </span>
+                        {allTabs.map(tab => (
+                            <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
+                        ))}
                     </TabList>
 
                     <TabPanel className="px-0">
