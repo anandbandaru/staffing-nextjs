@@ -7,7 +7,7 @@
     position: relative;
 }
 .div_dateHolder{
-    float: right;
+    /* float: right; */
 }
 .divTitle{
     font-size: 12px !important;

@@ -296,9 +296,20 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                     <div className="div_contentHolder" ref={contentRef}>
                                                         <div className="div_dateHolder mb-6">
                                                             <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
-                                                                <div className='w-[130px] divTitle'>Invoice Date:</div>
                                                                 <TextField
-                                                                    className="w-[100px] tboxBig"
+                                                                    className="tboxBig"
+                                                                    variant="standard"
+                                                                    size="small"
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    id="invoiceNumber"
+                                                                    name="invoiceNumber"
+                                                                    disabled={true}
+                                                                    value={invoiceNumber}
+                                                                />
+                                                                <div className='divTitle'>Invoice Date:</div>
+                                                                <TextField
+                                                                    className="tboxBig"
                                                                     size="small"
                                                                     margin="normal"
                                                                     fullWidth
@@ -502,7 +513,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                             </ul>
                                                         </div>
                                                     )}
-                                                    <div className={`${clientDocumentData.data[0] ? 'DivButtonsHolder' : ''}`}>
+                                                    <div className={`${clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? 'DivButtonsHolder' : ''}`}>
                                                         {isSubmitting ? (
                                                             <div className="spinner"></div>
                                                         ) : (

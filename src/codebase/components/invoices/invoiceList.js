@@ -93,7 +93,7 @@ const InvoiceList = () => {
                     operation="View"
                     manualLoadData={manualLoadData}
                     invoiceNumber={props.data.invoiceNumber}
-                    timesheetNumber={props.data.invoiceNumber.replace(/^I-/, '')}
+                    timesheetNumber={props.data.invoiceNumber.replace(/^INV-/, 'T-')}
                     employeeID={props.data.employeeID}
                     jobID={props.data.jobID}
                     startDate={props.data.startDate}

@@ -212,18 +212,18 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                     {uniqueJobNames.map((jobName, tabIndex) => {
                                         const jobDetails = data.find(item => item.jobName === jobName);
                                         return (
-                                            <TabPanel key={tabIndex} className="w-full bg-slate-200">
+                                            <TabPanel key={tabIndex} className="w-full bg-slate-100 p-0">
 
                                                 <TimesheetEntryMetadata timesheet={jobDetails} />
 
                                                 <FieldArray name="timesheets">
                                                     {({ remove, push }) => (
                                                         <Box
-                                                            className='p-4'
+                                                            className='px-4 pb-6'
                                                             sx={{
                                                                 display: 'grid',
-                                                                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                                                                gap: 1,
+                                                                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                                                                gap: 2,
                                                             }}
                                                         >
                                                             {formik.values.timesheets
@@ -231,14 +231,14 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                                                 .map((timesheet, index) => (
                                                                     <div key={index} className='bg-slate-100 relative'>
                                                                         <Card variant="outlined">
-                                                                            <CardContent key={index} className='bg-slate-100'>
+                                                                            <CardContent key={index} className='bg-white'>
                                                                                 <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                                                                                    TIMESHEET ID
+                                                                                    TIMESHEET NUMBER
                                                                                 </Typography>
-                                                                                <div title="Pending days" className='badgeSpan rag-graylight-bg absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
+                                                                                <div title="Pending days" className='bg-orange-800 badgeSpan text-white absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
                                                                                     {timesheet.daysPending}
                                                                                 </div>
-                                                                                <div title="Mode" className='badgeSpan bg-orange-400 modeDivContainer' sx={{ color: 'text.secondary', fontSize: 11 }}>
+                                                                                <div title="Mode" className='modeDivContainer' sx={{ color: 'text.secondary', fontSize: 11 }}>
                                                                                     MODE: {mode}
                                                                                 </div>
                                                                                 <Typography variant="h5" component="div">
