@@ -148,11 +148,18 @@ const InvoiceList = () => {
             </span>
         );
     };
-    const CustomHoursRenderer = ({ value }) => (
-        <span className='rag-gray-bg badgeSpan'>
-            {value}
-        </span>
-    );
+    const CustomHoursRenderer = ({ value }) => {
+        let className = 'badgeSpan';
+        if(value > 0)
+            className += ' rag-blue-bg';
+        else
+            className += ' rag-gray-bg';
+        return (
+            <span className={className}>
+                {value}
+            </span>
+        );
+    };
     const CustomStatusRenderer = ({ value }) => {
         let className = 'badgeSpan';
         switch (value) {
