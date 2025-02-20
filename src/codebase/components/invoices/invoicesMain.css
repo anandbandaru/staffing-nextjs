@@ -2,8 +2,9 @@
     /* margin:4px; */
 }
 .div_InvoiceHolderMain{
-    border: 1px solid #ccc;
-    padding:5px;
+    /* border: 1px solid #ccc;
+    padding:5px; */
+    position: relative;
 }
 .div_dateHolder{
     float: right;
@@ -41,4 +42,14 @@
     /* position: absolute; */
     left: 19px;
     top: 60px;
+}
+.DivButtonsHolder{
+    position: fixed;
+    top: 87px;
+}
+.div_contentHolder{
+    background-color: rgb(242, 247, 245);
+    padding: 10px;
+    border-radius: 4px;
+    border:1px solid #ccc;
 }

@@ -25,6 +25,7 @@ import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import TimesheetCapturedDayHours from "./capturedDayHours";
+import GenericDetails from "../forms/GenericDetails";
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
@@ -142,6 +143,35 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
             });
     };
 
+    const createGDriveDownloadLink = (viewLink) => {
+        const fileId = viewLink.match(/\/d\/(.*?)\//)[1];
+        return `https://drive.google.com/uc?export=download&id=${fileId}`;
+    };
+    const downloadInvoiceAsPDFAndTSDocuments = () => {
+        downloadInvoiceAsPDF();
+
+        //CLIENT
+        let link = createGDriveDownloadLink(clientDocumentData.data[0].gDriveLink);
+        let a = document.createElement('a');
+        a.href = link;
+        a.target = '_blank';
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        //IP OR VENDOR
+        if (iPVendorDocumentData.data[0]) {
+            let link = createGDriveDownloadLink(iPVendorDocumentData.data[0].gDriveLink);
+            let a = document.createElement('a');
+            a.href = link;
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    };
+
     return (
         <>
             <Stack direction="row" spacing={1}>
@@ -250,7 +280,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                 } = props;
                                 return (
                                     <form onSubmit={handleSubmit} >
-                                        <div ref={contentRef}>
+                                        <div className="div_contentHolder" ref={contentRef}>
                                             <div className="div_dateHolder mb-6">
                                                 <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
                                                     <div className='w-[130px] divTitle'>Invoice Date:</div>
@@ -370,6 +400,10 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             <TimesheetCapturedDayHours timesheetNumber={timesheetNumber} />
                                         </div>
 
+                                        {/* <div className="divTimesheetMetadataHolder my-4">
+                                            <GenericDetails ID={56} operation="View" doLoading={false} moduleName="MY_TIMESHEETS" timesheetNumber={timesheetNumber} />
+                                        </div> */}
+
                                         <TableContainer component={Paper} className="tableContainer">
                                             <Table size="small" aria-label="a dense table">
                                                 <TableHead>
@@ -459,32 +493,36 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                 </ul>
                                             </div>
                                         )}
-                                        {isSubmitting ? (
-                                            <div className="spinner"></div>
-                                        ) : (
-                                            (clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? (
-                                                <Stack direction="row" spacing={2} className='mt-6'>
-                                                    <Button color="secondary" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
-                                                        onClick={downloadInvoiceAsPDF}
-                                                    >
-                                                        <DownloadForOfflineOutlinedIcon className="mr-1" />
-                                                        Download Invoice
-                                                    </Button>
-                                                    <Button color="info" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                        <DownloadForOfflineOutlinedIcon className="mr-1" />
-                                                        Download All
-                                                    </Button>
-                                                    <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                        <SaveOutlinedIcon className="mr-1" />
-                                                        Save
-                                                    </Button>
-                                                </Stack>
-                                            ) :
-                                                <>
-                                                    <Alert severity="error" className="my-4">The related timesheet is not submitted\approved.</Alert>
-                                                </>
-                                            )
-                                        )}
+                                        <div className={`${clientDocumentData.data[0] ? 'DivButtonsHolder' : ''}`}>
+                                            {isSubmitting ? (
+                                                <div className="spinner"></div>
+                                            ) : (
+                                                (clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? (
+                                                    <Stack direction="row" spacing={2} className='mt-6'>
+                                                        <Button color="secondary" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
+                                                            onClick={downloadInvoiceAsPDF}
+                                                        >
+                                                            <DownloadForOfflineOutlinedIcon className="mr-1" />
+                                                            Download Invoice
+                                                        </Button>
+                                                        <Button color="info" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
+                                                            onClick={downloadInvoiceAsPDFAndTSDocuments}
+                                                        >
+                                                            <DownloadForOfflineOutlinedIcon className="mr-1" />
+                                                            Download All
+                                                        </Button>
+                                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                            <SaveOutlinedIcon className="mr-1" />
+                                                            Save
+                                                        </Button>
+                                                    </Stack>
+                                                ) :
+                                                    <>
+                                                        <Alert severity="error" className="my-4">The related timesheet is not submitted\approved.</Alert>
+                                                    </>
+                                                )
+                                            )}
+                                        </div>
                                     </form>
                                 );
                             }}
