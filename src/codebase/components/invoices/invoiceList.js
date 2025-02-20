@@ -7,6 +7,7 @@ import InvoicesListToolbar from './invoicesListToolbar'
 import GenericDetails from "../forms/GenericDetails";
 // import ExpenseEdit from "./expenseEdit";
 import CustomSnackbar from "../snackbar/snackbar";
+import InvoiceView from "./invoiceView";
 
 const InvoiceList = () => {
     const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
@@ -71,7 +72,7 @@ const InvoiceList = () => {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
                         else
-                            showSnackbar('success', "Expenses Data fetched");
+                            showSnackbar('success', "Invoices Data fetched");
                     }
                     setApiLoading(false);
                 },
@@ -88,7 +89,32 @@ const InvoiceList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                {/* <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="MY_TIMESHEETS" timesheetNumber={props.data.timesheetNumber} /> */}
+                <InvoiceView
+                    operation="View"
+                    manualLoadData={manualLoadData}
+                    invoiceNumber={props.data.invoiceNumber}
+                    timesheetNumber={props.data.invoiceNumber.replace(/^I-/, '')}
+                    employeeID={props.data.employeeID}
+                    jobID={props.data.jobID}
+                    startDate={props.data.startDate}
+                    endDate={props.data.endDate}
+                    totalHours={props.data.totalHours}
+                    status={props.data.status}
+                    jobType={props.data.jobType}
+                    jobStartDate={props.data.jobStartDate}
+                    jobEndDate={props.data.jobEndDate}
+                    jobName={props.data.jobName}
+                    jobTitle={props.data.jobTitle}
+                    clientName={props.data.clientName}
+                    implementationPartnerName={props.data.implementationPartnerName}
+                    vendorName={props.data.vendorName}
+                    daysPending={props.data.daysPending}
+                    employeeName={props.data.employeeName}
+                    personalEmail={props.data.personalEmail}
+                    invoiceDate={props.data.invoiceDate}
+                    showSnackbar={showSnackbar}
+                    rate={props.data.rate}
+                />
             </>
         );
     };
@@ -99,7 +125,7 @@ const InvoiceList = () => {
             </>
         );
     };
-    
+
     const CustomJobTypeRenderer = ({ value }) => {
         let className = 'badgeSpan';
         switch (value) {
@@ -151,21 +177,19 @@ const InvoiceList = () => {
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "Id", maxWidth: 50 },
         { field: "employeeID", headerName: 'E ID', maxWidth: 50 },
         { field: "invoiceNumber", filter: true },
         { field: "jobID", headerName: 'J ID', filter: true, maxWidth: 90 },
         { field: "jobTitle", filter: true },
-        { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
-        // { field: "jobStartDate", filter: true },
-        // { field: "jobEndDate", filter: true },
+        { field: "jobType", headerName: 'I Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
         { field: "clientName", filter: true },
-        { field: "invoiceDate", filter: true },
-        { field: "startDate", filter: true },
-        { field: "endDate", filter: true },
-        { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer },
+        { field: "invoiceDate", filter: true, maxWidth: 130 },
+        { field: "startDate", filter: true, maxWidth: 130 },
+        { field: "endDate", filter: true, maxWidth: 130 },
+        { field: "rate", filter: true, maxWidth: 100 },
+        { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 130 },
         {
-            field: "status", filter: true,
+            field: "status", filter: true, maxWidth: 100,
             cellRenderer: CustomStatusRenderer
         },
         {
