@@ -49,12 +49,13 @@
 }
 .modeDivContainer{
     position: absolute;
-    top: 6px;
+    top: 5px;
     left: 160px;
-    background-color: #000;
+    background-color: #ece7e7;
     padding: 0px 3px;
     border-radius: 4px;
-    color:#fff;
+    color:#000;
+    border:1px solid #ccc
 }
 .reminderHistoryDiv{
     position: absolute;
