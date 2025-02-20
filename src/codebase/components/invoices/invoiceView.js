@@ -350,6 +350,17 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                             <TableCell component="th" scope="row" className="divTitle bg-white">Timesheet Number</TableCell>
                                                             <TableCell align="right" className="divValue3 bg-white">{timesheetNumber}</TableCell>
                                                         </TableRow>
+                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Status</TableCell>
+                                                            <TableCell align="right" className="divValue3 bg-white">
+                                                                {clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved"
+                                                                    ?
+                                                                    <span className="text-green-500">Approved</span>
+                                                                    :
+                                                                    <span className="text-red-500">Pending Approval\Submission</span>
+                                                                }
+                                                            </TableCell>
+                                                        </TableRow>
                                                     </TableBody>
                                                 </Table>
                                             </TableContainer>
@@ -451,7 +462,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                         {isSubmitting ? (
                                             <div className="spinner"></div>
                                         ) : (
-                                            (clientDocumentData.data[0] ? (
+                                            (clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? (
                                                 <Stack direction="row" spacing={2} className='mt-6'>
                                                     <Button color="secondary" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
                                                         onClick={downloadInvoiceAsPDF}

@@ -4,6 +4,7 @@ import CustomSnackbar from "../snackbar/snackbar";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import { Button } from "@mui/material";
 
 const TimesheetCapturedDayHours = ({ timesheetNumber }) => {
     const { APIPath } = useContext(Context);
@@ -25,23 +26,9 @@ const TimesheetCapturedDayHours = ({ timesheetNumber }) => {
         setSnackbarOpen(true);
     };
 
-    useEffect(() => {
-        // console.log("TimesheetCapturedHours: useEffect: timesheetId: " + timesheetId);
-        delaydMockLoading();
-    }, [timesheetNumber]);
-
-    function manualLoadData() {
-        setApiLoading(true);
-        delaydMockLoading();
-    }
-
-    function delaydMockLoading() {
-        setApiLoading(true);
-        setItemCount(0);
-        setTimeout(() => {
-            getList();
-        }, 1);
-    }
+    // useEffect(() => {
+    //     delaydMockLoading();
+    // }, [timesheetNumber]);
 
     const getList = () => {
         setData({ data: [] });
@@ -70,6 +57,10 @@ const TimesheetCapturedDayHours = ({ timesheetNumber }) => {
                         else {
                             setData(result);
                             setItemCount(result.total);
+                            if(result.total === 0)
+                            {
+                                setDataAPIError("No hours captured")
+                            }
                             showSnackbar('success', "Captured Hours Data fetched");
                         }
                     }
@@ -89,12 +80,6 @@ const TimesheetCapturedDayHours = ({ timesheetNumber }) => {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         return days[new Date(date).getDay()];
     };
-
-    const CustomJobTypeRenderer = ({ value }) => (
-        <span className='rag-blue-bg badgeSpan'>
-            {value}
-        </span>
-    );
     const CustomDayRenderer = ({ value }) => {
         const dayOfWeek = getDayOfWeek(value);
         const isWeekend = dayOfWeek === 'Sunday' || dayOfWeek === 'Saturday';
@@ -140,6 +125,9 @@ const TimesheetCapturedDayHours = ({ timesheetNumber }) => {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
+            <Button onClick={getList}>
+                Load Date wise Hours
+            </Button>
             <div className="flex flex-grow flex-1 rounded-md text-sm justify-between place-items-center space-x-2 ">
                 {data.data && data.data.length > 0 ? (
                     <div
@@ -157,7 +145,7 @@ const TimesheetCapturedDayHours = ({ timesheetNumber }) => {
                         />
                     </div>
                 ) : (
-                    <p>No captured hours</p>
+                    <p>{dataAPIError}</p>
                 )}
             </div>
         </>
