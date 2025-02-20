@@ -116,8 +116,8 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                     showSnackbar('error', "Error saving Timesheet data");
                 } else {
                     setInsertedTimesheetId(resp.data.RELATED_ID);
-                    let fileNameC = "CLIENT_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber + getCurrentDateTime() + "_";
-                    let fileNameIPV = "IMP_VEN_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber + getCurrentDateTime() + "_";
+                    let fileNameC = "CLIENT_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber + "_" + getCurrentDateTime();
+                    let fileNameIPV = "IMP_VEN_APP_E:" + timesheet.employeeID + "-T:" + timesheet.timesheetNumber + "_" + getCurrentDateTime();
                     //alert("BEFORE INTERNAL FILE UPLOAD")
                     await UploadTimesheetFiles(fileC, fileNameC, 'TIMESHEETS', resp.data.RELATED_ID, "Client Approved");
                     if (fileIPV)

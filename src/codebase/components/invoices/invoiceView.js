@@ -25,7 +25,11 @@ import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import TimesheetCapturedDayHours from "./capturedDayHours";
-import GenericDetails from "../forms/GenericDetails";
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Box from '@mui/material/Box';
+import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import InvoiceTimesheetDetails from "./invoiceTimesheetDetails";
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
@@ -138,7 +142,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
             .then((canvas) => {
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF();
-                pdf.addImage(imgData, 'PNG', 10, 0);
+                pdf.addImage(imgData, 'PNG', 10, 10);
                 pdf.save("Invoice_" + invoiceNumber + ".pdf");
             });
     };
@@ -203,331 +207,346 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <div className="div_InvoiceHolderMain" >
 
-                        <Formik
-                            enableReinitialize
-                            initialValues={{
-                                invoiceNumber: invoiceNumber,
-                                invoiceDate: new Date(invoiceDate).toISOString().slice(0, 10),
-                                totalHours: totalHours,
-                                employeeID: employeeID,
-                                jobID: jobID,
-                                startDate: startDate,
-                                endDate: endDate,
-                                status: status,
-                                jobType: jobType,
-                                jobStartDate: jobStartDate,
-                                jobEndDate: jobEndDate,
-                                jobName: jobName,
-                                jobTitle: jobTitle,
-                                clientName: clientName,
-                                implementationPartnerName: implementationPartnerName,
-                                vendorName: vendorName,
-                                daysPending: daysPending,
-                                employeeName: employeeName,
-                                personalEmail: personalEmail,
-                                rate: rate,
-                                timesheetNumber: timesheetNumber
-                            }}
-                            onSubmit={(values, { setSubmitting }) => {
-                                var finalAPI = APIPath + "/saveinvoice";
+                    <Box sx={{ width: '100%', typography: 'body1' }}>
+                        <Tabs>
+                            <TabList className="subTabsListHolder">
+                                <Tab><PaidOutlinedIcon className="mr-1" />Invoice</Tab>
+                                <Tab><MoreTimeIcon className="mr-1" />Related Timesheet</Tab>
+                            </TabList>
 
-                                setSubmitionCompleted(false);
-                                setSubmitting(true);
-                                axios.post(finalAPI,
-                                    values,
-                                    {
-                                        headers: {
-                                            'Access-Control-Allow-Origin': '*',
-                                            'Content-Type': 'application/json',
-                                            'ngrok-skip-browser-warning': 'true',
-                                        }
-                                    },
-                                ).then((resp) => {
-                                    setSubmitting(false);
-                                    setSubmitionCompleted(true);
-                                    if (resp.data.STATUS === "FAIL")
-                                        showSnackbar('error', "Error saving Invoice data");
-                                    else
-                                        showSnackbar('success', "Invoice data saved");
-                                }).catch(function (error) {
-                                    setSubmitting(false);
-                                    setSubmitionCompleted(true);
-                                    showSnackbar('error', "Error saving Invoice data");
-                                });
-                            }}
+                            <TabPanel className="px-2">
+                                <div className="div_InvoiceHolderMain" >
 
-                            validationSchema={Yup.object().shape({
-                                invoiceDate: Yup.string()
-                                    .required('invoice Date Required'),
-                                totalHours: Yup.string()
-                                    .required('Total Hours Required'),
-                                rate: Yup.string()
-                                    .required('Rate Required'),
-                            })}
-                        >
-                            {(props) => {
-                                const {
-                                    values,
-                                    touched,
-                                    errors,
-                                    dirty,
-                                    isSubmitting,
-                                    handleChange,
-                                    handleBlur,
-                                    handleSubmit
-                                } = props;
-                                return (
-                                    <form onSubmit={handleSubmit} >
-                                        <div className="div_contentHolder" ref={contentRef}>
-                                            <div className="div_dateHolder mb-6">
-                                                <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
-                                                    <div className='w-[130px] divTitle'>Invoice Date:</div>
-                                                    <TextField
-                                                        className="w-[100px] tboxBig"
-                                                        size="small"
-                                                        margin="normal"
-                                                        fullWidth
-                                                        id="invoiceDate"
-                                                        name="invoiceDate"
-                                                        type="date"
-                                                        value={values.invoiceDate}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        helperText={(errors.invoiceDate && touched.invoiceDate) && errors.invoiceDate}
-                                                    />
-                                                </Stack>
-                                            </div>
+                                    <Formik
+                                        enableReinitialize
+                                        initialValues={{
+                                            invoiceNumber: invoiceNumber,
+                                            invoiceDate: new Date(invoiceDate).toISOString().slice(0, 10),
+                                            totalHours: totalHours,
+                                            employeeID: employeeID,
+                                            jobID: jobID,
+                                            startDate: startDate,
+                                            endDate: endDate,
+                                            status: status,
+                                            jobType: jobType,
+                                            jobStartDate: jobStartDate,
+                                            jobEndDate: jobEndDate,
+                                            jobName: jobName,
+                                            jobTitle: jobTitle,
+                                            clientName: clientName,
+                                            implementationPartnerName: implementationPartnerName,
+                                            vendorName: vendorName,
+                                            daysPending: daysPending,
+                                            employeeName: employeeName,
+                                            personalEmail: personalEmail,
+                                            rate: rate,
+                                            timesheetNumber: timesheetNumber
+                                        }}
+                                        onSubmit={(values, { setSubmitting }) => {
+                                            var finalAPI = APIPath + "/saveinvoice";
 
-                                            <TableContainer component={Paper} className="tableContainer mb-6">
-                                                <Table size="small" aria-label="a dense table">
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <StyledTableCell align="left">Title</StyledTableCell>
-                                                            <StyledTableCell align="right">Value</StyledTableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Vendor Name</TableCell>
-                                                            <TableCell align="right" className="divValue3 bg-white">{vendorName}</TableCell>
-                                                        </TableRow>
-                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Employee Name</TableCell>
-                                                            <TableCell align="right" className="divValue3 bg-white">{employeeName}</TableCell>
-                                                        </TableRow>
-                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Job Name</TableCell>
-                                                            <TableCell align="right" className="divValue3 bg-white">{jobName}</TableCell>
-                                                        </TableRow>
-                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Job Title</TableCell>
-                                                            <TableCell align="right" className="divValue3 bg-white">{jobTitle}</TableCell>
-                                                        </TableRow>
-                                                    </TableBody>
-                                                </Table>
-                                            </TableContainer>
+                                            setSubmitionCompleted(false);
+                                            setSubmitting(true);
+                                            axios.post(finalAPI,
+                                                values,
+                                                {
+                                                    headers: {
+                                                        'Access-Control-Allow-Origin': '*',
+                                                        'Content-Type': 'application/json',
+                                                        'ngrok-skip-browser-warning': 'true',
+                                                    }
+                                                },
+                                            ).then((resp) => {
+                                                setSubmitting(false);
+                                                setSubmitionCompleted(true);
+                                                if (resp.data.STATUS === "FAIL")
+                                                    showSnackbar('error', "Error saving Invoice data");
+                                                else
+                                                    showSnackbar('success', "Invoice data saved");
+                                            }).catch(function (error) {
+                                                setSubmitting(false);
+                                                setSubmitionCompleted(true);
+                                                showSnackbar('error', "Error saving Invoice data");
+                                            });
+                                        }}
 
-                                            <div className="mb-6">
-                                                <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
-                                                    <div className='w-[130px] divTitleBig'>Rate:</div>
-                                                    <TextField
-                                                        className="w-[100px] tboxBig"
-                                                        size="small"
-                                                        margin="normal"
-                                                        fullWidth
-                                                        id="rate"
-                                                        name="rate"
-                                                        type="number"
-                                                        value={values.rate}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        helperText={(errors.rate && touched.rate) && errors.rate}
-                                                    />
-                                                </Stack>
-                                            </div>
+                                        validationSchema={Yup.object().shape({
+                                            invoiceDate: Yup.string()
+                                                .required('invoice Date Required'),
+                                            totalHours: Yup.string()
+                                                .required('Total Hours Required'),
+                                            rate: Yup.string()
+                                                .required('Rate Required'),
+                                        })}
+                                    >
+                                        {(props) => {
+                                            const {
+                                                values,
+                                                touched,
+                                                errors,
+                                                dirty,
+                                                isSubmitting,
+                                                handleChange,
+                                                handleBlur,
+                                                handleSubmit
+                                            } = props;
+                                            return (
+                                                <form onSubmit={handleSubmit} >
+                                                    <div className="div_contentHolder" ref={contentRef}>
+                                                        <div className="div_dateHolder mb-6">
+                                                            <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
+                                                                <div className='w-[130px] divTitle'>Invoice Date:</div>
+                                                                <TextField
+                                                                    className="w-[100px] tboxBig"
+                                                                    size="small"
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    id="invoiceDate"
+                                                                    name="invoiceDate"
+                                                                    type="date"
+                                                                    value={values.invoiceDate}
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    helperText={(errors.invoiceDate && touched.invoiceDate) && errors.invoiceDate}
+                                                                />
+                                                            </Stack>
+                                                        </div>
 
-                                            <div className="mb-6">
-                                                <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
-                                                    <div className='w-[130px] divTitleBig'>Total Hours:</div>
-                                                    <TextField
-                                                        className="w-[100px] tboxBig"
-                                                        size="small"
-                                                        margin="normal"
-                                                        fullWidth
-                                                        type="number"
-                                                        id="totalHours"
-                                                        name="totalHours"
-                                                        value={values.totalHours}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        helperText={(errors.totalHours && touched.totalHours) && errors.totalHours}
-                                                    />
-                                                </Stack>
-                                            </div>
+                                                        <TableContainer component={Paper} className="tableContainer mb-6">
+                                                            <Table size="small" aria-label="a dense table">
+                                                                <TableHead>
+                                                                    <TableRow>
+                                                                        <StyledTableCell align="left">Title</StyledTableCell>
+                                                                        <StyledTableCell align="right">Value</StyledTableCell>
+                                                                    </TableRow>
+                                                                </TableHead>
+                                                                <TableBody>
+                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Vendor Name</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{vendorName}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Employee Name</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{employeeName}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Job Name</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{jobName}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Job Title</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{jobTitle}</TableCell>
+                                                                    </TableRow>
+                                                                </TableBody>
+                                                            </Table>
+                                                        </TableContainer>
 
-                                            <TableContainer component={Paper} className="tableContainer">
-                                                <Table size="small" aria-label="a dense table">
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <StyledTableCell align="left">Timesheet Details</StyledTableCell>
-                                                            <StyledTableCell align="right"></StyledTableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Timesheet Number</TableCell>
-                                                            <TableCell align="right" className="divValue3 bg-white">{timesheetNumber}</TableCell>
-                                                        </TableRow>
-                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Status</TableCell>
-                                                            <TableCell align="right" className="divValue3 bg-white">
-                                                                {clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved"
-                                                                    ?
-                                                                    <span className="text-green-500">Approved</span>
-                                                                    :
-                                                                    <span className="text-red-500">Pending Approval\Submission</span>
-                                                                }
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    </TableBody>
-                                                </Table>
-                                            </TableContainer>
-                                        </div> {/* End of content div */}
+                                                        <div className="mb-6">
+                                                            <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
+                                                                <div className='w-[130px] divTitleBig'>Rate:</div>
+                                                                <TextField
+                                                                    className="w-[100px] tboxBig"
+                                                                    size="small"
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    id="rate"
+                                                                    name="rate"
+                                                                    type="number"
+                                                                    value={values.rate}
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    helperText={(errors.rate && touched.rate) && errors.rate}
+                                                                />
+                                                            </Stack>
+                                                        </div>
 
-                                        <div className="divHoursHolder my-4">
-                                            <TimesheetCapturedDayHours timesheetNumber={timesheetNumber} />
-                                        </div>
+                                                        <div className="mb-6">
+                                                            <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
+                                                                <div className='w-[130px] divTitleBig'>Total Hours:</div>
+                                                                <TextField
+                                                                    className="w-[100px] tboxBig"
+                                                                    size="small"
+                                                                    margin="normal"
+                                                                    fullWidth
+                                                                    type="number"
+                                                                    id="totalHours"
+                                                                    name="totalHours"
+                                                                    value={values.totalHours}
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    helperText={(errors.totalHours && touched.totalHours) && errors.totalHours}
+                                                                />
+                                                            </Stack>
+                                                        </div>
 
-                                        {/* <div className="divTimesheetMetadataHolder my-4">
-                                            <GenericDetails ID={56} operation="View" doLoading={false} moduleName="MY_TIMESHEETS" timesheetNumber={timesheetNumber} />
-                                        </div> */}
+                                                        <TableContainer component={Paper} className="tableContainer">
+                                                            <Table size="small" aria-label="a dense table">
+                                                                <TableHead>
+                                                                    <TableRow>
+                                                                        <StyledTableCell align="left">Timesheet Details</StyledTableCell>
+                                                                        <StyledTableCell align="right"></StyledTableCell>
+                                                                    </TableRow>
+                                                                </TableHead>
+                                                                <TableBody>
+                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Timesheet Number</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{timesheetNumber}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Status</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">
+                                                                            {clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved"
+                                                                                ?
+                                                                                <span className="text-green-500">Approved</span>
+                                                                                :
+                                                                                <span className="text-red-500">Pending Approval\Submission</span>
+                                                                            }
+                                                                        </TableCell>
+                                                                    </TableRow>
+                                                                </TableBody>
+                                                            </Table>
+                                                        </TableContainer>
+                                                    </div> {/* End of content div */}
 
-                                        <TableContainer component={Paper} className="tableContainer">
-                                            <Table size="small" aria-label="a dense table">
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <StyledTableCell align="left">Timesheet Documents</StyledTableCell>
-                                                        <StyledTableCell align="right"></StyledTableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Client Approved Document</TableCell>
-                                                        <TableCell align="right" className="divValue2">
-                                                            {apiLoading ?
+                                                    <div className="divHoursHolder my-4">
+                                                        <TimesheetCapturedDayHours timesheetNumber={timesheetNumber} />
+                                                    </div>
+
+                                                    <TableContainer component={Paper} className="tableContainer">
+                                                        <Table size="small" aria-label="a dense table">
+                                                            <TableHead>
+                                                                <TableRow>
+                                                                    <StyledTableCell align="left">Timesheet Documents</StyledTableCell>
+                                                                    <StyledTableCell align="right"></StyledTableCell>
+                                                                </TableRow>
+                                                            </TableHead>
+                                                            <TableBody>
+                                                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                    <TableCell component="th" scope="row" className="divTitle bg-white">Client Approved Document</TableCell>
+                                                                    <TableCell align="right" className="divValue2">
+                                                                        {apiLoading ?
+                                                                            <>
+                                                                                <div className="spinner"></div>
+                                                                            </> :
+                                                                            <>
+                                                                                {clientDocumentData.data[0] ? (
+                                                                                    <Link className='float-right'
+                                                                                        href={clientDocumentData.data[0].gDriveLink}
+                                                                                        target="_blank"
+                                                                                        rel="noopener noreferrer"
+                                                                                        underline="none"
+                                                                                    >
+                                                                                        <Button
+                                                                                            size='small'
+                                                                                            variant="contained"
+                                                                                            color="info"
+                                                                                            startIcon={<InsertLinkOutlinedIcon />}
+                                                                                        >
+                                                                                            Open
+                                                                                        </Button>
+                                                                                    </Link>
+                                                                                ) :
+                                                                                    <>
+                                                                                        <span className="text-red-500">Missing document</span>
+                                                                                    </>
+                                                                                }
+                                                                            </>
+                                                                        }
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                    <TableCell component="th" scope="row" className="divTitle">Implementation Partner / Vendor Approved Document</TableCell>
+                                                                    <TableCell align="right" className="divValue2">
+                                                                        {apiLoading ?
+                                                                            <>
+                                                                                <div className="spinner"></div>
+                                                                            </> :
+                                                                            <>
+                                                                                {iPVendorDocumentData.data[0] ? (
+                                                                                    <Link className='float-right'
+                                                                                        href={iPVendorDocumentData.data[0].gDriveLink}
+                                                                                        target="_blank"
+                                                                                        rel="noopener noreferrer"
+                                                                                        underline="none"
+                                                                                    >
+                                                                                        <Button
+                                                                                            size='small'
+                                                                                            variant="contained"
+                                                                                            color="info"
+                                                                                            startIcon={<InsertLinkOutlinedIcon />}
+                                                                                        >
+                                                                                            Open
+                                                                                        </Button>
+                                                                                    </Link>
+                                                                                ) :
+                                                                                    <>
+                                                                                        <span className="">No document</span>
+                                                                                    </>
+                                                                                }
+                                                                            </>
+                                                                        }
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            </TableBody>
+                                                        </Table>
+                                                    </TableContainer>
+
+                                                    {Object.keys(errors).length > 0 && (
+                                                        <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
+                                                            <span className='error-summary-heading' >Validation Errors:</span>
+                                                            <ul>
+                                                                {Object.keys(errors).map((key) => (
+                                                                    <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    )}
+                                                    <div className={`${clientDocumentData.data[0] ? 'DivButtonsHolder' : ''}`}>
+                                                        {isSubmitting ? (
+                                                            <div className="spinner"></div>
+                                                        ) : (
+                                                            (clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? (
+                                                                <Stack direction="row" spacing={2} className='mt-6'>
+                                                                    <Button color="secondary" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
+                                                                        onClick={downloadInvoiceAsPDF}
+                                                                    >
+                                                                        <DownloadForOfflineOutlinedIcon className="mr-1" />
+                                                                        Download Invoice
+                                                                    </Button>
+                                                                    <Button color="info" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
+                                                                        onClick={downloadInvoiceAsPDFAndTSDocuments}
+                                                                    >
+                                                                        <DownloadForOfflineOutlinedIcon className="mr-1" />
+                                                                        Download All
+                                                                    </Button>
+                                                                    <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                                        <SaveOutlinedIcon className="mr-1" />
+                                                                        Save
+                                                                    </Button>
+                                                                </Stack>
+                                                            ) :
                                                                 <>
-                                                                    <div className="spinner"></div>
-                                                                </> :
-                                                                <>
-                                                                    {clientDocumentData.data[0] ? (
-                                                                        <Link className='float-right'
-                                                                            href={clientDocumentData.data[0].gDriveLink}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            underline="none"
-                                                                        >
-                                                                            <Button
-                                                                                size='small'
-                                                                                variant="contained"
-                                                                                color="info"
-                                                                                startIcon={<InsertLinkOutlinedIcon />}
-                                                                            >
-                                                                                Open
-                                                                            </Button>
-                                                                        </Link>
-                                                                    ) :
-                                                                        <>
-                                                                            <span className="text-red-500">Missing document</span>
-                                                                        </>
-                                                                    }
+                                                                    <Alert severity="error" className="my-4">The related timesheet is not submitted\approved.</Alert>
                                                                 </>
-                                                            }
-                                                        </TableCell>
-                                                    </TableRow>
-                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                        <TableCell component="th" scope="row" className="divTitle">Implementation Partner / Vendor Approved Document</TableCell>
-                                                        <TableCell align="right" className="divValue2">
-                                                            {apiLoading ?
-                                                                <>
-                                                                    <div className="spinner"></div>
-                                                                </> :
-                                                                <>
-                                                                    {iPVendorDocumentData.data[0] ? (
-                                                                        <Link className='float-right'
-                                                                            href={iPVendorDocumentData.data[0].gDriveLink}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            underline="none"
-                                                                        >
-                                                                            <Button
-                                                                                size='small'
-                                                                                variant="contained"
-                                                                                color="info"
-                                                                                startIcon={<InsertLinkOutlinedIcon />}
-                                                                            >
-                                                                                Open
-                                                                            </Button>
-                                                                        </Link>
-                                                                    ) :
-                                                                        <>
-                                                                            <span className="">No document</span>
-                                                                        </>
-                                                                    }
-                                                                </>
-                                                            }
-                                                        </TableCell>
-                                                    </TableRow>
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </form>
+                                            );
+                                        }}
+                                    </Formik>
+                                </div>
+                            </TabPanel>
+                            <TabPanel className="px-2">
+                                <div className="divTimesheetMetadataHolder my-4">
+                                    <InvoiceTimesheetDetails operation="View" doLoading={true} moduleName="MY_TIMESHEETS" timesheetNumber={timesheetNumber} />
+                                </div>
+                            </TabPanel>
+                        </Tabs>
+                    </Box>
 
-                                        {Object.keys(errors).length > 0 && (
-                                            <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
-                                                <span className='error-summary-heading' >Validation Errors:</span>
-                                                <ul>
-                                                    {Object.keys(errors).map((key) => (
-                                                        <li key={key}><KeyboardArrowRightOutlinedIcon />{errors[key]}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                        <div className={`${clientDocumentData.data[0] ? 'DivButtonsHolder' : ''}`}>
-                                            {isSubmitting ? (
-                                                <div className="spinner"></div>
-                                            ) : (
-                                                (clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? (
-                                                    <Stack direction="row" spacing={2} className='mt-6'>
-                                                        <Button color="secondary" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
-                                                            onClick={downloadInvoiceAsPDF}
-                                                        >
-                                                            <DownloadForOfflineOutlinedIcon className="mr-1" />
-                                                            Download Invoice
-                                                        </Button>
-                                                        <Button color="info" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
-                                                            onClick={downloadInvoiceAsPDFAndTSDocuments}
-                                                        >
-                                                            <DownloadForOfflineOutlinedIcon className="mr-1" />
-                                                            Download All
-                                                        </Button>
-                                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                            <SaveOutlinedIcon className="mr-1" />
-                                                            Save
-                                                        </Button>
-                                                    </Stack>
-                                                ) :
-                                                    <>
-                                                        <Alert severity="error" className="my-4">The related timesheet is not submitted\approved.</Alert>
-                                                    </>
-                                                )
-                                            )}
-                                        </div>
-                                    </form>
-                                );
-                            }}
-                        </Formik>
-                    </div>
+
                 </DialogContent>
             </BootstrapDialog>
         </>
