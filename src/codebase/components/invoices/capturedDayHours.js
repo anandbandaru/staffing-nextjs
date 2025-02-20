@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/context";
-import PendingListToolbar from './pendingListToolbar';
 import CustomSnackbar from "../snackbar/snackbar";
-import { Alert } from "@mui/material";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
-const TimesheetCapturedHours = ({ timesheetId, timesheetNumber }) => {
+const TimesheetCapturedDayHours = ({ timesheetNumber }) => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
@@ -30,7 +28,7 @@ const TimesheetCapturedHours = ({ timesheetId, timesheetNumber }) => {
     useEffect(() => {
         // console.log("TimesheetCapturedHours: useEffect: timesheetId: " + timesheetId);
         delaydMockLoading();
-    }, [timesheetId]);
+    }, [timesheetNumber]);
 
     function manualLoadData() {
         setApiLoading(true);
@@ -48,11 +46,7 @@ const TimesheetCapturedHours = ({ timesheetId, timesheetNumber }) => {
     const getList = () => {
         setData({ data: [] });
         setItemCount(0);
-        let apiUrl = APIPath + "/gettimesheethours/" + timesheetId;
-        if(timesheetNumber !== null)
-        {
-            apiUrl = APIPath + "/gethoursbytimesheetnumber/" + timesheetNumber;
-        }
+        let apiUrl = APIPath + "/gethoursbytimesheetnumber/" + timesheetNumber;
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -115,10 +109,7 @@ const TimesheetCapturedHours = ({ timesheetId, timesheetNumber }) => {
     
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "Id", maxWidth: 50 },
-        { field: "timesheetId", headerName: 'Entry ID', maxWidth: 80 },
         { field: "timesheetNumber", headerName: 'Timesheet ID' },
-        { field: "jobType", headerName: 'Timesheet Frequency', cellRenderer: CustomJobTypeRenderer },
         { field: "day", filter: true, cellRenderer: CustomDayRenderer },
         {
             field: "hours", maxWidth: 80,
@@ -128,16 +119,14 @@ const TimesheetCapturedHours = ({ timesheetId, timesheetNumber }) => {
                 'moreHoursText': params => params.value > 8,
             }
         },
-        { field: "createdDate", maxWidth: 100 },
-        { field: "createdBy" },
     ]);
     const rowClassRules = {
         // apply red to Ford cars
         //'rag-red': params => params.data.firstName === "anand",
     };
     const pagination = true;
-    const paginationPageSize = 20;
-    const paginationPageSizeSelector = [20, 30, 50];
+    const paginationPageSize = 7;
+    const paginationPageSizeSelector = [7, 20, 50];
     const autoSizeStrategy = {
         type: 'fitGridWidth',
         defaultMinWidth: 50
@@ -155,7 +144,7 @@ const TimesheetCapturedHours = ({ timesheetId, timesheetNumber }) => {
                 {data.data && data.data.length > 0 ? (
                     <div
                         className="ag-theme-quartz" // applying the Data Grid theme
-                        style={{ height: 500, width: '100%' }} // the Data Grid will fill the size of the parent container
+                        style={{ height: 340, width: '100%' }} // the Data Grid will fill the size of the parent container
                     >
                         <AgGridReact
                             rowData={data.data}
@@ -175,4 +164,4 @@ const TimesheetCapturedHours = ({ timesheetId, timesheetNumber }) => {
     );
 };
 
-export default TimesheetCapturedHours;
+export default TimesheetCapturedDayHours;
