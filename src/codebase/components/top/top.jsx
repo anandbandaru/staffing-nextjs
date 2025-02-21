@@ -266,8 +266,8 @@ const Top = () => {
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <div className="topLeft px-1 mt-1">
                         <Stack spacing={1} direction="row" className="items-center justify-center">
-                            <img className="icon" src={assets.logo_24} alt="" />
-                            <PriceChangeOutlinedIcon fontSize='large' />
+                            <img className="icon" src={assets.vizionLogo} alt="" />
+                            {/* <PriceChangeOutlinedIcon fontSize='large' /> */}
                         </Stack>
                         <div className="release_version_Div">{configData.releases[0].version}</div>
                     </div>

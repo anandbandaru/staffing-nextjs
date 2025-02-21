@@ -123,10 +123,10 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                     if (fileIPV)
                         await UploadTimesheetFiles(fileIPV, fileNameIPV, 'TIMESHEETS', resp.data.RELATED_ID, "Imp Partner/Vendor Approved");
                     //alert(resp.data.RELATED_ID); // Execute the alert statement after the API call completes
+                    showSnackbar('success', "Timesheet data saved");
                     setIsSubmitSuccess(true);
                     setSubmitting(false);
                     setSubmitionCompleted(true);
-                    showSnackbar('success', "Timesheet data saved");
                     onFormSubmitSuccess();
                 }
             } catch (error) {
@@ -160,7 +160,7 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
             if (resp.data.STATUS !== "SUCCESS") {
                 throw new Error("ERROR: " + resp.data.ERROR.MESSAGE);
             } else {
-                showSnackbar('success', type + ' - File uploaded successfully');
+                //showSnackbar('success', type + ' - File uploaded successfully');
             }
         } catch (error) {
             showSnackbar('error', type + ' - Error while uploading: ' + error.message);
@@ -406,7 +406,7 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                         >
                             Submit
                         </Button>
-                        {formik.isSubmitting && <div className='spinner'></div>}
+                        {formik.isSubmitting && <div className='spinner mt-2'></div>}
                     </Stack>
                 )}
                 {getValidationErrors().length > 0 && (

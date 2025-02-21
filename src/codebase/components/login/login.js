@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { Context } from "../../context/context";
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import { Height } from "@mui/icons-material";
 
 export default function Login() {
     const { refreshPage } = useContext(Context);
@@ -17,7 +18,7 @@ export default function Login() {
                     <CardContent>
                         <Stack spacing={2} direction="column" className="items-center justify-center">
                             <Stack spacing={2} direction="row" className="items-center justify-center">
-                                <img className="icon" src={assets.StaffingLogo} alt="" />
+                                <img className="icon" src={assets.vizionLogo} alt="" />
                             </Stack>
                             <div>Please Login to continue...</div>
                             <Button variant="contained" size="large" className="bg-pink-600"

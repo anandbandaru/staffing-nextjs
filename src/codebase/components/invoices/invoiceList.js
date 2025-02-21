@@ -114,6 +114,7 @@ const InvoiceList = () => {
                     invoiceDate={props.data.invoiceDate}
                     showSnackbar={showSnackbar}
                     rate={props.data.rate}
+                    paymentTerms={props.data.paymentTerms}
                 />
             </>
         );

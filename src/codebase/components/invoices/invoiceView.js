@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { Context } from "../../context/context";
+import { assets } from '../../assets/assets'
 import 'reactjs-popup/dist/index.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -33,9 +34,9 @@ import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
-    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, showSnackbar }) => {
+    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, showSnackbar }) => {
 
-    const { APIPath } = useContext(Context);
+    const { APIPath, userName } = useContext(Context);
     const [doLoading, setDoLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [clientDocumentData, setClientDocumentData] = useState({ data: [] });
@@ -104,7 +105,6 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
             )
     }
     const getIPVendorDocumentDetails = () => {
-        setApiLoading(true);
         let apiUrl = APIPath + "/getlatesttimesheetivdocument/" + timesheetNumber;
         fetch(apiUrl, {
             headers: {
@@ -120,11 +120,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                     else {
                         setIPVendorDocumentData(result);
                     }
-                    setApiLoading(false);
                 },
                 (error) => {
                     setIPVendorDocumentData({});
-                    setApiLoading(false);
                 }
             )
     }
@@ -241,10 +239,12 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             employeeName: employeeName,
                                             personalEmail: personalEmail,
                                             rate: rate,
-                                            timesheetNumber: timesheetNumber
+                                            timesheetNumber: timesheetNumber,
+                                            paymentTerms: paymentTerms,
+                                            createdBy: userName
                                         }}
                                         onSubmit={(values, { setSubmitting }) => {
-                                            var finalAPI = APIPath + "/saveinvoice";
+                                            var finalAPI = APIPath + "/addinvoice";
 
                                             setSubmitionCompleted(false);
                                             setSubmitting(true);
@@ -262,11 +262,12 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                 setSubmitionCompleted(true);
                                                 if (resp.data.STATUS === "FAIL")
                                                     showSnackbar('error', "Error saving Invoice data");
-                                                else
+                                                else {
                                                     showSnackbar('success', "Invoice data saved");
+                                                }
                                             }).catch(function (error) {
                                                 setSubmitting(false);
-                                                setSubmitionCompleted(true);
+                                                setSubmitionCompleted(false);
                                                 showSnackbar('error', "Error saving Invoice data");
                                             });
                                         }}
@@ -294,22 +295,23 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             return (
                                                 <form onSubmit={handleSubmit} >
                                                     <div className="div_contentHolder" ref={contentRef}>
+                                                        <img className="icon" src={assets.vizionLogo} alt="" />
+                                                        <TextField
+                                                            className="tboxBig"
+                                                            variant="standard"
+                                                            size="small"
+                                                            margin="normal"
+                                                            fullWidth
+                                                            id="invoiceNumber"
+                                                            name="invoiceNumber"
+                                                            disabled={true}
+                                                            value={invoiceNumber}
+                                                        />
                                                         <div className="div_dateHolder mb-6">
                                                             <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
+                                                                <div className='divTitleBig'>Invoice Date:</div>
                                                                 <TextField
-                                                                    className="tboxBig"
-                                                                    variant="standard"
-                                                                    size="small"
-                                                                    margin="normal"
-                                                                    fullWidth
-                                                                    id="invoiceNumber"
-                                                                    name="invoiceNumber"
-                                                                    disabled={true}
-                                                                    value={invoiceNumber}
-                                                                />
-                                                                <div className='divTitle'>Invoice Date:</div>
-                                                                <TextField
-                                                                    className="tboxBig"
+                                                                    className="tboxWidthSmall"
                                                                     size="small"
                                                                     margin="normal"
                                                                     fullWidth
@@ -515,7 +517,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                     )}
                                                     <div className={`${clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? 'DivButtonsHolder' : ''}`}>
                                                         {isSubmitting ? (
-                                                            <div className="spinner"></div>
+                                                            <div className="spinner mt-8"></div>
                                                         ) : (
                                                             (clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? (
                                                                 <Stack direction="row" spacing={2} className='mt-6'>
@@ -525,16 +527,18 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                         <DownloadForOfflineOutlinedIcon className="mr-1" />
                                                                         Download Invoice
                                                                     </Button>
-                                                                    <Button color="info" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
+                                                                    {/* <Button color="info" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
                                                                         onClick={downloadInvoiceAsPDFAndTSDocuments}
                                                                     >
                                                                         <DownloadForOfflineOutlinedIcon className="mr-1" />
                                                                         Download All
-                                                                    </Button>
-                                                                    <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                                        <SaveOutlinedIcon className="mr-1" />
-                                                                        Save
-                                                                    </Button>
+                                                                    </Button> */}
+                                                                    {!isSubmitionCompleted && (
+                                                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                                            <SaveOutlinedIcon className="mr-1" />
+                                                                            Save
+                                                                        </Button>
+                                                                    )}
                                                                 </Stack>
                                                             ) :
                                                                 <>

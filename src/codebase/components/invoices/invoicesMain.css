@@ -7,7 +7,7 @@
     position: relative;
 }
 .div_dateHolder{
-    /* float: right; */
+    float: right;
 }
 .divTitle{
     font-size: 12px !important;
@@ -34,7 +34,18 @@
     font-size: 14px !important;
     font-weight: bold !important;
 }
+.tboxBig{
+    width: 220px !important;
+}
 .tboxBig INPUT{
+    font-size: 16px !important;
+    font-weight: bold !important;
+}
+.tboxWidthSmall{
+    width: 160px !important;
+    background-color: rgb(207, 243, 243);
+}
+.tboxWidthSmall INPUT{
     font-size: 16px !important;
     font-weight: bold !important;
 }

@@ -268,7 +268,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                                     TOTAL HOURS: {filteredData[0].hours}
                                                 </div>
                                                 <GenericFilesListSimple moduleId={ID} componentName={moduleName === "MY_TIMESHEETS" ? "TIMESHEETS" : moduleName} />
-                                                <TimesheetCapturedHours timesheetId={ID} />
+                                                <TimesheetCapturedHours timesheetNumber={null} timesheetId={ID} />
                                             </Stack>
                                         </TabPanel>
                                         <TabPanel className="px-2">
