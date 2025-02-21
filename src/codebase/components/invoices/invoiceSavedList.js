@@ -9,7 +9,7 @@ import GenericDetails from "../forms/GenericDetails";
 import CustomSnackbar from "../snackbar/snackbar";
 import InvoiceView from "./invoiceView";
 
-const InvoiceList = () => {
+const InvoiceSavedList = () => {
     const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
@@ -49,7 +49,7 @@ const InvoiceList = () => {
 
     const getList = () => {
         setData({ data: [] });
-        let apiUrl = APIPath + "/getallpendinginvoices";
+        let apiUrl = APIPath + "/getallsavedinvoices";
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -89,7 +89,7 @@ const InvoiceList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <InvoiceView
+                {/* <InvoiceView
                     operation="View"
                     manualLoadData={manualLoadData}
                     invoiceNumber={props.data.invoiceNumber}
@@ -115,7 +115,7 @@ const InvoiceList = () => {
                     showSnackbar={showSnackbar}
                     rate={props.data.rate}
                     paymentTerms={props.data.paymentTerms}
-                />
+                /> */}
             </>
         );
     };
@@ -164,7 +164,7 @@ const InvoiceList = () => {
     const CustomStatusRenderer = ({ value }) => {
         let className = 'badgeSpan';
         switch (value) {
-            case 'Approved':
+            case 'Saved':
                 className += ' rag-green-bg';
                 break;
             case 'Rejected':
@@ -185,7 +185,6 @@ const InvoiceList = () => {
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "employeeID", headerName: 'E ID', maxWidth: 50 },
         { field: "invoiceNumber", filter: true },
         { field: "jobID", headerName: 'J ID', filter: true, maxWidth: 90 },
         { field: "jobTitle", filter: true },
@@ -197,7 +196,7 @@ const InvoiceList = () => {
         { field: "rate", filter: true, maxWidth: 100 },
         { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 130 },
         {
-            field: "status", filter: true, maxWidth: 100,
+            field: "invoiceStatus", filter: true, maxWidth: 100, headerName: 'Status',
             cellRenderer: CustomStatusRenderer
         },
         {
@@ -256,4 +255,4 @@ const InvoiceList = () => {
     )
 }
 
-export default InvoiceList;
+export default InvoiceSavedList;

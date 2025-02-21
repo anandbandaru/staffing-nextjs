@@ -6,6 +6,7 @@ import InvoiceList from './invoiceList';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import InvoiceSavedList from "./invoiceSavedList";
 
 const InvoicesMain = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -26,7 +27,7 @@ const InvoicesMain = () => {
                             <InvoiceList />
                         </TabPanel>
                         <TabPanel className="px-2">
-                            Saved
+                        <InvoiceSavedList />
                         </TabPanel>
                         <TabPanel className="px-2">
                             Reports
