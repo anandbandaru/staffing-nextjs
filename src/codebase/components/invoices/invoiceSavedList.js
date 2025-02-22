@@ -89,8 +89,8 @@ const InvoiceSavedList = () => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                {/* <InvoiceView
-                    operation="View"
+                <InvoiceView
+                    operation="Edit"
                     manualLoadData={manualLoadData}
                     invoiceNumber={props.data.invoiceNumber}
                     timesheetNumber={props.data.invoiceNumber.replace(/^INV-/, 'T-')}
@@ -115,7 +115,7 @@ const InvoiceSavedList = () => {
                     showSnackbar={showSnackbar}
                     rate={props.data.rate}
                     paymentTerms={props.data.paymentTerms}
-                /> */}
+                />
             </>
         );
     };

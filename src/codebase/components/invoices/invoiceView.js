@@ -31,6 +31,8 @@ import Box from '@mui/material/Box';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import InvoiceTimesheetDetails from "./invoiceTimesheetDetails";
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
@@ -42,6 +44,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
     const [clientDocumentData, setClientDocumentData] = useState({ data: [] });
     const [iPVendorDocumentData, setIPVendorDocumentData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
+    const [dataAudit, setDataAudit] = useState({ data: [] });
     const contentRef = useRef(null); // Reference to the form element
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
@@ -55,8 +58,10 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
         manualLoadData();
     };
     const handleClickOpen = () => {
-        setOpen(true);
-        setDoLoading(true)
+        if (!open) {
+            setOpen(true);
+            setDoLoading(true);
+        }
     };
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         '& .MuiDialogContent-root': {
@@ -126,11 +131,39 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                 }
             )
     }
+
+    const getAuditDetails = () => {
+        setApiLoading(true);
+        let apiUrl = APIPath + "/getinvoiceauditbynumber" + "/" + invoiceNumber;
+        // console.log(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    if (result.error) {
+                        setDataAudit({ data: [] });
+                    } else {
+                        setDataAudit(result);
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setDataAudit({ data: [] });
+                    setApiLoading(false);
+                }
+            );
+    };
     useEffect(() => {
-        if (operation === "View" && doLoading) {
+        if ((operation === "View" || operation === "Edit") && doLoading) {
             console.log("LOAD...")
             getClientDocumentDetails();
             getIPVendorDocumentDetails();
+            if (operation === "Edit")
+                getAuditDetails();
         }
     }, [invoiceNumber, doLoading]);
 
@@ -210,6 +243,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                         <Tabs>
                             <TabList className="subTabsListHolder">
                                 <Tab><PaidOutlinedIcon className="mr-1" />Invoice</Tab>
+                                {operation === "Edit" && (
+                                    <Tab><HistoryOutlinedIcon className="mr-1" />Invoice Audit</Tab>
+                                )}
                                 <Tab><MoreTimeIcon className="mr-1" />Related Timesheet</Tab>
                             </TabList>
 
@@ -533,12 +569,25 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                         <DownloadForOfflineOutlinedIcon className="mr-1" />
                                                                         Download All
                                                                     </Button> */}
-                                                                    {!isSubmitionCompleted && (
-                                                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                                            <SaveOutlinedIcon className="mr-1" />
-                                                                            Save
-                                                                        </Button>
-                                                                    )}
+                                                                    {operation === "Edit" ?
+                                                                        <>
+                                                                            {!isSubmitionCompleted && (
+                                                                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                                                    <SaveOutlinedIcon className="mr-1" />
+                                                                                    Update
+                                                                                </Button>
+                                                                            )}
+                                                                        </>
+                                                                        :
+                                                                        <>
+                                                                            {!isSubmitionCompleted && (
+                                                                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                                                    <SaveOutlinedIcon className="mr-1" />
+                                                                                    Save
+                                                                                </Button>
+                                                                            )}
+                                                                        </>
+                                                                    }
                                                                 </Stack>
                                                             ) :
                                                                 <>
@@ -553,6 +602,24 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                     </Formik>
                                 </div>
                             </TabPanel>
+                            {operation === "Edit" && (
+                                <TabPanel className="px-2">
+                                    <VerticalTimeline layout='1-column-left'>
+                                        {dataAudit.data.map((entry, index) => (
+                                            <VerticalTimelineElement
+                                                key={index}
+                                                iconStyle={{ background: '#ccc', color: '#000' }}
+                                            >
+                                                <h3 className="vertical-timeline-element-title ">Event {dataAudit.data.length - index} on: {entry.actionDate}</h3>
+                                                <h4 className="vertical-timeline-element-subtitle">By: {entry.actionBy}</h4>
+                                                <h4 className="vertical-timeline-element-subtitle2">Hours: {entry.totalHours}</h4>
+                                                <h4 className="vertical-timeline-element-subtitle2 ml-4">Rate: {entry.rate}</h4>
+                                                <div className='vertical-timeline-element-notes'>{entry.action}</div>
+                                            </VerticalTimelineElement>
+                                        ))}
+                                    </VerticalTimeline>
+                                </TabPanel>
+                            )}
                             <TabPanel className="px-2">
                                 <div className="divTimesheetMetadataHolder my-4">
                                     <InvoiceTimesheetDetails operation="View" doLoading={true} moduleName="MY_TIMESHEETS" timesheetNumber={timesheetNumber} />
