@@ -36,7 +36,7 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
-    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, showSnackbar }) => {
+    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id, showSnackbar }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [doLoading, setDoLoading] = React.useState(false);
@@ -277,11 +277,14 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             rate: rate,
                                             timesheetNumber: timesheetNumber,
                                             paymentTerms: paymentTerms,
-                                            createdBy: userName
+                                            createdBy: userName,
+                                            Id: Id,
+                                            modifiedBy: userName,
                                         }}
                                         onSubmit={(values, { setSubmitting }) => {
                                             var finalAPI = APIPath + "/addinvoice";
-
+                                            if (operation === "Edit")
+                                                finalAPI = APIPath + "/updateinvoice";
                                             setSubmitionCompleted(false);
                                             setSubmitting(true);
                                             axios.post(finalAPI,
@@ -297,14 +300,28 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                 setSubmitting(false);
                                                 setSubmitionCompleted(true);
                                                 if (resp.data.STATUS === "FAIL")
-                                                    showSnackbar('error', "Error saving Invoice data");
+                                                    if (operation === "Edit")
+                                                        showSnackbar('error', "Error updating Invoice data");
+                                                    else
+                                                        showSnackbar('error', "Error saving Invoice data");
                                                 else {
-                                                    showSnackbar('success', "Invoice data saved");
+                                                    if (operation === "Edit")
+                                                    {
+                                                        showSnackbar('success', "Invoice data Updated");
+                                                        handleClose();
+                                                    }
+                                                    else
+                                                    {
+                                                        showSnackbar('success', "Invoice data saved");
+                                                    }
                                                 }
                                             }).catch(function (error) {
                                                 setSubmitting(false);
                                                 setSubmitionCompleted(false);
-                                                showSnackbar('error', "Error saving Invoice data");
+                                                if (operation === "Edit")
+                                                    showSnackbar('error', "Error updating Invoice data");
+                                                else
+                                                    showSnackbar('error', "Error saving Invoice data");
                                             });
                                         }}
 

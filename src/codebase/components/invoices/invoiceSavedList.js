@@ -72,7 +72,7 @@ const InvoiceSavedList = () => {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
                         else
-                            showSnackbar('success', "Invoices Data fetched");
+                            showSnackbar('success', "Saved Invoices Data fetched");
                     }
                     setApiLoading(false);
                 },
@@ -115,6 +115,7 @@ const InvoiceSavedList = () => {
                     showSnackbar={showSnackbar}
                     rate={props.data.rate}
                     paymentTerms={props.data.paymentTerms}
+                    Id={props.data.Id}
                 />
             </>
         );

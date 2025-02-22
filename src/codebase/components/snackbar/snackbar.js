@@ -3,6 +3,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import toast, { Toaster } from 'react-hot-toast';
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
+import { SnackbarProvider, enqueueSnackbar } from 'notistack'
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -18,7 +19,9 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
 
     useEffect(() => {
         if (open) {
-            // console.log(message);
+            // console.log(severity + "-------" + message)
+            enqueueSnackbar(message, { variant: severity });
+
             switch (severity) {
                 case 'success':
                     toast.success(message, toastConfig);
@@ -52,6 +55,13 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
 
     return (
         <>
+            <SnackbarProvider
+                dense
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+            />
             <Snackbar
                 className="noDisplay"
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -60,7 +70,7 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
                 onClose={handleClose}>
                 {/* <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
                     {message}
-                </Alert> */}
+                </Alert>  */}
             </Snackbar>
             <Toaster
                 onClose={handleClose}

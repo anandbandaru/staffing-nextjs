@@ -249,7 +249,7 @@ const ContextProvider = (props) => {
             return error;
         }
     };
-
+    
     // Add the function to be called in the ToDo component
     const contextValue = {
         freecurrencyapi,
@@ -295,7 +295,7 @@ const ContextProvider = (props) => {
         refreshBalance,
         refreshTodos, setRefreshTodos,
         todoOpen, setTodoOpen,
-        userEmployeeId, setUserEmployeeId
+        userEmployeeId, setUserEmployeeId,
     }
 
     return (
