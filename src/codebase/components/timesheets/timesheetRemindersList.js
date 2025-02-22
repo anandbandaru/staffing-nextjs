@@ -142,7 +142,7 @@ const TimesheetRemindersList = () => {
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "employee" },
+        { field: "employee", filter: true  },
         { field: "timesheetNumber", filter: true },
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
