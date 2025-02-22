@@ -31,7 +31,11 @@ function TimesheetReminderHistory({ timesheetNumber, viewType }) {
     const getReminders = () => {
         setApiLoading(true);
         let apiUrl = APIPath + "/gettimesheetreminders/" + timesheetNumber;
-        axios.get(apiUrl).then(
+        axios.get(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        }).then(
             (result) => {
                 if (result.error) {
 
