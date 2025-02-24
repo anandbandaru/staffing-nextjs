@@ -22,34 +22,34 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
             // console.log(severity + "-------" + message)
             enqueueSnackbar(message, { variant: severity });
 
-            switch (severity) {
-                case 'success':
-                    toast.success(message, toastConfig);
-                    break;
-                case 'error':
-                    toast.error(message, toastConfig);
-                    break;
-                case 'info':
-                    toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
-                        {message}
-                    </Alert>);
-                    break;
-                case 'warning':
-                    toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
-                        {message}
-                    </Alert>);
-                    break;
-                case 'admin':
-                    toast.custom(
-                        <Alert severity={severity} sx={{ width: '30%' }}>
-                            <NotificationsActiveOutlinedIcon />
-                            {message}
-                        </Alert>);
-                    break;
-                default:
-                    toast.success(message, toastConfig);
-                    break;
-            }
+            // switch (severity) {
+            //     case 'success':
+            //         toast.success(message, toastConfig);
+            //         break;
+            //     case 'error':
+            //         toast.error(message, toastConfig);
+            //         break;
+            //     case 'info':
+            //         toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
+            //             {message}
+            //         </Alert>);
+            //         break;
+            //     case 'warning':
+            //         toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
+            //             {message}
+            //         </Alert>);
+            //         break;
+            //     case 'admin':
+            //         toast.custom(
+            //             <Alert severity={severity} sx={{ width: '30%' }}>
+            //                 <NotificationsActiveOutlinedIcon />
+            //                 {message}
+            //             </Alert>);
+            //         break;
+            //     default:
+            //         toast.success(message, toastConfig);
+            //         break;
+            // }
         }
     }, [open, message, severity, toastConfig]);
 
@@ -58,8 +58,8 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
             <SnackbarProvider
                 dense
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                    vertical: 'top',
+                    horizontal: 'right',
                 }}
             />
             <Snackbar
