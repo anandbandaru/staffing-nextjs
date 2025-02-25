@@ -20,35 +20,37 @@ const CustomSnackbar = ({ open, handleClose, severity, message }) => {
     useEffect(() => {
         if (open) {
             // console.log(severity + "-------" + message)
-            enqueueSnackbar(message, { variant: severity });
+            var t = enqueueSnackbar(message, { variant: severity });
 
-            // switch (severity) {
-            //     case 'success':
-            //         toast.success(message, toastConfig);
-            //         break;
-            //     case 'error':
-            //         toast.error(message, toastConfig);
-            //         break;
-            //     case 'info':
-            //         toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
-            //             {message}
-            //         </Alert>);
-            //         break;
-            //     case 'warning':
-            //         toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
-            //             {message}
-            //         </Alert>);
-            //         break;
-            //     case 'admin':
-            //         toast.custom(
-            //             <Alert severity={severity} sx={{ width: '30%' }}>
-            //                 <NotificationsActiveOutlinedIcon />
+            // if (severity === "success_1") {
+            //     switch (severity) {
+            //         case 'success_1':
+            //             toast.success(message, toastConfig);
+            //             break;
+            //         case 'error':
+            //             toast.error(message, toastConfig);
+            //             break;
+            //         case 'info':
+            //             toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
             //                 {message}
             //             </Alert>);
-            //         break;
-            //     default:
-            //         toast.success(message, toastConfig);
-            //         break;
+            //             break;
+            //         case 'warning':
+            //             toast.custom(<Alert severity={severity} sx={{ width: '30%' }}>
+            //                 {message}
+            //             </Alert>);
+            //             break;
+            //         case 'admin':
+            //             toast.custom(
+            //                 <Alert severity={severity} sx={{ width: '30%' }}>
+            //                     <NotificationsActiveOutlinedIcon />
+            //                     {message}
+            //                 </Alert>);
+            //             break;
+            //         default:
+            //             toast.success(message, toastConfig);
+            //             break;
+            //     }
             // }
         }
     }, [open, message, severity, toastConfig]);

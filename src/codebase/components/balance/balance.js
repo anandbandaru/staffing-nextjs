@@ -43,7 +43,7 @@ const Balance = () => {
                     showSnackbar('error', result.ERROR.MESSAGE);
                 }
                 else
-                    showSnackbar('success', "Latest Balance is fetched");
+                    showSnackbar('success_1', "Latest Balance is fetched");
                 convertCurrency(result.BALANCE);
             }
         } catch (error) {
