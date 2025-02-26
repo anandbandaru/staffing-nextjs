@@ -30,9 +30,9 @@ function Invoice({ props, ID, operation }) {
     const [vendorId, setVendorId] = useState('');
 
     const [jobsData, setJobsData] = useState({ data: [] });
-    const [companyId, setJobId] = useState('');
+    const [jobId, setJobId] = useState('');
+    const [invoiceNumber, setInvoiceNumber] = useState('');
 
-    const [employeesData, setEmployeesData] = useState({ data: [] });
     const [employeeId, setEmployeeId] = useState('');
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -68,7 +68,6 @@ function Invoice({ props, ID, operation }) {
                     else {
                         await getVendorsList();
                         await getJobsList();
-                        await getEmployeesList();
                         setName(result.data[0].Id);
                         setData(result);
                     }
@@ -114,14 +113,14 @@ function Invoice({ props, ID, operation }) {
     const handleVendorIdChange = async (event) => {
         setVendorId(event.target.value);
         console.log("VENDOR: " + event.target.value);
-        
+
         if (operation === "New")
-            await getJobsList();
+            await getJobsList(event.target.value);
     };
 
-    const getJobsList = async () => {
+    const getJobsList = async (selectedvid) => {
         setJobsData({ data: [] });
-        let apiUrl = APIPath + "/getjobsbyvendor/" + vendorId
+        let apiUrl = APIPath + "/getjobsbyvendor/" + selectedvid
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -136,6 +135,12 @@ function Invoice({ props, ID, operation }) {
                     }
                     else {
                         setJobsData(result);
+                        if (result.total === 0) {
+                            showSnackbar('error', "No Jobs present for the selected Vendor");
+                        }
+                        else {
+                            showSnackbar('success_1', "Jobs fetched for the vendor based on Active employees");
+                        }
                     }
                 },
                 (error) => {
@@ -143,40 +148,12 @@ function Invoice({ props, ID, operation }) {
                 }
             )
     }
-    const handleJobIdChange = (event) => {
-        setJobId(event.target.value);
-    };
-
-    const getEmployeesList = async () => {
-        setApiLoading(true);
-        setEmployeesData({ data: [] });
-        let apiUrl = APIPath + "/getemployees"
-        fetch(apiUrl, {
-            headers: {
-                'ngrok-skip-browser-warning': 'true',
-            }
-        })
-            .then(response => response.json())
-            .then(
-                async (result) => {
-                    if (result.error) {
-                        // console.log("RequestData:On error return: setting empty")
-                        setEmployeesData({ data: [] });
-                    }
-                    else {
-                        setEmployeesData(result);
-                    }
-                    setApiLoading(false);
-                },
-                (error) => {
-                    setEmployeesData({ data: [] });
-                    // console.log("RequestData:On JUST error: API call failed")
-                    setApiLoading(false);
-                }
-            )
-    }
-    const handleEmployeeIdChange = (event) => {
-        setEmployeeId(event.target.value);
+    const handleJobIdChange = (employeeId, jobId, setFieldValue) => {
+        setJobId(jobId);
+        setEmployeeId(employeeId);
+        // Update the invoiceNumber field with the desired format
+        setInvoiceNumber(`INV-E:${employeeId}-J:${jobId}-`);
+        setFieldValue('invoiceNumber', `INV-E:${employeeId}-J:${jobId}-`);
     };
 
     useEffect(() => {
@@ -205,12 +182,14 @@ function Invoice({ props, ID, operation }) {
                     enableReinitialize
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
-                        vendorId: name ? data.data[0].vendorId : '',
-                        jobId: name ? data.data[0].jobId : '',
-                        employeeId: name ? data.data[0].employeeId : '',
+                        vendorId: name ? data.data[0].vendorId : vendorId,
+                        jobId: name ? data.data[0].jobId : jobId,
+                        employeeId: name ? data.data[0].employeeId : employeeId,
                         totalHours: name ? data.data[0].totalHours : '',
                         rate: name ? data.data[0].rate : '',
                         createdBy: userName,
+                        invoiceDate: name ? data.data[0].invoiceDate : '',
+                        invoiceNumber: name ? data.data[0].invoiceNumber : invoiceNumber,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addinvoice";
@@ -249,13 +228,17 @@ function Invoice({ props, ID, operation }) {
                             .required('Vendor Required'),
                         jobId: Yup.string()
                             .required('Job Required'),
+                        invoiceDate: Yup.string()
+                            .required('Invoice Date Required'),
+                        totalHours: Yup.number()
+                            .required('Total Hours Must be a number'),
+                        invoiceNumber: Yup.string()
+                            .required('Invoice Number is required'),
                         rate: Yup.number()
                             .typeError('Must be a number')
                             .required('Rate Required').test('is-decimal', 'Must be a decimal number', (value) =>
                                 (value + "").match(/^\d+(\.\d+)?$/)
                             ),
-                        totalHours: Yup.number()
-                            .typeError('Total Hours Must be a number')
                     })}
                 >
                     {(props) => {
@@ -268,7 +251,8 @@ function Invoice({ props, ID, operation }) {
                             handleChange,
                             handleBlur,
                             handleSubmit,
-                            handleReset
+                            handleReset,
+                            setFieldValue
                         } = props;
                         return (
                             <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
@@ -285,6 +269,24 @@ function Invoice({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
+                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+
+                                    <div className='flex-1'>Invoice Date:
+                                    </div>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        className='flex-1'
+                                        id="invoiceDate"
+                                        name="invoiceDate"
+                                        type="date"
+                                        value={values.invoiceDate}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.invoiceDate && touched.invoiceDate) && errors.invoiceDate}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -316,23 +318,47 @@ function Invoice({ props, ID, operation }) {
                                     select
                                     label="Job Id"
                                     value={values.jobId}
-                                    onChange={handleChange}
+                                    onChange={(event) => {
+                                        handleChange(event);
+                                        const selectedJobId = event.target.value;
+                                        const selectedJob = jobsData.data.find(job => job.jobId === selectedJobId);
+                                        if (selectedJob) {
+                                            const employeeId = selectedJob.employeeId;
+                                            const jobId = selectedJob.jobId;
+                                            handleJobIdChange(employeeId, jobId, setFieldValue);
+                                        } else {
+                                            console.error('Selected job not found in jobsData');
+                                        }
+                                    }}
                                     onBlur={handleBlur}
                                     helperText={(errors.jobId && touched.jobId) && errors.jobId}
                                 >
                                     {jobsData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.jobId}>
+                                        <MenuItem key={index} value={item.jobId} employeeid={item.employeeId} jobid={item.jobId}>
                                             {item.jobName} - {'(EMPLOYEE: ' + item.employeeFull + ')'}
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                
+
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="invoiceNumber"
+                                    name="invoiceNumber"
+                                    label="Invoice Number"
+                                    value={values.invoiceNumber}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.invoiceNumber && touched.invoiceNumber) && errors.invoiceNumber}
+                                />
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
                                     id="rate"
                                     name="rate"
+                                    type="number"
                                     label="Rate"
                                     value={values.rate}
                                     onChange={handleChange}
@@ -345,6 +371,7 @@ function Invoice({ props, ID, operation }) {
                                     fullWidth
                                     id="totalHours"
                                     name="totalHours"
+                                    type="number"
                                     label="Total Hours"
                                     value={values.totalHours}
                                     onChange={handleChange}
