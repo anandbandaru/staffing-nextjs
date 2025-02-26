@@ -14,6 +14,7 @@ import Stack from '@mui/material/Stack';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import Invoice from "./invoicesForm";
 
 const InvoicesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {    
     const { setRefreshBalance, refreshBalance } = useContext(Context);
@@ -110,6 +111,7 @@ const InvoicesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
                 </IconButton>
                 <DialogContent dividers>
                     {/* <ExpenseForm operation="New" /> */}
+                    <Invoice operation="New" />
                 </DialogContent>
             </BootstrapDialog>
         </>
