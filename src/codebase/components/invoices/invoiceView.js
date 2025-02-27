@@ -305,13 +305,11 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                     else
                                                         showSnackbar('error', "Error saving Invoice data");
                                                 else {
-                                                    if (operation === "Edit")
-                                                    {
+                                                    if (operation === "Edit") {
                                                         showSnackbar('success', "Invoice data Updated");
                                                         handleClose();
                                                     }
-                                                    else
-                                                    {
+                                                    else {
                                                         showSnackbar('success', "Invoice data saved");
                                                     }
                                                 }
@@ -383,26 +381,47 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                             <Table size="small" aria-label="a dense table">
                                                                 <TableHead>
                                                                     <TableRow>
-                                                                        <StyledTableCell align="left">Title</StyledTableCell>
-                                                                        <StyledTableCell align="right">Value</StyledTableCell>
+                                                                        <StyledTableCell align="left"></StyledTableCell>
+                                                                        <StyledTableCell align="right"></StyledTableCell>
                                                                     </TableRow>
                                                                 </TableHead>
                                                                 <TableBody>
-                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                    <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Vendor Name</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{vendorName}</TableCell>
                                                                     </TableRow>
-                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                    <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Employee Name</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{employeeName}</TableCell>
                                                                     </TableRow>
-                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                    <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Job Name</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{jobName}</TableCell>
                                                                     </TableRow>
-                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                    <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Job Title</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{jobTitle}</TableCell>
+                                                                    </TableRow>
+                                                                </TableBody>
+                                                            </Table>
+                                                        </TableContainer>
+
+                                                        <TableContainer component={Paper} className="tableContainer mb-6">
+                                                            <Table size="small" aria-label="a dense table">
+                                                                <TableHead>
+                                                                    <TableRow>
+                                                                        <StyledTableCell align="left"></StyledTableCell>
+                                                                        <StyledTableCell align="right"></StyledTableCell>
+                                                                    </TableRow>
+                                                                </TableHead>
+                                                                <TableBody>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Start Date</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{startDate}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">End Date</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{endDate}</TableCell>
                                                                     </TableRow>
                                                                 </TableBody>
                                                             </Table>
