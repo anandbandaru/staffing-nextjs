@@ -149,12 +149,13 @@ function Invoice({ props, ID, operation }) {
                 }
             )
     }
-    const handleJobIdChange = (employeeId, jobId, setFieldValue) => {
+    const handleJobIdChange = (employeeId, jobId, invoicePeriod, setFieldValue) => {
         setJobId(jobId);
         setEmployeeId(employeeId);
         // Update the invoiceNumber field with the desired format
-        setInvoiceNumber(`CUST-INV-E:${employeeId}-J:${jobId}-`);
-        setFieldValue('invoiceNumber', `CUST-INV-E-${employeeId}-J:${jobId}-`);
+        let valToSet = `CUST-INV-E:${employeeId}-J:${jobId}-${invoicePeriod}`
+        setInvoiceNumber(valToSet);
+        setFieldValue('invoiceNumber', valToSet);
     };
 
     const handleJobStartDateChange = (event, setFieldValue) => {
@@ -345,7 +346,7 @@ function Invoice({ props, ID, operation }) {
                                             const employeeId = selectedJob.employeeId;
                                             const jobId = selectedJob.jobId;
                                             const invoicePeriod = selectedJob.invoicePeriod;
-                                            handleJobIdChange(employeeId, jobId, setFieldValue);
+                                            handleJobIdChange(employeeId, jobId, invoicePeriod, setFieldValue);
                                         } else {
                                             console.error('Selected job not found in jobsData');
                                         }
