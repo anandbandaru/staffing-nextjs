@@ -32,6 +32,7 @@ function Invoice({ props, ID, operation }) {
     const [jobsData, setJobsData] = useState({ data: [] });
     const [jobId, setJobId] = useState('');
     const [invoiceNumber, setInvoiceNumber] = useState('');
+    const [startYear, setStartYear] = useState('');
 
     const [employeeId, setEmployeeId] = useState('');
 
@@ -152,9 +153,17 @@ function Invoice({ props, ID, operation }) {
         setJobId(jobId);
         setEmployeeId(employeeId);
         // Update the invoiceNumber field with the desired format
-        setInvoiceNumber(`INV-E:${employeeId}-J:${jobId}-`);
-        setFieldValue('invoiceNumber', `INV-E:${employeeId}-J:${jobId}-`);
+        setInvoiceNumber(`CUST-INV-E:${employeeId}-J:${jobId}-`);
+        setFieldValue('invoiceNumber', `CUST-INV-E-${employeeId}-J:${jobId}-`);
     };
+
+    const handleJobStartDateChange = (event, setFieldValue) => {
+        const year = event.target.value.split('-')[0];
+        setStartYear(year);
+        console.log("StartDate: " + year);
+        setFieldValue('invoiceNumber', invoiceNumber + year + "-");
+    };
+    
 
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
@@ -189,7 +198,10 @@ function Invoice({ props, ID, operation }) {
                         rate: name ? data.data[0].rate : '',
                         createdBy: userName,
                         invoiceDate: name ? data.data[0].invoiceDate : '',
+                        startDate: name ? data.data[0].startDate : '',
+                        endDate: name ? data.data[0].endDate : '',
                         invoiceNumber: name ? data.data[0].invoiceNumber : invoiceNumber,
+                        invoicePeriod: name ? data.data[0].invoicePeriod : '',
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addinvoice";
@@ -232,6 +244,14 @@ function Invoice({ props, ID, operation }) {
                             .required('Invoice Date Required'),
                         totalHours: Yup.number()
                             .required('Total Hours Must be a number'),
+                        startDate: Yup.string()
+                            .required('Start Date Required'),
+                        endDate: Yup.string()
+                            .required('End Date Required')
+                            .test('is-greater', 'End Date must be later than Start Date', function (value) {
+                                const { startDate } = this.parent;
+                                return startDate && value ? new Date(value) > new Date(startDate) : true;
+                            }),
                         invoiceNumber: Yup.string()
                             .required('Invoice Number is required'),
                         rate: Yup.number()
@@ -270,7 +290,6 @@ function Invoice({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                 />
                                 <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-
                                     <div className='flex-1'>Invoice Date:
                                     </div>
                                     <TextField
@@ -325,6 +344,7 @@ function Invoice({ props, ID, operation }) {
                                         if (selectedJob) {
                                             const employeeId = selectedJob.employeeId;
                                             const jobId = selectedJob.jobId;
+                                            const invoicePeriod = selectedJob.invoicePeriod;
                                             handleJobIdChange(employeeId, jobId, setFieldValue);
                                         } else {
                                             console.error('Selected job not found in jobsData');
@@ -334,12 +354,55 @@ function Invoice({ props, ID, operation }) {
                                     helperText={(errors.jobId && touched.jobId) && errors.jobId}
                                 >
                                     {jobsData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.jobId} employeeid={item.employeeId} jobid={item.jobId}>
-                                            {item.jobName} - {'(EMPLOYEE: ' + item.employeeFull + ')'}
+                                        <MenuItem key={index} value={item.jobId} 
+                                        employeeid={item.employeeId} 
+                                        invoiceperiod={item.invoicePeriod}
+                                        jobid={item.jobId} 
+                                        startdate={item.startDate}>
+                                            {item.jobName} - {'(EMPLOYEE: ' + item.employeeFull + ')'} - 
+                                            <span className='bg-slate-500 text-white px-2'>{'(INVOICE PERIOD: ' + item.invoicePeriod + ')'}</span>
                                         </MenuItem>
                                     ))}
                                 </TextField>
 
+                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+                                    <div className='flex-1'>Start Date:
+                                    </div>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        className='flex-1'
+                                        id="startDate"
+                                        name="startDate"
+                                        type="date"
+                                        value={values.startDate}
+                                        // onChange={handleChange}
+                                        onChange={(event) => {
+                                            handleChange(event);
+                                            handleJobStartDateChange(event, setFieldValue);
+                                        }}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.startDate && touched.startDate) && errors.startDate}
+                                    />
+                                </Stack>
+                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+                                    <div className='flex-1'>End Date:
+                                    </div>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        className='flex-1'
+                                        id="endDate"
+                                        name="endDate"
+                                        type="date"
+                                        value={values.endDate}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.endDate && touched.endDate) && errors.endDate}
+                                    />
+                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
