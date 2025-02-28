@@ -57,11 +57,26 @@
 .DivButtonsHolder{
     position: fixed;
     top: 87px;
-    left:290px
+    right:50px
 }
 .div_contentHolder{
     background-color: rgb(242, 247, 245);
     padding: 10px;
     border-radius: 4px;
     border:1px solid #ccc;
+}
+.div_customInvoice {
+    /* position: absolute;
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    top: 10%;
+    left: 50px;  */
+    white-space: nowrap; /* Prevents text from wrapping */
+    background-color: brown;
+    color: white;
+    font-size: 16px;
+    padding: 0px 10px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    text-align: center;
 }

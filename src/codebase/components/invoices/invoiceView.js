@@ -36,10 +36,13 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
-    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id, showSnackbar, userNotes, vendorId }) => {
+    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id,
+    showSnackbar, userNotes, vendorId, manualLoadDataWithMessage, performLoading, setPerformLoading }) => {
 
     const { APIPath, userName } = useContext(Context);
+    const [isCustomInvoice, setIsCustomInvoice] = React.useState(false);
     const [doLoading, setDoLoading] = React.useState(true);
+    const [dataSaved, setDataSaved] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [clientDocumentData, setClientDocumentData] = useState({ data: [] });
     const [iPVendorDocumentData, setIPVendorDocumentData] = useState({ data: [] });
@@ -47,7 +50,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
     const [dataAudit, setDataAudit] = useState({ data: [] });
     const contentRef = useRef(null); // Reference to the form element
 
-    
+
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -59,10 +62,28 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
         setDoLoading(false);
         manualLoadData();
     };
+    const handleCloseOnSaved = (event, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
+        setOpen(false);
+        setDoLoading(false);
+        manualLoadDataWithMessage();
+    };
     const handleClickOpen = () => {
         if (!open) {
             setOpen(true);
             setDoLoading(true);
+            setPerformLoading(true);
+            if (!invoiceNumber.startsWith("CUST-INV")) {
+                setIsCustomInvoice(false)
+                getClientDocumentDetails();
+                getIPVendorDocumentDetails();
+            }
+            else {
+                console.log("OPEN: CUSTOM INVOICE")
+                console.log("OPEN: TS:" + timesheetNumber)
+                setIsCustomInvoice(true)
+            }
             getAuditDetails();
         }
     };
@@ -161,10 +182,17 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
             );
     };
     useEffect(() => {
-        if ((operation === "View" || operation === "Edit") && doLoading) {
-            console.log("LOAD...")
-            getClientDocumentDetails();
-            getIPVendorDocumentDetails();
+        if ((operation === "View" || operation === "Edit") && doLoading && performLoading) {
+            console.log("LOAD...");
+            if (!invoiceNumber.startsWith("CUST-INV")) {
+                setIsCustomInvoice(false)
+                getClientDocumentDetails();
+                getIPVendorDocumentDetails();
+            }
+            else {
+                console.log("useEffect: CUSTOM INVOICE")
+                setIsCustomInvoice(true)
+            }
             if (operation === "Edit")
                 getAuditDetails();
         }
@@ -254,7 +282,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
 
                             <TabPanel className="px-2">
                                 <div className="div_InvoiceHolderMain" >
-
+                                    {isCustomInvoice && (
+                                        <div className="div_customInvoice">CUSTOM INVOICE</div>
+                                    )}
                                     <Formik
                                         // enableReinitialize
                                         initialValues={{
@@ -311,10 +341,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                         showSnackbar('error', "Error saving Invoice data");
                                                 else {
                                                     if (operation === "Edit") {
+                                                        setDataSaved(true);
                                                         showSnackbar('success', "Invoice data Updated");
-                                                        // setTimeout(() => {
-                                                        //     handleClose();
-                                                        // }, 2000);
+                                                        handleCloseOnSaved();
                                                     }
                                                     else {
                                                         showSnackbar('success', "Invoice data saved");
@@ -517,89 +546,93 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                         onBlur={handleBlur}
                                                         helperText={(errors.userNotes && touched.userNotes) && errors.userNotes}
                                                     />
+                                                    {!isCustomInvoice && (
+                                                        <>
+                                                            <div className="divHoursHolder my-4">
+                                                                <TimesheetCapturedDayHours timesheetNumber={timesheetNumber} />
+                                                            </div>
 
-                                                    <div className="divHoursHolder my-4">
-                                                        <TimesheetCapturedDayHours timesheetNumber={timesheetNumber} />
-                                                    </div>
-
-                                                    <TableContainer component={Paper} className="tableContainer">
-                                                        <Table size="small" aria-label="a dense table">
-                                                            <TableHead>
-                                                                <TableRow>
-                                                                    <StyledTableCell align="left">Timesheet Documents</StyledTableCell>
-                                                                    <StyledTableCell align="right"></StyledTableCell>
-                                                                </TableRow>
-                                                            </TableHead>
-                                                            <TableBody>
-                                                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                                    <TableCell component="th" scope="row" className="divTitle bg-white">Client Approved Document</TableCell>
-                                                                    <TableCell align="right" className="divValue2">
-                                                                        {apiLoading ?
-                                                                            <>
-                                                                                <div className="spinner"></div>
-                                                                            </> :
-                                                                            <>
-                                                                                {clientDocumentData.data[0] ? (
-                                                                                    <Link className='float-right'
-                                                                                        href={clientDocumentData.data[0].gDriveLink}
-                                                                                        target="_blank"
-                                                                                        rel="noopener noreferrer"
-                                                                                        underline="none"
-                                                                                    >
-                                                                                        <Button
-                                                                                            size='small'
-                                                                                            variant="contained"
-                                                                                            color="info"
-                                                                                            startIcon={<InsertLinkOutlinedIcon />}
-                                                                                        >
-                                                                                            Open
-                                                                                        </Button>
-                                                                                    </Link>
-                                                                                ) :
+                                                            <TableContainer component={Paper} className="tableContainer">
+                                                                <Table size="small" aria-label="a dense table">
+                                                                    <TableHead>
+                                                                        <TableRow>
+                                                                            <StyledTableCell align="left">Timesheet Documents</StyledTableCell>
+                                                                            <StyledTableCell align="right"></StyledTableCell>
+                                                                        </TableRow>
+                                                                    </TableHead>
+                                                                    <TableBody>
+                                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Client Approved Document</TableCell>
+                                                                            <TableCell align="right" className="divValue2">
+                                                                                {apiLoading ?
                                                                                     <>
-                                                                                        <span className="text-red-500">Missing document</span>
+                                                                                        <div className="spinner"></div>
+                                                                                    </> :
+                                                                                    <>
+                                                                                        {clientDocumentData.data[0] ? (
+                                                                                            <Link className='float-right'
+                                                                                                href={clientDocumentData.data[0].gDriveLink}
+                                                                                                target="_blank"
+                                                                                                rel="noopener noreferrer"
+                                                                                                underline="none"
+                                                                                            >
+                                                                                                <Button
+                                                                                                    size='small'
+                                                                                                    variant="contained"
+                                                                                                    color="info"
+                                                                                                    startIcon={<InsertLinkOutlinedIcon />}
+                                                                                                >
+                                                                                                    Open
+                                                                                                </Button>
+                                                                                            </Link>
+                                                                                        ) :
+                                                                                            <>
+                                                                                                <span className="text-red-500">Missing document</span>
+                                                                                            </>
+                                                                                        }
                                                                                     </>
                                                                                 }
-                                                                            </>
-                                                                        }
-                                                                    </TableCell>
-                                                                </TableRow>
-                                                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                                    <TableCell component="th" scope="row" className="divTitle">Implementation Partner / Vendor Approved Document</TableCell>
-                                                                    <TableCell align="right" className="divValue2">
-                                                                        {apiLoading ?
-                                                                            <>
-                                                                                <div className="spinner"></div>
-                                                                            </> :
-                                                                            <>
-                                                                                {iPVendorDocumentData.data[0] ? (
-                                                                                    <Link className='float-right'
-                                                                                        href={iPVendorDocumentData.data[0].gDriveLink}
-                                                                                        target="_blank"
-                                                                                        rel="noopener noreferrer"
-                                                                                        underline="none"
-                                                                                    >
-                                                                                        <Button
-                                                                                            size='small'
-                                                                                            variant="contained"
-                                                                                            color="info"
-                                                                                            startIcon={<InsertLinkOutlinedIcon />}
-                                                                                        >
-                                                                                            Open
-                                                                                        </Button>
-                                                                                    </Link>
-                                                                                ) :
+                                                                            </TableCell>
+                                                                        </TableRow>
+                                                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                            <TableCell component="th" scope="row" className="divTitle">Implementation Partner / Vendor Approved Document</TableCell>
+                                                                            <TableCell align="right" className="divValue2">
+                                                                                {apiLoading ?
                                                                                     <>
-                                                                                        <span className="">No document</span>
+                                                                                        <div className="spinner"></div>
+                                                                                    </> :
+                                                                                    <>
+                                                                                        {iPVendorDocumentData.data[0] ? (
+                                                                                            <Link className='float-right'
+                                                                                                href={iPVendorDocumentData.data[0].gDriveLink}
+                                                                                                target="_blank"
+                                                                                                rel="noopener noreferrer"
+                                                                                                underline="none"
+                                                                                            >
+                                                                                                <Button
+                                                                                                    size='small'
+                                                                                                    variant="contained"
+                                                                                                    color="info"
+                                                                                                    startIcon={<InsertLinkOutlinedIcon />}
+                                                                                                >
+                                                                                                    Open
+                                                                                                </Button>
+                                                                                            </Link>
+                                                                                        ) :
+                                                                                            <>
+                                                                                                <span className="">No document</span>
+                                                                                            </>
+                                                                                        }
                                                                                     </>
                                                                                 }
-                                                                            </>
-                                                                        }
-                                                                    </TableCell>
-                                                                </TableRow>
-                                                            </TableBody>
-                                                        </Table>
-                                                    </TableContainer>
+                                                                            </TableCell>
+                                                                        </TableRow>
+                                                                    </TableBody>
+                                                                </Table>
+                                                            </TableContainer>
+                                                        </>
+                                                    )}
+
 
                                                     {Object.keys(errors).length > 0 && (
                                                         <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
@@ -611,11 +644,11 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                             </ul>
                                                         </div>
                                                     )}
-                                                    <div className={`${clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? 'DivButtonsHolder' : ''}`}>
+                                                    <div className={`${(clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved") || isCustomInvoice ? 'DivButtonsHolder' : ''}`}>
                                                         {isSubmitting ? (
                                                             <div className="spinner mt-8"></div>
                                                         ) : (
-                                                            (clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved" ? (
+                                                            ((clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved") || isCustomInvoice ? (
                                                                 <Stack direction="row" spacing={2} className='mt-6'>
                                                                     <Button color="secondary" variant="contained" disabled={isSubmitting && !isSubmitionCompleted}
                                                                         onClick={downloadInvoiceAsPDF}
@@ -636,10 +669,10 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                                     <SaveOutlinedIcon className="mr-1" />
                                                                                     Update
                                                                                 </Button>
-                                                                            ):
-                                                                            <>
-                                                                            <Chip label='Updated' color='success' />
-                                                                            </>
+                                                                            ) :
+                                                                                <>
+                                                                                    <Chip label='Updated' color='success' />
+                                                                                </>
                                                                             }
                                                                         </>
                                                                         :
@@ -655,7 +688,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 </Stack>
                                                             ) :
                                                                 <>
-                                                                    <Alert severity="error" className="my-4">The related timesheet is not submitted\approved.</Alert>
+                                                                    <Alert severity="error" className="my-4">The related timesheet is not submitted\approved. {isCustomInvoice}</Alert>
                                                                 </>
                                                             )
                                                         )}

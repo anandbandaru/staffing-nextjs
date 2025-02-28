@@ -114,7 +114,7 @@ const EmployeesReport = () => {
     };
 
     return (
-        <div class="flex flex-wrap gap-x-2">
+        <div className="flex flex-wrap gap-x-2">
             <div className="border-gray-700 rounded-lg bg-slate-200 justify-items-center p-1">
                 <AgCharts options={options_1}
                     className="chart"

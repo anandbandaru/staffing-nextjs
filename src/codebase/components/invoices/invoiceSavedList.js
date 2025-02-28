@@ -8,11 +8,13 @@ import GenericDetails from "../forms/GenericDetails";
 // import ExpenseEdit from "./expenseEdit";
 import CustomSnackbar from "../snackbar/snackbar";
 import InvoiceView from "./invoiceView";
+import { Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 
 const InvoiceSavedList = () => {
     const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
+    const [performLoading, setPerformLoading] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
 
@@ -40,7 +42,8 @@ const InvoiceSavedList = () => {
         delaydMockLoading();
     }
     function manualLoadDataWithMessage() {
-        console.log("manualLoadDataWithMessage")
+        console.log("manualLoadDataWithMessage");
+        handleClickOpen();
         showSnackbar('success', "Invoice updated");
         setApiLoading(true);
         // setRefreshBalance(!refreshBalance);
@@ -94,6 +97,14 @@ const InvoiceSavedList = () => {
             )
     }
 
+    const [open, setOpen] = React.useState(false);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const CustomDetailsComponent = (props) => {
         return (
             <>
@@ -101,7 +112,8 @@ const InvoiceSavedList = () => {
                     operation="Edit"
                     manualLoadData={manualLoadData}
                     invoiceNumber={props.data.invoiceNumber}
-                    timesheetNumber={props.data.invoiceNumber.replace(/^INV-/, 'T-')}
+                    // timesheetNumber={props.data.invoiceNumber.replace(/^INV-/, 'T-')}
+                    timesheetNumber={props.data.timesheetNumber}
                     employeeID={props.data.employeeID}
                     jobID={props.data.jobID}
                     startDate={props.data.startDate}
@@ -127,6 +139,8 @@ const InvoiceSavedList = () => {
                     userNotes={props.data.userNotes}
                     manualLoadDataWithMessage={manualLoadDataWithMessage}
                     vendorId={props.data.vendorId}
+                    performLoading={false}
+                    setPerformLoading={setPerformLoading}
                 />
             </>
         );
@@ -163,7 +177,7 @@ const InvoiceSavedList = () => {
     };
     const CustomHoursRenderer = ({ value }) => {
         let className = 'badgeSpan';
-        if(value > 0)
+        if (value > 0)
             className += ' rag-blue-bg';
         else
             className += ' rag-gray-bg';
@@ -230,6 +244,22 @@ const InvoiceSavedList = () => {
 
     return (
         <>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Update Operation
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Invoice Data updated successfully
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
+
             <CustomSnackbar
                 open={snackbarOpen}
                 handleClose={handleSnackbarClose}

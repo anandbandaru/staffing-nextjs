@@ -116,6 +116,7 @@ const InvoiceList = () => {
                     rate={props.data.rate}
                     paymentTerms={props.data.paymentTerms}
                     vendorId={props.data.vendorId}
+                    manualLoadDataWithMessage={manualLoadData}
                 />
             </>
         );
