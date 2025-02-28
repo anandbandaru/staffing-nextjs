@@ -39,7 +39,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
     daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id, showSnackbar, userNotes, vendorId }) => {
 
     const { APIPath, userName } = useContext(Context);
-    const [doLoading, setDoLoading] = React.useState(false);
+    const [doLoading, setDoLoading] = React.useState(true);
     const [open, setOpen] = React.useState(false);
     const [clientDocumentData, setClientDocumentData] = useState({ data: [] });
     const [iPVendorDocumentData, setIPVendorDocumentData] = useState({ data: [] });
