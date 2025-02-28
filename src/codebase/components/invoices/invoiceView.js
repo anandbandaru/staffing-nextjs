@@ -36,7 +36,7 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
-    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id, showSnackbar, userNotes }) => {
+    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id, showSnackbar, userNotes, vendorId }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [doLoading, setDoLoading] = React.useState(false);
@@ -283,7 +283,8 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             createdBy: userName,
                                             Id: Id,
                                             modifiedBy: userName,
-                                            userNotes: userNotes
+                                            userNotes: userNotes,
+                                            vendorId: vendorId
                                         }}
                                         onSubmit={(values, { setSubmitting }) => {
                                             var finalAPI = APIPath + "/addinvoice";

@@ -95,7 +95,7 @@ const InvoicesListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
                 open={open}
             >
                 <DialogTitle className="text-pink-600" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Invoice
+                    {operation} Custom Invoice
                 </DialogTitle>
                 <IconButton
                     aria-label="close"

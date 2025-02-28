@@ -126,6 +126,7 @@ const InvoiceSavedList = () => {
                     Id={props.data.Id}
                     userNotes={props.data.userNotes}
                     manualLoadDataWithMessage={manualLoadDataWithMessage}
+                    vendorId={props.data.vendorId}
                 />
             </>
         );
