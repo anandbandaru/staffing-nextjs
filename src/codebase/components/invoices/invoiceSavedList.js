@@ -34,6 +34,14 @@ const InvoiceSavedList = () => {
     }, []);
 
     function manualLoadData() {
+        showSnackbar('success', "Invoice updated");
+        setApiLoading(true);
+        // setRefreshBalance(!refreshBalance);
+        delaydMockLoading();
+    }
+    function manualLoadDataWithMessage() {
+        console.log("manualLoadDataWithMessage")
+        showSnackbar('success', "Invoice updated");
         setApiLoading(true);
         // setRefreshBalance(!refreshBalance);
         delaydMockLoading();
@@ -116,6 +124,8 @@ const InvoiceSavedList = () => {
                     rate={props.data.rate}
                     paymentTerms={props.data.paymentTerms}
                     Id={props.data.Id}
+                    userNotes={props.data.userNotes}
+                    manualLoadDataWithMessage={manualLoadDataWithMessage}
                 />
             </>
         );

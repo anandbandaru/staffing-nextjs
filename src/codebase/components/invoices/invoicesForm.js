@@ -153,7 +153,7 @@ function Invoice({ props, ID, operation }) {
         setJobId(jobId);
         setEmployeeId(employeeId);
         // Update the invoiceNumber field with the desired format
-        let valToSet = `CUST-INV-E:${employeeId}-J:${jobId}-${invoicePeriod}`
+        let valToSet = `CUST-INV-E:${employeeId}-J:${jobId}-${invoicePeriod}-`
         setInvoiceNumber(valToSet);
         setFieldValue('invoiceNumber', valToSet);
     };
@@ -164,7 +164,7 @@ function Invoice({ props, ID, operation }) {
         console.log("StartDate: " + year);
         setFieldValue('invoiceNumber', invoiceNumber + year + "-");
     };
-    
+
 
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
@@ -192,20 +192,21 @@ function Invoice({ props, ID, operation }) {
                     enableReinitialize
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
-                        vendorId: name ? data.data[0].vendorId : vendorId,
-                        jobId: name ? data.data[0].jobId : jobId,
                         employeeId: name ? data.data[0].employeeId : employeeId,
+                        jobId: name ? data.data[0].jobId : jobId,
+                        invoiceNumber: name ? data.data[0].invoiceNumber : invoiceNumber,
+                        timesheetNumber: 'T-CUSTOM-NOT_PRESENT',
+                        startDate: name ? data.data[0].startDate : '',
+                        endDate: name ? data.data[0].endDate : '',
+                        vendorId: name ? data.data[0].vendorId : vendorId,
                         totalHours: name ? data.data[0].totalHours : '',
                         rate: name ? data.data[0].rate : '',
                         createdBy: userName,
                         invoiceDate: name ? data.data[0].invoiceDate : '',
-                        startDate: name ? data.data[0].startDate : '',
-                        endDate: name ? data.data[0].endDate : '',
-                        invoiceNumber: name ? data.data[0].invoiceNumber : invoiceNumber,
-                        invoicePeriod: name ? data.data[0].invoicePeriod : '',
+                        userNotes: name ? data.data[0].userNotes : '',
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                        var finalAPI = APIPath + "/addinvoice";
+                        var finalAPI = APIPath + "/addcustominvoice";
                         if (operation === "Edit") {
                             finalAPI = APIPath + "/updateinvoice";
                         }
@@ -247,6 +248,8 @@ function Invoice({ props, ID, operation }) {
                             .required('Total Hours Must be a number'),
                         startDate: Yup.string()
                             .required('Start Date Required'),
+                        userNotes: Yup.string()
+                            .required('Notes Required'),
                         endDate: Yup.string()
                             .required('End Date Required')
                             .test('is-greater', 'End Date must be later than Start Date', function (value) {
@@ -290,23 +293,6 @@ function Invoice({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
-                                    <div className='flex-1'>Invoice Date:
-                                    </div>
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        className='flex-1'
-                                        id="invoiceDate"
-                                        name="invoiceDate"
-                                        type="date"
-                                        value={values.invoiceDate}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        helperText={(errors.invoiceDate && touched.invoiceDate) && errors.invoiceDate}
-                                    />
-                                </Stack>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -355,17 +341,34 @@ function Invoice({ props, ID, operation }) {
                                     helperText={(errors.jobId && touched.jobId) && errors.jobId}
                                 >
                                     {jobsData.data.map((item, index) => (
-                                        <MenuItem key={index} value={item.jobId} 
-                                        employeeid={item.employeeId} 
-                                        invoiceperiod={item.invoicePeriod}
-                                        jobid={item.jobId} 
-                                        startdate={item.startDate}>
-                                            {item.jobName} - {'(EMPLOYEE: ' + item.employeeFull + ')'} - 
+                                        <MenuItem key={index} value={item.jobId}
+                                            employeeid={item.employeeId}
+                                            invoiceperiod={item.invoicePeriod}
+                                            jobid={item.jobId}
+                                            startdate={item.startDate}>
+                                            {item.jobName} - {'(EMPLOYEE: ' + item.employeeFull + ')'} -
                                             <span className='bg-slate-500 text-white px-2'>{'(INVOICE PERIOD: ' + item.invoicePeriod + ')'}</span>
                                         </MenuItem>
                                     ))}
                                 </TextField>
 
+                                <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
+                                    <div className='flex-1'>Invoice Date:
+                                    </div>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        className='flex-1'
+                                        id="invoiceDate"
+                                        name="invoiceDate"
+                                        type="date"
+                                        value={values.invoiceDate}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.invoiceDate && touched.invoiceDate) && errors.invoiceDate}
+                                    />
+                                </Stack>
                                 <Stack direction="row" spacing={2} className="flex items-center pl-2 mt-4">
                                     <div className='flex-1'>Start Date:
                                     </div>
@@ -441,6 +444,21 @@ function Invoice({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     helperText={(errors.totalHours && touched.totalHours) && errors.totalHours}
+                                />
+                                <TextField
+                                    className=""
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="userNotes"
+                                    name="userNotes"
+                                    label="Notes"
+                                    multiline
+                                    rows={2}
+                                    value={values.userNotes}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.userNotes && touched.userNotes) && errors.userNotes}
                                 />
                                 {Object.keys(errors).length > 0 && (
                                     <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">

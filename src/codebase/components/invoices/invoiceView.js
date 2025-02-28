@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
-import { Alert, Link, Table, TableBody, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Alert, Chip, Link, Table, TableBody, TableContainer, TableHead, TableRow } from "@mui/material";
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -36,7 +36,7 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
-    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id, showSnackbar }) => {
+    daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id, showSnackbar, userNotes }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [doLoading, setDoLoading] = React.useState(false);
@@ -46,6 +46,8 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
     const [apiLoading, setApiLoading] = useState(false);
     const [dataAudit, setDataAudit] = useState({ data: [] });
     const contentRef = useRef(null); // Reference to the form element
+
+    
     //For dialog MUI
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -54,13 +56,14 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
         if (reason && reason === "backdropClick")
             return;
         setOpen(false);
-        setDoLoading(false)
+        setDoLoading(false);
         manualLoadData();
     };
     const handleClickOpen = () => {
         if (!open) {
             setOpen(true);
             setDoLoading(true);
+            getAuditDetails();
         }
     };
     const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -165,7 +168,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
             if (operation === "Edit")
                 getAuditDetails();
         }
-    }, [invoiceNumber, doLoading]);
+    }, [invoiceNumber]);
 
     const downloadInvoiceAsPDF = () => {
         const input = contentRef.current;
@@ -253,7 +256,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                 <div className="div_InvoiceHolderMain" >
 
                                     <Formik
-                                        enableReinitialize
+                                        // enableReinitialize
                                         initialValues={{
                                             invoiceNumber: invoiceNumber,
                                             invoiceDate: new Date(invoiceDate).toISOString().slice(0, 10),
@@ -280,6 +283,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             createdBy: userName,
                                             Id: Id,
                                             modifiedBy: userName,
+                                            userNotes: userNotes
                                         }}
                                         onSubmit={(values, { setSubmitting }) => {
                                             var finalAPI = APIPath + "/addinvoice";
@@ -296,7 +300,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                         'ngrok-skip-browser-warning': 'true',
                                                     }
                                                 },
-                                            ).then((resp) => {
+                                            ).then(async (resp) => {
                                                 setSubmitting(false);
                                                 setSubmitionCompleted(true);
                                                 if (resp.data.STATUS === "FAIL")
@@ -307,7 +311,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                 else {
                                                     if (operation === "Edit") {
                                                         showSnackbar('success', "Invoice data Updated");
-                                                        handleClose();
+                                                        // setTimeout(() => {
+                                                        //     handleClose();
+                                                        // }, 2000);
                                                     }
                                                     else {
                                                         showSnackbar('success', "Invoice data saved");
@@ -330,6 +336,8 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                 .required('Total Hours Required'),
                                             rate: Yup.string()
                                                 .required('Rate Required'),
+                                            userNotes: Yup.string()
+                                                .required('Notes Required'),
                                         })}
                                     >
                                         {(props) => {
@@ -464,35 +472,50 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 />
                                                             </Stack>
                                                         </div>
-
-                                                        <TableContainer component={Paper} className="tableContainer">
-                                                            <Table size="small" aria-label="a dense table">
-                                                                <TableHead>
-                                                                    <TableRow>
-                                                                        <StyledTableCell align="left">Timesheet Details</StyledTableCell>
-                                                                        <StyledTableCell align="right"></StyledTableCell>
-                                                                    </TableRow>
-                                                                </TableHead>
-                                                                <TableBody>
-                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Timesheet Number</TableCell>
-                                                                        <TableCell align="right" className="divValue3 bg-white">{timesheetNumber}</TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Status</TableCell>
-                                                                        <TableCell align="right" className="divValue3 bg-white">
-                                                                            {clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved"
-                                                                                ?
-                                                                                <span className="text-green-500">Approved</span>
-                                                                                :
-                                                                                <span className="text-red-500">Pending Approval\Submission</span>
-                                                                            }
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                </TableBody>
-                                                            </Table>
-                                                        </TableContainer>
                                                     </div> {/* End of content div */}
+
+                                                    <TableContainer component={Paper} className="tableContainer mt-4">
+                                                        <Table size="small" aria-label="a dense table">
+                                                            <TableHead>
+                                                                <TableRow>
+                                                                    <StyledTableCell align="left">Timesheet Details</StyledTableCell>
+                                                                    <StyledTableCell align="right"></StyledTableCell>
+                                                                </TableRow>
+                                                            </TableHead>
+                                                            <TableBody>
+                                                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                    <TableCell component="th" scope="row" className="divTitle bg-white">Timesheet Number</TableCell>
+                                                                    <TableCell align="right" className="divValue3 bg-white">{timesheetNumber}</TableCell>
+                                                                </TableRow>
+                                                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                                    <TableCell component="th" scope="row" className="divTitle bg-white">Status</TableCell>
+                                                                    <TableCell align="right" className="divValue3 bg-white">
+                                                                        {clientDocumentData.data[0] && clientDocumentData.data[0].status === "Approved"
+                                                                            ?
+                                                                            <span className="text-green-500">Approved</span>
+                                                                            :
+                                                                            <span className="text-red-500">Pending Approval\Submission</span>
+                                                                        }
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            </TableBody>
+                                                        </Table>
+                                                    </TableContainer>
+                                                    <TextField
+                                                        className=""
+                                                        size="small"
+                                                        margin="normal"
+                                                        fullWidth
+                                                        id="userNotes"
+                                                        name="userNotes"
+                                                        label="Notes"
+                                                        multiline
+                                                        rows={2}
+                                                        value={values.userNotes}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        helperText={(errors.userNotes && touched.userNotes) && errors.userNotes}
+                                                    />
 
                                                     <div className="divHoursHolder my-4">
                                                         <TimesheetCapturedDayHours timesheetNumber={timesheetNumber} />
@@ -607,12 +630,16 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                     </Button> */}
                                                                     {operation === "Edit" ?
                                                                         <>
-                                                                            {!isSubmitionCompleted && (
+                                                                            {!isSubmitionCompleted ? (
                                                                                 <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                                                                     <SaveOutlinedIcon className="mr-1" />
                                                                                     Update
                                                                                 </Button>
-                                                                            )}
+                                                                            ):
+                                                                            <>
+                                                                            <Chip label='Updated' color='success' />
+                                                                            </>
+                                                                            }
                                                                         </>
                                                                         :
                                                                         <>
@@ -638,7 +665,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                     </Formik>
                                 </div>
                             </TabPanel>
-                            {operation === "Edit" && (
+                            {(operation === "Edit") && (
                                 <TabPanel className="px-2">
                                     <VerticalTimeline layout='1-column-left'>
                                         {dataAudit.data.map((entry, index) => (
