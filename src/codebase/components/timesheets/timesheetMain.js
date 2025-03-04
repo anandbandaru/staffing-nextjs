@@ -84,7 +84,7 @@ const TimeSheetsMain = () => {
 
     return (
         <>
-            <div className="timeSheetMainHolder pt-6">
+            <div className="timeSheetMainHolder pt-5">
 
                 <Tabs selectedIndex={selectedTabDD}
                     onSelect={(index) => setSelectedTabDD(index)}>

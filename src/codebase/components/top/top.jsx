@@ -157,8 +157,7 @@ const Top = () => {
         // console.log("ONLINE VERSION:" + currentVersion)
         if (storedVersion !== currentVersion) {
             //Showing changes dialog only when non employee
-            if(userType === "ADMIN")
-            {
+            if (userType === "ADMIN") {
                 setOpenVersionDialog(true);
             }
             localStorage.setItem('appVersion', currentVersion);
@@ -192,7 +191,8 @@ const Top = () => {
             axios.get(APIPath + `/gettoppermissions/${userName}`, {
                 headers: {
                     'ngrok-skip-browser-warning': 'true',
-                }})
+                }
+            })
                 .then(response => {
                     if (response.data.STATUS === "FAIL") {
                         showSnackbar('error', "Top tabs Permissions failure");
@@ -248,8 +248,7 @@ const Top = () => {
     ];
     let tabsToShow = userType === 'ADMIN' ? allTabs.map(tab => tab.name) : permissions;
     //SETTING DEFAULT TAB to T-ENTRY
-    if(userType === "EMPLOYEE" || userType === "")
-    {
+    if (userType === "EMPLOYEE" || userType === "") {
         tabsToShow = ["Timesheet Entry"];
     }
 
@@ -264,11 +263,8 @@ const Top = () => {
 
             <div className="topTabsHolder flex flex-grow">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
-                    <div className="topLeft px-1 mt-1">
-                        <Stack spacing={1} direction="row" className="items-center justify-center">
-                            <img className="icon" src={assets.vizionLogo} alt="" />
-                            {/* <PriceChangeOutlinedIcon fontSize='large' /> */}
-                        </Stack>
+                    <div className="topLeft px-0.5 mt-0.5">
+                        <img className="icon" src={assets.vizionLogo} alt="" />
                         <div className="release_version_Div">{configData.releases[0].version}</div>
                     </div>
                     {tabsToShow.length > 0
@@ -290,7 +286,7 @@ const Top = () => {
                                     {selectedTab === 'Dashboard' && <Dashboard />}
                                     {selectedTab === 'New' && <ModulesTop />}
                                     {selectedTab === 'Transactions' && <TransactionsTop />}
-                                    {selectedTab === 'Timesheets' && <TimeSheetsMain /> }
+                                    {selectedTab === 'Timesheets' && <TimeSheetsMain />}
                                     {selectedTab === 'Timesheet Entry' && <TimeSheetsEntryMain />}
                                     {selectedTab === 'Files' && <FilesMain />}
                                     {selectedTab === 'Todo' && <TodosMain />}
