@@ -15,6 +15,7 @@ const InvoiceList = () => {
     const [apiLoading, setApiLoading] = useState(false);
     const [dataAPIError, setDataAPIError] = useState("");
     const [itemCount, setItemCount] = useState(0);
+    const [performLoading, setPerformLoading] = useState(false);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -117,6 +118,8 @@ const InvoiceList = () => {
                     paymentTerms={props.data.paymentTerms}
                     vendorId={props.data.vendorId}
                     manualLoadDataWithMessage={manualLoadData}
+                    performLoading={false}
+                    setPerformLoading={setPerformLoading}
                 />
             </>
         );
@@ -153,7 +156,7 @@ const InvoiceList = () => {
     };
     const CustomHoursRenderer = ({ value }) => {
         let className = 'badgeSpan';
-        if(value > 0)
+        if (value > 0)
             className += ' rag-blue-bg';
         else
             className += ' rag-gray-bg';
