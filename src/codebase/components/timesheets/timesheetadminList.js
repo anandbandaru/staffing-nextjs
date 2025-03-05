@@ -7,6 +7,9 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import GenericDetails from "../forms/GenericDetails";
 import TimesheetAction from "./timesheetAction";
 import TimesheetAudit from "./timesheetAudit";
+import { Button } from "@mui/material";
+import CachedIcon from '@mui/icons-material/Cached';
+import PendingListToolbar from "../timesheetentry/pendingListToolbar";
 
 const TimesheetAdminList = ({ employeeId, status }) => {
     const { APIPath } = useContext(Context);
@@ -103,11 +106,26 @@ const TimesheetAdminList = ({ employeeId, status }) => {
     const CustomDetailsComponent = (props) => {
         return (
             <>
-                <GenericDetails ID={props.data.Id} operation="View" doLoading={false} moduleName="MY_TIMESHEETS" timesheetNumber={props.data.timesheetNumber} />
+                <GenericDetails ID={props.data.Id}
+                    operation="View"
+                    doLoading={false}
+                    moduleName="MY_TIMESHEETS"
+                    timesheetNumber={props.data.timesheetNumber}
+                    mode={props.data.status}
+                    manualLoadData={manualLoadData}
+                    setApiLoading={setApiLoading}
+                    showSnackbar={showSnackbar}
+                    employeeID={props.data.employeeID}
+                    startDate={props.data.startDate}
+                    endDate={props.data.endDate}
+                    jobName={props.data.jobName}
+                    personalEmail={props.data.personalEmail}
+                    applicationEmail={props.data.applicationEmail}
+                />
             </>
         );
     };
-    
+
     const CustomJobTypeRenderer = ({ value }) => {
         let className = 'badgeSpan';
         switch (value) {
@@ -160,18 +178,19 @@ const TimesheetAdminList = ({ employeeId, status }) => {
     const CustomEditComponent = (props) => {
         return (
             <>
-                <TimesheetAction ID={props.data.Id} 
-                timesheetNumber={props.data.timesheetNumber} 
-                mode={props.data.status} operation="Edit" 
-                manualLoadData={manualLoadData} 
-                setApiLoading={setApiLoading} 
-                showSnackbar={showSnackbar} 
-                employeeID={props.data.employeeID} 
-                startDate={props.data.startDate} 
-                endDate={props.data.endDate} 
-                jobName={props.data.jobName} 
-                personalEmail={props.data.personalEmail} 
-                applicationEmail={props.data.applicationEmail} 
+                <TimesheetAction ID={props.data.Id}
+                    timesheetNumber={props.data.timesheetNumber}
+                    mode={props.data.status} 
+                    operation="Edit"
+                    manualLoadData={manualLoadData}
+                    setApiLoading={setApiLoading}
+                    showSnackbar={showSnackbar}
+                    employeeID={props.data.employeeID}
+                    startDate={props.data.startDate}
+                    endDate={props.data.endDate}
+                    jobName={props.data.jobName}
+                    personalEmail={props.data.personalEmail}
+                    applicationEmail={props.data.applicationEmail}
                 />
             </>
         );
@@ -226,18 +245,32 @@ const TimesheetAdminList = ({ employeeId, status }) => {
                 message={snackbarMessage}
             />
             <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
-                {/* <PendingListToolbar
+                <PendingListToolbar
                     operation={status}
-                    jobsCount={jobsCount}
+                    jobsCount={null}
                     itemCount={itemCount}
                     apiLoading={apiLoading}
-                    dataAPIError={dataAPIError}
+                    dataAPIError={''}
                     manualLoadData={manualLoadData}
-                /> */}
-                <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
+                />
+
+                {/* <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
                     <span className="">Total {status} Timesheets:</span>
                     <span className="font-bold text-sm ml-2">{itemCount}</span>
                 </div>
+                <div className="">
+                    <Button size="small" variant="contained"
+                        onClick={manualLoadData}
+                        disabled={apiLoading}
+                    >
+                        {apiLoading ? <div className="spinner"></div> :
+                            <>
+                                <CachedIcon className="mr-1" />
+                                Refresh now
+                            </>}
+
+                    </Button>
+                </div> */}
             </div>
             <div className="flex flex-grow flex-1 rounded-md text-sm justify-between place-items-center space-x-2 ">
                 {data.data && data.data.length > 0 ? (

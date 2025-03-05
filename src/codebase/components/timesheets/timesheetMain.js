@@ -116,6 +116,7 @@ const TimeSheetsMain = () => {
                     </TabList>
 
                     <TabPanel className="px-0">
+                    <Alert severity="info" className="my-0">This tab displays all the <strong>Pending</strong> timesheets.</Alert>
                         <TextField
                             size="small"
                             margin="normal"
@@ -149,6 +150,7 @@ const TimeSheetsMain = () => {
                         <TimesheetRemindersList />
                     </TabPanel>
                     <TabPanel className="px-0">
+                    <Alert severity="info" className="my-0">This tab displays all the <strong>Sent Back</strong> timesheets.</Alert>
                         <TextField
                             size="small"
                             margin="normal"
@@ -208,6 +210,7 @@ const TimeSheetsMain = () => {
                         )}
                     </TabPanel>
                     <TabPanel className="px-0">
+                    <Alert severity="info" className="my-0">This tab displays all the <strong>Approved</strong> timesheets.</Alert>
                         <TextField
                             size="small"
                             margin="normal"

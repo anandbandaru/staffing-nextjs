@@ -48,10 +48,12 @@ const PendingListToolbar = ({ operation, jobsCount, itemCount, apiLoading, dataA
                                 <span className="font-bold text-sm ml-2">{employeesCount}</span>
                             </div>
                         )}
-                        <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
-                            <span className="">Total Jobs:</span>
-                            <span className="font-bold text-sm ml-2">{jobsCount}</span>
-                        </div>
+                        {jobsCount && (
+                            <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
+                                <span className="">Total Jobs:</span>
+                                <span className="font-bold text-sm ml-2">{jobsCount}</span>
+                            </div>
+                        )}
                         <div className="flex flex-grow-0 bg-gray-500 text-white text-sm py-2 px-3">
                             <span className="">Total {operation} Timesheets:</span>
                             <span className="font-bold text-sm ml-2">{itemCount}</span>

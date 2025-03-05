@@ -17,8 +17,10 @@ import TimesheetCapturedHours from '../timesheetentry/capturedHours';
 import TimesheetReminders from '../timesheets/timesheetReminderHistory';
 import EmployeeDocumentsAdminChecklist from '../employeesdocuments/eDocsAdminList';
 import EmployeeJobsMetadata from '../employees/employeeJobsMetadata';
+import TimesheetAction from '../timesheets/timesheetAction';
 
-function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber }) {
+function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber, mode, manualLoadData, 
+    showSnackbar, employeeID, startDate, endDate, jobName, personalEmail, applicationEmail }) {
     const { APIPath, userType } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -159,6 +161,13 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                             <Box sx={{ width: '100%', typography: 'body1' }}>
                                 <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
                                     <TabList className="thirdTabsListHolder">
+                                        {(moduleName === "MY_TIMESHEETS" && <>
+                                            <Tab>Captured Hours</Tab>
+                                            <Tab>Status, Notes</Tab>
+                                            <Tab>Audit</Tab>
+                                            <Tab>Reminders</Tab>
+                                        </>
+                                        )}
                                         <Tab>Metadata</Tab>
                                         {((moduleName === "JOBS" && userType === "ADMIN") && <>
                                             <Tab>Historical Rates</Tab>
@@ -166,13 +175,6 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         )}
                                         {((moduleName !== "FILETYPES" && moduleName !== "EXPENSETYPES" && moduleName !== "JOBTYPES") && <>
                                             <Tab>Documents</Tab>
-                                        </>
-                                        )}
-                                        {(moduleName === "MY_TIMESHEETS" && <>
-                                            <Tab>Captured Hours</Tab>
-                                            <Tab>Status, Notes</Tab>
-                                            <Tab>Audit</Tab>
-                                            <Tab>Reminders</Tab>
                                         </>
                                         )}
                                         {(moduleName === "EMPLOYEES" && <>
@@ -184,6 +186,42 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         </>
                                         )}
                                     </TabList>
+
+                                    {(moduleName === "MY_TIMESHEETS" && <>
+                                        <TabPanel className="px-2">
+                                            <Stack direction="column" spacing={1}>
+                                                <div className='divTotalHours'>
+                                                    TOTAL HOURS: {filteredData[0].hours}
+                                                </div>
+                                                {/* <TimesheetAction ID={ID}
+                                                    timesheetNumber={timesheetNumber}
+                                                    mode={mode} 
+                                                    operation={operation}
+                                                    manualLoadData={manualLoadData}
+                                                    setApiLoading={setApiLoading}
+                                                    showSnackbar={showSnackbar}
+                                                    employeeID={employeeID}
+                                                    startDate={startDate}
+                                                    endDate={endDate}
+                                                    jobName={jobName}
+                                                    personalEmail={personalEmail}
+                                                    applicationEmail={applicationEmail}
+                                                /> */}
+                                                <GenericFilesListSimple moduleId={ID} componentName={moduleName === "MY_TIMESHEETS" ? "TIMESHEETS" : moduleName} />
+                                                <TimesheetCapturedHours timesheetNumber={null} timesheetId={ID} />
+                                            </Stack>
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <TimesheetDetails ID={ID} operation="View" doLoading={true} type="STATUS_NOTES" />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <TimesheetDetails ID={ID} operation="View" doLoading={true} type="AUDIT" />
+                                        </TabPanel>
+                                        <TabPanel className="px-2">
+                                            <TimesheetReminders timesheetNumber={timesheetNumber} />
+                                        </TabPanel>
+                                    </>
+                                    )}
 
                                     <TabPanel className="px-2">
                                         <TableContainer component={Paper}>
@@ -261,27 +299,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber 
                                         </TabPanel>
                                     </>
                                     )}
-                                    {(moduleName === "MY_TIMESHEETS" && <>
-                                        <TabPanel className="px-2">
-                                            <Stack direction="column" spacing={1}>
-                                                <div className='divTotalHours'>
-                                                    TOTAL HOURS: {filteredData[0].hours}
-                                                </div>
-                                                <GenericFilesListSimple moduleId={ID} componentName={moduleName === "MY_TIMESHEETS" ? "TIMESHEETS" : moduleName} />
-                                                <TimesheetCapturedHours timesheetNumber={null} timesheetId={ID} />
-                                            </Stack>
-                                        </TabPanel>
-                                        <TabPanel className="px-2">
-                                            <TimesheetDetails ID={ID} operation="View" doLoading={true} type="STATUS_NOTES" />
-                                        </TabPanel>
-                                        <TabPanel className="px-2">
-                                            <TimesheetDetails ID={ID} operation="View" doLoading={true} type="AUDIT" />
-                                        </TabPanel>
-                                        <TabPanel className="px-2">
-                                            <TimesheetReminders timesheetNumber={timesheetNumber} />
-                                        </TabPanel>
-                                    </>
-                                    )}
+
                                     {(moduleName === "EMPLOYEES" && <>
                                         <TabPanel className="px-2">
                                             <EmployeeGenericList formType={'Dependent'} employeeID={ID} />
