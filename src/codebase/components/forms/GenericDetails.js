@@ -193,7 +193,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber,
                                                 <div className='divTotalHours'>
                                                     TOTAL HOURS: {filteredData[0].hours}
                                                 </div>
-                                                {/* <TimesheetAction ID={ID}
+                                                <TimesheetAction ID={ID}
                                                     timesheetNumber={timesheetNumber}
                                                     mode={mode} 
                                                     operation={operation}
@@ -206,7 +206,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber,
                                                     jobName={jobName}
                                                     personalEmail={personalEmail}
                                                     applicationEmail={applicationEmail}
-                                                /> */}
+                                                    viewType={"NORMAL"}
+                                                />
                                                 <GenericFilesListSimple moduleId={ID} componentName={moduleName === "MY_TIMESHEETS" ? "TIMESHEETS" : moduleName} />
                                                 <TimesheetCapturedHours timesheetNumber={null} timesheetId={ID} />
                                             </Stack>

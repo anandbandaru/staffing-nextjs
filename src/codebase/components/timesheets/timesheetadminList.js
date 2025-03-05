@@ -191,6 +191,7 @@ const TimesheetAdminList = ({ employeeId, status }) => {
                     jobName={props.data.jobName}
                     personalEmail={props.data.personalEmail}
                     applicationEmail={props.data.applicationEmail}
+                    viewType={"POP"}
                 />
             </>
         );
