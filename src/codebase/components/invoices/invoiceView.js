@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import { assets } from '../../assets/assets'
 import 'reactjs-popup/dist/index.css';
@@ -37,7 +38,7 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
     daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id,
-    showSnackbar, userNotes, vendorId, manualLoadDataWithMessage, performLoading, setPerformLoading }) => {
+    showSnackbar, userNotes, vendorId, manualLoadDataWithMessage, performLoading, setPerformLoading, otherAmount, totalAmount }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [isCustomInvoice, setIsCustomInvoice] = React.useState(false);
@@ -314,7 +315,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             Id: Id,
                                             modifiedBy: userName,
                                             userNotes: userNotes,
-                                            vendorId: vendorId
+                                            vendorId: vendorId,
+                                            otherAmount: otherAmount,
+                                            totalAmount: totalAmount
                                         }}
                                         onSubmit={(values, { setSubmitting }) => {
                                             var finalAPI = APIPath + "/addinvoice";
@@ -384,7 +387,15 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             return (
                                                 <form onSubmit={handleSubmit} >
                                                     <div className="div_contentHolder" ref={contentRef}>
-                                                        <img className="icon" src={assets.vizionLogo} alt="" />
+                                                        {/* <img className="icon" src={assets.vizionLogo} alt="" /> */}
+                                                        <div className="div_CompanyTopDetailsHolder">
+                                                            <div className="title">
+                                                                {configData.companyDetails[0].title}
+                                                            </div>
+                                                            <div className="address">
+                                                                {configData.companyDetails[0].address}
+                                                            </div>
+                                                        </div>
                                                         <TextField
                                                             className="tboxBig"
                                                             variant="standard"
@@ -400,7 +411,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                             <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
                                                                 <div className='divTitleBig'>Invoice Date:</div>
                                                                 <TextField
-                                                                    className="tboxWidthSmall"
+                                                                    className="tboxWidthSmall2"
                                                                     size="small"
                                                                     margin="normal"
                                                                     fullWidth
@@ -432,14 +443,14 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Employee Name</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{employeeName}</TableCell>
                                                                     </TableRow>
-                                                                    <TableRow >
+                                                                    {/* <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Job Name</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{jobName}</TableCell>
                                                                     </TableRow>
                                                                     <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Job Title</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{jobTitle}</TableCell>
-                                                                    </TableRow>
+                                                                    </TableRow> */}
                                                                 </TableBody>
                                                             </Table>
                                                         </TableContainer>
@@ -465,46 +476,75 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                             </Table>
                                                         </TableContainer>
 
-                                                        <div className="mb-6">
-                                                            <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
-                                                                <div className='w-[130px] divTitleBig'>Rate:</div>
-                                                                <TextField
-                                                                    className="w-[100px] tboxBig"
-                                                                    size="small"
-                                                                    margin="normal"
-                                                                    fullWidth
-                                                                    id="rate"
-                                                                    name="rate"
-                                                                    type="number"
-                                                                    value={values.rate}
-                                                                    onChange={handleChange}
-                                                                    onBlur={handleBlur}
-                                                                    helperText={(errors.rate && touched.rate) && errors.rate}
-                                                                />
-                                                            </Stack>
-                                                        </div>
+                                                        <TableContainer component={Paper} className="tableContainer mb-6">
+                                                            <Table size="small" aria-label="a dense table">
+                                                                <TableHead>
+                                                                    <TableRow>
+                                                                        <StyledTableCell align="left"></StyledTableCell>
+                                                                        <StyledTableCell align="right"></StyledTableCell>
+                                                                    </TableRow>
+                                                                </TableHead>
+                                                                <TableBody>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Rate</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{rate}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Total Hours</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{totalHours}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">C1</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">120</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">C2</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">123</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Total Amount</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{totalAmount}</TableCell>
+                                                                    </TableRow>
+                                                                </TableBody>
+                                                            </Table>
+                                                        </TableContainer>
 
-                                                        <div className="mb-6">
-                                                            <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
-                                                                <div className='w-[130px] divTitleBig'>Total Hours:</div>
-                                                                <TextField
-                                                                    className="w-[100px] tboxBig"
-                                                                    size="small"
-                                                                    margin="normal"
-                                                                    fullWidth
-                                                                    type="number"
-                                                                    id="totalHours"
-                                                                    name="totalHours"
-                                                                    value={values.totalHours}
-                                                                    onChange={handleChange}
-                                                                    onBlur={handleBlur}
-                                                                    helperText={(errors.totalHours && touched.totalHours) && errors.totalHours}
-                                                                />
-                                                            </Stack>
+                                                        <div className="div_CompanyBottomDetailsHolder w-full">
+                                                            <table className="w-full">
+                                                                <tr>
+                                                                    <td className="text-left align-top">
+                                                                        Make cheque payable to: {configData.companyDetails[0].chequeTitle}
+                                                                    </td>
+                                                                    <td>
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {configData.companyDetails[0].chequeTitle}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {configData.companyDetails[0].chequeAddress}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {configData.companyDetails[0].chequePhone}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {configData.companyDetails[0].chequeEmail}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
                                                         </div>
                                                     </div> {/* End of content div */}
 
-                                                    <TableContainer component={Paper} className="tableContainer mt-4">
+                                                    {/* <TableContainer component={Paper} className="tableContainer mt-4">
                                                         <Table size="small" aria-label="a dense table">
                                                             <TableHead>
                                                                 <TableRow>
@@ -530,7 +570,44 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 </TableRow>
                                                             </TableBody>
                                                         </Table>
-                                                    </TableContainer>
+                                                    </TableContainer> */}
+                                                    <div className="mb-6">
+                                                        <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
+                                                            <div className='w-[130px] divTitleBig'>Rate:</div>
+                                                            <TextField
+                                                                className="w-[100px] tboxBig"
+                                                                size="small"
+                                                                margin="normal"
+                                                                fullWidth
+                                                                id="rate"
+                                                                name="rate"
+                                                                type="number"
+                                                                value={values.rate}
+                                                                onChange={handleChange}
+                                                                onBlur={handleBlur}
+                                                                helperText={(errors.rate && touched.rate) && errors.rate}
+                                                            />
+                                                        </Stack>
+                                                    </div>
+
+                                                    <div className="mb-6">
+                                                        <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
+                                                            <div className='w-[130px] divTitleBig'>Total Hours:</div>
+                                                            <TextField
+                                                                className="w-[100px] tboxBig"
+                                                                size="small"
+                                                                margin="normal"
+                                                                fullWidth
+                                                                type="number"
+                                                                id="totalHours"
+                                                                name="totalHours"
+                                                                value={values.totalHours}
+                                                                onChange={handleChange}
+                                                                onBlur={handleBlur}
+                                                                helperText={(errors.totalHours && touched.totalHours) && errors.totalHours}
+                                                            />
+                                                        </Stack>
+                                                    </div>
                                                     <TextField
                                                         className=""
                                                         size="small"
