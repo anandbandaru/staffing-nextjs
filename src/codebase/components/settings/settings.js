@@ -10,7 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Avatar from '@mui/material/Avatar';
-import { Stack, Skeleton } from "@mui/material";
+import { Stack, Skeleton, TableHead } from "@mui/material";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import List from '@mui/material/List';
@@ -20,7 +20,6 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import AssignmentIndSharpIcon from '@mui/icons-material/AssignmentIndSharp';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
@@ -41,6 +40,8 @@ import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import RealtimeNoteUpdate from "../realtime/realtimeNoteUpdate";
 import RealtimeCount from "../realtime/realtimeCount";
 import RealtimeUserUpdate from "../realtime/realtimeUserUpdate";
+import { styled } from '@mui/material/styles';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 const Settings = () => {
 
@@ -82,7 +83,8 @@ const Settings = () => {
                     endpoints.map(endpoint => axios.get(APIPath + endpoint, {
                         headers: {
                             'ngrok-skip-browser-warning': 'true',
-                        }}).catch(() => ({ data: { total: 0 } })))
+                        }
+                    }).catch(() => ({ data: { total: 0 } })))
                 );
 
                 const newCounts = responses.reduce((acc, response, index) => {
@@ -102,6 +104,15 @@ const Settings = () => {
         fetchCounts();
     }, [APIPath]);
 
+    const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: theme.palette.common.black,
+            color: theme.palette.common.white,
+        },
+        [`&.${tableCellClasses.body}`]: {
+            fontSize: 16,
+        },
+    }));
 
     return (
 
@@ -157,9 +168,10 @@ const Settings = () => {
                                 <Tab>Quick Links</Tab>
                                 <Tab>Developer Info</Tab>
                                 <Tab>Google Drive Storage</Tab>
+                                <Tab>Company Details</Tab>
                             </TabList>
 
-                            <TabPanel className="py-4">
+                            <TabPanel className="py-0">
                                 <div className="info_release_builddate_Div">
                                     {isAPILoading
                                         ?
@@ -207,7 +219,7 @@ const Settings = () => {
                                     }
                                 </div>
                             </TabPanel>
-                            <TabPanel className="py-1">
+                            <TabPanel className="py-0">
                                 <div className="info_release_builddate_Div">
                                     <Chip label={preval`module.exports = 'Last build Date: ' + new Date().toLocaleString();`} size="small" color='primary' variant="outlined" />
                                 </div>
@@ -251,7 +263,7 @@ const Settings = () => {
 
                                 </div>
                             </TabPanel>
-                            <TabPanel className="py-4">
+                            <TabPanel className="py-0">
                                 <Stack spacing={2} direction={"column"} className="my-2">
                                     <Link className='float-right'
                                         href="https://outlook.live.com/calendar/0/view/month"
@@ -300,7 +312,7 @@ const Settings = () => {
                                     </Link>
                                 </Stack>
                             </TabPanel>
-                            <TabPanel className="py-4">
+                            <TabPanel className="py-0">
                                 <Stack spacing={1}>
                                     {
                                         configData.developers.map((item, index) => (
@@ -318,7 +330,7 @@ const Settings = () => {
                                     }
                                 </Stack>
                             </TabPanel>
-                            <TabPanel className="py-4">
+                            <TabPanel className="py-0">
                                 <div className=' flex-0 p-1 my-2' >
                                     <Card sx={{ maxWidth: 235 }} >
                                         <CardContent className='mt-0'>
@@ -349,6 +361,44 @@ const Settings = () => {
                                         </CardContent>
                                     </Card>
                                 </div>
+                            </TabPanel>
+                            <TabPanel>
+                                <TableContainer component={Paper} className="tableContainer mb-6">
+                                    <Table size="small" aria-label="a dense table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <StyledTableCell align="left"></StyledTableCell>
+                                                <StyledTableCell align="right"></StyledTableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            <TableRow >
+                                                <TableCell component="th" scope="row" className="divTitle bg-white">Company Name</TableCell>
+                                                <TableCell align="right" className=" bg-white">{configData.companyDetails[0].title}</TableCell>
+                                            </TableRow>
+                                            <TableRow >
+                                                <TableCell component="th" scope="row" className="divTitle bg-white">Company Address</TableCell>
+                                                <TableCell align="right" className=" bg-white">{configData.companyDetails[0].address}</TableCell>
+                                            </TableRow>
+                                            <TableRow >
+                                                <TableCell component="th" scope="row" className="divTitle bg-white">Company Cheque Name</TableCell>
+                                                <TableCell align="right" className=" bg-white">{configData.companyDetails[0].chequeTitle}</TableCell>
+                                            </TableRow>
+                                            <TableRow >
+                                                <TableCell component="th" scope="row" className="divTitle bg-white">Company Cheque Address</TableCell>
+                                                <TableCell align="right" className=" bg-white">{configData.companyDetails[0].chequeAddress}</TableCell>
+                                            </TableRow>
+                                            <TableRow >
+                                                <TableCell component="th" scope="row" className="divTitle bg-white">Company Cheque Phone</TableCell>
+                                                <TableCell align="right" className=" bg-white">{configData.companyDetails[0].chequePhone}</TableCell>
+                                            </TableRow>
+                                            <TableRow >
+                                                <TableCell component="th" scope="row" className="divTitle bg-white">Company Cheque Email</TableCell>
+                                                <TableCell align="right" className=" bg-white">{configData.companyDetails[0].chequeEmail}</TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
                             </TabPanel>
                         </Tabs>
 

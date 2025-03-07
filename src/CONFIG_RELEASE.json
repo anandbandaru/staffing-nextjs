@@ -10,6 +10,16 @@
       "title": "Staffing"
     }
   ],
+  "companyDetails": [
+    {
+      "title": "Vizion Technologies LLC",
+      "address": "6543 Commerce Parkway Suite D, Office 2, Dublin, Ohio 43017",
+      "chequeTitle": "Vizion Technologies LLC",
+      "chequeAddress": "9027 Emrald Hill Dr, Lewis Center, OH 43035",
+      "chequePhone": "(908) 912-6461",
+      "chequeEmail": "hr@viziontechnologies.com"
+    }
+  ],
   "releases": [
     {
       "version": "3.4.1",
