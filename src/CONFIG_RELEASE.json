@@ -22,6 +22,14 @@
   ],
   "releases": [
     {
+      "version": "3.5",
+      "date": "MAR 27 2024",
+      "notes": [
+        "Display all Pending approval Timesheets",
+        "Make the Employee dropdown searchable"
+      ]
+    },
+    {
       "version": "3.4.2",
       "date": "MAR 16 2024",
       "notes": [

@@ -10,13 +10,21 @@ import TimesheetAudit from "./timesheetAudit";
 import { Button } from "@mui/material";
 import CachedIcon from '@mui/icons-material/Cached';
 import PendingListToolbar from "../timesheetentry/pendingListToolbar";
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import {Autocomplete} from '@mui/material';
 
-const TimesheetAdminList = ({ employeeId, status }) => {
+const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
     const { APIPath } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
     const [itemCount, setItemCount] = useState(0);
     const [jobsCount, setJobsCount] = useState(0);
+
+    const [employeeIdL, setEmployeeIdL] = useState('');
+    const handleEmployeeIdChange = (event) => {
+        setEmployeeIdL(event.target.value);
+    };
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -34,7 +42,7 @@ const TimesheetAdminList = ({ employeeId, status }) => {
     useEffect(() => {
         // console.log("SubmittedList: useEffect: employeeId: " + employeeId);
         delaydMockLoading();
-    }, [employeeId]);
+    }, [employeeId, employeeIdL]);
 
     function manualLoadData() {
         setApiLoading(true);
@@ -53,9 +61,16 @@ const TimesheetAdminList = ({ employeeId, status }) => {
         setData({ data: [] });
         setItemCount(0);
         setJobsCount(0);
+        console.log("getList: employeeId: " + employeeId);
+        console.log("getList: employeeIdL: " + employeeIdL);
+
         let apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeId;
         if (status === "Submitted") {
-            apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeId;
+            apiUrl = APIPath + "/getsubmittedtimesheets/" + employeeIdL;
+            if (employeeIdL === "" || employeeIdL === null || employeeIdL === undefined) {
+                apiUrl = APIPath + "/getallsubmittedtimesheets";
+            }
+            console.log("Submitted: Final path: " + apiUrl);
         }
         else if (status === "Approved") {
             apiUrl = APIPath + "/getapprovedtimesheets/" + employeeId;
@@ -180,7 +195,7 @@ const TimesheetAdminList = ({ employeeId, status }) => {
             <>
                 <TimesheetAction ID={props.data.Id}
                     timesheetNumber={props.data.timesheetNumber}
-                    mode={props.data.status} 
+                    mode={props.data.status}
                     operation="Edit"
                     manualLoadData={manualLoadData}
                     setApiLoading={setApiLoading}
@@ -245,6 +260,55 @@ const TimesheetAdminList = ({ employeeId, status }) => {
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
+            {status === "Submitted" && (
+                <>
+                    
+                    <Autocomplete
+                        options={employeesData.data}
+                        getOptionLabel={(option) => `Employee ID: ${option.Id} - ${option.firstName} ${option.lastName} - (${option.employeeType})`}
+                        //  - (Personal Email: ${option.personalEmail}) - (US Phone: ${option.personalUSPhone}) - (Personal Phone: ${option.personalPhone})`}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                size="small"
+                                margin="normal"
+                                fullWidth
+                                label="Employee Id"
+                                className="bg-yellow-400"
+                            />
+                        )}
+                        value={employeesData.data.find((item) => item.Id === employeeIdL) || null}
+                        onChange={(event, newValue) => {
+                            handleEmployeeIdChange({ target: { value: newValue ? newValue.Id : '' } });
+                        }}
+                    />
+
+                    {/* <TextField
+                        size="small"
+                        margin="normal"
+                        fullWidth
+                        id="employeeId"
+                        name="employeeId"
+                        select
+                        label="Employee Id"
+                        value={employeeIdL}
+                        className="bg-yellow-400"
+                        onChange={(event) => {
+                            handleEmployeeIdChange(event);
+                        }}
+                    >
+                        {employeesData.data.map((item, index) => (
+                            <MenuItem key={index} value={item.Id}>
+                                <div>
+                                    Employee ID: {item.Id} - {item.firstName} {item.lastName} - ({item.employeeType}) - (Personal Email: {item.personalEmail}) - (US Phone: {item.personalUSPhone}) - (Personal Phone: {item.personalPhone})
+                                </div>
+                            </MenuItem>
+                        ))}
+                    </TextField> */}
+                </>
+
+            )}
+
             <div className="w-full flex bg-kmcBG bg-gray-200 rounded-md text-sm justify-between place-items-center space-x-2 py-2 px-2 ">
                 <PendingListToolbar
                     operation={status}
