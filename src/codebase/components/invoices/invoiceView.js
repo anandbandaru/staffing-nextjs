@@ -405,7 +405,8 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                         </div>
                                                         <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
                                                             <div className='divTitleBig text-red-600'>Vendor Invoice Number:</div>
-                                                            <TextField
+                                                            <div className="tboxBig">{vendorInvoiceNumber}</div>
+                                                            {/* <TextField
                                                                 className="tboxBig text-red-600"
                                                                 variant="standard"
                                                                 size="small"
@@ -415,7 +416,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 name="vendorInvoiceNumber"
                                                                 disabled={true}
                                                                 value={vendorInvoiceNumber}
-                                                            />
+                                                            /> */}
                                                             <div className='divTitleBig'>Invoice Date:</div>
                                                             <TextField
                                                                 className="tboxWidthSmall2"
@@ -436,6 +437,27 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                             <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
                                                             </Stack>
                                                         </div>
+
+                                                        {/* <table className="w-full myInvTable">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        Vendor Name
+                                                                    </td>
+                                                                    <td className="text-right">
+                                                                        {vendorName}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        Employee Name
+                                                                    </td>
+                                                                    <td className="text-right">
+                                                                        {employeeName}
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table> */}
 
                                                         <TableContainer component={Paper} className="tableContainer mb-6">
                                                             <Table size="small" aria-label="a dense table">

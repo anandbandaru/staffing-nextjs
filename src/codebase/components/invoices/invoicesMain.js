@@ -27,7 +27,7 @@ const InvoicesMain = () => {
                             <InvoiceList />
                         </TabPanel>
                         <TabPanel className="px-2">
-                        <InvoiceSavedList />
+                            <InvoiceSavedList />
                         </TabPanel>
                         <TabPanel className="px-2">
                             Reports

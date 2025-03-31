@@ -141,6 +141,7 @@ const InvoiceSavedList = () => {
                     vendorId={props.data.vendorId}
                     performLoading={false}
                     setPerformLoading={setPerformLoading}
+                    vendorInvoiceNumber={props.data.vendorInvoiceNumber}
                 />
             </>
         );
@@ -163,7 +164,7 @@ const InvoiceSavedList = () => {
                 className += ' rag-red-bg';
                 break;
             case 'BIWEEKLY':
-                className += ' rag-red-bg';
+                className += ' rag-gray-bg';
                 break;
             default:
                 className += ' rag-orange-bg';
@@ -211,6 +212,7 @@ const InvoiceSavedList = () => {
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
+        { field: "vendorInvoiceNumber", filter: true },
         { field: "invoiceNumber", filter: true },
         { field: "jobID", headerName: 'J ID', filter: true, maxWidth: 90 },
         { field: "jobTitle", filter: true },

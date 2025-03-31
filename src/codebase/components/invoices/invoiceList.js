@@ -142,7 +142,7 @@ const InvoiceList = () => {
                 className += ' rag-red-bg';
                 break;
             case 'BIWEEKLY':
-                className += ' rag-red-bg';
+                className += ' rag-gray-bg';
                 break;
             default:
                 className += ' rag-orange-bg';

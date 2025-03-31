@@ -36,6 +36,8 @@
 }
 .tboxBig{
     width: 245px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
 }
 .tboxBig INPUT{
     font-size: 14px !important;
@@ -63,9 +65,9 @@
     top: 60px;
 }
 .DivButtonsHolder{
-    position: fixed;
+    /* position: fixed;
     top: 32px;
-    right:150px
+    right:150px */
 }
 .div_contentHolder{
     background-color: rgb(242, 247, 245);
@@ -107,4 +109,12 @@
     font-weight: bold;
     padding: 3px 0px;
     color: brown;
+}
+.myInvTable{
+    font-size: 14px !important;
+    margin-bottom: 10px;
+}
+.myInvTable TD{
+    font-size: 14px !important;
+    border: 1px solid #ccc;
 }
