@@ -506,35 +506,37 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
 
                                                         <div className="div_CompanyBottomDetailsHolder w-full">
                                                             <table className="w-full">
-                                                                <tr>
-                                                                    <td className="text-left align-top">
-                                                                        Make cheque payable to: {configData.companyDetails[0].chequeTitle}
-                                                                    </td>
-                                                                    <td>
-                                                                        <table>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    {configData.companyDetails[0].chequeTitle}
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    {configData.companyDetails[0].chequeAddress}
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    {configData.companyDetails[0].chequePhone}
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    {configData.companyDetails[0].chequeEmail}
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td className="text-left align-top">
+                                                                            Make cheque payable to: {configData.companyDetails[0].chequeTitle}
+                                                                        </td>
+                                                                        <td>
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        {configData.companyDetails[0].chequeTitle}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        {configData.companyDetails[0].chequeAddress}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        {configData.companyDetails[0].chequePhone}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        {configData.companyDetails[0].chequeEmail}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
                                                             </table>
                                                         </div>
                                                     </div> {/* End of content div */}

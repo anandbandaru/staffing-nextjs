@@ -190,9 +190,9 @@ const InvoiceList = () => {
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "employeeID", headerName: 'E ID', maxWidth: 50, filter: true },
+        { field: "employeeID", headerName: 'EMP ID', maxWidth: 100, filter: true },
         { field: "invoiceNumber", filter: true },
-        { field: "jobID", headerName: 'J ID', filter: true, maxWidth: 90 },
+        { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 100 },
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'I Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
         { field: "clientName", filter: true },
