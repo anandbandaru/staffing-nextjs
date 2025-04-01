@@ -27,7 +27,7 @@
 .userHolder{
     position: fixed;
     right: 0px;
-    bottom: 21px;
+    bottom: 20px;
     cursor: pointer;
     padding: 2px 0px 1px 0px;
     z-index: 101;

@@ -51,6 +51,7 @@ import MenuItem from '@mui/material/MenuItem';
 import LanIcon from '@mui/icons-material/Lan';
 import TimeSheetsEntryMain from "../timesheetentry/timesheetentryMain";
 import TimeSheetsMain from "../timesheets/timesheetMain";
+import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontalCircleOutlined';
 
 const Top = () => {
 
@@ -61,6 +62,7 @@ const Top = () => {
         dashboardAPIError,
         isAPILoading,
         APIPath,
+        setUserName, setToken, setUserType, signOut,
         userName, userType, todoOpen } = useContext(Context);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -361,6 +363,24 @@ const Top = () => {
                         <div className="userTypeHolder px-2 ml-2">
                             {userType}
                         </div>
+                        <div className="px-2">
+                            <Button size="small" variant="contained" color="primary"
+                                sx={{
+                                    padding: '0px 6px',
+                                    fontSize: '0.75rem',
+                                    minWidth: 'auto',
+                                }}
+                                startIcon={<SwapHorizontalCircleOutlinedIcon />}
+                                onClick={() => {
+                                    showSnackbar('info', "Logging out");
+                                    signOut();
+                                    // setToken("");
+                                    // setUserName("");
+                                    // setUserType("");
+                                }}
+                            >LOGOUT
+                            </Button>
+                        </div>
                     </Stack>
                 </div>
 
@@ -374,8 +394,8 @@ const Top = () => {
             <Tooltip id="my-tooltip-api-availability" className="tooltip-example" />
             {ipAddress ? (
                 <Footer ipAddress={ipAddress} city={location.city} region={location.region} country_name={location.country} />
-            ) : (
-                <p>Loading location data...</p>
+            ):(
+                <Footer ipAddress="Unknown" city="Unknown" region="Unknown" country_name="Unknown" />
             )}
 
             <BootstrapDialog
