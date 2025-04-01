@@ -62,6 +62,48 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
         setLocalTotal((hours * localRate).toFixed(2));
     };
 
+    const [otherCosts, setOtherCosts] = useState([{ title: "", otherAmount: "" }]);
+    const handleOtherCostChange = (index, event) => {
+        const { name, value } = event.target;
+        const updatedOtherCosts = [...otherCosts];
+        updatedOtherCosts[index][name] = value;
+        setOtherCosts(updatedOtherCosts);
+    };
+
+    const addOtherCostRow = () => {
+        setOtherCosts([...otherCosts, { title: "", otherAmount: "" }]);
+    };
+
+    const deleteOtherCostRow = (index) => {
+        const updatedOtherCosts = otherCosts.filter((_, i) => i !== index);
+        setOtherCosts(updatedOtherCosts);
+    };
+
+    const saveOtherCosts = () => {
+        otherCosts.forEach(cost => {
+            axios.post(APIPath + "/addinvoiceothercosts", {
+                invoiceId: Id,
+                title: cost.title,
+                otherAmount: cost.otherAmount,
+                createdBy: userName
+            }, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
+                }
+            }).then(response => {
+                if (response.data.STATUS === "SUCCESS") {
+                    showSnackbar('success', "Other costs saved successfully");
+                } else {
+                    showSnackbar('error', "Error saving other costs");
+                }
+            }).catch(error => {
+                showSnackbar('error', "Error saving other costs");
+            });
+        });
+    };
+
     const [modalIsOpen, setIsOpen] = React.useState(false);
     function openModal() {
         if (!modalIsOpen) {
@@ -623,6 +665,50 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                         onBlur={handleBlur}
                                                         helperText={(errors.userNotes && touched.userNotes) && errors.userNotes}
                                                     />
+
+                                                    <div className="mb-6">
+                                                        <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
+                                                            <div className='w-[130px] divTitleBig'>Other Costs:</div>
+                                                            {otherCosts.map((cost, index) => (
+                                                                <div key={index} className="flex items-center">
+                                                                    <TextField
+                                                                        className="w-[200px] tboxBig"
+                                                                        size="small"
+                                                                        margin="normal"
+                                                                        fullWidth
+                                                                        id={`title-${index}`}
+                                                                        name="title"
+                                                                        label="Title"
+                                                                        value={cost.title}
+                                                                        onChange={(event) => handleOtherCostChange(index, event)}
+                                                                    />
+                                                                    <TextField
+                                                                        className="w-[100px] tboxBig"
+                                                                        size="small"
+                                                                        margin="normal"
+                                                                        fullWidth
+                                                                        id={`otherAmount-${index}`}
+                                                                        name="otherAmount"
+                                                                        label="Amount"
+                                                                        type="number"
+                                                                        value={cost.otherAmount}
+                                                                        onChange={(event) => handleOtherCostChange(index, event)}
+                                                                    />
+                                                                    <IconButton onClick={() => deleteOtherCostRow(index)} color="secondary">
+                                                                        <CloseIcon />
+                                                                    </IconButton>
+                                                                </div>
+                                                            ))}
+                                                            <Button onClick={addOtherCostRow} variant="contained" color="primary">
+                                                                +
+                                                            </Button>
+                                                            <Button onClick={saveOtherCosts} variant="contained" color="secondary">
+                                                                Save
+                                                            </Button>
+                                                        </Stack>
+                                                    </div>
+
+
                                                     {!isCustomInvoice && (
                                                         <>
                                                             <TableContainer component={Paper} className="tableContainer">
