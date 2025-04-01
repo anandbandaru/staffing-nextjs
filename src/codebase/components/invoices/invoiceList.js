@@ -190,7 +190,8 @@ const InvoiceList = () => {
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "employeeID", headerName: 'EMP ID', maxWidth: 100, filter: true },
+        { field: "employeeID", headerName: 'EMP ID', maxWidth: 110, filter: true },
+        { field: "employeeName", filter: true },      
         { field: "invoiceNumber", filter: true },
         { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 100 },
         { field: "jobTitle", filter: true },
@@ -218,7 +219,7 @@ const InvoiceList = () => {
     const paginationPageSize = 10;
     const paginationPageSizeSelector = [5, 10, 20, 50];
     const autoSizeStrategy = {
-        type: 'fitGridWidth',
+        //type: 'fitGridWidth',
         defaultMinWidth: 50
     };
 
@@ -245,7 +246,7 @@ const InvoiceList = () => {
 
             <div
                 className="ag-theme-quartz" // applying the Data Grid theme
-                style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+                style={{ width: '100%', height: 500 }} // the Data Grid will fill the size of the parent container
             >
                 <AgGridReact
                     rowData={data.data}
