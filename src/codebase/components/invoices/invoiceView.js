@@ -31,6 +31,8 @@ import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import Modal from 'react-modal';
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
@@ -63,6 +65,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
     };
 
     const [otherCosts, setOtherCosts] = useState([{ title: "", otherAmount: "" }]);
+    const [otherCostsFromDB, setOtherCostsFromDB] = useState([]);
     const handleOtherCostChange = (index, event) => {
         const { name, value } = event.target;
         const updatedOtherCosts = [...otherCosts];
@@ -81,28 +84,57 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
 
     const saveOtherCosts = () => {
         otherCosts.forEach(cost => {
-            axios.post(APIPath + "/addinvoiceothercosts", {
-                invoiceId: Id,
-                title: cost.title,
-                otherAmount: cost.otherAmount,
-                createdBy: userName
-            }, {
+            if (cost.title && cost.otherAmount) {
+                axios.post(APIPath + "/addinvoiceothercosts", {
+                    invoiceId: Id,
+                    title: cost.title,
+                    otherAmount: cost.otherAmount,
+                    createdBy: userName
+                }, {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true',
+                    }
+                }).then(response => {
+                    if (response.data.STATUS === "SUCCESS") {
+                        showSnackbar('success', "Other costs saved successfully");
+                        getInvoiceOtherCosts(Id);
+                    } else {
+                        showSnackbar('error', "Error saving other costs");
+                    }
+                }).catch(error => {
+                    showSnackbar('error', "Error saving other costs");
+                });
+            }
+        });
+    };
+    const getInvoiceOtherCosts = async (invoiceId) => {
+        try {
+            const response = await axios.get(`${APIPath}/getinvoiceothercosts/${invoiceId}`, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
                     'ngrok-skip-browser-warning': 'true',
                 }
-            }).then(response => {
-                if (response.data.STATUS === "SUCCESS") {
-                    showSnackbar('success', "Other costs saved successfully");
-                } else {
-                    showSnackbar('error', "Error saving other costs");
-                }
-            }).catch(error => {
-                showSnackbar('error', "Error saving other costs");
             });
-        });
+
+            if (response.data.STATUS === "SUCCESS") {
+                setOtherCostsFromDB(response.data.data);
+                setOtherCosts(response.data.data);
+                const total = response.data.data.reduce((sum, cost) => sum + parseFloat(cost.otherAmount), 0);
+                let grandTotal = localTotal + total;
+                setLocalTotal(grandTotal);
+            } else {
+                showSnackbar('error', "Error fetching other costs");
+                setOtherCostsFromDB([]);
+            }
+        } catch (error) {
+            showSnackbar('error', "Error fetching other costs");
+            setOtherCostsFromDB([]);
+        }
     };
+
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
     function openModal() {
@@ -121,6 +153,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                 setIsCustomInvoice(true)
             }
             getAuditDetails();
+            getInvoiceOtherCosts(Id);
         }
         //setIsOpen(true);
     }
@@ -232,8 +265,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                 console.log("useEffect: CUSTOM INVOICE")
                 setIsCustomInvoice(true)
             }
-            if (operation === "Edit")
+            if (operation === "Edit") {
                 getAuditDetails();
+            }
         }
     }, [invoiceNumber]);
 
@@ -480,27 +514,6 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                             </Stack>
                                                         </div>
 
-                                                        {/* <table className="w-full myInvTable">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>
-                                                                        Vendor Name
-                                                                    </td>
-                                                                    <td className="text-right">
-                                                                        {vendorName}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        Employee Name
-                                                                    </td>
-                                                                    <td className="text-right">
-                                                                        {employeeName}
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table> */}
-
                                                         <TableContainer component={Paper} className="tableContainer mb-6">
                                                             <Table size="small" aria-label="a dense table">
                                                                 <TableHead>
@@ -560,6 +573,14 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Total Hours</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{localHours}</TableCell>
                                                                     </TableRow>
+
+                                                                    {otherCostsFromDB.map((cost, index) => (
+                                                                        <TableRow key={index}>
+                                                                            <TableCell component="th" scope="row" className="divTitle bg-white">{cost.title}</TableCell>
+                                                                            <TableCell align="right" className="divValue3 bg-white">{cost.otherAmount}</TableCell>
+                                                                        </TableRow>
+                                                                    ))}
+
                                                                     <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Invoice Total Amount</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{localTotal}</TableCell>
@@ -666,47 +687,60 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                         helperText={(errors.userNotes && touched.userNotes) && errors.userNotes}
                                                     />
 
-                                                    <div className="mb-6">
-                                                        <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
-                                                            <div className='w-[130px] divTitleBig'>Other Costs:</div>
-                                                            {otherCosts.map((cost, index) => (
-                                                                <div key={index} className="flex items-center">
-                                                                    <TextField
-                                                                        className="w-[200px] tboxBig"
-                                                                        size="small"
-                                                                        margin="normal"
-                                                                        fullWidth
-                                                                        id={`title-${index}`}
-                                                                        name="title"
-                                                                        label="Title"
-                                                                        value={cost.title}
-                                                                        onChange={(event) => handleOtherCostChange(index, event)}
-                                                                    />
-                                                                    <TextField
-                                                                        className="w-[100px] tboxBig"
-                                                                        size="small"
-                                                                        margin="normal"
-                                                                        fullWidth
-                                                                        id={`otherAmount-${index}`}
-                                                                        name="otherAmount"
-                                                                        label="Amount"
-                                                                        type="number"
-                                                                        value={cost.otherAmount}
-                                                                        onChange={(event) => handleOtherCostChange(index, event)}
-                                                                    />
-                                                                    <IconButton onClick={() => deleteOtherCostRow(index)} color="secondary">
-                                                                        <CloseIcon />
-                                                                    </IconButton>
-                                                                </div>
-                                                            ))}
-                                                            <Button onClick={addOtherCostRow} variant="contained" color="primary">
-                                                                +
-                                                            </Button>
-                                                            <Button onClick={saveOtherCosts} variant="contained" color="secondary">
-                                                                Save
-                                                            </Button>
-                                                        </Stack>
-                                                    </div>
+                                                    {/* DYNAMIC OTHER COSTS */}
+                                                    <table className="w-full myInvTable">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <Stack direction="column" spacing={1} className="flex items-center ">
+
+                                                                        <div className='w-[130px] divTitleBig'>Other Costs</div>
+                                                                        
+                                                                        {otherCosts.map((cost, index) => (
+
+                                                                            <Stack key={index} direction="column" spacing={1} className="flex items-center ">
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <TextField
+                                                                                        className=""
+                                                                                        size="small"
+                                                                                        margin="normal"
+                                                                                        fullWidth
+                                                                                        id={`title-${index}`}
+                                                                                        name="title"
+                                                                                        label="Title"
+                                                                                        value={cost.title}
+                                                                                        onChange={(event) => handleOtherCostChange(index, event)}
+                                                                                    />
+                                                                                    <TextField
+                                                                                        className=""
+                                                                                        size="small"
+                                                                                        margin="normal"
+                                                                                        fullWidth
+                                                                                        id={`otherAmount-${index}`}
+                                                                                        name="otherAmount"
+                                                                                        label="Amount"
+                                                                                        type="number"
+                                                                                        value={cost.otherAmount}
+                                                                                        onChange={(event) => handleOtherCostChange(index, event)}
+                                                                                    />
+                                                                                    <IconButton onClick={() => deleteOtherCostRow(index)} color="error">
+                                                                                        <CloseIcon />
+                                                                                    </IconButton>
+                                                                                </div>
+                                                                            </Stack>
+                                                                        ))}
+                                                                        <IconButton onClick={addOtherCostRow} color="secondary">
+                                                                            <AddCircleOutlineRoundedIcon />
+                                                                        </IconButton>
+                                                                        <IconButton onClick={saveOtherCosts} color="primary">
+                                                                            <SaveRoundedIcon />
+                                                                        </IconButton>
+                                                                    </Stack>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    {/* DYNAMIC OTHER COSTS */}
 
 
                                                     {!isCustomInvoice && (
