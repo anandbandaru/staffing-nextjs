@@ -77,9 +77,39 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
         setOtherCosts([...otherCosts, { title: "", otherAmount: "" }]);
     };
 
-    const deleteOtherCostRow = (index) => {
-        const updatedOtherCosts = otherCosts.filter((_, i) => i !== index);
-        setOtherCosts(updatedOtherCosts);
+    const deleteOtherCostRow = async (index) => {
+        const cost = otherCosts[index];
+        if(cost.title && cost.otherAmount)
+        {
+            try {
+                const response = await axios.post(`${APIPath}/deleteinvoiceothercosts`, {
+                    invoiceId: Id,
+                    title: cost.title,
+                    otherAmount: cost.otherAmount
+                }, {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true',
+                    }
+                });
+    
+                if (response.data.STATUS === "SUCCESS") {
+                    showSnackbar('success', "Other cost deleted successfully");
+                    const updatedOtherCosts = otherCosts.filter((_, i) => i !== index);
+                    getInvoiceOtherCosts(Id);
+                } else {
+                    showSnackbar('error', "Error deleting other cost");
+                }
+            } catch (error) {
+                showSnackbar('error', "Error deleting other cost");
+            }
+        }
+        else{
+            const updatedOtherCosts = otherCosts.filter((_, i) => i !== index);
+            setOtherCosts(updatedOtherCosts);
+        }
+        
     };
 
     const saveOtherCosts = () => {
@@ -122,8 +152,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
             if (response.data.STATUS === "SUCCESS") {
                 setOtherCostsFromDB(response.data.data);
                 setOtherCosts(response.data.data);
+                let templocalTotal = rate * totalHours;
                 const total = response.data.data.reduce((sum, cost) => sum + parseFloat(cost.otherAmount), 0);
-                let grandTotal = localTotal + total;
+                let grandTotal = templocalTotal + total;
                 setLocalTotal(grandTotal);
             } else {
                 showSnackbar('error', "Error fetching other costs");
@@ -575,9 +606,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                     </TableRow>
 
                                                                     {otherCostsFromDB.map((cost, index) => (
-                                                                        <TableRow key={index}>
-                                                                            <TableCell component="th" scope="row" className="divTitle bg-white">{cost.title}</TableCell>
-                                                                            <TableCell align="right" className="divValue3 bg-white">{cost.otherAmount}</TableCell>
+                                                                        <TableRow key={index} >
+                                                                            <TableCell component="th" scope="row" className="divTitle bg-slate-100">{cost.title}</TableCell>
+                                                                            <TableCell align="right" className="divValue3 bg-slate-100">{cost.otherAmount}</TableCell>
                                                                         </TableRow>
                                                                     ))}
 
@@ -688,58 +719,63 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                     />
 
                                                     {/* DYNAMIC OTHER COSTS */}
-                                                    <table className="w-full myInvTable">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <Stack direction="column" spacing={1} className="flex items-center ">
+                                                    {Id && (
+                                                        <table className="w-full myInvTable bg-slate-100">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <Stack direction="column" spacing={1} className="flex items-center ">
 
-                                                                        <div className='w-[130px] divTitleBig'>Other Costs</div>
-                                                                        
-                                                                        {otherCosts.map((cost, index) => (
+                                                                            <div className='w-[130px] divTitleBig'>Other Costs</div>
 
-                                                                            <Stack key={index} direction="column" spacing={1} className="flex items-center ">
-                                                                                <div className="flex items-center gap-2">
-                                                                                    <TextField
-                                                                                        className=""
-                                                                                        size="small"
-                                                                                        margin="normal"
-                                                                                        fullWidth
-                                                                                        id={`title-${index}`}
-                                                                                        name="title"
-                                                                                        label="Title"
-                                                                                        value={cost.title}
-                                                                                        onChange={(event) => handleOtherCostChange(index, event)}
-                                                                                    />
-                                                                                    <TextField
-                                                                                        className=""
-                                                                                        size="small"
-                                                                                        margin="normal"
-                                                                                        fullWidth
-                                                                                        id={`otherAmount-${index}`}
-                                                                                        name="otherAmount"
-                                                                                        label="Amount"
-                                                                                        type="number"
-                                                                                        value={cost.otherAmount}
-                                                                                        onChange={(event) => handleOtherCostChange(index, event)}
-                                                                                    />
-                                                                                    <IconButton onClick={() => deleteOtherCostRow(index)} color="error">
-                                                                                        <CloseIcon />
-                                                                                    </IconButton>
-                                                                                </div>
+                                                                            {otherCosts.map((cost, index) => (
+
+                                                                                <Stack key={index} direction="row" spacing={1} className="flex items-center ">
+                                                                                    <div className="flex items-center gap-4">
+                                                                                        <TextField
+                                                                                            className="w-[200px]"
+                                                                                            size="small"
+                                                                                            margin="normal"
+                                                                                            fullWidth
+                                                                                            id={`title-${index}`}
+                                                                                            name="title"
+                                                                                            label="Title"
+                                                                                            value={cost.title}
+                                                                                            onChange={(event) => handleOtherCostChange(index, event)}
+                                                                                        />
+                                                                                        <TextField
+                                                                                            className=""
+                                                                                            size="small"
+                                                                                            margin="normal"
+                                                                                            fullWidth
+                                                                                            id={`otherAmount-${index}`}
+                                                                                            name="otherAmount"
+                                                                                            label="Amount"
+                                                                                            type="number"
+                                                                                            value={cost.otherAmount}
+                                                                                            onChange={(event) => handleOtherCostChange(index, event)}
+                                                                                        />
+                                                                                        <IconButton onClick={() => deleteOtherCostRow(index)} color="error">
+                                                                                            <CloseIcon />
+                                                                                        </IconButton>
+                                                                                    </div>
+                                                                                </Stack>
+                                                                            ))}
+                                                                            <Stack direction="row" spacing={1} className="flex items-center ">
+                                                                                <IconButton onClick={addOtherCostRow} color="secondary">
+                                                                                    <AddCircleOutlineRoundedIcon />
+                                                                                </IconButton>
+                                                                                <IconButton onClick={saveOtherCosts} color="primary">
+                                                                                    <SaveRoundedIcon />
+                                                                                </IconButton>
                                                                             </Stack>
-                                                                        ))}
-                                                                        <IconButton onClick={addOtherCostRow} color="secondary">
-                                                                            <AddCircleOutlineRoundedIcon />
-                                                                        </IconButton>
-                                                                        <IconButton onClick={saveOtherCosts} color="primary">
-                                                                            <SaveRoundedIcon />
-                                                                        </IconButton>
-                                                                    </Stack>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                                        </Stack>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    )}
+
                                                     {/* DYNAMIC OTHER COSTS */}
 
 
