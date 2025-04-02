@@ -195,7 +195,7 @@ const InvoiceList = () => {
         { field: "invoiceNumber", filter: true },
         { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 100 },
         { field: "jobTitle", filter: true },
-        { field: "jobType", headerName: 'I Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
+        { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
         { field: "clientName", filter: true },
         { field: "invoiceDate", filter: true, maxWidth: 130 },
         { field: "startDate", filter: true, maxWidth: 130 },
@@ -203,7 +203,7 @@ const InvoiceList = () => {
         { field: "rate", filter: true, maxWidth: 100 },
         { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 130 },
         {
-            field: "status", filter: true, maxWidth: 100,
+            field: "status", headerName: 'Invoice Status', filter: true, maxWidth: 100,
             cellRenderer: CustomStatusRenderer
         },
         {

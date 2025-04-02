@@ -212,11 +212,12 @@ const InvoiceSavedList = () => {
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
+        { field: "employeeName", filter: true },
         { field: "vendorInvoiceNumber", filter: true },
         { field: "invoiceNumber", filter: true },
-        { field: "jobID", headerName: 'J ID', filter: true, maxWidth: 90 },
+        { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 90 },
         { field: "jobTitle", filter: true },
-        { field: "jobType", headerName: 'I Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
+        { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
         { field: "clientName", filter: true },
         { field: "invoiceDate", filter: true, maxWidth: 130 },
         { field: "startDate", filter: true, maxWidth: 130 },
@@ -224,7 +225,7 @@ const InvoiceSavedList = () => {
         { field: "rate", filter: true, maxWidth: 100 },
         { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 130 },
         {
-            field: "invoiceStatus", filter: true, maxWidth: 100, headerName: 'Status',
+            field: "invoiceStatus", filter: true, maxWidth: 100, headerName: 'Invoice Status',
             cellRenderer: CustomStatusRenderer
         },
         {
