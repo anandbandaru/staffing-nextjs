@@ -113,7 +113,7 @@ const TimesheetCapturedDayHours = ({ timesheetNumber }) => {
     const paginationPageSize = 7;
     const paginationPageSizeSelector = [7, 20, 50];
     const autoSizeStrategy = {
-        type: 'fitGridWidth',
+        //type: 'fitGridWidth',
         defaultMinWidth: 50
     };
 

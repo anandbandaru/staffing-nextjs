@@ -248,7 +248,7 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
     const paginationPageSize = 10;
     const paginationPageSizeSelector = [5, 10, 20, 50];
     const autoSizeStrategy = {
-        type: 'fitGridWidth',
+        // type: 'fitGridWidth',
         defaultMinWidth: 50
     };
 
