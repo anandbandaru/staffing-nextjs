@@ -103,15 +103,15 @@ const FileList = () => {
     );
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "Id", maxWidth: 50 },
+        { field: "Id",  },
         { field: "module", filter: true },
-        { field: "moduleId", maxWidth: 100 },
+        { field: "moduleId",  },
         { field: "title", filter: true },
         { field: "createdDate", filter: true },
         { field: "notes", },
         {
             field: "gDriveLink",
-            cellRenderer: CustomLinkRenderer, maxWidth: 100
+            cellRenderer: CustomLinkRenderer, 
         },
     ]);
     const rowClassRules = {

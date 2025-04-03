@@ -116,7 +116,7 @@ const TodoList = () => {
         },
         { field: "Id", maxWidth: 50 },
         { field: "title", filter: true },
-        { field: "createdDate", filter: true, maxWidth: 100 },
+        { field: "createdDate", filter: true,  },
         {
             field: "completed", filter: false,
             // cellClassRules: {
@@ -124,29 +124,28 @@ const TodoList = () => {
             //     'rag-red': params => params.value === null || params.value === false,
             //     'rag-green': params => params.value === true,
             // },
-            cellRenderer: CustomCompletedRenderer, maxWidth: 100
+            cellRenderer: CustomCompletedRenderer
         },
         { field: "completedBy", filter: true },
         { field: "completedDate", filter: true },
         {
-            field: "important", headerName: "Imp", filter: false,
+            field: "important", headerName: "Important", filter: false,
             cellClassRules: {
                 // apply green to electric cars
                 'rag-green': params => params.value === null || params.value === false,
                 'rag-red': params => params.value === true,
             },
-            cellRenderer: CustomImportantRenderer, maxWidth: 70
+            cellRenderer: CustomImportantRenderer, maxWidth: 110
         },
         {
-            field: "completedAdmin", headerName: "Closed", filter: false,
-            cellRenderer: CustomCompletedRenderer, maxWidth: 100
+            field: "completedAdmin", headerName: "Closed", filter: true,
+            cellRenderer: CustomCompletedRenderer
         },
         {
             field: "completedByAdmin", headerName: "Closed By", filter: false,
-            cellRenderer: CustomCompletedRenderer, maxWidth: 100
         },
-        { field: "completedAdminDate", headerName: "Closed Date", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
+        { field: "completedDateAdmin", headerName: "Closed Date", filter: true },
+        { field: "options", cellRenderer: CustomEditComponent,  resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
