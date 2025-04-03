@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Context } from "../../context/context";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
@@ -8,6 +8,7 @@ import GenericDetails from "../forms/GenericDetails";
 // import ExpenseEdit from "./expenseEdit";
 import CustomSnackbar from "../snackbar/snackbar";
 import InvoiceView from "./invoiceView";
+import Button from '@mui/material/Button';
 
 const InvoiceList = () => {
     const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
@@ -191,7 +192,7 @@ const InvoiceList = () => {
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "employeeID", headerName: 'EMP ID', maxWidth: 110, filter: true },
-        { field: "employeeName", filter: true },      
+        { field: "employeeName", filter: true },
         { field: "invoiceNumber", filter: true },
         { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 100 },
         { field: "jobTitle", filter: true },
@@ -223,6 +224,11 @@ const InvoiceList = () => {
         defaultMinWidth: 50
     };
 
+    const gridRef = useRef(null);
+    const onExportClick = () => {
+        gridRef.current.api.exportDataAsCsv();
+    };
+
     return (
         <>
             <CustomSnackbar
@@ -245,10 +251,11 @@ const InvoiceList = () => {
             </div>
 
             <div
-                className="ag-theme-quartz" // applying the Data Grid theme
+                className="ag-theme-quartz relative" // applying the Data Grid theme
                 style={{ width: '100%', height: 500 }} // the Data Grid will fill the size of the parent container
             >
                 <AgGridReact
+                    ref={gridRef}
                     rowData={data.data}
                     columnDefs={colDefs}
                     pagination={pagination}
@@ -257,6 +264,9 @@ const InvoiceList = () => {
                     rowClassRules={rowClassRules}
                     autoSizeStrategy={autoSizeStrategy}
                 />
+                <div className="absolute right-2 bottom-20">
+                    <Button size="small" variant="contained" onClick={onExportClick}>Export to CSV</Button>
+                </div>
             </div>
         </>
     )
