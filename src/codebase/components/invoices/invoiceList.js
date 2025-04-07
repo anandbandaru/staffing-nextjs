@@ -121,6 +121,8 @@ const InvoiceList = () => {
                     manualLoadDataWithMessage={manualLoadData}
                     performLoading={false}
                     setPerformLoading={setPerformLoading}
+                    invoicePeriod={props.data.invoicePeriod}
+                    timesheetsPeriod={props.data.timesheetsPeriod}
                 />
             </>
         );
@@ -196,15 +198,16 @@ const InvoiceList = () => {
         // { field: "invoiceNumber", filter: true },
         // { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 100 },
         { field: "jobTitle", filter: true },
-        { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
+        { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
+        { field: "timesheetsPeriod", filter: true, cellRenderer: CustomJobTypeRenderer},
         { field: "clientName", filter: true },
         { field: "invoiceDate", filter: true, maxWidth: 130 },
         { field: "startDate", filter: true, maxWidth: 130 },
         { field: "endDate", filter: true, maxWidth: 130 },
         { field: "rate", filter: true, maxWidth: 100 },
-        { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 130 },
+        { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer,  },
         {
-            field: "status", headerName: 'Invoice Status', filter: true, maxWidth: 100,
+            field: "status", headerName: 'Invoice Status', filter: true,
             cellRenderer: CustomStatusRenderer
         },
         {

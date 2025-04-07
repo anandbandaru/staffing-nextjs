@@ -37,7 +37,8 @@ import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, jobID, startDate, endDate, totalHours, status, jobType,
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
     daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id,
-    showSnackbar, userNotes, vendorId, manualLoadDataWithMessage, performLoading, setPerformLoading, otherAmountFromDB, totalAmountFromDB, vendorInvoiceNumber }) => {
+    showSnackbar, userNotes, vendorId, manualLoadDataWithMessage, performLoading, setPerformLoading,
+    otherAmountFromDB, totalAmountFromDB, vendorInvoiceNumber, invoicePeriod, timesheetsPeriod }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [isCustomInvoice, setIsCustomInvoice] = React.useState(false);
@@ -79,8 +80,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
 
     const deleteOtherCostRow = async (index) => {
         const cost = otherCosts[index];
-        if(cost.title && cost.otherAmount)
-        {
+        if (cost.title && cost.otherAmount) {
             try {
                 const response = await axios.post(`${APIPath}/deleteinvoiceothercosts`, {
                     invoiceId: Id,
@@ -93,7 +93,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                         'ngrok-skip-browser-warning': 'true',
                     }
                 });
-    
+
                 if (response.data.STATUS === "SUCCESS") {
                     showSnackbar('success', "Other cost deleted successfully");
                     const updatedOtherCosts = otherCosts.filter((_, i) => i !== index);
@@ -105,11 +105,11 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                 showSnackbar('error', "Error deleting other cost");
             }
         }
-        else{
+        else {
             const updatedOtherCosts = otherCosts.filter((_, i) => i !== index);
             setOtherCosts(updatedOtherCosts);
         }
-        
+
     };
 
     const saveOtherCosts = () => {
@@ -184,7 +184,8 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                 setIsCustomInvoice(true)
             }
             getAuditDetails();
-            getInvoiceOtherCosts(Id);
+            if ((operation !== "View"))
+                getInvoiceOtherCosts(Id);
         }
         //setIsOpen(true);
     }
@@ -213,50 +214,122 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
 
     const getClientDocumentDetails = () => {
         setApiLoading(true);
+
         let apiUrl = APIPath + "/getlatesttimesheetcdocument/" + timesheetNumber;
-        fetch(apiUrl, {
-            headers: {
-                'ngrok-skip-browser-warning': 'true',
-            }
-        })
-            .then(response => response.json())
-            .then(
-                (result) => {
-                    if (result.error) {
-                        setClientDocumentData({});
-                    }
-                    else {
-                        setClientDocumentData(result);
-                    }
-                    setApiLoading(false);
+        if (invoicePeriod === "Monthly (1)" && timesheetsPeriod === "Weekly (Monday)") {
+            console.log("Monthly (1) - Weekly (Monday)")
+            apiUrl = APIPath + "/getlatesttimesheetcdocumentbydates";
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
                 },
-                (error) => {
-                    setClientDocumentData({});
-                    setApiLoading(false);
+                body: JSON.stringify({
+                    employeeID: employeeID,
+                    jobID: jobID,
+                    startDate: startDate,
+                    endDate: endDate
+                })
+            })
+                .then(response => response.json())
+                .then(
+                    (result) => {
+                        if (result.error) {
+                            setClientDocumentData({});
+                        } else {
+                            setClientDocumentData(result);
+                        }
+                        setApiLoading(false);
+                    },
+                    (error) => {
+                        setClientDocumentData({});
+                        setApiLoading(false);
+                    }
+                );
+
+        }
+        else {
+            fetch(apiUrl, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
                 }
-            )
+            })
+                .then(response => response.json())
+                .then(
+                    (result) => {
+                        if (result.error) {
+                            setClientDocumentData({});
+                        }
+                        else {
+                            setClientDocumentData(result);
+                        }
+                        setApiLoading(false);
+                    },
+                    (error) => {
+                        setClientDocumentData({});
+                        setApiLoading(false);
+                    }
+                )
+        }
     }
     const getIPVendorDocumentDetails = () => {
         let apiUrl = APIPath + "/getlatesttimesheetivdocument/" + timesheetNumber;
-        fetch(apiUrl, {
-            headers: {
-                'ngrok-skip-browser-warning': 'true',
-            }
-        })
-            .then(response => response.json())
-            .then(
-                (result) => {
-                    if (result.error) {
+        if (invoicePeriod === "Monthly (1)" && timesheetsPeriod === "Weekly (Monday)") {
+            console.log("Monthly (1) - Weekly (Monday)")
+            apiUrl = APIPath + "/getlatesttimesheetivdocumentbydates";
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
+                },
+                body: JSON.stringify({
+                    employeeID: employeeID,
+                    jobID: jobID,
+                    startDate: startDate,
+                    endDate: endDate
+                })
+            })
+                .then(response => response.json())
+                .then(
+                    (result) => {
+                        if (result.error) {
+                            setIPVendorDocumentData({});
+                        } else {
+                            setIPVendorDocumentData(result);
+                        }
+                        setApiLoading(false);
+                    },
+                    (error) => {
+                        setIPVendorDocumentData({});
+                        setApiLoading(false);
+                    }
+                );
+
+        }
+        else {
+            fetch(apiUrl, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                }
+            })
+                .then(response => response.json())
+                .then(
+                    (result) => {
+                        if (result.error) {
+                            setIPVendorDocumentData({});
+                        }
+                        else {
+                            setIPVendorDocumentData(result);
+                        }
+                    },
+                    (error) => {
                         setIPVendorDocumentData({});
                     }
-                    else {
-                        setIPVendorDocumentData(result);
-                    }
-                },
-                (error) => {
-                    setIPVendorDocumentData({});
-                }
-            )
+                )
+        }
     }
 
     const getAuditDetails = () => {
@@ -791,67 +864,91 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                     </TableHead>
                                                                     <TableBody>
                                                                         <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                                            <TableCell component="th" scope="row" className="divTitle bg-white">Client Approved Document</TableCell>
+                                                                            <TableCell component="th" scope="row" className="divTitle bg-white">
+                                                                                <Stack direction={"row"} spacing={1} className="flex items-center place-items-start  ">
+                                                                                    <Button size="small" onClick={getClientDocumentDetails} variant="contained">load</Button>
+                                                                                    <span>
+                                                                                        Client Approved Documents
+                                                                                    </span>
+                                                                                </Stack>
+                                                                            </TableCell>
+
                                                                             <TableCell align="right" className="divValue2">
-                                                                                {apiLoading ?
+                                                                                {apiLoading ? (
                                                                                     <>
                                                                                         <div className="spinner"></div>
-                                                                                    </> :
-                                                                                    <>
-                                                                                        {clientDocumentData.data[0] ? (
-                                                                                            <Link className='float-right'
-                                                                                                href={clientDocumentData.data[0].gDriveLink}
-                                                                                                target="_blank"
-                                                                                                rel="noopener noreferrer"
-                                                                                                underline="none"
-                                                                                            >
-                                                                                                <Button
-                                                                                                    size='small'
-                                                                                                    variant="contained"
-                                                                                                    color="info"
-                                                                                                    startIcon={<InsertLinkOutlinedIcon />}
-                                                                                                >
-                                                                                                    Open
-                                                                                                </Button>
-                                                                                            </Link>
-                                                                                        ) :
-                                                                                            <>
-                                                                                                <span className="text-red-500">Missing document</span>
-                                                                                            </>
-                                                                                        }
                                                                                     </>
-                                                                                }
+                                                                                ) : (
+                                                                                    <>
+                                                                                        {clientDocumentData.data.length > 0 ? (
+                                                                                            clientDocumentData.data.map((item, index) => (
+                                                                                                <div key={index} className="mb-2">
+                                                                                                    <Link
+                                                                                                        href={item.gDriveLink}
+                                                                                                        target="_blank"
+                                                                                                        rel="noopener noreferrer"
+                                                                                                        underline="none"
+                                                                                                    >
+                                                                                                        <Button
+                                                                                                            size='small'
+                                                                                                            variant="contained"
+                                                                                                            color="info"
+                                                                                                            startIcon={<InsertLinkOutlinedIcon />}
+                                                                                                        >
+                                                                                                            Open
+                                                                                                        </Button>
+                                                                                                    </Link>
+                                                                                                </div>
+                                                                                            ))
+                                                                                        ) : (
+                                                                                            <span className="text-red-500">
+                                                                                                Missing Documents
+                                                                                            </span>
+                                                                                        )}
+                                                                                    </>
+                                                                                )}
                                                                             </TableCell>
                                                                         </TableRow>
                                                                         <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                                            <TableCell component="th" scope="row" className="divTitle">Implementation Partner / Vendor Approved Document</TableCell>
+                                                                            <TableCell component="th" scope="row" className="divTitle">
+                                                                                <Stack direction={"row"} spacing={1} className="flex items-center place-items-start ">
+                                                                                    <Button size="small" onClick={getIPVendorDocumentDetails} variant="contained">load</Button>
+                                                                                    <span>
+                                                                                        Implementation Partner / Vendor Approved Document
+                                                                                    </span>
+                                                                                </Stack>
+                                                                            </TableCell>
                                                                             <TableCell align="right" className="divValue2">
                                                                                 {apiLoading ?
                                                                                     <>
                                                                                         <div className="spinner"></div>
                                                                                     </> :
                                                                                     <>
-                                                                                        {iPVendorDocumentData.data[0] ? (
-                                                                                            <Link className='float-right'
-                                                                                                href={iPVendorDocumentData.data[0].gDriveLink}
-                                                                                                target="_blank"
-                                                                                                rel="noopener noreferrer"
-                                                                                                underline="none"
-                                                                                            >
-                                                                                                <Button
-                                                                                                    size='small'
-                                                                                                    variant="contained"
-                                                                                                    color="info"
-                                                                                                    startIcon={<InsertLinkOutlinedIcon />}
-                                                                                                >
-                                                                                                    Open
-                                                                                                </Button>
-                                                                                            </Link>
-                                                                                        ) :
-                                                                                            <>
-                                                                                                <span className="">No document</span>
-                                                                                            </>
-                                                                                        }
+                                                                                        {iPVendorDocumentData.data.length > 0 ? (
+                                                                                            iPVendorDocumentData.data.map((item, index) => (
+                                                                                                <div key={index} className="mb-2">
+                                                                                                    <Link
+                                                                                                        href={item.gDriveLink}
+                                                                                                        target="_blank"
+                                                                                                        rel="noopener noreferrer"
+                                                                                                        underline="none"
+                                                                                                    >
+                                                                                                        <Button
+                                                                                                            size='small'
+                                                                                                            variant="contained"
+                                                                                                            color="info"
+                                                                                                            startIcon={<InsertLinkOutlinedIcon />}
+                                                                                                        >
+                                                                                                            Open
+                                                                                                        </Button>
+                                                                                                    </Link>
+                                                                                                </div>
+                                                                                            ))
+                                                                                        ) : (
+                                                                                            <span className="text-red-500">
+                                                                                                Missing Documents
+                                                                                            </span>
+                                                                                        )}
                                                                                     </>
                                                                                 }
                                                                             </TableCell>
