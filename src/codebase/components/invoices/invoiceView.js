@@ -697,10 +697,6 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Email</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{vendorData.data[0] ? vendorData.data[0].email : ''}</TableCell>
                                                                     </TableRow>
-                                                                    <TableRow >
-                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Employee Name</TableCell>
-                                                                        <TableCell align="right" className="divValue3 bg-white">{employeeName}</TableCell>
-                                                                    </TableRow>
                                                                 </TableBody>
                                                             </Table>
                                                         </TableContainer>
@@ -714,6 +710,10 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                     </TableRow>
                                                                 </TableHead>
                                                                 <TableBody>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Description</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{jobTitle} from {employeeName}</TableCell>
+                                                                    </TableRow>
                                                                     <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Start Date</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{startDate}</TableCell>
@@ -736,15 +736,11 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 </TableHead>
                                                                 <TableBody>
                                                                     <TableRow >
-                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Description</TableCell>
-                                                                        <TableCell align="right" className="divValue3 bg-white">{jobTitle}</TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Rate</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">$ {localRate}</TableCell>
                                                                     </TableRow>
                                                                     <TableRow >
-                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Total Hours</TableCell>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Hours</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{localHours}</TableCell>
                                                                     </TableRow>
 
@@ -756,7 +752,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                     ))}
 
                                                                     <TableRow >
-                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Invoice Total Amount</TableCell>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Total Amount</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">$ {localTotal}</TableCell>
                                                                     </TableRow>
                                                                 </TableBody>
@@ -802,7 +798,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
 
                                                     <div className="mb-6">
                                                         <Stack direction="row" spacing={1} className="flex items-center pl-2 mt-4">
-                                                            <div className='w-[130px] divTitleBig'>Rate:</div>
+                                                            <div className='w-[130px] divTitleBig'>Rate ($):</div>
                                                             <TextField
                                                                 className="w-[100px] tboxBig"
                                                                 size="small"
@@ -893,7 +889,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                                             fullWidth
                                                                                             id={`otherAmount-${index}`}
                                                                                             name="otherAmount"
-                                                                                            label="Amount"
+                                                                                            label="Amount ($)"
                                                                                             type="number"
                                                                                             value={cost.otherAmount}
                                                                                             onChange={(event) => handleOtherCostChange(index, event)}
