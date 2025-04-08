@@ -142,6 +142,11 @@ const InvoiceSavedList = () => {
                     performLoading={false}
                     setPerformLoading={setPerformLoading}
                     vendorInvoiceNumber={props.data.vendorInvoiceNumber}
+                    address={props.data.address}
+                    state={props.data.state}
+                    city={props.data.city}
+                    zip={props.data.zip}
+                    email={props.data.email}
                 />
             </>
         );

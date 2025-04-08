@@ -123,6 +123,11 @@ const InvoiceList = () => {
                     setPerformLoading={setPerformLoading}
                     invoicePeriod={props.data.invoicePeriod}
                     timesheetsPeriod={props.data.timesheetsPeriod}
+                    address={props.data.address}
+                    state={props.data.state}
+                    city={props.data.city}
+                    zip={props.data.zip}
+                    email={props.data.email}
                 />
             </>
         );
@@ -197,13 +202,14 @@ const InvoiceList = () => {
         { field: "employeeName", filter: true },
         // { field: "invoiceNumber", filter: true },
         // { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 100 },
+        { field: "vendorName", filter: true },
         { field: "jobTitle", filter: true },
-        { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
-        { field: "timesheetsPeriod", filter: true, cellRenderer: CustomJobTypeRenderer},
-        { field: "clientName", filter: true },
-        { field: "invoiceDate", filter: true, maxWidth: 130 },
         { field: "startDate", filter: true, maxWidth: 130 },
         { field: "endDate", filter: true, maxWidth: 130 },
+        { field: "invoiceDate", filter: true, maxWidth: 130 },
+        { field: "jobType", headerName: 'I Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 130 },
+        { field: "timesheetsPeriod", headerName: 'T Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 130},
+        // { field: "clientName", filter: true },
         { field: "rate", filter: true, maxWidth: 100 },
         { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer,  },
         {

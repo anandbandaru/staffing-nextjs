@@ -38,7 +38,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
     jobStartDate, jobEndDate, jobName, jobTitle, clientName, implementationPartnerName, vendorName,
     daysPending, employeeName, personalEmail, invoiceDate, rate, timesheetNumber, paymentTerms, Id,
     showSnackbar, userNotes, vendorId, manualLoadDataWithMessage, performLoading, setPerformLoading,
-    otherAmountFromDB, totalAmountFromDB, vendorInvoiceNumber, invoicePeriod, timesheetsPeriod }) => {
+    otherAmountFromDB, totalAmountFromDB, vendorInvoiceNumber, invoicePeriod, timesheetsPeriod, address, state, city, zip, email }) => {
 
     const { APIPath, userName } = useContext(Context);
     const [isCustomInvoice, setIsCustomInvoice] = React.useState(false);
@@ -186,6 +186,12 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
             getAuditDetails();
             if ((operation !== "View"))
                 getInvoiceOtherCosts(Id);
+
+
+            // if (address === "" || address === undefined) {
+            //     getVendorDetails();
+            // }
+            getVendorDetails();
         }
         //setIsOpen(true);
     }
@@ -357,6 +363,36 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                 }
             );
     };
+
+    const [vendorData, setVendorData] = useState({ data: [] });
+    const getVendorDetails = () => {
+        let apiUrl = APIPath + "/getvendordetails/" + vendorId;
+        // console.log(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
+            .then(response => response.json())
+            .then(
+                (result) => {
+                    if (result.error) {
+                        // console.log("RequestData:On error return: setting empty")
+                        setVendorData({});
+                    }
+                    else {
+                        setVendorData(result);
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setVendorData({});
+                    // console.log("RequestData:On JUST error: API call failed")
+                    setApiLoading(false);
+                }
+            )
+    }
+
     useEffect(() => {
         if ((operation === "View" || operation === "Edit") && doLoading && performLoading) {
             console.log("LOAD...");
@@ -372,6 +408,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
             if (operation === "Edit") {
                 getAuditDetails();
             }
+            getVendorDetails();
         }
     }, [invoiceNumber]);
 
@@ -504,7 +541,12 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             vendorId: vendorId,
                                             totalAmount: rate * totalHours,
                                             otherAmount: 0,
-                                            vendorInvoiceNumber: vendorInvoiceNumber
+                                            vendorInvoiceNumber: vendorInvoiceNumber,
+                                            address: address,
+                                            state: state,
+                                            city: city,
+                                            zip: zip,
+                                            email: email
                                         }}
                                         onSubmit={(values, { setSubmitting }) => {
                                             var finalAPI = APIPath + "/addinvoice";
@@ -628,8 +670,32 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 </TableHead>
                                                                 <TableBody>
                                                                     <TableRow >
-                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Vendor Name</TableCell>
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Bill to:</TableCell>
                                                                         <TableCell align="right" className="divValue3 bg-white">{vendorName}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Address</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">
+                                                                            {(vendorData.data[0]) && (
+                                                                                <table className="w-full">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td className="tValue">{vendorData.data[0].address}</td>
+                                                                                            <td className="tTitle">State</td>
+                                                                                            <td className="tValue">{vendorData.data[0].state}</td>
+                                                                                            <td className="tTitle">City</td>
+                                                                                            <td className="tValue">{vendorData.data[0].city}</td>
+                                                                                            <td className="tTitle">Zip</td>
+                                                                                            <td className="tValue">{vendorData.data[0].zip}</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            )}
+                                                                        </TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Email</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{vendorData.data[0] ? vendorData.data[0].email : ''}</TableCell>
                                                                     </TableRow>
                                                                     <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Employee Name</TableCell>
@@ -670,8 +736,12 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 </TableHead>
                                                                 <TableBody>
                                                                     <TableRow >
+                                                                        <TableCell component="th" scope="row" className="divTitle bg-white">Description</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">{jobTitle}</TableCell>
+                                                                    </TableRow>
+                                                                    <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Rate</TableCell>
-                                                                        <TableCell align="right" className="divValue3 bg-white">{localRate}</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">$ {localRate}</TableCell>
                                                                     </TableRow>
                                                                     <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Total Hours</TableCell>
@@ -681,13 +751,13 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                     {otherCostsFromDB.map((cost, index) => (
                                                                         <TableRow key={index} >
                                                                             <TableCell component="th" scope="row" className="divTitle bg-slate-100">{cost.title}</TableCell>
-                                                                            <TableCell align="right" className="divValue3 bg-slate-100">{cost.otherAmount}</TableCell>
+                                                                            <TableCell align="right" className="divValue3 bg-slate-100">$ {cost.otherAmount}</TableCell>
                                                                         </TableRow>
                                                                     ))}
 
                                                                     <TableRow >
                                                                         <TableCell component="th" scope="row" className="divTitle bg-white">Invoice Total Amount</TableCell>
-                                                                        <TableCell align="right" className="divValue3 bg-white">{localTotal}</TableCell>
+                                                                        <TableCell align="right" className="divValue3 bg-white">$ {localTotal}</TableCell>
                                                                     </TableRow>
                                                                 </TableBody>
                                                             </Table>
