@@ -51,7 +51,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
     const contentRef = useRef(null); // Reference to the form element
     const [localRate, setLocalRate] = React.useState(rate);
     const [localHours, setLocalHours] = React.useState(totalHours);
-    const [localTotal, setLocalTotal] = React.useState(rate * totalHours);
+    const [localTotal, setLocalTotal] = React.useState((rate * totalHours).toFixed(2));
 
     const handleRateChange = (event) => {
         const rate = parseFloat(event.target.value);
@@ -537,7 +537,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             createdBy: userName,
                                             Id: Id,
                                             modifiedBy: userName,
-                                            userNotes: userNotes,
+                                            userNotes: (userNotes === "" || userNotes === undefined) ? "-" : userNotes,
                                             vendorId: vendorId,
                                             totalAmount: rate * totalHours,
                                             otherAmount: 0,
@@ -851,7 +851,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                         label="Notes"
                                                         multiline
                                                         rows={2}
-                                                        value={values.userNotes}
+                                                        value={(values.userNotes === "" || values.userNotes === undefined) ? "-" : values.userNotes}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         helperText={(errors.userNotes && touched.userNotes) && errors.userNotes}
