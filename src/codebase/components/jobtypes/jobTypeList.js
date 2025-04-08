@@ -121,7 +121,7 @@ const JobTypeList = () => {
             cellRenderer: CustomDisabledRenderer
         },
         { field: "createdDate", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 100, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

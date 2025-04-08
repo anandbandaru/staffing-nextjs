@@ -115,10 +115,11 @@ const OwnershipList = () => {
             valueGetter: (params) => `${params.data.companyId} - ${params.data.companyName}`,
         },
         {
-            field: "ownerId",
+            field: "ownerId", headerName: 'Owner',
             valueGetter: (params) => `${params.data.ownerId} - ${params.data.ownerFirstName} ${params.data.ownerLastName}`,
         },
         { field: "createdDate", filter: true },
+        { field: "notes", filter: true },
         {
             field: "owingPercentage", filter: false,
             // cellClassRules: {
@@ -128,7 +129,7 @@ const OwnershipList = () => {
             // },
             cellRenderer: CustomPercentageRenderer
         },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

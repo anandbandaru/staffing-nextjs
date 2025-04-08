@@ -77,7 +77,7 @@ const TimeSheetsMain = () => {
 
     const allTabs = [
         { name: 'Yet to Submit', icon: <TimerOutlinedIcon className="mr-1" fontSize="small" /> },
-        { name: 'Reminders', icon: <NotificationAddIcon className="mr-1" fontSize="small" /> },
+        // { name: 'Reminders', icon: <NotificationAddIcon className="mr-1" fontSize="small" /> },
         { name: 'Sent Back', icon: <ReplyAllOutlinedIcon className="mr-1" fontSize="small" /> },
         { name: 'Pending Approval', icon: <CheckOutlinedIcon className="mr-1" fontSize="small" /> },
         { name: 'Approved', icon: <CheckCircleOutlinedIcon className="mr-1" fontSize="small" /> }
@@ -116,7 +116,7 @@ const TimeSheetsMain = () => {
                         ))}
                     </TabList>
 
-                    <TabPanel className="px-0">
+                    {/* <TabPanel className="px-0">
                         <Alert severity="info" className="my-0">This tab displays all the <strong>Pending</strong> timesheets.</Alert>
                         <Autocomplete
                             options={employeesData.data}
@@ -136,33 +136,11 @@ const TimeSheetsMain = () => {
                             onChange={(event, newValue) => {
                                 handleEmployeeIdChange({ target: { value: newValue ? newValue.Id : '' } });
                             }}
-                        />
-                        {/* <TextField
-                            size="small"
-                            margin="normal"
-                            fullWidth
-                            id="employeeId"
-                            name="employeeId"
-                            select
-                            label="Employee Id"
-                            value={employeeId}
-                            className="bg-yellow-400"
-                            onChange={(event) => {
-                                handleEmployeeIdChange(event);
-                            }}
-                        >
-                            {employeesData.data.map((item, index) => (
-                                <MenuItem key={index} value={item.Id}>
-                                    <div>
-                                        Employee ID: {item.Id} - {item.firstName} {item.lastName} - ({item.employeeType}) - (Personal Email: {item.personalEmail}) - (US Phone: {item.personalUSPhone}) - (Personal Phone: {item.personalPhone})
-                                    </div>
-                                </MenuItem>
-                            ))}
-                        </TextField> */}
+                        />                        
                         {employeeId && (
                             <PendingList employeeId={employeeId} mode="View" />
                         )}
-                    </TabPanel>
+                    </TabPanel> */}
                     <TabPanel className="px-0">
                         <Alert severity="info" className="my-0">This tab displays all the <strong>Pending</strong> timesheets for which you can send reminders.</Alert>
                         <TimesheetRemindersList />

@@ -123,7 +123,7 @@ const ClientList = () => {
             // },
             cellRenderer: CustomDisabledRenderer
         },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

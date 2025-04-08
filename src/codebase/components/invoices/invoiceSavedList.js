@@ -229,9 +229,8 @@ const InvoiceSavedList = () => {
             cellRenderer: CustomStatusRenderer
         },
         {
-            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 90, resizable: true
+            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 90, resizable: true, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }
         },
-        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 110, resizable: false }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

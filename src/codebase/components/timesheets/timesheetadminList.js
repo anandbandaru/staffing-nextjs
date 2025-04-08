@@ -221,7 +221,7 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "Id", maxWidth: 50 },
-        { field: "employeeID", maxWidth: 50 },
+        { field: "employeeID" },
         { field: "timesheetNumber", filter: true },
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
@@ -235,10 +235,10 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
             cellRenderer: CustomStatusRenderer
         },
         {
-            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 90, resizable: true
+            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 70, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }
         },
-        { field: "HISORY", cellRenderer: CustomAuditComponent, maxWidth: 100, resizable: false },
-        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 110, resizable: false }
+        { field: "HISORY", cellRenderer: CustomAuditComponent, maxWidth: 70, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } },
+        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 80, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

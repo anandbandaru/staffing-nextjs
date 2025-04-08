@@ -116,6 +116,15 @@ const OwnersList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
+        {
+            field: "Disabled", filter: false,
+            // cellClassRules: {
+            //     // apply green to electric cars
+            //     'rag-green': params => params.value === null || params.value === false,
+            //     'rag-red': params => params.value === true,
+            // },
+            cellRenderer: CustomDisabledRenderer
+        },
         { field: "firstName", filter: true },
         { field: "lastName", filter: true },
         {
@@ -127,16 +136,10 @@ const OwnersList = () => {
             cellRenderer: CustomEmailRenderer
         },
         { field: "phone1", filter: true },
-        {
-            field: "Disabled", filter: false,
-            // cellClassRules: {
-            //     // apply green to electric cars
-            //     'rag-green': params => params.value === null || params.value === false,
-            //     'rag-red': params => params.value === true,
-            // },
-            cellRenderer: CustomDisabledRenderer
-        },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 150, resizable: false }
+        { field: "phone2", filter: true },
+        { field: "IDNumber", filter: true },
+        { field: "Address", filter: true },
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 150, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

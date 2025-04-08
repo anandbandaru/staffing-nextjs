@@ -22,8 +22,16 @@
   ],
   "releases": [
     {
+      "version": "3.6",
+      "date": "APR 08 2025",
+      "notes": [
+        "Grids with pinned Action column",
+        "Not showing future pending timesheets"
+      ]
+    },
+    {
       "version": "3.5",
-      "date": "MAR 27 2024",
+      "date": "MAR 27 2025",
       "notes": [
         "Display all Pending approval Timesheets",
         "Make the Employee dropdown searchable"
@@ -31,14 +39,14 @@
     },
     {
       "version": "3.4.2",
-      "date": "MAR 16 2024",
+      "date": "MAR 16 2025",
       "notes": [
         "Vendor Update issue fix"
       ]
     },
     {
       "version": "3.4.1",
-      "date": "FEB 19 2024",
+      "date": "FEB 19 2025",
       "notes": [
         "Payment terms in Jobs",
         "Invoice UI setup - TBD"
@@ -46,14 +54,14 @@
     },
     {
       "version": "3.3",
-      "date": "FEB 17 2024",
+      "date": "FEB 17 2025",
       "notes": [
         "Close action on Todos with only Admin's action"
       ]
     },
     {
       "version": "3.2",
-      "date": "FEB 14 2024",
+      "date": "FEB 14 2025",
       "notes": [
         "Ability to E-Verify an Employee",
         "Disabling Version updates for non ADMINS",
@@ -64,7 +72,7 @@
     },
     {
       "version": "3.1",
-      "date": "FEB 13 2024",
+      "date": "FEB 13 2025",
       "notes": [
         "New Employee Landing page with documents section",
         "Employee can update dependents",
@@ -74,7 +82,7 @@
     },
     {
       "version": "3.0",
-      "date": "FEB 03 2024",
+      "date": "FEB 03 2025",
       "notes": [
         "My Timesheets module with List of pending timesheets for each JOB",
         "Submission of timesheets",
@@ -84,7 +92,7 @@
     },
     {
       "version": "2.8",
-      "date": "JAN 31 2024",
+      "date": "JAN 31 2025",
       "notes": [
         "Realtime chat",
         "Hiding TODO bar for Employees",
@@ -93,7 +101,7 @@
     },
     {
       "version": "2.7",
-      "date": "JAN 21 2024",
+      "date": "JAN 21 2025",
       "notes": [
         "Realtime notifications",
         "Visits in Firebase",
@@ -102,14 +110,14 @@
     },
     {
       "version": "2.6",
-      "date": "JAN 19 2024",
+      "date": "JAN 19 2025",
       "notes": [
         "New toast system - Now it stacks"
       ]
     },
     {
       "version": "2.5",
-      "date": "JAN 18 2024",
+      "date": "JAN 18 2025",
       "notes": [
         "Responsive design - Top menu & New menu as dropdowns on small screens",
         "Top banner to bottom",
@@ -118,7 +126,7 @@
     },
     {
       "version": "2.4",
-      "date": "JAN 17 2024",
+      "date": "JAN 17 2025",
       "notes": [
         "Job Rates section",
         "Job Rates section - Edit",
@@ -128,7 +136,7 @@
     },
     {
       "version": "2.3",
-      "date": "JAN 16 2024",
+      "date": "JAN 16 2025",
       "notes": [
         "Snack bar top right",
         "Reset form on ADD record",
@@ -141,7 +149,7 @@
     },
     {
       "version": "2.0",
-      "date": "JAN 14 2024",
+      "date": "JAN 14 2025",
       "notes": [
         "Top tab permissions",
         "New (Modules) tab permissions",
@@ -151,7 +159,7 @@
     },
     {
       "version": "1.5",
-      "date": "JAN 12 2024",
+      "date": "JAN 12 2025",
       "notes": [
         "Handling foreign keys deletion error - for Jobs related parent tables",
         "Handling foreign keys deletion error - for Ownership related parent tables",
@@ -165,7 +173,7 @@
     },
     {
       "version": "1.4",
-      "date": "JAN 10 2024",
+      "date": "JAN 10 2025",
       "notes": [
         "File upload dialog now stays 0 cant be closed with backdrop click",
         "User login capture + showing details in Users screen",
@@ -175,7 +183,7 @@
     },
     {
       "version": "1.3",
-      "date": "JAN 08 2024",
+      "date": "JAN 08 2025",
       "notes": [
         "TODO bar now refreshes from TODO module actions",
         "All ADD forms now in full screen",
@@ -187,7 +195,7 @@
     },
     {
       "version": "1.2",
-      "date": "JAN 07 2024",
+      "date": "JAN 07 2025",
       "notes": [
         "Job module",
         "Configuration sections",
@@ -199,7 +207,7 @@
     },
     {
       "version": "1.1",
-      "date": "JAN 05 2024",
+      "date": "JAN 05 2025",
       "notes": [
         "Deletion confirm dialog will now asks for DELETE text to be typed",
         "Settings drawer as separate component",

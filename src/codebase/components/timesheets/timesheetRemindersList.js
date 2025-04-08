@@ -147,13 +147,16 @@ const TimesheetRemindersList = () => {
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
         { field: "clientName", filter: true },
+        { field: "daysPending", filter: true },
         { field: "startDate", filter: true },
         { field: "endDate", filter: true },
+        { field: "jobStartDate", filter: true },
+        { field: "jobEndDate", filter: true },
         {
             field: "status", filter: true,
             cellRenderer: CustomStatusRenderer
         },
-        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 110, resizable: false }
+        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 110, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }  }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

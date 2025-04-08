@@ -113,7 +113,7 @@ const JobList = () => {
         { field: "jobTitle", filter: true },
         { field: "jobStartDate", filter: true },
         { field: "jobEndDate", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

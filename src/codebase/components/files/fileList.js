@@ -111,7 +111,7 @@ const FileList = () => {
         { field: "notes", },
         {
             field: "gDriveLink",
-            cellRenderer: CustomLinkRenderer, 
+            cellRenderer: CustomLinkRenderer, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }
         },
     ]);
     const rowClassRules = {

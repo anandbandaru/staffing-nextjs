@@ -123,11 +123,11 @@ const VendorList = () => {
         { field: "phone", filter: true },
         { field: "EIN", filter: true },
         { field: "address", filter: true },
-        // { field: "city", filter: true },
-        // { field: "state", filter: true, maxWidth: 100, },
-        // { field: "zip", filter: true, maxWidth: 100, },
-        // { field: "country", filter: true, maxWidth: 100, },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
+        { field: "city", filter: true },
+        { field: "state", filter: true, maxWidth: 100, },
+        { field: "zip", filter: true, maxWidth: 100, },
+        { field: "country", filter: true, maxWidth: 100, },
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

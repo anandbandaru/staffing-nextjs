@@ -235,9 +235,15 @@ const TimesheetEntryForm = ({ data, onFormSubmitSuccess, mode }) => {
                                                                                 <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
                                                                                     TIMESHEET NUMBER
                                                                                 </Typography>
-                                                                                <div title="Pending days" className='bg-orange-800 badgeSpan text-white absolute right-2 top-2' sx={{ color: 'text.secondary', fontSize: 11 }}>
-                                                                                    {timesheet.daysPending}
+
+                                                                                <div
+                                                                                    title="Pending days"
+                                                                                    className={`badgeSpan absolute right-2 top-2 ${timesheet.daysPending < 0 ? 'bg-green-800 text-white' : 'bg-orange-800 text-white'}`}
+                                                                                    sx={{ color: 'text.secondary', fontSize: 11 }}
+                                                                                >
+                                                                                    {timesheet.daysPending > 0 ? `DUE: ${timesheet.daysPending}` : ``}
                                                                                 </div>
+
                                                                                 <div title="Mode" className='modeDivContainer' sx={{ color: 'text.secondary', fontSize: 11 }}>
                                                                                     MODE: {mode}
                                                                                 </div>

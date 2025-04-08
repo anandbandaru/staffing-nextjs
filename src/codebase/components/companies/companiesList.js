@@ -116,7 +116,19 @@ const CompaniesList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
+        {
+            field: "Disabled", filter: false, maxWidth: 100,
+            // cellClassRules: {
+            //     // apply green to electric cars
+            //     'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
+            //     'rag-red-bg': params => params.value === 1 || params.value === true,
+            // },
+            cellRenderer: CustomDisabledRenderer
+        },
         { field: "Name", filter: true },
+        { field: "Description", filter: true },
+        { field: "Address", filter: true },
+        { field: "EIN", filter: true },
         { field: "Phone", filter: true },
         {
             field: "Email", filter: true, editable: true,
@@ -127,16 +139,8 @@ const CompaniesList = () => {
             cellRenderer: CustomEmailRenderer
         },
         { field: "EstablishedDate", filter: true },
-        {
-            field: "Disabled", filter: false, maxWidth: 100,
-            // cellClassRules: {
-            //     // apply green to electric cars
-            //     'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,
-            //     'rag-red-bg': params => params.value === 1 || params.value === true,
-            // },
-            cellRenderer: CustomDisabledRenderer
-        },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false }
+        { field: "Notes", filter: true },
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 130, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         //'rag-red': params => params.data.firstName === "anand",

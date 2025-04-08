@@ -145,7 +145,7 @@ const TodoList = () => {
             field: "completedByAdmin", headerName: "Closed By", filter: false,
         },
         { field: "completedDateAdmin", headerName: "Closed Date", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent,  resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent,  resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }, maxWidth: 110 }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

@@ -135,7 +135,7 @@ const ExpenseList = () => {
         { field: "companyName", filter: true },
         { field: "employeeName", filter: true },
         { field: "createdDate", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false }
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
