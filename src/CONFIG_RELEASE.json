@@ -250,6 +250,7 @@
   "transactionsTabs": [
     "Jobs",
     "Invoices",
+    "Receipts",
     "Expenses",
     "Payroll"
   ],

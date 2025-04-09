@@ -11,6 +11,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
+import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 import JobsMain from "../jobs/jobsMain";
 import ExpensesMain from "../expenses/expensesMain";
 import axios from 'axios';
@@ -20,6 +21,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import InvoicesMain from "../invoices/invoicesMain";
+import ReceiptsMain from "../receipts/receiptsMain";
 
 const TransactionsTop = ({ module }) => {
     const { userType, APIPath, userName, setIsAPILoading } = useContext(Context);
@@ -98,6 +100,7 @@ const TransactionsTop = ({ module }) => {
     const allTabs = [
         { name: 'Jobs', icon: <WorkOutlineOutlinedIcon className="mr-1" fontSize="small" /> },
         { name: 'Invoices', icon: <PaidOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Receipts', icon: <ReceiptLongRoundedIcon className="mr-1" fontSize="small" /> },
         { name: 'Expenses', icon: <AddShoppingCartIcon className="mr-1" fontSize="small" /> },
         { name: 'Payroll', icon: <PointOfSaleOutlinedIcon className="mr-1" fontSize="small" /> }
     ];
@@ -131,6 +134,7 @@ const TransactionsTop = ({ module }) => {
                                     </div>
                                     {selectedTab === 'Jobs' && <JobsMain />}
                                     {selectedTab === 'Invoices' && <InvoicesMain />}
+                                    {selectedTab === 'Receipts' && <ReceiptsMain />}
                                     {selectedTab === 'Expenses' && <ExpensesMain />}
                                     {selectedTab === 'Payroll' && "Payroll"}
                                 </div>
@@ -166,6 +170,7 @@ const TransactionsTop = ({ module }) => {
                                     </TabList>
                                     {tabsToShow.includes('Jobs') && <TabPanel className="py-0"><JobsMain /></TabPanel>}
                                     {tabsToShow.includes('Invoices') && <TabPanel className="py-0"><InvoicesMain /></TabPanel>}
+                                    {tabsToShow.includes('Receipts') && <TabPanel className="py-0"><ReceiptsMain /></TabPanel>}
                                     {tabsToShow.includes('Expenses') && <TabPanel className="py-0"><ExpensesMain /></TabPanel>}
                                     {tabsToShow.includes('Payroll') && <TabPanel className="py-0">Payroll</TabPanel>}
                                 </Tabs>

@@ -154,7 +154,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                 setOtherCosts(response.data.data);
                 let templocalTotal = rate * totalHours;
                 const total = response.data.data.reduce((sum, cost) => sum + parseFloat(cost.otherAmount), 0);
-                let grandTotal = templocalTotal + total;
+                let grandTotal = (templocalTotal + total).toFixed(2);
                 setLocalTotal(grandTotal);
             } else {
                 showSnackbar('error', "Error fetching other costs");
@@ -539,8 +539,8 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                             modifiedBy: userName,
                                             userNotes: (userNotes === "" || userNotes === undefined) ? "-" : userNotes,
                                             vendorId: vendorId,
-                                            totalAmount: rate * totalHours,
-                                            otherAmount: 0,
+                                            totalAmount: localTotal,
+                                            otherAmount: otherCostsFromDB.reduce((acc, cost) => acc + cost.otherAmount, 0),
                                             vendorInvoiceNumber: vendorInvoiceNumber,
                                             address: address,
                                             state: state,

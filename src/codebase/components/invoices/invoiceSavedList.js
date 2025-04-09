@@ -147,6 +147,8 @@ const InvoiceSavedList = () => {
                     city={props.data.city}
                     zip={props.data.zip}
                     email={props.data.email}
+                    invoicePeriod={props.data.invoicePeriod}
+                    timesheetsPeriod={props.data.timesheetsPeriod}
                 />
             </>
         );
