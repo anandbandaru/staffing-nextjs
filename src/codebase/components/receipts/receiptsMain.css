@@ -1,3 +1,7 @@
 .receiptMainHolder{
     /* margin:4px; */
 }
+.mytextbox INPUT{
+    font-size: 18px;
+    font-weight: bold;
+}

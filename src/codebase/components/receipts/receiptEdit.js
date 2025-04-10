@@ -62,9 +62,13 @@ function ReceiptEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
                 }
             },
         ).then((resp) => {
+            if (resp.data.STATUS === "FAIL")
+                showSnackbar('error', "Error occured while deletion");
+            else
+                showSnackbar('success', "Item deleted");
+
             setApiLoading(false);
             manualLoadData();
-            showSnackbar('success', "Item deleted.");
         }).catch(function (error) {
             setApiLoading(false);
             showSnackbar('error', "Error occured while deletion");

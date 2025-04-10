@@ -19,7 +19,7 @@ import EmployeeDocumentsAdminChecklist from '../employeesdocuments/eDocsAdminLis
 import EmployeeJobsMetadata from '../employees/employeeJobsMetadata';
 import TimesheetAction from '../timesheets/timesheetAction';
 
-function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber, mode, manualLoadData, 
+function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber, mode, manualLoadData,
     showSnackbar, employeeID, startDate, endDate, jobName, personalEmail, applicationEmail }) {
     const { APIPath, userType } = useContext(Context);
     const [open, setOpen] = React.useState(false);
@@ -69,6 +69,8 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber,
                 return APIPath + "/getexpensedetails";
             case 'MY_TIMESHEETS':
                 return APIPath + "/gettimesheetdetails";
+            case 'RECEIPTS':
+                return APIPath + "/getreceiptdetails";
             default:
                 return '';
         }
@@ -195,7 +197,7 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber,
                                                 </div>
                                                 <TimesheetAction ID={ID}
                                                     timesheetNumber={timesheetNumber}
-                                                    mode={mode} 
+                                                    mode={mode}
                                                     operation={operation}
                                                     manualLoadData={manualLoadData}
                                                     setApiLoading={setApiLoading}

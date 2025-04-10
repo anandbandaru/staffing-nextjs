@@ -36,6 +36,9 @@ function Receipt({ props, ID, operation }) {
     const [invoicesData, setInvoicesData] = useState({ data: [] });
     const [invoiceId, setInvoiceId] = useState('');
     const [selectedInvoiceAmount, setSelectedInvoiceAmount] = useState(0.00);
+    const [localAdjustedAmount, setLocalAdjustedAmount] = React.useState(0.00);
+    const [localTotal, setLocalTotal] = React.useState(0.00);
+    const [localVIN, setLocalVIN] = React.useState("");
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -68,9 +71,17 @@ function Receipt({ props, ID, operation }) {
                     }
                     else {
                         await getCompaniesList();
-                        await getEmployeesList();
                         setName(result.data[0].Id);
                         setData(result);
+                        setCompanyId(result.data[0].companyId);
+                        setEmployeeId(result.data[0].employeeId);
+                        setSelectedInvoiceAmount(result.data[0].receivedAmount);
+                        setLocalAdjustedAmount(result.data[0].adjustedAmount);
+                        setLocalTotal(result.data[0].totalReceivedAmount);
+                        setInvoiceId(result.data[0].invoiceId);
+                        setLocalVIN(result.data[0].vendorInvoiceNumber);
+                        await getEmployeesListByCompanyId(result.data[0].companyId);
+                        //await getSavedInvoicesByCompanyId(result.data[0].companyId);
                     }
                     setApiLoading(false);
                 },
@@ -154,7 +165,6 @@ function Receipt({ props, ID, operation }) {
     }
     const getEmployeesListByCompanyId = async (companyIdparam) => {
         setApiLoading(true);
-        setEmployeesData({ data: [] });
         let apiUrl = APIPath + "/getemployeesbycompanyid/" + companyIdparam
         fetch(apiUrl, {
             headers: {
@@ -191,10 +201,8 @@ function Receipt({ props, ID, operation }) {
         }
     };
 
-    const [localTotal, setLocalTotal] = React.useState(0.00);
     const getSavedInvoicesByCompanyId = async (companyIdparam) => {
         setApiLoading(true);
-        setEmployeesData({ data: [] });
         let apiUrl = APIPath + "/getsavedinvoicesbycompanyid/" + companyIdparam
         fetch(apiUrl, {
             headers: {
@@ -222,7 +230,6 @@ function Receipt({ props, ID, operation }) {
     }
     const getSavedInvoicesByEmployeeId = async (employeeIdparam) => {
         setApiLoading(true);
-        setEmployeesData({ data: [] });
         let apiUrl = APIPath + "/getsavedinvoicesbyemployeeid/" + employeeIdparam
         fetch(apiUrl, {
             headers: {
@@ -253,25 +260,41 @@ function Receipt({ props, ID, operation }) {
 
         const invoice = invoicesData.data.find((item) => item.Id === event.target.value);
         setSelectedInvoiceAmount(invoice ? invoice.totalAmount : 0.00);
+        setLocalVIN(invoice ? invoice.vendorInvoiceNumber : "");
         setLocalTotal(invoice ? (parseFloat(invoice.totalAmount) || 0 + parseFloat(localAdjustedAmount) || 0).toFixed(2) : 0.00);
     };
+    
+    const handleReceivedAmountChange = (event) => {
+        const ra = parseFloat(event.target.value);
+        setSelectedInvoiceAmount(ra);
+        setLocalTotal((ra + parseFloat(localAdjustedAmount) || 0).toFixed(2));
+    };
 
-    const [localAdjustedAmount, setLocalAdjustedAmount] = React.useState(0.00);
     const handleAdjustedAmountChange = (event) => {
         const aa = parseFloat(event.target.value);
         setLocalAdjustedAmount(aa);
-        setLocalTotal((aa + parseFloat(localTotal) || 0).toFixed(2));
+        setLocalTotal((aa + parseFloat(selectedInvoiceAmount) || 0).toFixed(2));
     };
 
+    const [ranOnceC, setRanOnceC] = useState(1);
+    const [ranOnce, setRanOnce] = useState(false);
     useEffect(() => {
-        if (operation === "View" || operation === "Edit") {
-            getDetails();
+        console.log("useEffect called with operation:", operation);
+        console.log("useEffect called with COUNTER:", ranOnceC);
+        if(!ranOnce)
+        {
+            setRanOnce(true);
+            setRanOnceC(ranOnceC + 1);
+            if (operation === "View" || operation === "Edit") {
+                getDetails();
+            }
+            if (operation === "New") {
+                console.log("New Receipt");
+                getCompaniesList();
+                getEmployeesList();
+            }
         }
-        if (operation === "New") {
-            getCompaniesList();
-            getEmployeesList();
-        }
-    }, []);
+    }, [ID]);
 
     return (
         <>
@@ -291,7 +314,9 @@ function Receipt({ props, ID, operation }) {
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
                         companyId: name ? data.data[0].companyId : companyId,
+                        companyName: name ? data.data[0].companyName : "",
                         employeeId: name ? data.data[0].employeeId : employeeId,
+                        employeeName: name ? data.data[0].employeeName: "",
                         invoiceId: name ? data.data[0].invoiceId : invoiceId,
                         vendorInvoiceNumber: name ? data.data[0].vendorInvoiceNumber : '',
                         startDate: name ? data.data[0].startDate : '',
@@ -299,9 +324,10 @@ function Receipt({ props, ID, operation }) {
                         invoiceDate: name ? data.data[0].invoiceDate : '',
                         rate: name ? data.data[0].rate : '',
                         hours: name ? data.data[0].hours : '',
-                        receivedAmount: name ? data.data[0].receivedAmount ? data.data[0].receivedAmount : selectedInvoiceAmount ? selectedInvoiceAmount : 0.00 : 0.00,
+                        receivedAmount: name ? data.data[0].receivedAmount : '',
                         adjustedAmount: name ? data.data[0].adjustedAmount : '',
                         adjustedAmountNotes: name ? data.data[0].adjustedAmountNotes : '',
+                        totalReceivedAmount: name ? data.data[0].totalReceivedAmount : '',
                         createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -314,19 +340,20 @@ function Receipt({ props, ID, operation }) {
                         axios.post(finalAPI,
                             // values,
                             {
+                                Id: ID,
                                 companyId: companyId,
                                 employeeId: employeeId ? employeeId : invoicesData.data.find((item) => item.Id === invoiceId).employeeId,
                                 invoiceId: invoiceId,
-                                vendorInvoiceNumber: invoicesData.data.find((item) => item.Id === invoiceId).vendorInvoiceNumber,
+                                vendorInvoiceNumber: localVIN,
                                 receivedAmount: selectedInvoiceAmount,
                                 adjustedAmount: values.adjustedAmount,
                                 adjustedAmountNotes: values.adjustedAmountNotes,
-                                totalReceivedAmount: localTotal,
-                                startDate: invoicesData.data.find((item) => item.Id === invoiceId).startDate,
-                                endDate: invoicesData.data.find((item) => item.Id === invoiceId).endDate,
-                                invoiceDate: invoicesData.data.find((item) => item.Id === invoiceId).invoiceDate,
-                                rate: invoicesData.data.find((item) => item.Id === invoiceId).rate,
-                                hours: invoicesData.data.find((item) => item.Id === invoiceId).totalHours,
+                                totalReceivedAmount: localTotal ? localTotal : 0.00,
+                                startDate: data.data[0] ? data.data[0].startDate : invoicesData.data.find((item) => item.Id === invoiceId).startDate,
+                                endDate: data.data[0] ? data.data[0].endDate : invoicesData.data.find((item) => item.Id === invoiceId).endDate,
+                                invoiceDate: data.data[0] ? data.data[0].invoiceDate : invoicesData.data.find((item) => item.Id === invoiceId).invoiceDate,
+                                rate: data.data[0] ? data.data[0].rate : invoicesData.data.find((item) => item.Id === invoiceId).rate,
+                                hours: data.data[0] ? data.data[0].hours : invoicesData.data.find((item) => item.Id === invoiceId).totalHours,
                                 createdBy: userName,
                             },
                             {
@@ -406,9 +433,24 @@ function Receipt({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <Autocomplete
+                                {operation === "Edit" ? <>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="ex_companyId"
+                                        name="ex_companyId"
+                                        label="Company ID"
+                                        disabled
+                                        value={values.companyName}
+                                    />
+                                </>
+                                    :
+                                    <>
+                                    <Autocomplete
                                     options={companiesData.data}
                                     getOptionLabel={(option) => `Company ID: ${option.Id} - ${option.Name}`}
+                                    //getOptionLabel={(option) => option.Id}
                                     //  - (Personal Email: ${option.personalEmail}) - (US Phone: ${option.personalUSPhone}) - (Personal Phone: ${option.personalPhone})`}
                                     renderInput={(params) => (
                                         <TextField
@@ -417,14 +459,33 @@ function Receipt({ props, ID, operation }) {
                                             margin="normal"
                                             fullWidth
                                             label="Company"
+                                        // value={companyId ? companyId : companiesData.data.find((item) => item.Id === companyId) || null}
                                         />
                                     )}
                                     value={companiesData.data.find((item) => item.Id === companyId) || null}
+                                    //value={companyId}
                                     onChange={(event, newValue) => {
+                                        setCompanyId(newValue);
                                         handleCompanyIdChange({ target: { value: newValue ? newValue.Id : '' } });
                                     }}
                                 />
-                                <Autocomplete
+                                    </>
+                                }
+                                {operation === "Edit" ? <>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="ex_employeeId"
+                                        name="ex_employeeId"
+                                        label="Employee ID"
+                                        disabled
+                                        value={values.employeeName}
+                                    />
+                                </>
+                                    :
+                                    <>
+                                    <Autocomplete
                                     options={employeesData.data}
                                     getOptionLabel={(option) => `Employee ID: ${option.Id} - ${option.firstName} ${option.lastName} - (${option.employeeType})`}
                                     renderInput={(params) => (
@@ -441,28 +502,47 @@ function Receipt({ props, ID, operation }) {
                                         handleEmployeeIdChange({ target: { value: newValue ? newValue.Id : '' } });
                                     }}
                                 />
+                                    </>
+                                }
+                                
+                                {operation === "Edit" ? <>
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        fullWidth
+                                        id="ex_invoiceId"
+                                        name="ex_invoiceId"
+                                        label="Invoice ID"
+                                        disabled
+                                        value={values.vendorInvoiceNumber}
+                                    />
+                                </>
+                                    :
+                                    <>
 
-                                <Autocomplete
-                                    options={invoicesData.data}
-                                    getOptionLabel={(option) => `${option.vendorInvoiceNumber} 
-                                    - ${option.employeeName} - (SD: ${option.startDate} - ED: ${option.endDate} - ID: ${option.invoiceDate}) - Hours: ${option.totalHours} - Rate: ${option.rate}`}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            label="Invoice"
-                                            id="invoiceId"
-                                            name="invoiceId"
-                                            helperText={(errors.invoiceId && touched.invoiceId) && errors.invoiceId}
+                                        <Autocomplete
+                                            options={invoicesData.data}
+                                            getOptionLabel={(option) => `${option.vendorInvoiceNumber} 
+                                - ${option.employeeName} - (SD: ${option.startDate} - ED: ${option.endDate} - ID: ${option.invoiceDate}) - Hours: ${option.totalHours} - Rate: ${option.rate}`}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    label="Invoice"
+                                                    id="invoiceId"
+                                                    name="invoiceId"
+                                                    helperText={(errors.invoiceId && touched.invoiceId) && errors.invoiceId}
+                                                />
+                                            )}
+                                            value={invoicesData.data.find((item) => item.Id === invoiceId) || null}
+                                            onChange={(event, newValue) => {
+                                                handleInvoiceIdChange({ target: { value: newValue ? newValue.Id : '' } });
+                                            }}
                                         />
-                                    )}
-                                    value={invoicesData.data.find((item) => item.Id === invoiceId) || null}
-                                    onChange={(event, newValue) => {
-                                        handleInvoiceIdChange({ target: { value: newValue ? newValue.Id : '' } });
-                                    }}
-                                />
+                                    </>
+                                }
                                 <TextField
                                     type='number'
                                     size="small"
@@ -471,8 +551,12 @@ function Receipt({ props, ID, operation }) {
                                     id="receivedAmount"
                                     name="receivedAmount"
                                     label="Received Amount"
-                                    value={selectedInvoiceAmount ? selectedInvoiceAmount : values.receivedAmount}
-                                    onChange={handleChange}
+                                    value={values.receivedAmount ? values.receivedAmount : selectedInvoiceAmount}
+                                    // onChange={handleChange}
+                                    onChange={(event) => {
+                                        handleChange(event);
+                                        handleReceivedAmountChange(event);
+                                    }}
                                     onBlur={handleBlur}
                                     helperText={(errors.receivedAmount && touched.receivedAmount) && errors.receivedAmount}
                                 />
@@ -511,13 +595,14 @@ function Receipt({ props, ID, operation }) {
                                 </Stack>
                                 <TextField
                                     size="small"
+                                    className='font-bold text-xl mytextbox'
                                     margin="normal"
                                     fullWidth
                                     id="totalReceivedAmount"
                                     name="totalReceivedAmount"
                                     label="Total Received Amount"
                                     disabled
-                                    value={localTotal}
+                                    value={localTotal ? localTotal : values.totalReceivedAmount}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />

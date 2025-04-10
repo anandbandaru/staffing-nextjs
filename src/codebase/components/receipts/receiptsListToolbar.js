@@ -14,8 +14,9 @@ import Stack from '@mui/material/Stack';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import Modal from 'react-modal';
 
-const ReceiptsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {    
+const ReceiptsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, manualLoadData }) => {
     const { setRefreshBalance, refreshBalance } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     //For dialog MUI
@@ -23,7 +24,7 @@ const ReceiptsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
         return <Slide direction="up" ref={ref} {...props} />;
     });
     const handleClose = (event, reason) => {
-        if (reason && reason === "backdropClick") 
+        if (reason && reason === "backdropClick")
             return;
         setOpen(false);
         setRefreshBalance(!refreshBalance);
@@ -56,17 +57,17 @@ const ReceiptsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
 
                         {/* REFRESH ICON */}
                         <div className="float-right ">
-                                    <Button size="small" variant="contained"
-                                        onClick={manualLoadData}
-                                        disabled={apiLoading}
-                                    >
-                                        {apiLoading ? <div className="spinner"></div> :
-                                            <>
-                                                <CachedIcon className="mr-1" />
-                                                Refresh now
-                                            </>}
+                            <Button size="small" variant="contained"
+                                onClick={manualLoadData}
+                                disabled={apiLoading}
+                            >
+                                {apiLoading ? <div className="spinner"></div> :
+                                    <>
+                                        <CachedIcon className="mr-1" />
+                                        Refresh now
+                                    </>}
 
-                                    </Button>
+                            </Button>
                         </div>
                         {/* REFRESH ICON */}
                         {/* API LOADER & MESSAGE */}
@@ -85,6 +86,23 @@ const ReceiptsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
                     </Stack>
                 </div>
             </div>
+            {/* <Modal
+                isOpen={open}
+                onRequestClose={handleClose}
+                // style={customStyles}
+                ariaHideApp={false}
+                contentLabel="{operation} Receipt"
+                style={{
+                    content: {
+                        maxHeight: '90vh', // Adjust as needed
+                        overflowY: 'auto',
+                        zIndex: 9999, // Add your desired z-index value here,
+                        padding: '5px',
+                    }
+                }}
+            >
+                <ReceiptForm operation="New" ID={null} />
+            </Modal> */}
             <BootstrapDialog
                 fullScreen
                 className="myFullScreenDialog"
@@ -109,7 +127,7 @@ const ReceiptsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <ReceiptForm operation="New" />
+                    <ReceiptForm operation="New" ID={null} />
                 </DialogContent>
             </BootstrapDialog>
         </>

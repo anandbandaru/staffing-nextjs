@@ -20,6 +20,7 @@ function GenericFileForm({ props, componentName, moduleId }) {
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [formSubmitionAPIError, setFormSubmitionAPIError] = useState(false);
     const [formSubmitionAPIErrorMessage, setFormSubmitionAPIErrorMessage] = useState("");
+    const [gDriveFolder, setGDriveFolder] = useState("");
     const [gDriveFolderNotPresent, setGDriveFolderNotPresent] = useState(false);
     // Default width
    const [formWidth, setFormWidth] = useState(700);
@@ -53,7 +54,7 @@ function GenericFileForm({ props, componentName, moduleId }) {
     //page title
     useEffect(() => {
         try {
-            // setParentId(configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid);
+            setGDriveFolder(configData.GOOGLEDRIVE_FOLDERS.find(f => f.foldername === componentName).folderid);
         } catch (error) {
             setGDriveFolderNotPresent(true);
             showSnackbar('error', 'There is no Google Drive configured for this module');
