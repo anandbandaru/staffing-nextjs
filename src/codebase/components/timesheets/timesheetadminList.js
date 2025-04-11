@@ -42,7 +42,7 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
     useEffect(() => {
         // console.log("SubmittedList: useEffect: employeeId: " + employeeId);
         delaydMockLoading();
-    }, [employeeId, employeeIdL]);
+    }, [employeeId, employeeIdL, status]);
 
     function manualLoadData() {
         setApiLoading(true);
@@ -74,6 +74,10 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
         }
         else if (status === "Approved") {
             apiUrl = APIPath + "/getapprovedtimesheets/" + employeeId;
+            if (employeeIdL === "" || employeeIdL === null || employeeIdL === undefined) {
+                apiUrl = APIPath + "/getallapprovedtimesheets";
+            }
+            console.log("Approved: Final path: " + apiUrl);
         }
         else if (status === "SentBack") {
             apiUrl = APIPath + "/getsentbacktimesheets/" + employeeId;

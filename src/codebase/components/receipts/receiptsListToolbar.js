@@ -127,7 +127,7 @@ const ReceiptsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <ReceiptForm operation="New" ID={null} />
+                    <ReceiptForm operation="New" ID={null} handleClose={handleClose} />
                 </DialogContent>
             </BootstrapDialog>
         </>

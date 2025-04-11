@@ -128,7 +128,7 @@ function ReceiptEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <ReceiptForm ID={ID} operation="Edit" />
+                    <ReceiptForm ID={ID} operation="Edit" handleClose={handleClose} />
                 </DialogContent>
             </BootstrapDialog>
 

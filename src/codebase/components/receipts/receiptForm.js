@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import FormSlider from '../slider/formSlider';
 
-function Receipt({ props, ID, operation }) {
+function Receipt({ props, ID, operation, handleClose }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
@@ -257,8 +257,8 @@ function Receipt({ props, ID, operation }) {
     }
     const handleInvoiceIdChange = (event) => {
         setInvoiceId(event.target.value);
-
         const invoice = invoicesData.data.find((item) => item.Id === event.target.value);
+        setCompanyId(invoice.companyId);
         setSelectedInvoiceAmount(invoice ? invoice.totalAmount : 0.00);
         setLocalVIN(invoice ? invoice.vendorInvoiceNumber : "");
         setLocalTotal(invoice ? (parseFloat(invoice.totalAmount) || 0 + parseFloat(localAdjustedAmount) || 0).toFixed(2) : 0.00);
@@ -324,7 +324,7 @@ function Receipt({ props, ID, operation }) {
                         invoiceDate: name ? data.data[0].invoiceDate : '',
                         rate: name ? data.data[0].rate : '',
                         hours: name ? data.data[0].hours : '',
-                        receivedAmount: name ? data.data[0].receivedAmount : '',
+                        receivedAmount: name ? data.data[0].receivedAmount : selectedInvoiceAmount,
                         adjustedAmount: name ? data.data[0].adjustedAmount : '',
                         adjustedAmountNotes: name ? data.data[0].adjustedAmountNotes : '',
                         totalReceivedAmount: name ? data.data[0].totalReceivedAmount : '',
@@ -341,7 +341,7 @@ function Receipt({ props, ID, operation }) {
                             // values,
                             {
                                 Id: ID,
-                                companyId: companyId,
+                                companyId: companyId ? companyId : invoicesData.data.find((item) => item.Id === invoiceId).companyId,
                                 employeeId: employeeId ? employeeId : invoicesData.data.find((item) => item.Id === invoiceId).employeeId,
                                 invoiceId: invoiceId,
                                 vendorInvoiceNumber: localVIN,
@@ -371,6 +371,7 @@ function Receipt({ props, ID, operation }) {
                             else
                                 showSnackbar('success', "Receipt data saved");
                             resetForm();
+                            handleClose();
                         }).catch(function (error) {
                             setSubmitting(false);
                             // console.log(error);

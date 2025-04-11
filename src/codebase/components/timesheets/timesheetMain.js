@@ -243,9 +243,7 @@ const TimeSheetsMain = () => {
                                 </MenuItem>
                             ))}
                         </TextField> */}
-                        {employeeId && (
-                            <TimesheetAdminList employeeId={employeeId} status="Approved" />
-                        )}
+                        <TimesheetAdminList employeeId={employeeId} status="Approved" />
                     </TabPanel>
                 </Tabs>
             </div>

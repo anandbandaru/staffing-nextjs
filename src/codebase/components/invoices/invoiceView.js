@@ -768,26 +768,28 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                         </td>
                                                                         <td>
                                                                             <table>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        {configData.companyDetails[0].chequeTitle}
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        {configData.companyDetails[0].chequeAddress}
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        {configData.companyDetails[0].chequePhone}
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        {configData.companyDetails[0].chequeEmail}
-                                                                                    </td>
-                                                                                </tr>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {configData.companyDetails[0].chequeTitle}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {configData.companyDetails[0].chequeAddress}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {configData.companyDetails[0].chequePhone}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {configData.companyDetails[0].chequeEmail}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
                                                                             </table>
                                                                         </td>
                                                                     </tr>
