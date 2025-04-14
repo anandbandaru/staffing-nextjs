@@ -177,8 +177,8 @@ const InvoiceList = () => {
     const CustomStatusRenderer = ({ value }) => {
         let className = 'badgeSpan';
         switch (value) {
-            case 'Approved':
-                className += ' rag-green-bg';
+            case 'Pending':
+                className += ' rag-red-bg';
                 break;
             case 'Rejected':
                 className += ' rag-red-bg';

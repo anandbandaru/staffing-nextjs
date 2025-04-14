@@ -4,12 +4,14 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import InvoicesListToolbar from './invoicesListToolbar'
+import GenericDetails from "../forms/GenericDetails";
+// import ExpenseEdit from "./expenseEdit";
 import CustomSnackbar from "../snackbar/snackbar";
 import InvoiceView from "./invoiceView";
 import { Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import Button from '@mui/material/Button';
 
-const InvoiceSavedList = () => {
+const InvoiceClosedList = () => {
     const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
     const [data, setData] = useState({ data: [] });
     const [apiLoading, setApiLoading] = useState(false);
@@ -59,7 +61,7 @@ const InvoiceSavedList = () => {
 
     const getList = () => {
         setData({ data: [] });
-        let apiUrl = APIPath + "/getallsavedinvoices";
+        let apiUrl = APIPath + "/getallclosedinvoices";
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -80,7 +82,7 @@ const InvoiceSavedList = () => {
                             showSnackbar('error', result.ERROR.MESSAGE);
                         }
                         else
-                            showSnackbar('success', "Saved Invoices Data fetched");
+                            showSnackbar('success', "Closed Invoices Data fetched");
                     }
                     setApiLoading(false);
                 },
@@ -108,7 +110,7 @@ const InvoiceSavedList = () => {
         return (
             <>
                 <InvoiceView
-                    operation="Edit"
+                    operation="Closed"
                     manualLoadData={manualLoadData}
                     invoiceNumber={props.data.invoiceNumber}
                     // timesheetNumber={props.data.invoiceNumber.replace(/^INV-/, 'T-')}
@@ -191,7 +193,7 @@ const InvoiceSavedList = () => {
         let className = 'badgeSpan';
         switch (value) {
             case 'Saved':
-                className += ' rag-orange-bg';
+                className += ' rag-green-bg';
                 break;
             case 'Pending':
                 className += ' rag-red-bg';
@@ -245,22 +247,6 @@ const InvoiceSavedList = () => {
 
     return (
         <>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Update Operation
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Invoice Data updated successfully
-                    </DialogContentText>
-                </DialogContent>
-            </Dialog>
-
             <CustomSnackbar
                 open={snackbarOpen}
                 handleClose={handleSnackbarClose}
@@ -302,4 +288,4 @@ const InvoiceSavedList = () => {
     )
 }
 
-export default InvoiceSavedList;
+export default InvoiceClosedList;

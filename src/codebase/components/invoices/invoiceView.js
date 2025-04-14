@@ -649,6 +649,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 id="invoiceDate"
                                                                 name="invoiceDate"
                                                                 type="date"
+                                                                disabled={operation === "Closed"}
                                                                 value={values.invoiceDate}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -810,6 +811,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 name="rate"
                                                                 type="number"
                                                                 value={values.rate}
+                                                                disabled={operation === "Closed"}
                                                                 // onChange={handleChange}
                                                                 onChange={(event) => {
                                                                     handleChange(event);
@@ -832,6 +834,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                 type="number"
                                                                 id="totalHours"
                                                                 name="totalHours"
+                                                                disabled={operation === "Closed"}
                                                                 value={values.totalHours}
                                                                 // onChange={handleChange}
                                                                 onChange={(event) => {
@@ -851,6 +854,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                         id="userNotes"
                                                         name="userNotes"
                                                         label="Notes"
+                                                        disabled={operation === "Closed"}
                                                         multiline
                                                         rows={2}
                                                         value={(values.userNotes === "" || values.userNotes === undefined) ? "-" : values.userNotes}
@@ -882,6 +886,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                                             name="title"
                                                                                             label="Title"
                                                                                             value={cost.title}
+                                                                                            disabled={operation === "Closed"}
                                                                                             onChange={(event) => handleOtherCostChange(index, event)}
                                                                                         />
                                                                                         <TextField
@@ -894,19 +899,23 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                                             label="Amount ($)"
                                                                                             type="number"
                                                                                             value={cost.otherAmount}
+                                                                                            disabled={operation === "Closed"}
                                                                                             onChange={(event) => handleOtherCostChange(index, event)}
                                                                                         />
-                                                                                        <IconButton onClick={() => deleteOtherCostRow(index)} color="error">
+                                                                                        <IconButton
+                                                                                            disabled={operation === "Closed"} onClick={() => deleteOtherCostRow(index)} color="error">
                                                                                             <CloseIcon />
                                                                                         </IconButton>
                                                                                     </div>
                                                                                 </Stack>
                                                                             ))}
                                                                             <Stack direction="row" spacing={1} className="flex items-center ">
-                                                                                <IconButton onClick={addOtherCostRow} color="secondary">
+                                                                                <IconButton onClick={addOtherCostRow} color="secondary"
+                                                                                    disabled={operation === "Closed"}>
                                                                                     <AddCircleOutlineRoundedIcon />
                                                                                 </IconButton>
-                                                                                <IconButton onClick={saveOtherCosts} color="primary">
+                                                                                <IconButton onClick={saveOtherCosts} color="primary"
+                                                                                    disabled={operation === "Closed"}>
                                                                                     <SaveRoundedIcon />
                                                                                 </IconButton>
                                                                             </Stack>
@@ -1061,7 +1070,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                     {operation === "Edit" ?
                                                                         <>
                                                                             {!isSubmitionCompleted ? (
-                                                                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                                                <Button color="primary" variant="contained" type="submit" disabled={(isSubmitting && !isSubmitionCompleted) || operation === "Closed"}>
                                                                                     <SaveOutlinedIcon className="mr-1" />
                                                                                     Update
                                                                                 </Button>
@@ -1074,7 +1083,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                                                         :
                                                                         <>
                                                                             {!isSubmitionCompleted && (
-                                                                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                                                <Button color="primary" variant="contained" type="submit" disabled={(isSubmitting && !isSubmitionCompleted) || operation === "Closed"}>
                                                                                     <SaveOutlinedIcon className="mr-1" />
                                                                                     Save
                                                                                 </Button>
