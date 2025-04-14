@@ -27,8 +27,8 @@ function Receipt({ props, ID, operation, handleClose }) {
         setFormWidth(newValue);
     };
 
-    const [companiesData, setCompaniesData] = useState({ data: [] });
-    const [companyId, setCompanyId] = useState('');
+    const [vendorsData, setVendorsData] = useState({ data: [] });
+    const [vendorId, setVendorId] = useState('');
 
     const [employeesData, setEmployeesData] = useState({ data: [] });
     const [employeeId, setEmployeeId] = useState('');
@@ -70,18 +70,18 @@ function Receipt({ props, ID, operation, handleClose }) {
                         setData({});
                     }
                     else {
-                        await getCompaniesList();
+                        await getVendorsList();
                         setName(result.data[0].Id);
                         setData(result);
-                        setCompanyId(result.data[0].companyId);
+                        setVendorId(result.data[0].vendorId);
                         setEmployeeId(result.data[0].employeeId);
                         setSelectedInvoiceAmount(result.data[0].receivedAmount);
                         setLocalAdjustedAmount(result.data[0].adjustedAmount);
                         setLocalTotal(result.data[0].totalReceivedAmount);
                         setInvoiceId(result.data[0].invoiceId);
                         setLocalVIN(result.data[0].vendorInvoiceNumber);
-                        await getEmployeesListByCompanyId(result.data[0].companyId);
-                        //await getSavedInvoicesByCompanyId(result.data[0].companyId);
+                        await getEmployeesListByVendorId(result.data[0].vendorId);
+                        //await getSavedInvoicesByVendorId(result.data[0].vendorId);
                     }
                     setApiLoading(false);
                 },
@@ -94,10 +94,10 @@ function Receipt({ props, ID, operation, handleClose }) {
             )
     }
 
-    const getCompaniesList = async () => {
+    const getVendorsList = async () => {
         setApiLoading(true);
-        setCompaniesData({ data: [] });
-        let apiUrl = APIPath + "/getcompanies"
+        setVendorsData({ data: [] });
+        let apiUrl = APIPath + "/getvendors"
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -108,27 +108,27 @@ function Receipt({ props, ID, operation, handleClose }) {
                 async (result) => {
                     if (result.error) {
                         // console.log("RequestData:On error return: setting empty")
-                        setCompaniesData({ data: [] });
+                        setVendorsData({ data: [] });
                     }
                     else {
-                        setCompaniesData(result);
+                        setVendorsData(result);
                     }
                     setApiLoading(false);
                 },
                 (error) => {
-                    setCompaniesData({ data: [] });
+                    setVendorsData({ data: [] });
                     // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
     }
-    const handleCompanyIdChange = async (event) => {
-        setCompanyId(event.target.value);
+    const handleVendorIdChange = async (event) => {
+        setVendorId(event.target.value);
         setEmployeesData({ data: [] });
         setInvoicesData({ data: [] });
         if (event.target.value !== "") {
-            await getEmployeesListByCompanyId(event.target.value);
-            await getSavedInvoicesByCompanyId(event.target.value);
+            await getEmployeesListByVendorId(event.target.value);
+            await getSavedInvoicesByVendorId(event.target.value);
         }
         else {
             await getEmployeesList();
@@ -163,9 +163,9 @@ function Receipt({ props, ID, operation, handleClose }) {
                 }
             )
     }
-    const getEmployeesListByCompanyId = async (companyIdparam) => {
+    const getEmployeesListByVendorId = async (vendorIdparam) => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getemployeesbycompanyid/" + companyIdparam
+        let apiUrl = APIPath + "/getemployeesbyvendorid/" + vendorIdparam
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -197,13 +197,13 @@ function Receipt({ props, ID, operation, handleClose }) {
             await getSavedInvoicesByEmployeeId(event.target.value);
         }
         else {
-            await getSavedInvoicesByCompanyId(companyId);
+            await getSavedInvoicesByVendorId(vendorId);
         }
     };
 
-    const getSavedInvoicesByCompanyId = async (companyIdparam) => {
+    const getSavedInvoicesByVendorId = async (vendorIdparam) => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getsavedinvoicesbycompanyid/" + companyIdparam
+        let apiUrl = APIPath + "/getsavedinvoicesbyvendorid/" + vendorIdparam
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
@@ -258,7 +258,7 @@ function Receipt({ props, ID, operation, handleClose }) {
     const handleInvoiceIdChange = (event) => {
         setInvoiceId(event.target.value);
         const invoice = invoicesData.data.find((item) => item.Id === event.target.value);
-        setCompanyId(invoice.companyId);
+        setVendorId(invoice.vendorId);
         setSelectedInvoiceAmount(invoice ? invoice.totalAmount : 0.00);
         setLocalVIN(invoice ? invoice.vendorInvoiceNumber : "");
         setLocalTotal(invoice ? (parseFloat(invoice.totalAmount) || 0 + parseFloat(localAdjustedAmount) || 0).toFixed(2) : 0.00);
@@ -290,7 +290,7 @@ function Receipt({ props, ID, operation, handleClose }) {
             }
             if (operation === "New") {
                 console.log("New Receipt");
-                getCompaniesList();
+                getVendorsList();
                 getEmployeesList();
             }
         }
@@ -313,8 +313,8 @@ function Receipt({ props, ID, operation, handleClose }) {
                     enableReinitialize
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
-                        companyId: name ? data.data[0].companyId : companyId,
-                        companyName: name ? data.data[0].companyName : "",
+                        vendorId: name ? data.data[0].vendorId : vendorId,
+                        vendorName: name ? data.data[0].vendorName : "",
                         employeeId: name ? data.data[0].employeeId : employeeId,
                         employeeName: name ? data.data[0].employeeName: "",
                         invoiceId: name ? data.data[0].invoiceId : invoiceId,
@@ -341,7 +341,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                             // values,
                             {
                                 Id: ID,
-                                companyId: companyId ? companyId : invoicesData.data.find((item) => item.Id === invoiceId).companyId,
+                                vendorId: vendorId ? vendorId : invoicesData.data.find((item) => item.Id === invoiceId).vendorId,
                                 employeeId: employeeId ? employeeId : invoicesData.data.find((item) => item.Id === invoiceId).employeeId,
                                 invoiceId: invoiceId,
                                 vendorInvoiceNumber: localVIN,
@@ -381,13 +381,13 @@ function Receipt({ props, ID, operation, handleClose }) {
                     }}
 
                     validationSchema={Yup.object().shape({
-                        // companyId: Yup.string().nullable().when('employeeId', {
+                        // vendorId: Yup.string().nullable().when('employeeId', {
                         //     is: (employeeId) => !employeeId,
                         //     then: () => Yup.string().required('company Id Required'),
                         //     otherwise: () => Yup.string().nullable()
                         // }),
-                        // employeeId: Yup.string().nullable().when('companyId', {
-                        //     is: (companyId) => !companyId,
+                        // employeeId: Yup.string().nullable().when('vendorId', {
+                        //     is: (vendorId) => !vendorId,
                         //     then: () => Yup.string().required('employee Id Required'),
                         //     otherwise: () => Yup.string().nullable()
                         // }),
@@ -439,18 +439,18 @@ function Receipt({ props, ID, operation, handleClose }) {
                                         size="small"
                                         margin="normal"
                                         fullWidth
-                                        id="ex_companyId"
-                                        name="ex_companyId"
-                                        label="Company ID"
+                                        id="ex_vendorId"
+                                        name="ex_vendorId"
+                                        label="Vendor ID"
                                         disabled
-                                        value={values.companyName}
+                                        value={values.vendorName}
                                     />
                                 </>
                                     :
                                     <>
                                     <Autocomplete
-                                    options={companiesData.data}
-                                    getOptionLabel={(option) => `Company ID: ${option.Id} - ${option.Name}`}
+                                    options={vendorsData.data}
+                                    getOptionLabel={(option) => `Vendor ID: ${option.Id} - ${option.name}`}
                                     //getOptionLabel={(option) => option.Id}
                                     //  - (Personal Email: ${option.personalEmail}) - (US Phone: ${option.personalUSPhone}) - (Personal Phone: ${option.personalPhone})`}
                                     renderInput={(params) => (
@@ -459,15 +459,15 @@ function Receipt({ props, ID, operation, handleClose }) {
                                             size="small"
                                             margin="normal"
                                             fullWidth
-                                            label="Company"
-                                        // value={companyId ? companyId : companiesData.data.find((item) => item.Id === companyId) || null}
+                                            label="Vendor"
+                                        // value={vendorId ? vendorId : vendorsData.data.find((item) => item.Id === vendorId) || null}
                                         />
                                     )}
-                                    value={companiesData.data.find((item) => item.Id === companyId) || null}
-                                    //value={companyId}
+                                    value={vendorsData.data.find((item) => item.Id === vendorId) || null}
+                                    //value={vendorId}
                                     onChange={(event, newValue) => {
-                                        setCompanyId(newValue);
-                                        handleCompanyIdChange({ target: { value: newValue ? newValue.Id : '' } });
+                                        setVendorId(newValue);
+                                        handleVendorIdChange({ target: { value: newValue ? newValue.Id : '' } });
                                     }}
                                 />
                                     </>

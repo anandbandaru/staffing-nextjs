@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Context } from "../../context/context";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
@@ -7,6 +7,7 @@ import ReceiptsListToolbar from './receiptsListToolbar'
 import GenericDetails from "../forms/GenericDetails";
 import ReceiptEdit from "./receiptEdit";
 import CustomSnackbar from "../snackbar/snackbar";
+import Button from '@mui/material/Button';
 
 const ReceiptList = () => {
     const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
@@ -110,7 +111,7 @@ const ReceiptList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
-        { field: "companyName", filter: true },
+        { field: "vendorName", filter: true },
         { field: "employeeName", filter: true },
         { field: "vendorInvoiceNumber", filter: true },
         { field: "startDate", filter: true },
@@ -135,6 +136,11 @@ const ReceiptList = () => {
         //type: 'fitGridWidth',
         defaultMinWidth: 50
     };
+    
+    const gridRef = useRef(null);
+    const onExportClick = () => {
+        gridRef.current.api.exportDataAsCsv();
+    };
 
     return (
         <>
@@ -158,10 +164,11 @@ const ReceiptList = () => {
             </div>
 
             <div
-                className="ag-theme-quartz" // applying the Data Grid theme
+                className="ag-theme-quartz relative" // applying the Data Grid theme
                 style={{ height: 500 }} // the Data Grid will fill the size of the parent container
             >
                 <AgGridReact
+                    ref={gridRef}
                     rowData={data.data}
                     columnDefs={colDefs}
                     pagination={pagination}
@@ -170,6 +177,9 @@ const ReceiptList = () => {
                     rowClassRules={rowClassRules}
                     autoSizeStrategy={autoSizeStrategy}
                 />
+                <div className="absolute right-2 bottom-20">
+                    <Button size="small" variant="contained" onClick={onExportClick}>Export to CSV</Button>
+                </div>
             </div>
         </>
     )

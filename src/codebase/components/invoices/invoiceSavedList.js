@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Context } from "../../context/context";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
@@ -9,6 +9,7 @@ import GenericDetails from "../forms/GenericDetails";
 import CustomSnackbar from "../snackbar/snackbar";
 import InvoiceView from "./invoiceView";
 import { Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import Button from '@mui/material/Button';
 
 const InvoiceSavedList = () => {
     const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
@@ -104,7 +105,10 @@ const InvoiceSavedList = () => {
     const handleClose = () => {
         setOpen(false);
     };
-
+    const gridRef = useRef(null);
+    const onExportClick = () => {
+        gridRef.current.api.exportDataAsCsv();
+    };
     const CustomDetailsComponent = (props) => {
         return (
             <>
@@ -289,10 +293,11 @@ const InvoiceSavedList = () => {
             </div>
 
             <div
-                className="ag-theme-quartz" // applying the Data Grid theme
+                className="ag-theme-quartz relative" // applying the Data Grid theme
                 style={{ height: 500 }} // the Data Grid will fill the size of the parent container
             >
                 <AgGridReact
+                    ref={gridRef}
                     rowData={data.data}
                     columnDefs={colDefs}
                     pagination={pagination}
@@ -301,6 +306,9 @@ const InvoiceSavedList = () => {
                     rowClassRules={rowClassRules}
                     autoSizeStrategy={autoSizeStrategy}
                 />
+                <div className="absolute right-2 bottom-20">
+                    <Button size="small" variant="contained" onClick={onExportClick}>Export to CSV</Button>
+                </div>
             </div>
         </>
     )
