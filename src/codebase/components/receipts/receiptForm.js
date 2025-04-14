@@ -97,7 +97,7 @@ function Receipt({ props, ID, operation, handleClose }) {
     const getVendorsList = async () => {
         setApiLoading(true);
         setVendorsData({ data: [] });
-        let apiUrl = APIPath + "/getvendors"
+        let apiUrl = APIPath + "/getactivevendors"
         fetch(apiUrl, {
             headers: {
                 'ngrok-skip-browser-warning': 'true',
