@@ -37,6 +37,7 @@ function Receipt({ props, ID, operation, handleClose }) {
 
     const [invoicesData, setInvoicesData] = useState({ data: [] });
     const [invoiceId, setInvoiceId] = useState('');
+    const [selectedInvoiceAmountOriginal, setSelectedInvoiceAmountOriginal] = useState(0.00);
     const [selectedInvoiceAmount, setSelectedInvoiceAmount] = useState(0.00);
     const [localAdjustedAmount, setLocalAdjustedAmount] = React.useState(0.00);
     const [localTotal, setLocalTotal] = React.useState(0.00);
@@ -78,6 +79,9 @@ function Receipt({ props, ID, operation, handleClose }) {
                         setVendorId(result.data[0].vendorId);
                         setEmployeeId(result.data[0].employeeId);
                         setSelectedInvoiceAmount(result.data[0].receivedAmount);
+                        setSelectedInvoiceAmountOriginal(result.data[0].receivedAmount);
+                        console.log("IA:", result.data[0].receivedAmount);
+                        console.log("IA ORIG:", result.data[0].receivedAmount);
                         setLocalAdjustedAmount(result.data[0].adjustedAmount);
                         setLocalTotal(result.data[0].totalReceivedAmount);
                         setInvoiceId(result.data[0].invoiceId);
@@ -270,12 +274,16 @@ function Receipt({ props, ID, operation, handleClose }) {
         const ra = parseFloat(event.target.value);
         setSelectedInvoiceAmount(ra);
         setLocalTotal((ra + parseFloat(localAdjustedAmount) || 0).toFixed(2));
+        console.log("IA:", selectedInvoiceAmount);
+        console.log("IA ORIG:", selectedInvoiceAmountOriginal);
     };
 
     const handleAdjustedAmountChange = (event) => {
         const aa = parseFloat(event.target.value);
         setLocalAdjustedAmount(aa);
         setLocalTotal((aa + parseFloat(selectedInvoiceAmount) || 0).toFixed(2));
+        console.log("IA:", selectedInvoiceAmount);
+        console.log("IA ORIG:", selectedInvoiceAmountOriginal);
     };
 
     const [ranOnceC, setRanOnceC] = useState(1);
@@ -302,6 +310,9 @@ function Receipt({ props, ID, operation, handleClose }) {
         const invoice = invoicesData.data.find((item) => item.Id === invoiceId);
         setVendorId(invoice.vendorId);
         setSelectedInvoiceAmount(invoice ? invoice.totalAmount : 0.00);
+        setSelectedInvoiceAmountOriginal(invoice ? invoice.totalAmount : 0.00);
+        console.log("IA:", invoice ? invoice.totalAmount : 0.00);
+        console.log("IA ORIG:", invoice ? invoice.totalAmount : 0.00);
         setLocalVIN(invoice ? invoice.vendorInvoiceNumber : "");
         setLocalTotal(invoice ? (parseFloat(invoice.totalAmount) || 0 + parseFloat(localAdjustedAmount) || 0).toFixed(2) : 0.00);
         // Add any additional actions you want to perform here
@@ -408,10 +419,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                         receivedAmount: Yup.string()
                             .required('received Amount Required'),
                         adjustedAmount: Yup.number()
-                            .typeError('Must be a number')
-                            .required('adjusted Amount Required').test('is-decimal', 'Must be a decimal number', (value) =>
-                                (value + "").match(/^\d+(\.\d+)?$/)
-                            ),
+                            .typeError('Must be a number'),
                         adjustedAmountNotes: Yup.string().nullable().when('adjustedAmount', {
                             is: (adjustedAmount) => adjustedAmount !== undefined && adjustedAmount !== null,
                             then: () => Yup.string().required('adjusted Amount Notes Required'),
@@ -611,6 +619,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                     id="receivedAmount"
                                                     name="receivedAmount"
                                                     label="Received Amount"
+                                                    disabled={operation === "Edit"}
                                                     value={values.receivedAmount ? values.receivedAmount : selectedInvoiceAmount}
                                                     // onChange={handleChange}
                                                     onChange={(event) => {
@@ -635,6 +644,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                     id="adjustedAmount"
                                                     name="adjustedAmount"
                                                     label="Adjusted Amount"
+                                                    disabled={operation === "Edit"}
                                                     value={values.adjustedAmount}
                                                     // onChange={handleChange}
                                                     onChange={(event) => {
@@ -669,7 +679,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                         </tr>
                                         <tr>
                                             <td className='text-right pr-4'>
-                                                <div>Total Received Notes</div>
+                                                <div>Total Received Amount</div>
                                             </td>
                                             <td>
                                                 <TextField
@@ -706,7 +716,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                             <div className="spinner"></div>
                                         ) : (
                                             <>
-                                                {invoiceId && (
+                                                {(invoiceId) && (
                                                     <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                                         <SaveOutlinedIcon className="mr-1" />
                                                         Update
@@ -730,7 +740,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                 <div className="spinner"></div>
                                             ) : (
                                                 <>
-                                                    {invoiceId && (
+                                                    {(invoiceId && selectedInvoiceAmountOriginal === localTotal) && (
                                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                                             <SaveOutlinedIcon className="mr-1" />
                                                             Save
