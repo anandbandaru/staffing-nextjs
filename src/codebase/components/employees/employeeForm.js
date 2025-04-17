@@ -16,7 +16,7 @@ import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRig
 import FormSlider from '../slider/formSlider';
 
 function EmployeeForm({ props, ID, operation }) {
-    const { APIPath, userName } = useContext(Context);
+    const { APIPath, userName, userType } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
@@ -182,6 +182,7 @@ function EmployeeForm({ props, ID, operation }) {
                         nonCitizenIDType: firstName ? data.data[0].nonCitizenIDType : '',
                         nonCitizenIDNumber: firstName ? data.data[0].nonCitizenIDNumber : '',
                         applicationEmail: firstName ? data.data[0].applicationEmail : '',
+                        salaryNumber: firstName ? data.data[0].salaryNumber : '0.00',
                         createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -710,6 +711,21 @@ function EmployeeForm({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.address && touched.address) && errors.address}
                                 />
+                                {userType === "ADMIN" && (
+                                    <TextField
+                                        size="small"
+                                        margin="normal"
+                                        type='number'
+                                        fullWidth
+                                        id="salaryNumber"
+                                        name="salaryNumber"
+                                        label="Salary"
+                                        value={values.salaryNumber}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.salaryNumber && touched.salaryNumber) && errors.salaryNumber}
+                                    />
+                                )}
                                 <FormControlLabel
                                     control={
                                         <Checkbox

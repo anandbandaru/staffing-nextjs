@@ -277,6 +277,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber,
                                                                             <span className="bg-green-500 text-white px-1 py-1 rounded">{value}</span>
                                                                         ) : (value === "SentBack") ? (
                                                                             <span className="bg-yellow-500 text-white px-1 py-1 rounded">{value}</span>
+                                                                        ) : (key === "salaryNumber") ? (
+                                                                            <span className="bg-yellow-500 text-white px-1 py-1 rounded">
+                                                                                {userType === 'ADMIN' ? value : "hidden"}
+                                                                            </span>
                                                                         ) : (
                                                                             value
                                                                         )}

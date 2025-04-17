@@ -1,20 +1,18 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
-import configData from "../../../CONFIG_RELEASE.json";
 import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { Paper, List, ListItem, ListItemText } from '@mui/material';
-import { styled } from '@mui/system';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
-import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import FormSlider from '../slider/formSlider';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import { IconButton } from '@mui/material';
 
 function Receipt({ props, ID, operation, handleClose }) {
     const { APIPath, userName } = useContext(Context);
@@ -585,14 +583,10 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                             <td >{item.totalHours}</td>
                                                             <td >{item.rate}</td>
                                                             <td >
-                                                                <Button
-                                                                    size='small'
-                                                                    variant="contained"
-                                                                    color="primary"
-                                                                    onClick={() => handleButtonClick(item.Id)}
-                                                                >
-                                                                    Select
-                                                                </Button>
+                                                                <IconButton aria-label="Metadata" title="Metadata" color="primary"
+                                                                    onClick={() => handleButtonClick(item.Id)}>
+                                                                    <ReadMoreIcon />
+                                                                </IconButton>
                                                             </td>
                                                         </tr>
                                                     ))}
