@@ -4,6 +4,8 @@ import { Context } from "../../context/context";
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { Paper, List, ListItem, ListItemText } from '@mui/material';
+import { styled } from '@mui/system';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -22,7 +24,7 @@ function Receipt({ props, ID, operation, handleClose }) {
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
     // Default width
-    const [formWidth, setFormWidth] = useState(700);
+    const [formWidth, setFormWidth] = useState(1000);
     const handleSliderChange = (event, newValue) => {
         setFormWidth(newValue);
     };
@@ -263,7 +265,7 @@ function Receipt({ props, ID, operation, handleClose }) {
         setLocalVIN(invoice ? invoice.vendorInvoiceNumber : "");
         setLocalTotal(invoice ? (parseFloat(invoice.totalAmount) || 0 + parseFloat(localAdjustedAmount) || 0).toFixed(2) : 0.00);
     };
-    
+
     const handleReceivedAmountChange = (event) => {
         const ra = parseFloat(event.target.value);
         setSelectedInvoiceAmount(ra);
@@ -281,8 +283,7 @@ function Receipt({ props, ID, operation, handleClose }) {
     useEffect(() => {
         console.log("useEffect called with operation:", operation);
         console.log("useEffect called with COUNTER:", ranOnceC);
-        if(!ranOnce)
-        {
+        if (!ranOnce) {
             setRanOnce(true);
             setRanOnceC(ranOnceC + 1);
             if (operation === "View" || operation === "Edit") {
@@ -295,6 +296,17 @@ function Receipt({ props, ID, operation, handleClose }) {
             }
         }
     }, [ID]);
+
+    const handleButtonClick = (invoiceId) => {
+        setInvoiceId(invoiceId);
+        const invoice = invoicesData.data.find((item) => item.Id === invoiceId);
+        setVendorId(invoice.vendorId);
+        setSelectedInvoiceAmount(invoice ? invoice.totalAmount : 0.00);
+        setLocalVIN(invoice ? invoice.vendorInvoiceNumber : "");
+        setLocalTotal(invoice ? (parseFloat(invoice.totalAmount) || 0 + parseFloat(localAdjustedAmount) || 0).toFixed(2) : 0.00);
+        // Add any additional actions you want to perform here
+    };
+
 
     return (
         <>
@@ -316,7 +328,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                         vendorId: name ? data.data[0].vendorId : vendorId,
                         vendorName: name ? data.data[0].vendorName : "",
                         employeeId: name ? data.data[0].employeeId : employeeId,
-                        employeeName: name ? data.data[0].employeeName: "",
+                        employeeName: name ? data.data[0].employeeName : "",
                         invoiceId: name ? data.data[0].invoiceId : invoiceId,
                         vendorInvoiceNumber: name ? data.data[0].vendorInvoiceNumber : '',
                         startDate: name ? data.data[0].startDate : '',
@@ -421,7 +433,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                         } = props;
                         return (
                             <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
-                                <FormSlider value={formWidth} onChange={handleSliderChange} />
+                                {/* <FormSlider value={formWidth} onChange={handleSliderChange} /> */}
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -448,28 +460,26 @@ function Receipt({ props, ID, operation, handleClose }) {
                                 </>
                                     :
                                     <>
-                                    <Autocomplete
-                                    options={vendorsData.data}
-                                    getOptionLabel={(option) => `Vendor ID: ${option.Id} - ${option.name}`}
-                                    //getOptionLabel={(option) => option.Id}
-                                    //  - (Personal Email: ${option.personalEmail}) - (US Phone: ${option.personalUSPhone}) - (Personal Phone: ${option.personalPhone})`}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            label="Vendor"
-                                        // value={vendorId ? vendorId : vendorsData.data.find((item) => item.Id === vendorId) || null}
+                                        <Autocomplete
+                                            options={vendorsData.data}
+                                            getOptionLabel={(option) => `Vendor ID: ${option.Id} - ${option.name}`}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    label="Vendor"
+                                                />
+                                            )}
+                                            value={vendorsData.data.find((item) => item.Id === vendorId) || null}
+                                            //value={vendorId}
+                                            onChange={(event, newValue) => {
+                                                setVendorId(newValue);
+                                                handleVendorIdChange({ target: { value: newValue ? newValue.Id : '' } });
+                                            }}
                                         />
-                                    )}
-                                    value={vendorsData.data.find((item) => item.Id === vendorId) || null}
-                                    //value={vendorId}
-                                    onChange={(event, newValue) => {
-                                        setVendorId(newValue);
-                                        handleVendorIdChange({ target: { value: newValue ? newValue.Id : '' } });
-                                    }}
-                                />
+
                                     </>
                                 }
                                 {operation === "Edit" ? <>
@@ -486,26 +496,26 @@ function Receipt({ props, ID, operation, handleClose }) {
                                 </>
                                     :
                                     <>
-                                    <Autocomplete
-                                    options={employeesData.data}
-                                    getOptionLabel={(option) => `Employee ID: ${option.Id} - ${option.firstName} ${option.lastName} - (${option.employeeType})`}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            size="small"
-                                            margin="normal"
-                                            fullWidth
-                                            label="Employee"
+                                        <Autocomplete
+                                            options={employeesData.data}
+                                            getOptionLabel={(option) => `Employee ID: ${option.Id} - ${option.firstName} ${option.lastName} - (${option.employeeType})`}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    label="Employee"
+                                                />
+                                            )}
+                                            value={employeesData.data.find((item) => item.Id === employeeId) || null}
+                                            onChange={(event, newValue) => {
+                                                handleEmployeeIdChange({ target: { value: newValue ? newValue.Id : '' } });
+                                            }}
                                         />
-                                    )}
-                                    value={employeesData.data.find((item) => item.Id === employeeId) || null}
-                                    onChange={(event, newValue) => {
-                                        handleEmployeeIdChange({ target: { value: newValue ? newValue.Id : '' } });
-                                    }}
-                                />
                                     </>
                                 }
-                                
+
                                 {operation === "Edit" ? <>
                                     <TextField
                                         size="small"
@@ -521,10 +531,9 @@ function Receipt({ props, ID, operation, handleClose }) {
                                     :
                                     <>
 
-                                        <Autocomplete
+                                        {/* <Autocomplete
                                             options={invoicesData.data}
-                                            getOptionLabel={(option) => `${option.vendorInvoiceNumber} 
-                                - ${option.employeeName} - (SD: ${option.startDate} - ED: ${option.endDate} - ID: ${option.invoiceDate}) - Hours: ${option.totalHours} - Rate: ${option.rate}`}
+                                            getOptionLabel={(option) => `${option.vendorInvoiceNumber} - ${option.employeeName} - (SD: ${option.startDate} - ED: ${option.endDate} - $: ${option.totalAmount}) - Hours: ${option.totalHours} - Rate: ${option.rate}`}
                                             renderInput={(params) => (
                                                 <TextField
                                                     {...params}
@@ -541,72 +550,146 @@ function Receipt({ props, ID, operation, handleClose }) {
                                             onChange={(event, newValue) => {
                                                 handleInvoiceIdChange({ target: { value: newValue ? newValue.Id : '' } });
                                             }}
-                                        />
+                                        /> */}
+
+                                        <div className='pt-4 div_InvoiceTableHolder'>
+                                            <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
+                                                <thead>
+                                                    <tr style={{ backgroundColor: "#f2f2f2" }}>
+                                                        <th >Vendor Invoice Number</th>
+                                                        <th >Employee Name</th>
+                                                        <th >Start Date</th>
+                                                        <th >End Date</th>
+                                                        <th >Total Amount</th>
+                                                        <th >Total Hours</th>
+                                                        <th >Rate</th>
+                                                        <th >Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {invoicesData.data.map((item) => (
+                                                        <tr key={item.Id} style={{ backgroundColor: item.Id === invoiceId ? "#e6f7ff" : "#fff" }}>
+                                                            <td >{item.vendorInvoiceNumber}</td>
+                                                            <td >{item.employeeName}</td>
+                                                            <td >{item.startDate}</td>
+                                                            <td >{item.endDate}</td>
+                                                            <td >{item.totalAmount}</td>
+                                                            <td >{item.totalHours}</td>
+                                                            <td >{item.rate}</td>
+                                                            <td >
+                                                                <Button
+                                                                    size='small'
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    onClick={() => handleButtonClick(item.Id)}
+                                                                >
+                                                                    Select
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
                                     </>
                                 }
-                                <TextField
-                                    type='number'
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="receivedAmount"
-                                    name="receivedAmount"
-                                    label="Received Amount"
-                                    value={values.receivedAmount ? values.receivedAmount : selectedInvoiceAmount}
-                                    // onChange={handleChange}
-                                    onChange={(event) => {
-                                        handleChange(event);
-                                        handleReceivedAmountChange(event);
-                                    }}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.receivedAmount && touched.receivedAmount) && errors.receivedAmount}
-                                />
-                                <Stack direction="row" spacing={1} className='mt-6'>
-                                    <TextField
-                                        type='number'
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        id="adjustedAmount"
-                                        name="adjustedAmount"
-                                        label="Adjusted Amount"
-                                        value={values.adjustedAmount}
-                                        // onChange={handleChange}
-                                        onChange={(event) => {
-                                            handleChange(event);
-                                            handleAdjustedAmountChange(event);
-                                        }}
-                                        onBlur={handleBlur}
-                                        helperText={(errors.adjustedAmount && touched.adjustedAmount) && errors.adjustedAmount}
-                                    />
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        id="adjustedAmountNotes"
-                                        name="adjustedAmountNotes"
-                                        label="Adjusted Amount Notes"
-                                        multiline
-                                        rows={4}
-                                        value={values.adjustedAmountNotes}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        helperText={(errors.adjustedAmountNotes && touched.adjustedAmountNotes) && errors.adjustedAmountNotes}
-                                    />
-                                </Stack>
-                                <TextField
-                                    size="small"
-                                    className='font-bold text-xl mytextbox'
-                                    margin="normal"
-                                    fullWidth
-                                    id="totalReceivedAmount"
-                                    name="totalReceivedAmount"
-                                    label="Total Received Amount"
-                                    disabled
-                                    value={localTotal ? localTotal : values.totalReceivedAmount}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
+                                <table className='w-full'>
+                                    <tbody>
+                                        <tr>
+                                            <td className='text-right pr-4'>
+                                                <div>Received Amount</div>
+                                            </td>
+                                            <td>
+                                                <TextField
+                                                    className='mySmallTextbox '
+                                                    fullWidth
+                                                    type='number'
+                                                    size="small"
+                                                    margin="normal"
+                                                    id="receivedAmount"
+                                                    name="receivedAmount"
+                                                    label="Received Amount"
+                                                    value={values.receivedAmount ? values.receivedAmount : selectedInvoiceAmount}
+                                                    // onChange={handleChange}
+                                                    onChange={(event) => {
+                                                        handleChange(event);
+                                                        handleReceivedAmountChange(event);
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.receivedAmount && touched.receivedAmount) && errors.receivedAmount}
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className='text-right pr-4'>
+                                                <div>Adjusted Amount</div>
+                                            </td>
+                                            <td>
+                                                <TextField
+                                                    type='number'
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="adjustedAmount"
+                                                    name="adjustedAmount"
+                                                    label="Adjusted Amount"
+                                                    value={values.adjustedAmount}
+                                                    // onChange={handleChange}
+                                                    onChange={(event) => {
+                                                        handleChange(event);
+                                                        handleAdjustedAmountChange(event);
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.adjustedAmount && touched.adjustedAmount) && errors.adjustedAmount}
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className='text-right pr-4'>
+                                                <div>Adjusted Amount Notes</div>
+                                            </td>
+                                            <td>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="adjustedAmountNotes"
+                                                    name="adjustedAmountNotes"
+                                                    label="Adjusted Amount Notes"
+                                                    multiline
+                                                    rows={2}
+                                                    value={values.adjustedAmountNotes}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.adjustedAmountNotes && touched.adjustedAmountNotes) && errors.adjustedAmountNotes}
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className='text-right pr-4'>
+                                                <div>Total Received Notes</div>
+                                            </td>
+                                            <td>
+                                                <TextField
+                                                    size="small"
+                                                    className='font-bold text-xl mytextbox'
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="totalReceivedAmount"
+                                                    name="totalReceivedAmount"
+                                                    label="Total Received Amount"
+                                                    disabled
+                                                    value={localTotal ? localTotal : values.totalReceivedAmount}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                                 {Object.keys(errors).length > 0 && (
                                     <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
                                         <span className='error-summary-heading' >Validation Errors:</span>
