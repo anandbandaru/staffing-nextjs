@@ -22,6 +22,16 @@
   ],
   "releases": [
     {
+      "version": "3.7.2",
+      "date": "APR 21 2025",
+      "notes": [
+        "Receipts - Added Received Date with default today",
+        "Receipts - Showing received date in list",
+        "Approved TS - showing by StartDate DESC",
+        "Approved TS - Handling Employee ID filtering in dropdown + Grid"
+      ]
+    },
+    {
       "version": "3.7.1",
       "date": "APR 14 2025",
       "notes": [

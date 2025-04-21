@@ -35,6 +35,7 @@ function Receipt({ props, ID, operation, handleClose }) {
 
     const [invoicesData, setInvoicesData] = useState({ data: [] });
     const [invoiceId, setInvoiceId] = useState('');
+    const [receivedDate, setReceivedDate] = useState('');
     const [selectedInvoiceAmountOriginal, setSelectedInvoiceAmountOriginal] = useState(0.00);
     const [selectedInvoiceAmount, setSelectedInvoiceAmount] = useState(0.00);
     const [localAdjustedAmount, setLocalAdjustedAmount] = React.useState(0.00);
@@ -84,6 +85,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                         setLocalTotal(result.data[0].totalReceivedAmount);
                         setInvoiceId(result.data[0].invoiceId);
                         setLocalVIN(result.data[0].vendorInvoiceNumber);
+                        setReceivedDate(result.data[0].receivedDate);
                         await getEmployeesListByVendorId(result.data[0].vendorId);
                         //await getSavedInvoicesByVendorId(result.data[0].vendorId);
                     }
@@ -350,6 +352,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                         adjustedAmountNotes: name ? data.data[0].adjustedAmountNotes : '',
                         totalReceivedAmount: name ? data.data[0].totalReceivedAmount : '',
                         createdBy: userName,
+                        receivedDate: name ? data.data[0].receivedDate : new Date().toISOString().split('T')[0],
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addreceipt";
@@ -376,6 +379,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                 rate: data.data[0] ? data.data[0].rate : invoicesData.data.find((item) => item.Id === invoiceId).rate,
                                 hours: data.data[0] ? data.data[0].hours : invoicesData.data.find((item) => item.Id === invoiceId).totalHours,
                                 createdBy: userName,
+                                receivedDate: receivedDate ? receivedDate : values.receivedDate,
                             },
                             {
                                 headers: {
@@ -418,6 +422,8 @@ function Receipt({ props, ID, operation, handleClose }) {
                             .required('received Amount Required'),
                         adjustedAmount: Yup.number()
                             .typeError('Must be a number'),
+                        receivedDate: Yup.string()
+                            .required('received Date Required'),
                         adjustedAmountNotes: Yup.string().nullable().when('adjustedAmount', {
                             is: (adjustedAmount) => adjustedAmount !== undefined && adjustedAmount !== null,
                             then: () => Yup.string().required('adjusted Amount Notes Required'),
@@ -601,6 +607,26 @@ function Receipt({ props, ID, operation, handleClose }) {
                                     <tbody>
                                         <tr>
                                             <td className='text-right pr-4'>
+                                                <div>Received Date</div>
+                                            </td>
+                                            <td>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    className='flex-1'
+                                                    id="receivedDate"
+                                                    name="receivedDate"
+                                                    type="date"
+                                                    value={values.receivedDate}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.receivedDate && touched.receivedDate) && errors.receivedDate}
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className='text-right pr-4'>
                                                 <div>Received Amount</div>
                                             </td>
                                             <td>
@@ -734,7 +760,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                 <div className="spinner"></div>
                                             ) : (
                                                 <>
-                                                    {(invoiceId && selectedInvoiceAmountOriginal === localTotal) && (
+                                                    {(invoiceId && selectedInvoiceAmountOriginal <= localTotal) && (
                                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                                             <SaveOutlinedIcon className="mr-1" />
                                                             Save

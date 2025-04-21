@@ -7,11 +7,8 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import GenericDetails from "../forms/GenericDetails";
 import TimesheetAction from "./timesheetAction";
 import TimesheetAudit from "./timesheetAudit";
-import { Button } from "@mui/material";
-import CachedIcon from '@mui/icons-material/Cached';
 import PendingListToolbar from "../timesheetentry/pendingListToolbar";
 import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import {Autocomplete} from '@mui/material';
 
 const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
@@ -40,7 +37,6 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
     };
 
     useEffect(() => {
-        // console.log("SubmittedList: useEffect: employeeId: " + employeeId);
         delaydMockLoading();
     }, [employeeId, employeeIdL, status]);
 
@@ -74,7 +70,7 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
         }
         else if (status === "Approved") {
             apiUrl = APIPath + "/getapprovedtimesheets/" + employeeId;
-            if (employeeIdL === "" || employeeIdL === null || employeeIdL === undefined) {
+            if (employeeId === "" || employeeId === null || employeeId === undefined) {
                 apiUrl = APIPath + "/getallapprovedtimesheets";
             }
             console.log("Approved: Final path: " + apiUrl);
@@ -225,7 +221,7 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "Id", maxWidth: 50 },
-        { field: "employeeID" },
+        { field: "employeeID", filter: true },
         { field: "timesheetNumber", filter: true },
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },

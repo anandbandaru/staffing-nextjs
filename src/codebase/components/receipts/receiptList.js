@@ -119,6 +119,7 @@ const ReceiptList = () => {
         { field: "invoiceDate", filter: true },
         { field: "rate", filter: true },
         { field: "hours", filter: true },
+        { field: "receivedDate", filter: true },
         { field: "receivedAmount", filter: true, cellRenderer: CustomAmountComponent },
         { field: "adjustedAmount", filter: true, cellRenderer: CustomAmountComponent },
         { field: "totalReceivedAmount", filter: true, cellRenderer: CustomAmountComponent },
