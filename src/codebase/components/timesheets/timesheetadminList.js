@@ -240,6 +240,23 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
         { field: "HISORY", cellRenderer: CustomAuditComponent, maxWidth: 70, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } },
         { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 80, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
+    
+    // Column Definitions: Defines the columns to be displayed.
+    const [colDefs_Approved] = useState([
+        { field: "Id", maxWidth: 50 },
+        { field: "timesheetNumber", filter: true },
+        { field: "vendorName", filter: true },
+        { field: "employeeName", filter: true },
+        { field: "createdDate", headerName: 'Submitted Date', filter: true },
+        { field: "startDate", filter: true },
+        { field: "endDate", filter: true },
+        { field: "hours", filter: true, cellRenderer: CustomHoursRenderer },
+        {
+            field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 70, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }
+        },
+        { field: "HISORY", cellRenderer: CustomAuditComponent, maxWidth: 70, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } },
+        { field: "ACTIONS", cellRenderer: CustomEditComponent, maxWidth: 80, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
+    ]);
     const rowClassRules = {
         // apply red to Ford cars
         //'rag-red': params => params.data.firstName === "anand",
@@ -345,7 +362,7 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
                     >
                         <AgGridReact
                             rowData={data.data}
-                            columnDefs={colDefs}
+                            columnDefs={status === "Approved" ? colDefs_Approved : colDefs}
                             pagination={pagination}
                             paginationPageSize={paginationPageSize}
                             paginationPageSizeSelector={paginationPageSizeSelector}

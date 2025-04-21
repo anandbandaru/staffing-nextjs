@@ -187,6 +187,20 @@ const InvoiceSavedList = () => {
             </span>
         );
     };
+    const CustomDaysDueRenderer = ({ value }) => {
+        let className = 'badgeSpan';
+        if (value > 0)
+            className += ' rag-green-bg';
+        else if (value == 0)
+            className += ' rag-orange-bg';
+        else if (value < 0)
+            className += ' rag-red-bg';
+        return (
+            <span className={className}>
+                {value}
+            </span>
+        );
+    };
     const CustomStatusRenderer = ({ value }) => {
         let className = 'badgeSpan';
         switch (value) {
@@ -211,22 +225,25 @@ const InvoiceSavedList = () => {
     };
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
-        { field: "employeeName", filter: true },
-        { field: "vendorInvoiceNumber", filter: true },
-        { field: "invoiceNumber", filter: true },
-        { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 90 },
-        { field: "jobTitle", filter: true },
-        { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
-        { field: "clientName", filter: true },
         { field: "invoiceDate", filter: true, maxWidth: 130 },
-        { field: "startDate", filter: true, maxWidth: 130 },
-        { field: "endDate", filter: true, maxWidth: 130 },
+        { field: "vendorInvoiceNumber", filter: true },
         { field: "rate", filter: true, maxWidth: 100 },
         { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 130 },
-        {
-            field: "invoiceStatus", filter: true, maxWidth: 100, headerName: 'Invoice Status',
-            cellRenderer: CustomStatusRenderer
-        },
+        { field: "paymentTerms", filter: true },
+        { field: "daysDue", filter: true, cellRenderer: CustomDaysDueRenderer },
+        { field: "employeeName", filter: true },
+        { field: "vendorName", filter: true },
+        { field: "startDate", filter: true, maxWidth: 130 },
+        { field: "endDate", filter: true, maxWidth: 130 },
+        { field: "totalAmount", cellRenderer: CustomHoursRenderer, filter: true },
+        // { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 90 },
+        // { field: "jobTitle", filter: true },
+        // { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
+        // { field: "clientName", filter: true },
+        // {
+        //     field: "invoiceStatus", filter: true, maxWidth: 100, headerName: 'Invoice Status',
+        //     cellRenderer: CustomStatusRenderer
+        // },
         {
             field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 90, resizable: true, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }
         },

@@ -92,7 +92,7 @@ body{
   margin-right: 5px;
   border-radius: 2px;
 }
-.react-tabs__tab--selected
+.topTabsListHolder .react-tabs__tab--selected
 {
   border-color: #fff !important;
 }
