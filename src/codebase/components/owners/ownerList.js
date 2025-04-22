@@ -128,18 +128,31 @@ const OwnersList = () => {
         { field: "firstName", filter: true },
         { field: "lastName", filter: true },
         {
-            field: "email", filter: true, editable: true,
-            cellClassRules: {
-                // apply green to electric cars
-                'rag-green': params => params.value === "sa.ke@aol.com",
-            },
-            cellRenderer: CustomEmailRenderer
-        },
-        { field: "phone1", filter: true },
-        { field: "phone2", filter: true },
+            headerName: 'Contact Details',
+            children: [
+                {
+                    columnGroupShow: 'closed',field: "email", filter: true, editable: true,
+                    cellClassRules: {
+                        // apply green to electric cars
+                        'rag-green': params => params.value === "sa.ke@aol.com",
+                    },
+                    cellRenderer: CustomEmailRenderer
+                },
+                {
+                    columnGroupShow: 'open',field: "email", filter: true, editable: true,
+                    cellClassRules: {
+                        // apply green to electric cars
+                        'rag-green': params => params.value === "sa.ke@aol.com",
+                    },
+                    cellRenderer: CustomEmailRenderer
+                },
+                { columnGroupShow: 'open',field: "phone1", filter: true },
+                { columnGroupShow: 'open',field: "phone2", filter: true },
+            ]
+        },        
         { field: "IDNumber", filter: true },
         { field: "Address", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 150, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
+        { field: "options", cellRenderer: CustomEditComponent, filter: false, maxWidth: 150, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars
@@ -186,6 +199,12 @@ const OwnersList = () => {
                     paginationPageSizeSelector={paginationPageSizeSelector}
                     rowClassRules={rowClassRules}
                     autoSizeStrategy={autoSizeStrategy}
+                    defaultColDef={{
+                        filter: true,
+                        resizable: true,
+                        sortable: true,
+                        floatingFilter: true
+                    }}
                 />
             </div>
 
