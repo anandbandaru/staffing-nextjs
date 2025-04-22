@@ -115,7 +115,7 @@ const ClientList = () => {
         { field: "Emails" },
         { field: "createdDate", filter: true },
         {
-            field: "Disabled", filter: false,
+            field: "Disabled", filter: false, maxWidth: 80,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green': params => params.value === null || params.value === false,

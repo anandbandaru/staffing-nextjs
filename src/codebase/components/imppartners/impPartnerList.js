@@ -109,11 +109,11 @@ const ImpPartnerList = () => {
         },
         { field: "Id", maxWidth: 50 },
         { field: "Name", filter: true },
-        { field: "Address" },
-        { field: "Emails" },
+        { field: "Address", filter: true },
+        { field: "Emails", filter: true },
         { field: "createdDate", filter: true },
         {
-            field: "Disabled", filter: false,
+            field: "Disabled", filter: false, maxWidth: 80,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green': params => params.value === null || params.value === false,

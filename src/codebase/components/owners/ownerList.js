@@ -123,7 +123,7 @@ const OwnersList = () => {
             //     'rag-green': params => params.value === null || params.value === false,
             //     'rag-red': params => params.value === true,
             // },
-            cellRenderer: CustomDisabledRenderer
+            cellRenderer: CustomDisabledRenderer, maxWidth: 80
         },
         { field: "firstName", filter: true },
         { field: "lastName", filter: true },

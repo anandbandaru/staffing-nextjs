@@ -129,7 +129,7 @@ const EmployeesList = () => {
         },
         { field: "Id", maxWidth: 50 },
         {
-            field: "disabled", filter: false, maxWidth: 100,
+            field: "disabled", filter: false, maxWidth: 80,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green': params => params.value === null || params.value === false,

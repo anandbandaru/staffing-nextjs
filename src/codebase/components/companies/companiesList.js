@@ -117,7 +117,7 @@ const CompaniesList = () => {
         },
         { field: "Id", maxWidth: 50 },
         {
-            field: "Disabled", filter: false, maxWidth: 100,
+            field: "Disabled", filter: false, maxWidth: 80,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green-bg': params => params.value === null || params.value === 0 || params.value === false,

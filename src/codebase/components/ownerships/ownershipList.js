@@ -112,16 +112,16 @@ const OwnershipList = () => {
         { field: "Id", maxWidth: 50 },
         {
             field: "companyId",
-            valueGetter: (params) => `${params.data.companyId} - ${params.data.companyName}`,
+            valueGetter: (params) => `${params.data.companyId} - ${params.data.companyName}`, filter: true
         },
         {
             field: "ownerId", headerName: 'Owner',
-            valueGetter: (params) => `${params.data.ownerId} - ${params.data.ownerFirstName} ${params.data.ownerLastName}`,
+            valueGetter: (params) => `${params.data.ownerId} - ${params.data.ownerFirstName} ${params.data.ownerLastName}`, filter: true
         },
         { field: "createdDate", filter: true },
         { field: "notes", filter: true },
         {
-            field: "owingPercentage", filter: false,
+            field: "owingPercentage", filter: false, filter: true,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green': params => params.value === null || params.value === false,

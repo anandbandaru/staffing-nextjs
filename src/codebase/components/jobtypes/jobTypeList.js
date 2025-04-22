@@ -112,7 +112,7 @@ const JobTypeList = () => {
         { field: "name", filter: true },
         { field: "description" },
         {
-            field: "disabled", filter: false,
+            field: "disabled", filter: false, maxWidth: 80,
             // cellClassRules: {
             //     // apply green to electric cars
             //     'rag-green': params => params.value === null || params.value === false,
