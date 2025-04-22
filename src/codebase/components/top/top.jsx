@@ -319,7 +319,7 @@ const Top = () => {
                                                         <MenuItem key={tab.name} onClick={() => handleMenuClose(index)}>
                                                             {tab.icon}
                                                             <span className="topTabName">
-                                                                {tab.name === 'Configuration' ? 'Config' : tab.name === 'Timesheets' ? 'TS' : tab.name}
+                                                                {tab.name}
                                                             </span>
                                                         </MenuItem>
                                                     )
@@ -327,7 +327,12 @@ const Top = () => {
                                             </Menu>
                                         </span>
                                         {allTabs.map(tab => (
-                                            tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
+                                            tabsToShow.includes(tab.name) && <Tab key={tab.name}>
+                                                {tab.icon}
+                                                <span className="topTabName">
+                                                    {tab.name === 'Configuration' ? '' : tab.name === 'Users' ? '' : tab.name === 'Calendar' ? '' : tab.name}
+                                                </span>
+                                            </Tab>
                                         ))}
                                     </TabList>
                                     {tabsToShow.includes('Dashboard') && <TabPanel className="px-2"><Dashboard /></TabPanel>}
