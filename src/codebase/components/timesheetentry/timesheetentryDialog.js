@@ -71,7 +71,7 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
     const formik = useFormik({
         initialValues: {
             hours: Array(differenceInDays(new Date(timesheet.endDate), new Date(timesheet.startDate)) + 1).fill(''),
-            userNotes: ''
+            userNotes: '.'
         },
         validationSchema,
         onSubmit: async (values, { setSubmitting }) => {
@@ -351,7 +351,7 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                         </Stack>
 
                         <Stack direction="row" spacing={1} className='mb-6'>
-                            <div className='bg-gray-100 px-6 w-[600px]'>Implementation Partner \ Venfor Timesheet Document
+                            <div className='bg-gray-100 px-6 w-[600px]'>Implementation Partner \ Vendor Timesheet Document
                                 <br />
                                 <strong>OPTIONAL</strong>
                             </div>
@@ -389,8 +389,8 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                 {!viewOnlyMode && (
                     <Stack direction="row" spacing={2} className='mt-4 float-right'>
                         <TextField
-                            className='mr-4'
-                            size="small"
+                            className='mr-4 bigTextField'
+                            size="large"
                             margin="normal"
                             id="totalHours"
                             name="totalHours"
@@ -401,10 +401,11 @@ const TimesheetEntryDialog = ({ existingId, timesheet, onClose, onFormSubmitSucc
                         <Button
                             variant="contained"
                             color="primary"
+                            size='large'
                             onClick={formik.handleSubmit}
                             disabled={formik.isSubmitting || isSubmitSuccess}
                         >
-                            Submit
+                            Submit {totalHours} Hours
                         </Button>
                         {formik.isSubmitting && <div className='spinner mt-2'></div>}
                     </Stack>

@@ -210,12 +210,12 @@ const InvoiceList = () => {
         { field: "jobType", headerName: 'I Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 130 },
         { field: "timesheetsPeriod", headerName: 'T Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 130},
         // { field: "clientName", filter: true },
-        { field: "rate", filter: true, maxWidth: 100 },
-        { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer,  },
-        {
-            field: "status", headerName: 'Invoice Status', filter: true,
-            cellRenderer: CustomStatusRenderer
-        },
+        { field: "rate", filter: true, maxWidth: 80 },
+        { field: "totalHours", headerName: 'Hours', filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 80  },
+        // {
+        //     field: "status", headerName: 'Invoice Status', filter: true,
+        //     cellRenderer: CustomStatusRenderer
+        // },
         {
             field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 90, resizable: true, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }
         },

@@ -62,3 +62,6 @@
     bottom: 1px;
     left: 70px;
 }
+.bigTextField INPUT{
+    font-size: 20px !important;
+}

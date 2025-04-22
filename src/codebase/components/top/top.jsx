@@ -317,7 +317,10 @@ const Top = () => {
                                                 {allTabs.map((tab, index) => (
                                                     tabsToShow.includes(tab.name) && (
                                                         <MenuItem key={tab.name} onClick={() => handleMenuClose(index)}>
-                                                            {tab.icon}{tab.name}
+                                                            {tab.icon}
+                                                            <span className="topTabName">
+                                                                {tab.name === 'Configuration' ? 'Config' : tab.name === 'Timesheets' ? 'TS' : tab.name}
+                                                            </span>
                                                         </MenuItem>
                                                     )
                                                 ))}
@@ -394,7 +397,7 @@ const Top = () => {
             <Tooltip id="my-tooltip-api-availability" className="tooltip-example" />
             {ipAddress ? (
                 <Footer ipAddress={ipAddress} city={location.city} region={location.region} country_name={location.country} />
-            ):(
+            ) : (
                 <Footer ipAddress="Unknown" city="Unknown" region="Unknown" country_name="Unknown" />
             )}
 

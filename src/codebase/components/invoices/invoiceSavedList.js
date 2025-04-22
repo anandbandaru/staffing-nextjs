@@ -226,11 +226,11 @@ const InvoiceSavedList = () => {
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "invoiceDate", filter: true, maxWidth: 130 },
-        { field: "vendorInvoiceNumber", filter: true },
+        { field: "vendorInvoiceNumber", headerName: 'V-Invoice Number', filter: true },
         { field: "rate", filter: true, maxWidth: 100 },
-        { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 130 },
-        { field: "paymentTerms", filter: true },
-        { field: "daysDue", filter: true, cellRenderer: CustomDaysDueRenderer },
+        { field: "totalHours", headerName: 'Hours', filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 80 },
+        { field: "paymentTerms", filter: true, maxWidth: 110 },
+        { field: "daysDue", filter: true, cellRenderer: CustomDaysDueRenderer, maxWidth: 100 },
         { field: "employeeName", filter: true },
         { field: "vendorName", filter: true },
         { field: "startDate", filter: true, maxWidth: 130 },

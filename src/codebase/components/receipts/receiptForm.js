@@ -619,7 +619,11 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                     name="receivedDate"
                                                     type="date"
                                                     value={values.receivedDate}
-                                                    onChange={handleChange}
+                                                    // onChange={handleChange}
+                                                    onChange={(event) => {
+                                                        handleChange(event);
+                                                        setReceivedDate(event.target.value);
+                                                    }}
                                                     onBlur={handleBlur}
                                                     helperText={(errors.receivedDate && touched.receivedDate) && errors.receivedDate}
                                                 />
@@ -639,7 +643,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                     id="receivedAmount"
                                                     name="receivedAmount"
                                                     label="Received Amount"
-                                                    disabled={operation === "Edit"}
+                                                    // disabled={operation === "Edit"}
                                                     value={values.receivedAmount ? values.receivedAmount : selectedInvoiceAmount}
                                                     // onChange={handleChange}
                                                     onChange={(event) => {
@@ -664,7 +668,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                     id="adjustedAmount"
                                                     name="adjustedAmount"
                                                     label="Adjusted Amount"
-                                                    disabled={operation === "Edit"}
+                                                    // disabled={operation === "Edit"}
                                                     value={values.adjustedAmount}
                                                     // onChange={handleChange}
                                                     onChange={(event) => {
