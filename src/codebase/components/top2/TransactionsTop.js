@@ -98,11 +98,11 @@ const TransactionsTop = ({ module }) => {
     }, []);
 
     const allTabs = [
-        { name: 'Jobs', icon: <WorkOutlineOutlinedIcon className="mr-1" fontSize="small" /> },
         { name: 'Invoices', icon: <PaidOutlinedIcon className="mr-1" fontSize="small" /> },
         { name: 'Receipts', icon: <ReceiptLongRoundedIcon className="mr-1" fontSize="small" /> },
         { name: 'Expenses', icon: <AddShoppingCartIcon className="mr-1" fontSize="small" /> },
-        { name: 'Payroll', icon: <PointOfSaleOutlinedIcon className="mr-1" fontSize="small" /> }
+        { name: 'Payroll', icon: <PointOfSaleOutlinedIcon className="mr-1" fontSize="small" /> },
+        { name: 'Jobs', icon: <WorkOutlineOutlinedIcon className="mr-1" fontSize="small" /> },
     ];
     const tabsToShow = userType === 'ADMIN' ? allTabs.map(tab => tab.name) : permissions;
 
@@ -168,11 +168,11 @@ const TransactionsTop = ({ module }) => {
                                             tabsToShow.includes(tab.name) && <Tab key={tab.name}>{tab.icon}{tab.name}</Tab>
                                         ))}
                                     </TabList>
-                                    {tabsToShow.includes('Jobs') && <TabPanel className="py-0"><JobsMain /></TabPanel>}
                                     {tabsToShow.includes('Invoices') && <TabPanel className="py-0"><InvoicesMain /></TabPanel>}
                                     {tabsToShow.includes('Receipts') && <TabPanel className="py-0"><ReceiptsMain /></TabPanel>}
                                     {tabsToShow.includes('Expenses') && <TabPanel className="py-0"><ExpensesMain /></TabPanel>}
                                     {tabsToShow.includes('Payroll') && <TabPanel className="py-0">Payroll</TabPanel>}
+                                    {tabsToShow.includes('Jobs') && <TabPanel className="py-0"><JobsMain /></TabPanel>}
                                 </Tabs>
                             )
                         )

@@ -214,9 +214,9 @@ const InvoiceClosedList = () => {
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "employeeName", filter: true },
-        { field: "vendorInvoiceNumber", filter: true },
-        { field: "invoiceNumber", filter: true },
-        { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 90 },
+        { field: "vendorInvoiceNumber", headerName: 'V-Invoice Number', filter: true },
+        // { field: "invoiceNumber", filter: true },
+        // { field: "jobID", headerName: 'JOB ID', filter: true, maxWidth: 90 },
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Invoice Frequency', filter: true, cellRenderer: CustomJobTypeRenderer, maxWidth: 120 },
         { field: "clientName", filter: true },
@@ -224,11 +224,11 @@ const InvoiceClosedList = () => {
         { field: "startDate", filter: true, maxWidth: 130 },
         { field: "endDate", filter: true, maxWidth: 130 },
         { field: "rate", filter: true, maxWidth: 100 },
-        { field: "totalHours", filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 130 },
-        {
-            field: "invoiceStatus", filter: true, maxWidth: 100, headerName: 'Invoice Status',
-            cellRenderer: CustomStatusRenderer
-        },
+        { field: "totalHours", headerName: 'Hours', filter: true, cellRenderer: CustomHoursRenderer, maxWidth: 80 },
+        // {
+        //     field: "invoiceStatus", filter: true, maxWidth: 100, headerName: 'Invoice Status',
+        //     cellRenderer: CustomStatusRenderer
+        // },
         {
             field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 90, resizable: true, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }
         },
