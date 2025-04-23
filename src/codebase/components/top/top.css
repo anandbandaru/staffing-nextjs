@@ -14,11 +14,13 @@
     float: left;
     margin-right: 10px;
     margin-left: 4px;
+    margin-top: 5px;
 }
 .release_version_Div{
-    background-color: #83c5be;
+    background-color: #041f1c;
     border-radius: 4px;
     padding: 0px 5px;
+    color:aquamarine;
 }
 .topTabsHolder{
     margin-left: 0px;

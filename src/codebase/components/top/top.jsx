@@ -265,7 +265,7 @@ const Top = () => {
 
             <div className="topTabsHolder flex flex-grow">
                 <Box sx={{ width: '100%', typography: 'body1' }}>
-                    <div className="topLeft px-0.5 mt-0.5">
+                    <div className="topLeft px-0.5">
                         <img className="icon" src={assets.vizionLogo} alt="" />
                         <div className="release_version_Div">{configData.releases[0].version}</div>
                     </div>
