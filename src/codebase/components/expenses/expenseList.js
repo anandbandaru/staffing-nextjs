@@ -127,15 +127,20 @@ const ExpenseList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
-        { field: "expenseTypeId", filter: true },
+        { field: "expenseTypeName", filter: true },
         {
             field: "amount", filter: true, cellRenderer: CustomAmountComponent
         },
-        { field: "category", filter: true, cellRenderer: CustomCategoryComponent },
+        { field: "category", filter: true, cellRenderer: CustomCategoryComponent, maxWidth: 100 },
         { field: "companyName", filter: true },
         { field: "employeeName", filter: true },
-        { field: "createdDate", filter: true },
-        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
+        { field: "createdDate", filter: true, maxWidth: 120 },
+        { field: "jobId", filter: true, maxWidth: 80 },
+        { field: "jobName", filter: true },
+        { field: "jobTitle", filter: true },
+        { field: "jobRate", filter: true, maxWidth: 100 },
+        { field: "jobHoursDeducted", filter: true, maxWidth: 150 },
+        { field: "options", cellRenderer: CustomEditComponent, maxWidth: 150, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);
     const rowClassRules = {
         // apply red to Ford cars

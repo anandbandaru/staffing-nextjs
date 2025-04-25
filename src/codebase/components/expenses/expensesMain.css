@@ -1,3 +1,10 @@
 .expenseMainHolder{
     /* margin:4px; */
 }
+.hoursDeductedTitleDiv{
+    padding-top: 5px;
+}
+.hoursDeductedDiv{
+    font-size: 20px;
+    font-weight: bold;
+}

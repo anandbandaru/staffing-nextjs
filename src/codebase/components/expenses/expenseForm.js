@@ -35,6 +35,12 @@ function Expense({ props, ID, operation }) {
     const [employeesData, setEmployeesData] = useState({ data: [] });
     const [employeeId, setEmployeeId] = useState('');
 
+    const [jobsData, setJobsData] = useState({ data: [] });
+    const [jobId, setJobId] = useState('');
+    const [jobRate, setJobRate] = useState(0);
+    const [jobHoursDeducted, setJobHoursDeducted] = useState(0);
+    const [amount, setAmount] = useState(0);
+
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -68,7 +74,14 @@ function Expense({ props, ID, operation }) {
                         await getExpenseTypesList();
                         await getCompaniesList();
                         await getEmployeesList();
+                        await getJobsList();
                         setName(result.data[0].Id);
+                        setEmployeeId(result.data[0].employeeId);
+                        setJobId(result.data[0].jobId);
+                        setJobRate(result.data[0].jobRate);
+                        setJobHoursDeducted(result.data[0].jobHoursDeducted);
+                        setAmount(result.data[0].amount);
+                        setCompanyId(result.data[0].companyId);
                         setData(result);
                     }
                     setApiLoading(false);
@@ -175,7 +188,50 @@ function Expense({ props, ID, operation }) {
             )
     }
     const handleEmployeeIdChange = (event) => {
+        setJobId('');
         setEmployeeId(event.target.value);
+        setJobRate(0);
+        setJobHoursDeducted(0);
+    };
+
+    const getJobsList = async () => {
+        setApiLoading(true);
+        setJobsData({ data: [] });
+        let apiUrl = APIPath + "/getalljobsforexpenses"
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
+            .then(response => response.json())
+            .then(
+                async (result) => {
+                    if (result.error) {
+                        // console.log("RequestData:On error return: setting empty")
+                        setJobsData({ data: [] });
+                    }
+                    else {
+                        setJobsData(result);
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setJobsData({ data: [] });
+                    // console.log("RequestData:On JUST error: API call failed")
+                    setApiLoading(false);
+                }
+            )
+    }
+    const handleJobIdChange = (event) => {
+        setJobId(event.target.value);
+        const job = jobsData.data.find((item) => item.jobId === event.target.value);
+        setJobRate(job.rate);
+        setJobHoursDeducted((amount / job.rate).toFixed(2));
+    };
+    const handleAmountChange = (event) => {
+        const amt = parseFloat(event.target.value);
+        setAmount(amt);
+        setJobHoursDeducted((amt / parseFloat(jobRate) || 0).toFixed(2));
     };
 
     useEffect(() => {
@@ -186,6 +242,7 @@ function Expense({ props, ID, operation }) {
             getExpenseTypesList();
             getCompaniesList();
             getEmployeesList();
+            getJobsList();
         }
     }, []);
 
@@ -213,6 +270,9 @@ function Expense({ props, ID, operation }) {
                         companyId: name ? data.data[0].companyId : '',
                         employeeId: name ? data.data[0].employeeId : '',
                         notes: name ? data.data[0].notes : '',
+                        jobId: name ? data.data[0].jobId : '',
+                        jobRate: name ? data.data[0].jobRate : '',
+                        jobHoursDeducted: name ? data.data[0].jobHoursDeducted : '',
                         createdBy: userName,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -222,8 +282,15 @@ function Expense({ props, ID, operation }) {
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
+
+                        const updatedValues = {
+                            ...values,
+                            jobRate: values.jobRate || jobRate,
+                            jobHoursDeducted: jobRate === 0 ? 0 : jobHoursDeducted
+                        };
+
                         axios.post(finalAPI,
-                            values,
+                            updatedValues,
                             {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
@@ -269,6 +336,11 @@ function Expense({ props, ID, operation }) {
                         employeeId: Yup.string().nullable().when('category', {
                             is: 'Employee',
                             then: () => Yup.string().required('employeeId Required'),
+                            otherwise: () => Yup.string().nullable()
+                        }),
+                        jobId: Yup.string().nullable().when('category', {
+                            is: 'Employee',
+                            then: () => Yup.string().required('Job Id Required'),
                             otherwise: () => Yup.string().nullable()
                         })
                     })}
@@ -385,41 +457,80 @@ function Expense({ props, ID, operation }) {
                                     </TextField>
                                 )}
                                 {values.category === 'Employee' && (
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        id="employeeId"
-                                        name="employeeId"
-                                        select
-                                        label="Employee Id"
-                                        value={values.employeeId}
-                                        onChange={(event) => {
-                                            handleChange(event);
-                                            handleEmployeeIdChange(event);
-                                        }}
-                                        onBlur={handleBlur}
-                                        helperText={(errors.employeeId && touched.employeeId) && errors.employeeId}
-                                    >
-                                        {employeesData.data.map((item, index) => (
-                                            <MenuItem key={index} value={item.Id}>
-                                                {item.Id} - {item.firstName} {item.lastName} - {item.employeeType}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
+                                    <>
+                                        <TextField
+                                            size="small"
+                                            margin="normal"
+                                            fullWidth
+                                            id="employeeId"
+                                            name="employeeId"
+                                            select
+                                            label="Employee Id"
+                                            value={values.employeeId}
+                                            onChange={(event) => {
+                                                handleChange(event);
+                                                handleEmployeeIdChange(event);
+                                            }}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.employeeId && touched.employeeId) && errors.employeeId}
+                                        >
+                                            {employeesData.data.map((item, index) => (
+                                                <MenuItem key={index} value={item.Id}>
+                                                    {item.Id} - {item.firstName} {item.lastName} - {item.employeeType}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                        {employeeId && (
+                                            <TextField
+                                                size="small"
+                                                margin="normal"
+                                                fullWidth
+                                                id="jobId"
+                                                name="jobId"
+                                                select
+                                                label="Job"
+                                                value={values.jobId ? values.jobId : jobId}
+                                                onChange={(event) => {
+                                                    handleChange(event);
+                                                    handleJobIdChange(event);
+                                                }}
+                                                onBlur={handleBlur}
+                                                helperText={(errors.jobId && touched.jobId) && errors.jobId}
+                                            >
+                                                {jobsData.data
+                                                    .filter((job) => job.employeeId === employeeId)
+                                                    .map((item, index) => (
+                                                        <MenuItem key={index} value={item.jobId}>
+                                                            Job ID: {item.jobId} - {item.jobTitle} - {item.jobName} - Rate: ( {item.rate} )
+                                                        </MenuItem>
+                                                    ))}
+                                            </TextField>
+                                        )}
+                                    </>
                                 )}
                                 <TextField
                                     size="small"
                                     margin="normal"
                                     fullWidth
+                                    type='number'
                                     id="amount"
                                     name="amount"
                                     label="Amount"
-                                    value={values.amount}
-                                    onChange={handleChange}
+                                    value={values.amount ? values.amount : amount}
+                                    // onChange={handleChange}
+                                    onChange={(event) => {
+                                        handleChange(event);
+                                        handleAmountChange(event);
+                                    }}
                                     onBlur={handleBlur}
                                     helperText={(errors.amount && touched.amount) && errors.amount}
                                 />
+                                {(values.category === 'Employee' && employeeId) && (
+                                    <Stack direction="row" spacing={2} className='float-right mt-2'>
+                                        <div className='hoursDeductedTitleDiv'>Approximate hours deducted based on amount:</div>
+                                        <div className='hoursDeductedDiv'>{jobHoursDeducted}</div>
+                                    </Stack>
+                                )}
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -449,10 +560,14 @@ function Expense({ props, ID, operation }) {
                                         isSubmitting ? (
                                             <div className="spinner"></div>
                                         ) : (
-                                            <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                <SaveOutlinedIcon className="mr-1" />
-                                                Update
-                                            </Button>
+                                            <>
+                                                {(values.category === 'Employee' && jobId) && (
+                                                    <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                        <SaveOutlinedIcon className="mr-1" />
+                                                        Update
+                                                    </Button>
+                                                )}
+                                            </>
                                         )
                                     ) : (
                                         <>
@@ -468,10 +583,14 @@ function Expense({ props, ID, operation }) {
                                             {isSubmitting ? (
                                                 <div className="spinner"></div>
                                             ) : (
-                                                <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                    <SaveOutlinedIcon className="mr-1" />
-                                                    Save
-                                                </Button>
+                                                <>
+                                                    {((values.category === 'Employee' && jobId) || (values.category !== 'Employee')) && (
+                                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
+                                                            <SaveOutlinedIcon className="mr-1" />
+                                                            Save
+                                                        </Button>
+                                                    )}
+                                                </>
                                             )}
                                         </>
                                     )}
