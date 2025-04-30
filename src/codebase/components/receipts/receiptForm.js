@@ -13,6 +13,7 @@ import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRig
 import FormSlider from '../slider/formSlider';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { IconButton } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
 
 function Receipt({ props, ID, operation, handleClose }) {
     const { APIPath, userName } = useContext(Context);
@@ -35,6 +36,7 @@ function Receipt({ props, ID, operation, handleClose }) {
 
     const [invoicesData, setInvoicesData] = useState({ data: [] });
     const [invoiceId, setInvoiceId] = useState('');
+    const [selectedInvoices, setSelectedInvoices] = useState([]);
     const [receivedDate, setReceivedDate] = useState('');
     const [selectedInvoiceAmountOriginal, setSelectedInvoiceAmountOriginal] = useState(0.00);
     const [selectedInvoiceAmount, setSelectedInvoiceAmount] = useState(0.00);
@@ -209,30 +211,33 @@ function Receipt({ props, ID, operation, handleClose }) {
 
     const getSavedInvoicesByVendorId = async (vendorIdparam) => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getsavedinvoicesbyvendorid/" + vendorIdparam
-        fetch(apiUrl, {
-            headers: {
-                'ngrok-skip-browser-warning': 'true',
-            }
-        })
-            .then(response => response.json())
-            .then(
-                async (result) => {
-                    if (result.error) {
-                        // console.log("RequestData:On error return: setting empty")
-                        setInvoicesData({ data: [] });
-                    }
-                    else {
-                        setInvoicesData(result);
-                    }
-                    setApiLoading(false);
-                },
-                (error) => {
-                    setInvoicesData({ data: [] });
-                    // console.log("RequestData:On JUST error: API call failed")
-                    setApiLoading(false);
+        if (vendorIdparam !== "" || vendorIdparam !== undefined) {
+            let apiUrl = APIPath + "/getsavedinvoicesbyvendorid/" + vendorIdparam
+            fetch(apiUrl, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
                 }
-            )
+            })
+                .then(response => response.json())
+                .then(
+                    async (result) => {
+                        if (result.error) {
+                            setInvoicesData({ data: [] });
+                        }
+                        else {
+                            setInvoicesData(result);
+                        }
+                        setApiLoading(false);
+                    },
+                    (error) => {
+                        setInvoicesData({ data: [] });
+                        setApiLoading(false);
+                    }
+                )
+        }
+        else {
+            setInvoicesData({ data: [] });
+        }
     }
     const getSavedInvoicesByEmployeeId = async (employeeIdparam) => {
         setApiLoading(true);
@@ -261,15 +266,19 @@ function Receipt({ props, ID, operation, handleClose }) {
                 }
             )
     }
-    const handleInvoiceIdChange = (event) => {
-        setInvoiceId(event.target.value);
-        const invoice = invoicesData.data.find((item) => item.Id === event.target.value);
-        setVendorId(invoice.vendorId);
-        setSelectedInvoiceAmount(invoice ? invoice.totalAmount : 0.00);
-        setLocalVIN(invoice ? invoice.vendorInvoiceNumber : "");
-        setLocalTotal(invoice ? (parseFloat(invoice.totalAmount) || 0 + parseFloat(localAdjustedAmount) || 0).toFixed(2) : 0.00);
+    const handleCheckboxChange = (invoiceId) => {
+        setSelectedInvoices((prevSelected) => {
+            if (prevSelected.includes(invoiceId)) {
+                // Remove the invoice if already selected
+                handleInvoiceButtonClick(invoiceId);
+                return prevSelected.filter((id) => id !== invoiceId);
+            } else {
+                // Add the invoice if not already selected
+                handleInvoiceButtonClick(invoiceId);
+                return [...prevSelected, invoiceId];
+            }
+        });
     };
-
     const handleReceivedAmountChange = (event) => {
         const ra = parseFloat(event.target.value);
         setSelectedInvoiceAmount(ra);
@@ -305,7 +314,7 @@ function Receipt({ props, ID, operation, handleClose }) {
         }
     }, [ID]);
 
-    const handleButtonClick = (invoiceId) => {
+    const handleInvoiceButtonClick_old = (invoiceId) => {
         setInvoiceId(invoiceId);
         const invoice = invoicesData.data.find((item) => item.Id === invoiceId);
         setVendorId(invoice.vendorId);
@@ -316,6 +325,31 @@ function Receipt({ props, ID, operation, handleClose }) {
         setLocalVIN(invoice ? invoice.vendorInvoiceNumber : "");
         setLocalTotal(invoice ? (parseFloat(invoice.totalAmount) || 0 + parseFloat(localAdjustedAmount) || 0).toFixed(2) : 0.00);
         // Add any additional actions you want to perform here
+    };
+
+    const handleInvoiceButtonClick = (invoiceId) => {
+        setSelectedInvoices((prevSelected) => {
+            let updatedSelectedInvoices;
+            if (prevSelected.includes(invoiceId)) {
+                // Remove the invoice if already selected
+                updatedSelectedInvoices = prevSelected.filter((id) => id !== invoiceId);
+            } else {
+                // Add the invoice if not already selected
+                updatedSelectedInvoices = [...prevSelected, invoiceId];
+            }
+    
+            // Calculate the total amount of the selected invoices
+            const totalAmount = updatedSelectedInvoices.reduce((sum, id) => {
+                const invoice = invoicesData.data.find((item) => item.Id === id);
+                return sum + (invoice ? parseFloat(invoice.totalAmount) : 0);
+            }, 0);
+    
+            // Update the Received Amount textbox
+            setSelectedInvoiceAmount(totalAmount);
+            setLocalTotal((totalAmount + parseFloat(localAdjustedAmount) || 0).toFixed(2));
+    
+            return updatedSelectedInvoices;
+        });
     };
 
 
@@ -333,7 +367,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                 </>
                 :
                 <Formik
-                    enableReinitialize
+                    //enableReinitialize
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
                         vendorId: name ? data.data[0].vendorId : vendorId,
@@ -365,19 +399,11 @@ function Receipt({ props, ID, operation, handleClose }) {
                             // values,
                             {
                                 Id: ID,
-                                vendorId: vendorId ? vendorId : invoicesData.data.find((item) => item.Id === invoiceId).vendorId,
-                                employeeId: employeeId ? employeeId : invoicesData.data.find((item) => item.Id === invoiceId).employeeId,
-                                invoiceId: invoiceId,
-                                vendorInvoiceNumber: localVIN,
+                                invoiceIds: selectedInvoices,
                                 receivedAmount: selectedInvoiceAmount,
                                 adjustedAmount: values.adjustedAmount,
                                 adjustedAmountNotes: values.adjustedAmountNotes,
                                 totalReceivedAmount: localTotal ? localTotal : 0.00,
-                                startDate: data.data[0] ? data.data[0].startDate : invoicesData.data.find((item) => item.Id === invoiceId).startDate,
-                                endDate: data.data[0] ? data.data[0].endDate : invoicesData.data.find((item) => item.Id === invoiceId).endDate,
-                                invoiceDate: data.data[0] ? data.data[0].invoiceDate : invoicesData.data.find((item) => item.Id === invoiceId).invoiceDate,
-                                rate: data.data[0] ? data.data[0].rate : invoicesData.data.find((item) => item.Id === invoiceId).rate,
-                                hours: data.data[0] ? data.data[0].hours : invoicesData.data.find((item) => item.Id === invoiceId).totalHours,
                                 createdBy: userName,
                                 receivedDate: receivedDate ? receivedDate : values.receivedDate,
                             },
@@ -542,28 +568,6 @@ function Receipt({ props, ID, operation, handleClose }) {
                                 </>
                                     :
                                     <>
-
-                                        {/* <Autocomplete
-                                            options={invoicesData.data}
-                                            getOptionLabel={(option) => `${option.vendorInvoiceNumber} - ${option.employeeName} - (SD: ${option.startDate} - ED: ${option.endDate} - $: ${option.totalAmount}) - Hours: ${option.totalHours} - Rate: ${option.rate}`}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    size="small"
-                                                    margin="normal"
-                                                    fullWidth
-                                                    label="Invoice"
-                                                    id="invoiceId"
-                                                    name="invoiceId"
-                                                    helperText={(errors.invoiceId && touched.invoiceId) && errors.invoiceId}
-                                                />
-                                            )}
-                                            value={invoicesData.data.find((item) => item.Id === invoiceId) || null}
-                                            onChange={(event, newValue) => {
-                                                handleInvoiceIdChange({ target: { value: newValue ? newValue.Id : '' } });
-                                            }}
-                                        /> */}
-
                                         <div className='pt-4 div_InvoiceTableHolder'>
                                             <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
                                                 <thead>
@@ -589,10 +593,15 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                             <td >{item.totalHours}</td>
                                                             <td >{item.rate}</td>
                                                             <td >
-                                                                <IconButton aria-label="Metadata" title="Metadata" color="primary"
-                                                                    onClick={() => handleButtonClick(item.Id)}>
+                                                                {/* <IconButton aria-label="Metadata" title="Metadata" color="primary"
+                                                                    onClick={() => handleInvoiceButtonClick(item.Id)}>
                                                                     <ReadMoreIcon />
-                                                                </IconButton>
+                                                                </IconButton> */}
+                                                                <Checkbox
+                                                                    checked={selectedInvoices.includes(item.Id)}
+                                                                    onChange={() => handleInvoiceButtonClick(item.Id)}
+                                                                    color="primary"
+                                                                />
                                                             </td>
                                                         </tr>
                                                     ))}
@@ -740,7 +749,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                             <div className="spinner"></div>
                                         ) : (
                                             <>
-                                                {(invoiceId) && (
+                                                {(selectedInvoices.length > 0) && (
                                                     <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                                         <SaveOutlinedIcon className="mr-1" />
                                                         Update
@@ -764,7 +773,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                 <div className="spinner"></div>
                                             ) : (
                                                 <>
-                                                    {(invoiceId && selectedInvoiceAmountOriginal <= localTotal) && (
+                                                    {(selectedInvoices.length > 0 && selectedInvoiceAmountOriginal <= localTotal) && (
                                                         <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                                             <SaveOutlinedIcon className="mr-1" />
                                                             Save
