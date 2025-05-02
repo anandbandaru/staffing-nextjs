@@ -20,6 +20,10 @@
     margin-top: 10px;
     padding: 0px;
 }
+.div_InvoiceTableHolderView {
+    overflow-x: scroll;
+    border: 1px solid #ccc;
+}
 
 .div_InvoiceTableHolder TH, .div_InvoiceTableHolder TD {
     border: 1px solid #ddd;
@@ -27,5 +31,13 @@
 }
 .div_InvoiceTableHolder TH {
     padding: 8px 5px;
+    text-align: left;
+}
+.div_InvoiceTableHolderView TH, .div_InvoiceTableHolderView TD {
+    border: 1px solid #ddd;
+    padding: 1px 3px;
+}
+.div_InvoiceTableHolderView TH {
+    padding: 4px 2px;
     text-align: left;
 }

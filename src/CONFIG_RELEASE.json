@@ -22,6 +22,13 @@
   ],
   "releases": [
     {
+      "version": "3.9",
+      "date": "MAY 01 2025",
+      "notes": [
+        "Reeipts can now be created for multiple Invoices"
+      ]
+    },
+    {
       "version": "3.8",
       "date": "APR 25 2025",
       "notes": [

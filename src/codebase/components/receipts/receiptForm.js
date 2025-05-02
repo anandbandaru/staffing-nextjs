@@ -70,11 +70,10 @@ function Receipt({ props, ID, operation, handleClose }) {
             .then(
                 async (result) => {
                     if (result.error) {
-                        // console.log("RequestData:On error return: setting empty")
                         setData({});
                     }
                     else {
-                        await getVendorsList();
+                        await getInvoicesForReceipt();
                         setName(result.data[0].Id);
                         setData(result);
                         setVendorId(result.data[0].vendorId);
@@ -88,15 +87,12 @@ function Receipt({ props, ID, operation, handleClose }) {
                         setInvoiceId(result.data[0].invoiceId);
                         setLocalVIN(result.data[0].vendorInvoiceNumber);
                         setReceivedDate(result.data[0].receivedDate);
-                        await getEmployeesListByVendorId(result.data[0].vendorId);
-                        //await getSavedInvoicesByVendorId(result.data[0].vendorId);
                     }
                     setApiLoading(false);
                 },
                 (error) => {
                     setData({});
                     setName('');
-                    // console.log("RequestData:On JUST error: API call failed")
                     setApiLoading(false);
                 }
             )
@@ -266,6 +262,32 @@ function Receipt({ props, ID, operation, handleClose }) {
                 }
             )
     }
+
+    const getInvoicesForReceipt = async () => {
+        setApiLoading(true);
+        let apiUrl = APIPath + "/getreceiptinvoices/" + ID
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
+            .then(response => response.json())
+            .then(
+                async (result) => {
+                    if (result.error) {
+                        setInvoicesData({ data: [] });
+                    }
+                    else {
+                        setInvoicesData(result);
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setInvoicesData({ data: [] });
+                    setApiLoading(false);
+                }
+            )
+    }
     const handleCheckboxChange = (invoiceId) => {
         setSelectedInvoices((prevSelected) => {
             if (prevSelected.includes(invoiceId)) {
@@ -337,17 +359,17 @@ function Receipt({ props, ID, operation, handleClose }) {
                 // Add the invoice if not already selected
                 updatedSelectedInvoices = [...prevSelected, invoiceId];
             }
-    
+
             // Calculate the total amount of the selected invoices
             const totalAmount = updatedSelectedInvoices.reduce((sum, id) => {
                 const invoice = invoicesData.data.find((item) => item.Id === id);
                 return sum + (invoice ? parseFloat(invoice.totalAmount) : 0);
             }, 0);
-    
+
             // Update the Received Amount textbox
             setSelectedInvoiceAmount(totalAmount);
             setLocalTotal((totalAmount + parseFloat(localAdjustedAmount) || 0).toFixed(2));
-    
+
             return updatedSelectedInvoices;
         });
     };
@@ -484,18 +506,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                {operation === "Edit" ? <>
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        id="ex_vendorId"
-                                        name="ex_vendorId"
-                                        label="Vendor ID"
-                                        disabled
-                                        value={values.vendorName}
-                                    />
-                                </>
+                                {operation === "Edit" ? <></>
                                     :
                                     <>
                                         <Autocomplete
@@ -520,18 +531,7 @@ function Receipt({ props, ID, operation, handleClose }) {
 
                                     </>
                                 }
-                                {operation === "Edit" ? <>
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        id="ex_employeeId"
-                                        name="ex_employeeId"
-                                        label="Employee ID"
-                                        disabled
-                                        value={values.employeeName}
-                                    />
-                                </>
+                                {operation === "Edit" ? <></>
                                     :
                                     <>
                                         <Autocomplete
@@ -555,16 +555,36 @@ function Receipt({ props, ID, operation, handleClose }) {
                                 }
 
                                 {operation === "Edit" ? <>
-                                    <TextField
-                                        size="small"
-                                        margin="normal"
-                                        fullWidth
-                                        id="ex_invoiceId"
-                                        name="ex_invoiceId"
-                                        label="Invoice ID"
-                                        disabled
-                                        value={values.vendorInvoiceNumber}
-                                    />
+                                    <div className='pt-4 div_InvoiceTableHolderView '>
+                                        <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
+                                            <thead>
+                                                <tr style={{ backgroundColor: "#f2f2f2" }}>
+                                                    <th >Vendor Invoice Number</th>
+                                                    <th >Employee Name</th>
+                                                    <th >Vendor Name</th>
+                                                    <th >Start Date</th>
+                                                    <th >End Date</th>
+                                                    <th >Total Amount</th>
+                                                    <th >Total Hours</th>
+                                                    <th >Rate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {invoicesData.data.map((item) => (
+                                                    <tr key={item.Id} style={{ backgroundColor: item.Id === invoiceId ? "#e6f7ff" : "#fff" }}>
+                                                        <td >{item.vendorInvoiceNumber}</td>
+                                                        <td >{item.employeeName}</td>
+                                                        <td >{item.vendorName}</td>
+                                                        <td >{item.startDate}</td>
+                                                        <td >{item.endDate}</td>
+                                                        <td >{item.totalAmount}</td>
+                                                        <td >{item.totalHours}</td>
+                                                        <td >{item.rate}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </>
                                     :
                                     <>
@@ -608,8 +628,6 @@ function Receipt({ props, ID, operation, handleClose }) {
                                                 </tbody>
                                             </table>
                                         </div>
-
-
                                     </>
                                 }
                                 <table className='w-full'>
@@ -749,7 +767,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                             <div className="spinner"></div>
                                         ) : (
                                             <>
-                                                {(selectedInvoices.length > 0) && (
+                                                {(invoicesData.data.length > 0) && (
                                                     <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                                         <SaveOutlinedIcon className="mr-1" />
                                                         Update
