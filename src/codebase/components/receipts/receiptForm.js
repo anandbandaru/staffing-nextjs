@@ -14,6 +14,7 @@ import FormSlider from '../slider/formSlider';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { IconButton } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
+import ReceiptInvoices from './receiptInvoices';
 
 function Receipt({ props, ID, operation, handleClose }) {
     const { APIPath, userName } = useContext(Context);
@@ -555,36 +556,7 @@ function Receipt({ props, ID, operation, handleClose }) {
                                 }
 
                                 {operation === "Edit" ? <>
-                                    <div className='pt-4 div_InvoiceTableHolderView '>
-                                        <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
-                                            <thead>
-                                                <tr style={{ backgroundColor: "#f2f2f2" }}>
-                                                    <th >Vendor Invoice Number</th>
-                                                    <th >Employee Name</th>
-                                                    <th >Vendor Name</th>
-                                                    <th >Start Date</th>
-                                                    <th >End Date</th>
-                                                    <th >Total Amount</th>
-                                                    <th >Total Hours</th>
-                                                    <th >Rate</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {invoicesData.data.map((item) => (
-                                                    <tr key={item.Id} style={{ backgroundColor: item.Id === invoiceId ? "#e6f7ff" : "#fff" }}>
-                                                        <td >{item.vendorInvoiceNumber}</td>
-                                                        <td >{item.employeeName}</td>
-                                                        <td >{item.vendorName}</td>
-                                                        <td >{item.startDate}</td>
-                                                        <td >{item.endDate}</td>
-                                                        <td >{item.totalAmount}</td>
-                                                        <td >{item.totalHours}</td>
-                                                        <td >{item.rate}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <ReceiptInvoices receiptId={ID}  />
                                 </>
                                     :
                                     <>

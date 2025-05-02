@@ -18,6 +18,7 @@ import TimesheetReminders from '../timesheets/timesheetReminderHistory';
 import EmployeeDocumentsAdminChecklist from '../employeesdocuments/eDocsAdminList';
 import EmployeeJobsMetadata from '../employees/employeeJobsMetadata';
 import TimesheetAction from '../timesheets/timesheetAction';
+import ReceiptInvoices from '../receipts/receiptInvoices';
 
 function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber, mode, manualLoadData,
     showSnackbar, employeeID, startDate, endDate, jobName, personalEmail, applicationEmail }) {
@@ -179,6 +180,10 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber,
                                             <Tab>Documents</Tab>
                                         </>
                                         )}
+                                        {((moduleName === "RECEIPTS") && <>
+                                            <Tab>Invoices</Tab>
+                                        </>
+                                        )}
                                         {(moduleName === "EMPLOYEES" && <>
                                             <Tab>Dependents</Tab>
                                             <Tab>Jobs</Tab>
@@ -306,7 +311,12 @@ function GenericDetails({ ID, operation, doLoading, moduleName, timesheetNumber,
                                         </TabPanel>
                                     </>
                                     )}
-
+                                    {(moduleName === "RECEIPTS" && <>
+                                        <TabPanel className="px-2">
+                                            <ReceiptInvoices receiptId={ID} />
+                                        </TabPanel>
+                                    </>
+                                    )}
                                     {(moduleName === "EMPLOYEES" && <>
                                         <TabPanel className="px-2">
                                             <EmployeeGenericList formType={'Dependent'} employeeID={ID} />

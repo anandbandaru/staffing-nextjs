@@ -123,6 +123,7 @@ const ReceiptList = () => {
         { field: "receivedAmount", filter: true, cellRenderer: CustomAmountComponent },
         { field: "adjustedAmount", filter: true, cellRenderer: CustomAmountComponent },
         { field: "totalReceivedAmount", filter: true, cellRenderer: CustomAmountComponent },
+        { field: "connectedInvoices", filter: true },
         { field: "createdDate", filter: true },
         { field: "options", cellRenderer: CustomEditComponent, maxWidth: 180, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' } }
     ]);

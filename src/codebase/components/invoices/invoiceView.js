@@ -340,7 +340,9 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
 
     const getAuditDetails = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/getinvoiceauditbynumber" + "/" + invoiceNumber;
+        //let apiUrl = APIPath + "/getinvoiceauditbynumber" + "/" + invoiceNumber;
+        let apiUrl = APIPath + "/getinvoiceauditbyid" + "/" + Id;
+        
         // console.log(apiUrl)
         fetch(apiUrl, {
             headers: {
@@ -498,7 +500,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                         <Tabs>
                             <TabList className="subTabsListHolder">
                                 <Tab><PaidOutlinedIcon className="mr-1" />Invoice</Tab>
-                                {operation === "Edit" && (
+                                {operation === "Edit" || operation === "Closed" && (
                                     <Tab><HistoryOutlinedIcon className="mr-1" />Invoice Audit</Tab>
                                 )}
                                 <Tab><MoreTimeIcon className="mr-1" />Related Timesheet</Tab>
@@ -1104,7 +1106,7 @@ const InvoiceView = ({ operation, manualLoadData, invoiceNumber, employeeID, job
                                     </Formik>
                                 </div>
                             </TabPanel>
-                            {(operation === "Edit") && (
+                            {(operation === "Edit" || operation === "Closed") && (
                                 <TabPanel className="px-2">
                                     <VerticalTimeline layout='1-column-left'>
                                         {dataAudit.data.map((entry, index) => (

@@ -91,7 +91,7 @@ function OwnershipEdit({ ID, operation, manualLoadData, setApiLoading, showSnack
                 </IconButton>
                 <IconButton aria-label="Delete" title="Delete" color="error" onClick={() => {
                     const userInput = window.prompt("Type DELETE to confirm deletion of the item with ID: " + ID);
-                    if (userInput.toUpperCase() === "DELETE") {
+                    if (userInput && userInput.toUpperCase() === "DELETE") {
                         deleteItem();
                     } else {
                         // console.log("Delete operation cancelled");
