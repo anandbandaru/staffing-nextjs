@@ -265,7 +265,7 @@ function Expense({ props, ID, operation }) {
                         Id: name ? ID : 'This will be auto-generated once you save',
                         expenseTypeId: name ? data.data[0].expenseTypeId : '',
                         amount: name ? data.data[0].amount : '',
-                        currencyType: name ? data.data[0].currencyType : '',
+                        currencyType: name ? data.data[0].currencyType : 'USD',
                         category: name ? data.data[0].category : '',
                         companyId: name ? data.data[0].companyId : '',
                         employeeId: name ? data.data[0].employeeId : '',
@@ -274,6 +274,7 @@ function Expense({ props, ID, operation }) {
                         jobRate: name ? data.data[0].jobRate : '',
                         jobHoursDeducted: name ? data.data[0].jobHoursDeducted : '',
                         createdBy: userName,
+                        expenseDate: name ? data.data[0].expenseDate : new Date().toISOString().split('T')[0],
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addexpense";
@@ -286,7 +287,7 @@ function Expense({ props, ID, operation }) {
                         const updatedValues = {
                             ...values,
                             jobRate: values.jobRate || jobRate,
-                            jobHoursDeducted: jobRate === 0 ? 0 : jobHoursDeducted
+                            jobHoursDeducted: jobRate == 0 ? 0 : jobHoursDeducted
                         };
 
                         axios.post(finalAPI,
@@ -305,6 +306,8 @@ function Expense({ props, ID, operation }) {
                                 showSnackbar('error', "Error saving Expense data");
                             else
                                 showSnackbar('success', "Expense data saved");
+
+                            setAmount(0);
                             resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
@@ -316,9 +319,9 @@ function Expense({ props, ID, operation }) {
 
                     validationSchema={Yup.object().shape({
                         expenseTypeId: Yup.string()
-                            .required('expenseTypeId Required'),
+                            .required('expense Type Required'),
                         currencyType: Yup.string()
-                            .required('currencyType Required'),
+                            .required('currency Type Required'),
                         category: Yup.string()
                             .required('category Required'),
                         amount: Yup.number()
@@ -342,7 +345,9 @@ function Expense({ props, ID, operation }) {
                             is: 'Employee',
                             then: () => Yup.string().required('Job Id Required'),
                             otherwise: () => Yup.string().nullable()
-                        })
+                        }),
+                        expenseDate: Yup.string()
+                            .required('expense Date Required'),
                     })}
                 >
                     {(props) => {
@@ -372,6 +377,34 @@ function Expense({ props, ID, operation }) {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
+                                <table className='w-full'>
+                                    <tbody>
+                                        <tr>
+                                            <td className='text-right pr-4 pt-4'>
+                                                <div>Expense Date</div>
+                                            </td>
+                                            <td>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    className='flex-1'
+                                                    id="expenseDate"
+                                                    name="expenseDate"
+                                                    type="date"
+                                                    value={values.expenseDate}
+                                                    onChange={handleChange}
+                                                    // onChange={(event) => {
+                                                    //     handleChange(event);
+                                                    //     setReceivedDate(event.target.value);
+                                                    // }}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.expenseDate && touched.expenseDate) && errors.expenseDate}
+                                                />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                                 <TextField
                                     size="small"
                                     margin="normal"
@@ -379,7 +412,7 @@ function Expense({ props, ID, operation }) {
                                     id="expenseTypeId"
                                     name="expenseTypeId"
                                     select
-                                    label="Expense Type Id"
+                                    label="Expense Type"
                                     value={values.expenseTypeId}
                                     onChange={(event) => {
                                         handleChange(event);
@@ -561,7 +594,7 @@ function Expense({ props, ID, operation }) {
                                             <div className="spinner"></div>
                                         ) : (
                                             <>
-                                                {(values.category === 'Employee' && jobId) && (
+                                                {((values.category === 'Employee' && jobId) || (values.category !== 'Employee')) && (
                                                     <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
                                                         <SaveOutlinedIcon className="mr-1" />
                                                         Update

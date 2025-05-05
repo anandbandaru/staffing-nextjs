@@ -127,6 +127,7 @@ const ExpenseList = () => {
             field: "", cellRenderer: CustomDetailsComponent, maxWidth: 50, resizable: false
         },
         { field: "Id", maxWidth: 50 },
+        { field: "expenseDate", filter: true },
         { field: "expenseTypeName", filter: true },
         {
             field: "amount", filter: true, cellRenderer: CustomAmountComponent
