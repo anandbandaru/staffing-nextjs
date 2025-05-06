@@ -221,15 +221,16 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs] = useState([
         { field: "Id", maxWidth: 50 },
-        { field: "employeeID", filter: true },
+        { field: "employeeID", filter: true, maxWidth: 90 },
         { field: "timesheetNumber", filter: true },
+        { field: "employeeName", filter: true },
+        { field: "startDate", filter: true },
+        { field: "endDate", filter: true },
+        { field: "createdDate", headerName: 'Submitted Date', filter: true },
+        { field: "hours", filter: true, cellRenderer: CustomHoursRenderer },
         { field: "jobTitle", filter: true },
         { field: "jobType", headerName: 'Timesheet Frequency', filter: true, cellRenderer: CustomJobTypeRenderer },
         { field: "clientName", filter: true },
-        { field: "createdDate", headerName: 'Submitted Date', filter: true },
-        { field: "startDate", filter: true },
-        { field: "endDate", filter: true },
-        { field: "hours", filter: true, cellRenderer: CustomHoursRenderer },
         {
             field: "status", filter: true,
             cellRenderer: CustomStatusRenderer
@@ -247,10 +248,10 @@ const TimesheetAdminList = ({ employeeId, status, employeesData }) => {
         { field: "timesheetNumber", filter: true },
         { field: "vendorName", filter: true },
         { field: "employeeName", filter: true },
-        { field: "createdDate", headerName: 'Submitted Date', filter: true },
         { field: "startDate", filter: true },
         { field: "endDate", filter: true },
         { field: "hours", filter: true, cellRenderer: CustomHoursRenderer },
+        { field: "createdDate", headerName: 'Submitted Date', filter: true },
         {
             field: "VIEW", cellRenderer: CustomDetailsComponent, maxWidth: 70, resizable: false, pinned: 'right', cellStyle: { backgroundColor: '#b7bfcf' }
         },

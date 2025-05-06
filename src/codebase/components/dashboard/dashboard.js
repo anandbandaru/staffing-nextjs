@@ -31,6 +31,13 @@ const Dashboard = () => {
         files: 0,
         storageusage: 0,
         storagelimit: 0,
+        invoicesclosed: 0,
+        invoicessaved: 0,
+        timesheetsapproved: 0,
+        timesheetsrejected: 0,
+        timesheetssentback: 0,
+        timesheetssubmitted: 0,
+        receipts: 0,
     });
 
     const loadDashboardElements = () => {
@@ -55,7 +62,14 @@ const Dashboard = () => {
                 '/counts/filetypes',
                 '/counts/expensetypes',
                 '/counts/jobtypes',
-                '/counts/files'
+                '/counts/files',
+                '/counts/invoicesclosed',
+                '/counts/invoicessaved',
+                '/counts/timesheetsapproved',
+                '/counts/timesheetsrejected',
+                '/counts/timesheetssentback',
+                '/counts/timesheetssubmitted',
+                '/counts/receipts',
             ];
             // Filter endpoints based on userType
             const endpoints = allEndpoints.filter(endpoint => {
@@ -64,10 +78,14 @@ const Dashboard = () => {
                     (
                         endpoint.includes('owners')
                         || endpoint.includes('companies')
-                        || endpoint.includes('invoices')
                         || endpoint.includes('expenses')
                         || endpoint.includes('payroll')
-                        || endpoint.includes('timesheets')
+                        || endpoint.includes('invoicesclosed')
+                        || endpoint.includes('invoicessaved')
+                        || endpoint.includes('timesheetsapproved')
+                        || endpoint.includes('timesheetsrejected')
+                        || endpoint.includes('timesheetssentback')
+                        || endpoint.includes('timesheetssubmitted')
                     )
                 ) {
                     return false;
@@ -195,9 +213,6 @@ const Dashboard = () => {
                                     )}
                                 </Stack>
                             </CardContent>
-                            {/* <CardActions>
-                        Something here
-                    </CardActions> */}
                         </Card>
                     </Grid>
                     <Grid item md={2}>
@@ -210,8 +225,24 @@ const Dashboard = () => {
                         </Grid>
                         {userType === 'ADMIN' && (
                             <>
-                                <Grid item md={1}>
-                                    {renderCard('Invoices', counts.invoices)}
+                                <Grid item md={1.1}>
+                                    <Card sx={{ minWidth: 95 }}>
+                                        <CardContent>
+                                            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
+                                                Invoices
+                                            </Typography>
+                                            <Stack spacing={1} direction="row">
+                                                {isAPILoading ? (
+                                                    <Skeleton variant="rectangular" width={110} height={20} />
+                                                ) : (
+                                                    <>
+                                                        <div title='Saved' className='dashCardsCounts bg-yellow-500 px-2'>{counts.invoicessaved}</div>
+                                                        <div title='Closed' className='dashCardsCounts bg-green-400 px-2'>{counts.invoicesclosed}</div>
+                                                    </>
+                                                )}
+                                            </Stack>
+                                        </CardContent>
+                                    </Card>
                                 </Grid>
                                 <Grid item md={1}>
                                     {renderCard('Expenses', counts.expenses)}
@@ -219,8 +250,29 @@ const Dashboard = () => {
                                 <Grid item md={1}>
                                     {renderCard('Payroll', counts.payroll)}
                                 </Grid>
+                                <Grid item md={1.6}>
+                                    <Card sx={{ minWidth: 95 }}>
+                                        <CardContent>
+                                            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 12 }}>
+                                                Timesheets
+                                            </Typography>
+                                            <Stack spacing={1} direction="row">
+                                                {isAPILoading ? (
+                                                    <Skeleton variant="rectangular" width={180} height={20} />
+                                                ) : (
+                                                    <>
+                                                        <div title='Submitted' className='dashCardsCounts bg-yellow-500 px-2'>{counts.timesheetssubmitted}</div>
+                                                        <div title='Sent Back' className='dashCardsCounts bg-red-600 px-2 text-white'>{counts.timesheetssentback}</div>
+                                                        <div title='Rejected' className='dashCardsCounts bg-red-400 px-2'>{counts.timesheetsrejected}</div>
+                                                        <div title='Approved' className='dashCardsCounts bg-green-400 px-2'>{counts.timesheetsapproved}</div>
+                                                    </>
+                                                )}
+                                            </Stack>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
                                 <Grid item md={1}>
-                                    {renderCard('Timesheets', counts.timesheets)}
+                                    {renderCard('Receipts', counts.receipts)}
                                 </Grid>
                             </>
                         )}
