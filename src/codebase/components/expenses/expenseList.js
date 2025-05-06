@@ -130,7 +130,10 @@ const ExpenseList = () => {
         { field: "expenseDate", filter: true },
         { field: "expenseTypeName", filter: true },
         {
-            field: "amount", filter: true, cellRenderer: CustomAmountComponent
+            field: "referenceAmount", filter: true, cellRenderer: CustomAmountComponent, maxWidth: 150
+        },
+        {
+            field: "amount", filter: true, cellRenderer: CustomAmountComponent, maxWidth: 150
         },
         { field: "category", filter: true, cellRenderer: CustomCategoryComponent, maxWidth: 100 },
         { field: "companyName", filter: true },

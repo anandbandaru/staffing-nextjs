@@ -275,6 +275,7 @@ function Expense({ props, ID, operation }) {
                         jobHoursDeducted: name ? data.data[0].jobHoursDeducted : '',
                         createdBy: userName,
                         expenseDate: name ? data.data[0].expenseDate : new Date().toISOString().split('T')[0],
+                        referenceAmount: name ? data.data[0].referenceAmount : '',
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addexpense";
@@ -400,6 +401,26 @@ function Expense({ props, ID, operation }) {
                                                     // }}
                                                     onBlur={handleBlur}
                                                     helperText={(errors.expenseDate && touched.expenseDate) && errors.expenseDate}
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className='text-right pr-4 pt-4'>
+                                                <div>Reference Amount</div>
+                                            </td>
+                                            <td>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    className='flex-1'
+                                                    id="referenceAmount"
+                                                    name="referenceAmount"
+                                                    type="number"
+                                                    value={values.referenceAmount}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.referenceAmount && touched.referenceAmount) && errors.referenceAmount}
                                                 />
                                             </td>
                                         </tr>
