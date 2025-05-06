@@ -1,7 +1,7 @@
 .topBannerHolder{
     background-color: #38a58c;
     position: fixed;
-    bottom:20px;
+    bottom:-1px;
     left:0px;
     width: 100%;
     z-index: 100;

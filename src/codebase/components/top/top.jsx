@@ -25,6 +25,7 @@ import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
 import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 // React Tabs
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -368,17 +369,17 @@ const Top = () => {
                         <div className="">
                             {userName}
                         </div>
-                        <div className="userTypeHolder px-2 ml-2">
+                        <div className="userTypeHolder px-1 ml-2">
                             {userType}
                         </div>
                         <div className="px-2">
                             <Button size="small" variant="contained" color="primary"
                                 sx={{
-                                    padding: '0px 6px',
+                                    padding: '0px 1px',
                                     fontSize: '0.75rem',
                                     minWidth: 'auto',
                                 }}
-                                startIcon={<SwapHorizontalCircleOutlinedIcon />}
+                                startIcon={<ExitToAppIcon />}
                                 onClick={() => {
                                     showSnackbar('info', "Logging out");
                                     signOut();
