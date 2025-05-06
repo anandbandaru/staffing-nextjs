@@ -275,7 +275,7 @@ function Expense({ props, ID, operation }) {
                         jobHoursDeducted: name ? data.data[0].jobHoursDeducted : '',
                         createdBy: userName,
                         expenseDate: name ? data.data[0].expenseDate : new Date().toISOString().split('T')[0],
-                        referenceAmount: name ? data.data[0].referenceAmount : '',
+                        referenceAmount: name ? data.data[0].referenceAmount : 0.00,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addexpense";
