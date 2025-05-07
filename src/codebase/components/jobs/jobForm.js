@@ -13,6 +13,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Autocomplete, TextField, MenuItem } from '@mui/material';
 import JobRatesList from './jobRatesList'
 import FormSlider from '../slider/formSlider';
+import JobHoldHoursList from './jobHoldHoursList';
 
 function Job({ props, ID, operation }) {
     const { APIPath, userName, userType } = useContext(Context);
@@ -355,6 +356,7 @@ function Job({ props, ID, operation }) {
                         notesRate: name ? data.data[0].notesRate : '',
                         createdBy: userName,
                         paymentTerms: name ? data.data[0].paymentTerms : 0,
+                        holdHours: name ? data.data[0].holdHours : 0,
                     }}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addjob";
@@ -422,6 +424,14 @@ function Job({ props, ID, operation }) {
                             then: () => Yup.number()
                                 .typeError('Must be a number')
                                 .required('rate Required').test('is-decimal', 'Must be a decimal number', (value) =>
+                                    (value + "").match(/^\d+(\.\d+)?$/)),
+                            otherwise: () => Yup.number().nullable()
+                        }),
+                        holhHours: Yup.number().when(userType, {
+                            is: 'ADMIN',
+                            then: () => Yup.number()
+                                .typeError('Must be a number')
+                                .required('Hold Hours Required').test('is-decimal', 'Must be a decimal number', (value) =>
                                     (value + "").match(/^\d+(\.\d+)?$/)),
                             otherwise: () => Yup.number().nullable()
                         }),
@@ -640,14 +650,28 @@ function Job({ props, ID, operation }) {
                                     onBlur={handleBlur}
                                     helperText={(errors.jobName && touched.jobName) && errors.jobName}
                                 />
-
+                                <TextField
+                                    size="small"
+                                    margin="normal"
+                                    fullWidth
+                                    id="holdHours"
+                                    name="holdHours"
+                                    label="Hold Hours"
+                                    value={values.holdHours}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    helperText={(errors.holdHours && touched.holdHours) && errors.holdHours}
+                                />
                                 {(userType === "ADMIN" || userType === "OPERATOR") && (
                                     <div className='bg-blue-100 p-2 py-2 overflow-x-scroll'>
                                         <Tabs>
                                             <TabList className="formTabsListHolder">
                                                 <Tab>Current Rate</Tab>
                                                 {(operation !== "New" && userType === "ADMIN") && (
-                                                    <Tab>Historical Rates</Tab>
+                                                    <>
+                                                        <Tab>Historical Rates</Tab>
+                                                        <Tab>Historical Hold Hours</Tab>
+                                                    </>
                                                 )}
                                             </TabList>
 
@@ -708,9 +732,14 @@ function Job({ props, ID, operation }) {
                                                 />
                                             </TabPanel>
                                             {(operation !== "New" && userType === "ADMIN") && (
-                                                <TabPanel className="px-2 py-1">
-                                                    <JobRatesList ratesDate={data ? data.RATES : []} />
-                                                </TabPanel>
+                                                <>
+                                                    <TabPanel className="px-2 py-1">
+                                                        <JobRatesList ratesDate={data ? data.RATES : []} />
+                                                    </TabPanel>
+                                                    <TabPanel className="px-2 py-1">
+                                                        <JobHoldHoursList holdHoursDate={data ? data.HOLDHOURS : []} />
+                                                    </TabPanel>
+                                                </>
                                             )}
                                         </Tabs>
                                     </div>
