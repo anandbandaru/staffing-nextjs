@@ -22,6 +22,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import InvoicesMain from "../invoices/invoicesMain";
 import ReceiptsMain from "../receipts/receiptsMain";
+import PayrollsMain from "../payrolls/payrollsMain";
 
 const TransactionsTop = ({ module }) => {
     const { userType, APIPath, userName, setIsAPILoading } = useContext(Context);
@@ -171,7 +172,7 @@ const TransactionsTop = ({ module }) => {
                                     {tabsToShow.includes('Invoices') && <TabPanel className="py-0"><InvoicesMain /></TabPanel>}
                                     {tabsToShow.includes('Receipts') && <TabPanel className="py-0"><ReceiptsMain /></TabPanel>}
                                     {tabsToShow.includes('Expenses') && <TabPanel className="py-0"><ExpensesMain /></TabPanel>}
-                                    {tabsToShow.includes('Payroll') && <TabPanel className="py-0">Payroll</TabPanel>}
+                                    {tabsToShow.includes('Payroll') && <TabPanel className="py-0"><PayrollsMain /></TabPanel>}
                                     {tabsToShow.includes('Jobs') && <TabPanel className="py-0"><JobsMain /></TabPanel>}
                                 </Tabs>
                             )
