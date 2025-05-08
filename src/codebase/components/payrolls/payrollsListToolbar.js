@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-// import PayrollForm from "./payrollForm";
+import PayrollForm from "./payrollForm";
 import Stack from '@mui/material/Stack';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedIcon from '@mui/icons-material/Cached';
@@ -109,7 +109,7 @@ const PayrollsListToolbar = ({ operation, itemCount, apiLoading, dataAPIError, m
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    {/* <PayrollForm operation="New" /> */}
+                    <PayrollForm operation="New" />
                 </DialogContent>
             </BootstrapDialog>
         </>

@@ -406,3 +406,7 @@ width: 500px !important;
 .fileUploadControl INPUT{
   margin-bottom: 8px;
 }
+.sliderBottom{
+  border-bottom: 2px solid #443e3e;
+  margin-bottom: 30px;
+}

@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
-import ExpenseForm from "./expenseForm";
+import PayrollForm from "./payrollForm";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Context } from "../../context/context";
@@ -15,7 +15,7 @@ import BackupIcon from '@mui/icons-material/Backup';
 import GenericFileForm from '../forms/GenericFileForm';
 import axios from 'axios';
 
-function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
+function PayrollEdit({ ID, operation, manualLoadData, setApiLoading, showSnackbar }) {
     const { APIPath, setRefreshBalance, refreshBalance } = useContext(Context);
     const [open, setOpen] = React.useState(false);
     const [openDocuments, setOpenDocuments] = React.useState(false);
@@ -49,7 +49,7 @@ function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
     }));
     const deleteItem = () => {
         setApiLoading(true);
-        let apiUrl = APIPath + "/deleteexpense"
+        let apiUrl = APIPath + "/deletepayroll"
         axios.post(apiUrl,
             {
                 Id: ID
@@ -109,7 +109,7 @@ function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
                 open={open}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    {operation} Expense : ID: {ID}
+                    {operation} Payroll : ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -124,7 +124,7 @@ function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <ExpenseForm ID={ID} operation="Edit" />
+                    <PayrollForm ID={ID} operation="Edit" />
                 </DialogContent>
             </BootstrapDialog>
 
@@ -137,7 +137,7 @@ function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
                 open={openDocuments}
             >
                 <DialogTitle className="text-pink-600 w-60" sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-                    Documents: Expense: ID: {ID}
+                    Documents: Payroll: ID: {ID}
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -152,7 +152,7 @@ function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <GenericFileForm moduleId={ID} componentName="EXPENSES" />
+                    <GenericFileForm moduleId={ID} componentName="PAYROLLS" />
                 </DialogContent>
             </BootstrapDialog>
         </>
@@ -160,4 +160,4 @@ function ExpenseEdit({ ID, operation, manualLoadData, setApiLoading, showSnackba
     )
 }
 
-export default ExpenseEdit;
+export default PayrollEdit;
