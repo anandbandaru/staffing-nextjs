@@ -11,8 +11,9 @@ import Stack from '@mui/material/Stack';
 import CustomSnackbar from "../snackbar/snackbar";
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import { Autocomplete } from '@mui/material';
 
-function PayrollItem({ props, MM_YYYY, operation }) {
+function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisabled, index }) {
     const { APIPath, userName } = useContext(Context);
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const resetButtonRef = useRef(null);
@@ -20,7 +21,7 @@ function PayrollItem({ props, MM_YYYY, operation }) {
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
     // Default width
-    const [formWidth, setFormWidth] = useState(700);
+    const [formWidth, setFormWidth] = useState(1400);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -34,6 +35,14 @@ function PayrollItem({ props, MM_YYYY, operation }) {
         setSnackbarMessage(message);
         setSnackbarOpen(true);
     };
+
+    useEffect(() => {
+        if (operation === "View" || operation === "Edit") {
+            //getDataForMMYYYY();
+        } else if (operation === "New") {
+            setApiLoading(false);
+        }
+    }, []);
 
     return (
         <>
@@ -53,6 +62,7 @@ function PayrollItem({ props, MM_YYYY, operation }) {
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
                         payroll_MM_YYYY: name ? data.data[0].payroll_MM_YYYY : MM_YYYY,
+                        standardPay: name ? data.data[0].standardPay : 0.00,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addexpense";
@@ -64,8 +74,8 @@ function PayrollItem({ props, MM_YYYY, operation }) {
 
                         const updatedValues = {
                             ...values,
-                            jobRate: values.jobRate || jobRate,
-                            jobHoursDeducted: jobRate == 0 ? 0 : jobHoursDeducted
+                            // jobRate: values.jobRate || jobRate,
+                            // jobHoursDeducted: jobRate == 0 ? 0 : jobHoursDeducted
                         };
 
                         axios.post(finalAPI,
@@ -84,8 +94,6 @@ function PayrollItem({ props, MM_YYYY, operation }) {
                                 showSnackbar('error', "Error saving Expense data");
                             else
                                 showSnackbar('success', "Expense data saved");
-
-                            setAmount(0);
                             resetForm();
                         }).catch(function (error) {
                             setSubmitting(false);
@@ -97,7 +105,9 @@ function PayrollItem({ props, MM_YYYY, operation }) {
 
                     validationSchema={Yup.object().shape({
                         payroll_MM_YYYY: Yup.string()
-                            .required('payroll_MM_YYYY Type Required'),
+                            .required('payroll MM YYYY Required'),
+                        standardPay: Yup.string()
+                            .required('standard Pay Required'),
                     })}
                 >
                     {(props) => {
@@ -113,20 +123,255 @@ function PayrollItem({ props, MM_YYYY, operation }) {
                             handleReset
                         } = props;
                         return (
-                            <form onSubmit={handleSubmit} style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
-                                <TextField
-                                    size="small"
-                                    margin="normal"
-                                    fullWidth
-                                    id="MM_YYYY"
-                                    name="MM_YYYY"
-                                    label="MM_YYYY"
-                                    disabled
-                                    value={values.MM_YYYY}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                
+                            <form onSubmit={handleSubmit} className='justify-start place-items-start items-start' style={{ maxWidth: `${formWidth}px`, margin: '0 0' }}>
+
+                                <table className='payrollTable my-2'>
+                                    {index === 0 && (
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Employee</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Standard Pay</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Job</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Rate</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Hours</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Before Tax</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Tax</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>NetPay</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Employer Expense</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Check #</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Pay Date</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Actions</h2>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    )}
+                                    <tbody>
+                                        <tr>
+                                            <td className='td_Employee'>
+                                                {empID + " - " + empName}
+                                            </td>
+                                            <td className='td_StandardPay'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_Job'>
+                                                <TextField
+                                                    size="small"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id="MM"
+                                                    name="MM"
+                                                    select
+                                                    label="MM"
+                                                    // onChange={(event) => {
+                                                    //     handleMonthsIdChange(event);
+                                                    // }}
+                                                >
+                                                    {/* {months.map((item, index) => (
+                                                        <MenuItem key={index} value={item.Id}>
+                                                            {item.Id} - {item.name}
+                                                        </MenuItem>
+                                                    ))} */}
+                                                </TextField>
+                                            </td>
+                                            <td className='td_Rate'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_Hours'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_BeforeTax'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_Tax'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_NetPay'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_EmployerExpense'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_Check'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_PayDate'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="standardPay"
+                                                    name="standardPay"
+                                                    value={values.standardPay}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                />
+                                            </td>
+                                            <td className='td_Actions'>
+                                                <Stack direction="row" spacing={0} className=''>
+                                                    {operation === "Edit" ? (
+                                                        isSubmitting ? (
+                                                            <div className="spinner"></div>
+                                                        ) : (
+                                                            <>
+                                                                <Button size='small' color="primary" variant="contained" type="submit"
+                                                                    disabled={isSubmitting && !isSubmitionCompleted}>
+                                                                    <SaveOutlinedIcon className="mr-1" />
+                                                                    Update
+                                                                </Button>
+                                                            </>
+                                                        )
+                                                    ) : (
+                                                        <>
+                                                            {isSubmitting ? (
+                                                                <div className="spinner"></div>
+                                                            ) : (
+                                                                <>
+                                                                    <Button size='small' color="primary" variant="contained" type="submit"
+                                                                        disabled={isSubmitting && !isSubmitionCompleted || empDisabled}>
+                                                                        <SaveOutlinedIcon className="mr-1" />
+                                                                        Save
+                                                                    </Button>
+                                                                    <div className='mr-2'></div>
+                                                                    <Button size='small' color="secondary" variant="contained"
+                                                                        disabled={isSubmitting && !isSubmitionCompleted || empDisabled}
+                                                                        onClick={() => {
+                                                                            handleReset();
+                                                                        }}>
+                                                                        <SaveOutlinedIcon className="mr-1" />
+                                                                        Paid
+                                                                    </Button>
+                                                                </>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </Stack>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                                 {Object.keys(errors).length > 0 && (
                                     <div className="error-summary bg-red-500 my-4 p-2 text-white rounded-md">
                                         <span className='error-summary-heading' >Validation Errors:</span>
@@ -137,37 +382,7 @@ function PayrollItem({ props, MM_YYYY, operation }) {
                                         </ul>
                                     </div>
                                 )}
-                                <Stack direction="row" spacing={2} className='float-right mt-2'>
-                                    {operation === "Edit" ? (
-                                        isSubmitting ? (
-                                            <div className="spinner"></div>
-                                        ) : (
-                                            <>
-                                                {((values.category === 'Employee' && jobId) || (values.category !== 'Employee')) && (
-                                                    <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                        <SaveOutlinedIcon className="mr-1" />
-                                                        Update
-                                                    </Button>
-                                                )}
-                                            </>
-                                        )
-                                    ) : (
-                                        <>
-                                            {isSubmitting ? (
-                                                <div className="spinner"></div>
-                                            ) : (
-                                                <>
-                                                    {((values.category === 'Employee' && jobId) || (values.category !== 'Employee')) && (
-                                                        <Button color="primary" variant="contained" type="submit" disabled={isSubmitting && !isSubmitionCompleted}>
-                                                            <SaveOutlinedIcon className="mr-1" />
-                                                            Save
-                                                        </Button>
-                                                    )}
-                                                </>
-                                            )}
-                                        </>
-                                    )}
-                                </Stack>
+
                             </form>
                         );
                     }}

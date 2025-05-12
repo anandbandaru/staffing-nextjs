@@ -1,3 +1,27 @@
 .payrollMainHolder{
     /* margin:4px; */
 }
+.divBottomBorder{
+    border-bottom: 2px solid #4d4646;
+}
+.txtSmall{
+    font-size: 12px;
+    width: 100px;
+}
+.payrollTable{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.payrollTable TH{
+    padding:5px 10px;
+    border: 1px solid #e7dede;
+    background-color: rgb(190, 205, 206);
+}
+.payrollTable TD{
+    padding:4px 2px;
+    border: 1px solid #e7dede;
+}
+.td_Employee{
+    width: 180px;
+}

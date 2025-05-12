@@ -5,6 +5,7 @@ import FormSlider from '../slider/formSlider';
 import { Button, Stack, TextField, CircularProgress } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import PayrollItem from './payrollItem';
 
 function Payroll({ props, MMYYYY, operation }) {
     const { APIPath, userName } = useContext(Context);
@@ -15,7 +16,7 @@ function Payroll({ props, MMYYYY, operation }) {
     const [data, setData] = useState({ data: [] });
     const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
-    const [formWidth, setFormWidth] = useState(1000);
+    const [formWidth, setFormWidth] = useState(1400);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -47,7 +48,12 @@ function Payroll({ props, MMYYYY, operation }) {
         { Id: "2027", name: '2027' },
         { Id: "2028", name: '2028' },
         { Id: "2029", name: '2029' },
-        { Id: "2030", name: '2030' }
+        { Id: "2030", name: '2030' },
+        { Id: "2031", name: '2031' },
+        { Id: "2032", name: '2032' },
+        { Id: "2033", name: '2033' },
+        { Id: "2034", name: '2034' },
+        { Id: "2035", name: '2035' }
     ]);
     const [monthId, setMonthId] = useState(currentMonth); // Default to January
     const [yearId, setYearId] = useState(currentYear); // Default to 2023
@@ -112,11 +118,42 @@ function Payroll({ props, MMYYYY, operation }) {
         }
     };
 
+    const [employeesData, setEmployeesData] = useState({ data: [] });
+    const getEmployeesList = async () => {
+        setApiLoading(true);
+        setEmployeesData({ data: [] });
+        let apiUrl = APIPath + "/getemployees"
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
+            .then(response => response.json())
+            .then(
+                async (result) => {
+                    if (result.error) {
+                        // console.log("RequestData:On error return: setting empty")
+                        setEmployeesData({ data: [] });
+                    }
+                    else {
+                        setEmployeesData(result);
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setEmployeesData({ data: [] });
+                    // console.log("RequestData:On JUST error: API call failed")
+                    setApiLoading(false);
+                }
+            )
+    }
+
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
             getDataForMMYYYY();
         } else if (operation === "New") {
             setApiLoading(false);
+            getEmployeesList();
         }
     }, []);
 
@@ -134,11 +171,11 @@ function Payroll({ props, MMYYYY, operation }) {
                 </>
             ) : (
                 <div style={{ maxWidth: `${formWidth}px`, margin: '0 auto' }}>
-                    <FormSlider value={formWidth} onChange={handleSliderChange} />
+                    {/* <FormSlider value={formWidth} onChange={handleSliderChange} /> */}
 
                     <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
                         <Stack direction="row" spacing={2} sx={{ width: '300px' }}>
-                        <TextField
+                            <TextField
                                 size="small"
                                 margin="normal"
                                 fullWidth
@@ -165,7 +202,7 @@ function Payroll({ props, MMYYYY, operation }) {
                                 name="YYYY"
                                 select
                                 label="YYYY"
-                                value={yearId}                                
+                                value={yearId}
                                 onChange={(event) => {
                                     handleYearsTypeIdChange(event);
                                 }}
@@ -181,7 +218,7 @@ function Payroll({ props, MMYYYY, operation }) {
                                 variant="contained"
                                 type="button"
                                 size="small"
-s                                 onClick={getDataForMMYYYY}
+                                s onClick={getDataForMMYYYY}
                                 disabled={fetchingData}
                             >
                                 {fetchingData ? (
@@ -194,8 +231,19 @@ s                                 onClick={getDataForMMYYYY}
                                 )}
                             </Button>
                         </Stack>
-                        {fetchedProperData && data.data.length === 0 && (
-                            <div>No data available for the selected month and year.</div>
+                        <div className='divBottomBorder'></div>
+                        {fetchedProperData && employeesData.data.length > 0 && (
+                            employeesData.data.map((employee, index) => (
+                                <PayrollItem
+                                    key={index}
+                                    index={index}
+                                    MM_YYYY={`${monthId}${yearId}`}
+                                    operation={operation}
+                                    empID={employee.Id}
+                                    empName={employee.firstName + " " + employee.lastName}
+                                    empDisabled={employee.disabled}
+                                />
+                            ))
                         )}
                     </Stack>
                 </div>
