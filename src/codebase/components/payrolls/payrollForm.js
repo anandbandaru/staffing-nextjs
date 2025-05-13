@@ -11,12 +11,9 @@ function Payroll({ props, MMYYYY, operation }) {
     const { APIPath, userName } = useContext(Context);
 
     // State variables
-    const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
-    const resetButtonRef = useRef(null);
     const [data, setData] = useState({ data: [] });
-    const [name, setName] = useState('');
     const [apiLoading, setApiLoading] = useState(false);
-    const [formWidth, setFormWidth] = useState(1400);
+    const [formWidth, setFormWidth] = useState(1500);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -242,6 +239,7 @@ function Payroll({ props, MMYYYY, operation }) {
                                     empID={employee.Id}
                                     empName={employee.firstName + " " + employee.lastName}
                                     empDisabled={employee.disabled}
+                                    MM_YYYY_Data={data.data.find((item) => item.employeeId === employee.Id) || null}
                                 />
                             ))
                         )}

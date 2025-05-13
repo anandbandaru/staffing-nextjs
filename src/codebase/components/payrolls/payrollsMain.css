@@ -4,6 +4,16 @@
 .divBottomBorder{
     border-bottom: 2px solid #4d4646;
 }
+.div_PayrollFormContainer{
+width: 1500px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    overflow-x: auto;
+}
+.PayrollFormContainer{
+    margin:0px !important;
+    width: 100% !important;
+}
 .txtSmall{
     font-size: 12px;
     width: 100px;
@@ -21,7 +31,7 @@
     margin: 0px !important;
 }
 .payrollTable{
-    width: 100%;
+    width: 1500px !important;
     border-collapse: collapse;
     margin-top: 10px;
 }
@@ -37,12 +47,31 @@
 .td_Employee{
     width: 180px !important;
 }
-.td_StandardPay{
-    width: 100px !important;
+.td_BeforeTax, .td_StandardPay, .td_NetPay, .td_EmployerExpense, .txtSmallCheck{
+    width: 90px !important;
 }
-.td_Job{
-    width: 180px !important;
+.txtSmallBeforeTax, .txtSmallStandardPay, .txtSmallNetPay, .txtSmallEmployerExpense, .td_Check, .td_PayDate{
+    font-size: 12px;
+    width: 90px;
 }
-.td_Job INPUT{
-    font-size: 11px !important;
+.td_Tax, .td_rate{
+    width: 60px !important;
+}
+.txtSmallTax, .txtSmallHours, .txtSmallrate{
+    font-size: 12px;
+    width: 60px;
+}
+.td_Hours{
+    width: 120px !important;
+}
+.hoursCheckTable{
+    min-width: 200px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    overflow-x: auto;
+    background-color: rgb(175, 226, 211);
+}
+.hoursCheckTable TD{
+    padding:2px 4px;
+    border: 1px solid #e7dede;
 }
