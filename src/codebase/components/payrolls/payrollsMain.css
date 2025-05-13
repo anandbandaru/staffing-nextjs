@@ -8,6 +8,18 @@
     font-size: 12px;
     width: 100px;
 }
+.ddSmall{
+    font-size: 11px !important;
+    width: 150px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+.ddSmall INPUT{
+    font-size: 11px !important;
+    width: 150px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
 .payrollTable{
     width: 100%;
     border-collapse: collapse;
@@ -23,5 +35,14 @@
     border: 1px solid #e7dede;
 }
 .td_Employee{
-    width: 180px;
+    width: 180px !important;
+}
+.td_StandardPay{
+    width: 100px !important;
+}
+.td_Job{
+    width: 180px !important;
+}
+.td_Job INPUT{
+    font-size: 11px !important;
 }

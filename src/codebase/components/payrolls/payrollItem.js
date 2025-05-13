@@ -36,11 +36,83 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
         setSnackbarOpen(true);
     };
 
+    const [jobsData, setJobsData] = useState({ data: [] });
+    const [jobId, setJobId] = useState('');
+    const [jobRate, setJobRate] = useState(0);
+    const [sPayData, setSPayData] = useState({ data: [] });
+    const [standardPay, setStandardPay] = useState('');
+
+    const getJobsList = async () => {
+        setApiLoading(true);
+        setJobsData({ data: [] });
+        let apiUrl = APIPath + "/getjobsbyemployee/" + empID;
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
+            .then(response => response.json())
+            .then(
+                async (result) => {
+                    if (result.error) {
+                        // console.log("RequestData:On error return: setting empty")
+                        setJobsData({ data: [] });
+                    }
+                    else {
+                        setJobsData(result);
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setJobsData({ data: [] });
+                    // console.log("RequestData:On JUST error: API call failed")
+                    setApiLoading(false);
+                }
+            )
+    }
+    const handleJobIdChange = (event) => {
+        setJobId(event.target.value);
+        const job = jobsData.data.find((item) => item.jobId === event.target.value);
+        setJobRate(job.rate);
+        GetLastStandardPayByJobId(event.target.value);
+    };
+    const GetLastStandardPayByJobId = async (myJobId) => {
+        setApiLoading(true);
+        setSPayData({ data: [] });
+        setStandardPay(0.00);
+        let apiUrl = APIPath + "/getlaststandardpaybyjobid/" + myJobId;
+        fetch(apiUrl, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true',
+            }
+        })
+            .then(response => response.json())
+            .then(
+                async (result) => {
+                    if (result.error) {
+                        setSPayData({ data: [] });
+                    }
+                    else {
+                        setSPayData(result);
+                        if (result.data.length > 0) {
+                            setStandardPay(result.data[0].standardPay);
+                        }
+                    }
+                    setApiLoading(false);
+                },
+                (error) => {
+                    setSPayData({ data: [] });
+                    setApiLoading(false);
+                }
+            )
+    }
+
     useEffect(() => {
         if (operation === "View" || operation === "Edit") {
             //getDataForMMYYYY();
         } else if (operation === "New") {
             setApiLoading(false);
+            getJobsList();
         }
     }, []);
 
@@ -52,17 +124,15 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                 severity={snackbarSeverity}
                 message={snackbarMessage}
             />
-            {apiLoading ?
-                <>
-                    <div className="spinner"></div>Loading data from database....
-                </>
-                :
                 <Formik
                     enableReinitialize
                     initialValues={{
                         Id: name ? ID : 'This will be auto-generated once you save',
                         payroll_MM_YYYY: name ? data.data[0].payroll_MM_YYYY : MM_YYYY,
-                        standardPay: name ? data.data[0].standardPay : 0.00,
+                        employeeId: name ? data.data[0].employeeId : empID,
+                        standardPay: name ? data.data[0].standardPay : standardPay,
+                        jobId: name ? data.data[0].jobId : jobId,
+                        rate: name ? data.data[0].rate : jobRate,
                     }}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         var finalAPI = APIPath + "/addexpense";
@@ -133,13 +203,13 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     <h2 className='text-sm font-bold'>Employee</h2>
                                                 </th>
                                                 <th>
-                                                    <h2 className='text-sm font-bold'>Standard Pay</h2>
-                                                </th>
-                                                <th>
                                                     <h2 className='text-sm font-bold'>Job</h2>
                                                 </th>
                                                 <th>
                                                     <h2 className='text-sm font-bold'>Rate</h2>
+                                                </th>
+                                                <th>
+                                                    <h2 className='text-sm font-bold'>Standard Pay</h2>
                                                 </th>
                                                 <th>
                                                     <h2 className='text-sm font-bold'>Hours</h2>
@@ -171,7 +241,57 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                     <tbody>
                                         <tr>
                                             <td className='td_Employee'>
-                                                {empID + " - " + empName}
+                                                {apiLoading ?
+                                                    <>
+                                                        <div className="spinner"></div>Loading data from database....
+                                                    </> :
+                                                    <>
+                                                        {empID + " - " + empName}
+                                                    </>
+                                                }
+                                            </td>
+                                            <td className='td_Job'>
+                                                <TextField
+                                                    size="small"
+                                                    className='ddSmall'
+                                                    margin="normal"
+                                                    id="jobId"
+                                                    name="jobId"
+                                                    variant="standard"
+                                                    fullWidth
+                                                    select
+                                                    value={values.jobId ? values.jobId : jobId}
+                                                    onChange={(event) => {
+                                                        handleChange(event);
+                                                        handleJobIdChange(event);
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.jobId && touched.jobId) && errors.jobId}
+                                                >
+                                                    {jobsData.data
+                                                        //.filter((job) => job.employeeId === empID)
+                                                        .map((item, index) => (
+                                                            <MenuItem key={index} value={item.jobId}>
+                                                                {item.jobTitle}
+                                                                {/* - {item.jobName} */}
+                                                            </MenuItem>
+                                                        ))}
+                                                </TextField>
+                                            </td>
+                                            <td className='td_Rate'>
+                                                <TextField
+                                                    className='txtSmall'
+                                                    variant="standard"
+                                                    size="small"
+                                                    margin="normal"
+                                                    type='number'
+                                                    id="rate"
+                                                    name="rate"
+                                                    value={values.rate ? values.rate : jobRate}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.rate && touched.rate) && errors.rate}
+                                                />
                                             </td>
                                             <td className='td_StandardPay'>
                                                 <TextField
@@ -182,42 +302,7 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     type='number'
                                                     id="standardPay"
                                                     name="standardPay"
-                                                    value={values.standardPay}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
-                                                />
-                                            </td>
-                                            <td className='td_Job'>
-                                                <TextField
-                                                    size="small"
-                                                    margin="normal"
-                                                    fullWidth
-                                                    id="MM"
-                                                    name="MM"
-                                                    select
-                                                    label="MM"
-                                                    // onChange={(event) => {
-                                                    //     handleMonthsIdChange(event);
-                                                    // }}
-                                                >
-                                                    {/* {months.map((item, index) => (
-                                                        <MenuItem key={index} value={item.Id}>
-                                                            {item.Id} - {item.name}
-                                                        </MenuItem>
-                                                    ))} */}
-                                                </TextField>
-                                            </td>
-                                            <td className='td_Rate'>
-                                                <TextField
-                                                    className='txtSmall'
-                                                    variant="standard"
-                                                    size="small"
-                                                    margin="normal"
-                                                    type='number'
-                                                    id="standardPay"
-                                                    name="standardPay"
-                                                    value={values.standardPay}
+                                                    value={values.standardPay ? values.standardPay : standardPay}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                     helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
@@ -230,12 +315,12 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     size="small"
                                                     margin="normal"
                                                     type='number'
-                                                    id="standardPay"
-                                                    name="standardPay"
-                                                    value={values.standardPay}
+                                                    id="hours"
+                                                    name="hours"
+                                                    value={values.hours}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                    helperText={(errors.hours && touched.hours) && errors.hours}
                                                 />
                                             </td>
                                             <td className='td_BeforeTax'>
@@ -245,12 +330,12 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     size="small"
                                                     margin="normal"
                                                     type='number'
-                                                    id="standardPay"
-                                                    name="standardPay"
-                                                    value={values.standardPay}
+                                                    id="beforeTaxAmount"
+                                                    name="beforeTaxAmount"
+                                                    value={values.beforeTaxAmount}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                    helperText={(errors.beforeTaxAmount && touched.beforeTaxAmount) && errors.beforeTaxAmount}
                                                 />
                                             </td>
                                             <td className='td_Tax'>
@@ -260,12 +345,12 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     size="small"
                                                     margin="normal"
                                                     type='number'
-                                                    id="standardPay"
-                                                    name="standardPay"
-                                                    value={values.standardPay}
+                                                    id="taxAmount"
+                                                    name="taxAmount"
+                                                    value={values.taxAmount}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                    helperText={(errors.taxAmount && touched.taxAmount) && errors.taxAmount}
                                                 />
                                             </td>
                                             <td className='td_NetPay'>
@@ -275,12 +360,12 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     size="small"
                                                     margin="normal"
                                                     type='number'
-                                                    id="standardPay"
-                                                    name="standardPay"
-                                                    value={values.standardPay}
+                                                    id="netPayAmount"
+                                                    name="netPayAmount"
+                                                    value={values.netPayAmount}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                    helperText={(errors.netPayAmount && touched.netPayAmount) && errors.netPayAmount}
                                                 />
                                             </td>
                                             <td className='td_EmployerExpense'>
@@ -290,12 +375,12 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     size="small"
                                                     margin="normal"
                                                     type='number'
-                                                    id="standardPay"
-                                                    name="standardPay"
-                                                    value={values.standardPay}
+                                                    id="employerExpense"
+                                                    name="employerExpense"
+                                                    value={values.employerExpense}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                    helperText={(errors.employerExpense && touched.employerExpense) && errors.employerExpense}
                                                 />
                                             </td>
                                             <td className='td_Check'>
@@ -305,12 +390,12 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     size="small"
                                                     margin="normal"
                                                     type='number'
-                                                    id="standardPay"
-                                                    name="standardPay"
-                                                    value={values.standardPay}
+                                                    id="checkNumber"
+                                                    name="checkNumber"
+                                                    value={values.checkNumber}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                    helperText={(errors.checkNumber && touched.checkNumber) && errors.checkNumber}
                                                 />
                                             </td>
                                             <td className='td_PayDate'>
@@ -320,12 +405,12 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                                                     size="small"
                                                     margin="normal"
                                                     type='number'
-                                                    id="standardPay"
-                                                    name="standardPay"
-                                                    value={values.standardPay}
+                                                    id="payDate"
+                                                    name="payDate"
+                                                    value={values.payDate}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    helperText={(errors.standardPay && touched.standardPay) && errors.standardPay}
+                                                    helperText={(errors.payDate && touched.payDate) && errors.payDate}
                                                 />
                                             </td>
                                             <td className='td_Actions'>
@@ -387,8 +472,6 @@ function PayrollItem({ props, MM_YYYY, operation, ID, empID, empName, empDisable
                         );
                     }}
                 </Formik>
-            }
-
         </>
     );
 }
