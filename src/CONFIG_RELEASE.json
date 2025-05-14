@@ -22,6 +22,13 @@
   ],
   "releases": [
     {
+      "version": "4.1",
+      "date": "MAY 14 2025",
+      "notes": [
+        "Custom invoice fix - Make sure to run the SQL scripts 05132025.sql"
+      ]
+    },
+    {
       "version": "4.0",
       "date": "MAY 07 2025",
       "notes": [

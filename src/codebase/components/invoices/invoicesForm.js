@@ -31,6 +31,8 @@ function Invoice({ props, ID, operation }) {
 
     const [jobsData, setJobsData] = useState({ data: [] });
     const [jobId, setJobId] = useState('');
+    const [rate, setRate] = useState(0.00);
+
     const [invoiceNumber, setInvoiceNumber] = useState('');
     const [startYear, setStartYear] = useState('');
 
@@ -149,13 +151,15 @@ function Invoice({ props, ID, operation }) {
                 }
             )
     }
-    const handleJobIdChange = (employeeId, jobId, invoicePeriod, setFieldValue) => {
+    const handleJobIdChange = (employeeId, jobId, invoicePeriod, setFieldValue, rate) => {
         setJobId(jobId);
         setEmployeeId(employeeId);
         // Update the invoiceNumber field with the desired format
         let valToSet = `CUST-INV-E:${employeeId}-J:${jobId}-${invoicePeriod}-`
         setInvoiceNumber(valToSet);
         setFieldValue('invoiceNumber', valToSet);
+        setRate(rate);
+        setFieldValue('rate', rate);
     };
 
     const handleJobStartDateChange = (event, setFieldValue) => {
@@ -200,7 +204,7 @@ function Invoice({ props, ID, operation }) {
                         endDate: name ? data.data[0].endDate : '',
                         vendorId: name ? data.data[0].vendorId : vendorId,
                         totalHours: name ? data.data[0].totalHours : '',
-                        rate: name ? data.data[0].rate : '',
+                        rate: name ? data.data[0].rate : rate,
                         createdBy: userName,
                         invoiceDate: name ? data.data[0].invoiceDate : '',
                         userNotes: name ? data.data[0].userNotes : '',
@@ -212,8 +216,13 @@ function Invoice({ props, ID, operation }) {
                         }
                         setSubmitionCompleted(false);
                         setSubmitting(true);
+                        const updatedValues = {
+                            ...values,
+                            totalAmount: values.rate * values.totalHours,
+                            otherAmount: 0.00,
+                        };
                         axios.post(finalAPI,
-                            values,
+                            updatedValues,
                             {
                                 headers: {
                                     'Access-Control-Allow-Origin': '*',
@@ -332,7 +341,8 @@ function Invoice({ props, ID, operation }) {
                                             const employeeId = selectedJob.employeeId;
                                             const jobId = selectedJob.jobId;
                                             const invoicePeriod = selectedJob.invoicePeriod;
-                                            handleJobIdChange(employeeId, jobId, invoicePeriod, setFieldValue);
+                                            const rate = selectedJob.rate;
+                                            handleJobIdChange(employeeId, jobId, invoicePeriod, setFieldValue, rate);
                                         } else {
                                             console.error('Selected job not found in jobsData');
                                         }
@@ -427,7 +437,7 @@ function Invoice({ props, ID, operation }) {
                                     name="rate"
                                     type="number"
                                     label="Rate"
-                                    value={values.rate}
+                                    value={values.rate ? values.rate : rate}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     helperText={(errors.rate && touched.rate) && errors.rate}
